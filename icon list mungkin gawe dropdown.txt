@@ -1,0 +1,16 @@
+materi-blue
+materi-red
+materi-black
+materi-green
+materi-blue
+materi-red
+materi-black
+materi-green
+fa-pencil
+fa-diamond
+fa-puzzle-piece
+fa-plane
+fa-flask
+fa-graduation-cap
+fa-bicycle
+fa-car
