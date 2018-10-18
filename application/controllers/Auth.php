@@ -42,10 +42,10 @@ class Auth extends CI_Controller {
 							        'aktor'     				=> $recordPengguna[0]->aktor,
 							        'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
 							        'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
-							        'status'  					=> $recordPengguna[0]->status,
+							        'status'  					=> $recordPengguna[0]->status
 							);
 
-							if ($recordPengguna[0]->foto !== '') {
+							if ($recordPengguna[0]->foto !== NULL) {
 								$newdata['foto']				= $recordPengguna[0]->foto;
 							}else{
 								$newdata['foto'] 				= "assets/dashboard/assets/images/reading.png";
@@ -67,7 +67,7 @@ class Auth extends CI_Controller {
 								return true;
 							}
 						}else{
-							alert("login","danger","Gagal!","Akun anda dibekukan oleh admin");
+							alert("login","danger","Gagal!","Akun anda dalam status dibekukan, mohon hubungi admin. Terimakasih.");
 							redirect(base_url()."login");
 							return true;
 						}
@@ -187,56 +187,12 @@ class Auth extends CI_Controller {
 			$queryPengguna = $this->model->create('pengguna',$recordPengguna);
 			$queryPengguna = json_decode($queryPengguna);
 			if ($queryPengguna->status) {
-
-				$queryPengguna = $this->model->read('pengguna',array('email'=>$recordPengguna['email'],'password'=>$recordPengguna['password']))->result();
-				if ($recordPengguna['aktor'] == 'mahasiswa') {
-					$newdata = array(
-								        'id'     					=> $queryPengguna[0]->id,
-								        'nama'  					=> $queryPengguna[0]->nama,
-								        'email'     				=> $queryPengguna[0]->email,
-								        'no_hp'     				=> $queryPengguna[0]->email,
-								        'aktor'     				=> $queryPengguna[0]->aktor,
-								        'foto'     					=> $queryPengguna[0]->foto,
-								        'institusi_or_universitas'  => $queryPengguna[0]->institusi_or_universitas,
-								        'nip_or_nim'  				=> $queryPengguna[0]->nip_or_nim,
-								        'status'  					=> $queryPengguna[0]->status,
-								        'report'  					=> 0,
-								        'poin'  					=> 0,
-
-					);
-
-					$this->session->set_userdata('loginSession',$newdata);
-					alert('login','success','Hai '.$queryPengguna[0]->nama.'!','Selamat datang di Berguru.com');
-					$this->session->unset_userdata('registrasiSession');
-					redirect(base_url()."pesan-mahasiswa");
-				}elseif ($recordPengguna['aktor'] == 'pendidik') {
-					$newdata = array(
-								        'id'     					=> $queryPengguna[0]->id,
-								        'nama'  					=> $queryPengguna[0]->nama,
-								        'email'     				=> $queryPengguna[0]->email,
-								        'no_hp'     				=> $queryPengguna[0]->no_hp,
-								        'aktor'     				=> $queryPengguna[0]->aktor,
-								        'foto'     					=> $queryPengguna[0]->foto,
-								        'institusi_or_universitas'  => $queryPengguna[0]->institusi_or_universitas,
-								        'nip_or_nim'  				=> $queryPengguna[0]->nip_or_nim,
-								        'status'  					=> $queryPengguna[0]->status,
-								        'report'  					=> 0,
-								        'poin'  					=> 0,
-
-					);
-					$this->session->set_userdata('loginSession',$newdata);
-					alert('login','success','Hai '.$queryPengguna[0]->nama.'!','Selamat datang di Berguru.com');
-					$this->session->unset_userdata('registrasiSession');
-					redirect(base_url()."pesan-tenaga-pendidik");
-				}else{
-					$this->session->unset_userdata('registrasiSession');
-					$error['heading'] = 'Aktor tidak dikenali';
-					$error['message'] = '<p>Kesalahan sistem</p>';
-					$this->load->view('errors/html/error_404',$error);
-				}
+				$this->session->unset_userdata('registrasiSession');
+				alert("login","success","Berhasil!","Anda berhasil registrasi, mohon hubungi admin untuk mengaktifkan akun. Terimakasih.");
 			}else{
 				alert('register','danger','Gagal!','Kegagalan database. Data tidak dapat masuk');
 			}
+			redirect();
 		}else{
 			$error['heading'] = '404 Page Not Found';
 			$error['message'] = '<p>Tidak ada data yang di POST</p>';
