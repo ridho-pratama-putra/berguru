@@ -36,7 +36,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
@@ -55,7 +55,7 @@
 						<div class="pesan-item pi-read pi-selected">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Aleister Don
@@ -74,7 +74,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Juminten Antartika
@@ -93,7 +93,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Adam McMahon
@@ -112,7 +112,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Fanny Wibowo
@@ -154,7 +154,7 @@
 									<div class="media">
 										<div class="media-left">
 											<div class="user-photo">
-												<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+												<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 											</div>
 											
 										</div>

@@ -19,7 +19,7 @@ class Auth extends CI_Controller {
 			redirect(base_url().'register-pilih');
 		}else{
 			$cookie = get_cookie('berguru');
-			if ($this->session->userdata('loginSession') == array() OR $cookie == '') {
+			if ($this->session->userdata('loginSession') == array() AND $cookie == '') {
 				if ($this->input->post() != array()) {
 					$cekLogin = $this->model->read('pengguna',array('email'=>$this->input->post('email'),'password'=>md5($this->input->post('password'))));
 					if ($cekLogin->num_rows() == 1) {
@@ -40,12 +40,16 @@ class Auth extends CI_Controller {
 							        'email'     				=> $recordPengguna[0]->email,
 							        'no_hp'     				=> $recordPengguna[0]->no_hp,
 							        'aktor'     				=> $recordPengguna[0]->aktor,
-							        'foto'     					=> $recordPengguna[0]->foto,
 							        'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
 							        'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
 							        'status'  					=> $recordPengguna[0]->status,
-
 							);
+
+							if ($recordPengguna[0]->foto !== '') {
+								$newdata['foto']				= $recordPengguna[0]->foto;
+							}else{
+								$newdata['foto'] 				= "assets/dashboard/assets/images/reading.png";
+							}
 
 							$this->session->set_userdata('loginSession',$newdata);
 
@@ -73,21 +77,33 @@ class Auth extends CI_Controller {
 						return true;
 					}
 				}
-			}elseif(($this->session->userdata('loginSession') !== array()) OR ($cookie !== '')){
-				// cek adakah cookie ada yang sedang aktif
-				echo $cookie;
-				$recordCookieAktif = $this->model->read('pengguna',array('cookie'=>$cookie))->result();
-				if ($recordCookieAktif[0]->cookie == $cookie) {
-					if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
-						alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+			}elseif($this->session->userdata('loginSession') != array()){
+				if ($cookie !== NULL) {
+					// cek adakah cookie ada yang sedang aktif
+					$recordCookieAktif = $this->model->read('pengguna',array('cookie'=>$cookie))->result();
+					if ($recordCookieAktif[0]->cookie == $cookie) {
+						if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
+							alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+							redirect(base_url().'pesan-mahasiswa');
+							return true;
+						}elseif($recordCookieAktif[0]->aktor == 'pendidik') {
+							alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+							redirect(base_url().'pesan-tenaga-pendidik');
+							return true;
+						}elseif($recordCookieAktif[0]->aktor == 'admin') {
+							alert('login','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+							redirect(base_url().'kelola-daftar-message');
+							return true;
+						}
+					}
+				}else{
+					if ($this->session->userdata('loginSession')['aktor'] == "mahasiswa") {
 						redirect(base_url().'pesan-mahasiswa');
 						return true;
-					}elseif($recordCookieAktif[0]->aktor == 'pendidik') {
-						alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+					}elseif ($this->session->userdata('loginSession')['aktor'] == "pendidik") {
 						redirect(base_url().'pesan-tenaga-pendidik');
 						return true;
-					}elseif($recordCookieAktif[0]->aktor == 'admin') {
-						alert('login','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+					}elseif ($this->session->userdata('loginSession')['aktor'] == "admin") {
 						redirect(base_url().'kelola-daftar-message');
 						return true;
 					}
@@ -172,7 +188,6 @@ class Auth extends CI_Controller {
 			$queryPengguna = json_decode($queryPengguna);
 			if ($queryPengguna->status) {
 
-				// insert record
 				$queryPengguna = $this->model->read('pengguna',array('email'=>$recordPengguna['email'],'password'=>$recordPengguna['password']))->result();
 				if ($recordPengguna['aktor'] == 'mahasiswa') {
 					$newdata = array(
@@ -192,6 +207,7 @@ class Auth extends CI_Controller {
 
 					$this->session->set_userdata('loginSession',$newdata);
 					alert('login','success','Hai '.$queryPengguna[0]->nama.'!','Selamat datang di Berguru.com');
+					$this->session->unset_userdata('registrasiSession');
 					redirect(base_url()."pesan-mahasiswa");
 				}elseif ($recordPengguna['aktor'] == 'pendidik') {
 					$newdata = array(
@@ -208,16 +224,16 @@ class Auth extends CI_Controller {
 								        'poin'  					=> 0,
 
 					);
-
 					$this->session->set_userdata('loginSession',$newdata);
 					alert('login','success','Hai '.$queryPengguna[0]->nama.'!','Selamat datang di Berguru.com');
+					$this->session->unset_userdata('registrasiSession');
 					redirect(base_url()."pesan-tenaga-pendidik");
 				}else{
+					$this->session->unset_userdata('registrasiSession');
 					$error['heading'] = 'Aktor tidak dikenali';
 					$error['message'] = '<p>Kesalahan sistem</p>';
 					$this->load->view('errors/html/error_404',$error);
 				}
-				$this->session->unset_userdata('registrasiSession');
 			}else{
 				alert('register','danger','Gagal!','Kegagalan database. Data tidak dapat masuk');
 			}

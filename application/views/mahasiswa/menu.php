@@ -20,7 +20,7 @@
 									<li><a href="#">
 										Home
 									</a></li>
-									<li class="active">Pesan</li>
+									<li class="active"><?=$active?></li>
 								</ol>
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
@@ -32,7 +32,7 @@
 									<?php foreach ($notif_message_mahasiswa as $key => $value) { ?>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=base_url()?>assets/assets/images/reading.png">
+											<img alt="image" class="img-circle" src="<?=base_url()?>assets/dashboard/assets/images/reading.png">
 										</a>
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
 											<a href="#">Pesan baru dari <strong><?=$value->dari?></strong>.</a>
@@ -45,7 +45,7 @@
 									<!-- <li class="divider"></li>
 									<li>
 										<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=base_url()?>assets/assets/images/reading.png">
+											<img alt="image" class="img-circle" src="<?=base_url()?>assets/dashboard/assets/images/reading.png">
 										</a>
 										<div class="message-body"><small class="pull-right">3 mins ago</small>
 											<a href="#"><strong><?=$value->dari?></strong> commented on <strong>your photo</strong>.</a>
@@ -89,7 +89,7 @@
 									<li class="dropdown user-menu"><a class="dropdown-toggle" data-toggle="dropdown" href="#">
 										<div class="user-name"> <?=$this->session->userdata('loginSession')['nama']?></div>
 										<div class="user-photo">
-											<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 										</div>
 									</a>
 									<ul class="dropdown-menu">
@@ -113,7 +113,7 @@
 			<div class="profile-sidebar">
 				<a href="#" class="profile-option"><i class="fa fa-cog"></i></a>
 				<div class="profile-userpic">
-					<img src="<?=base_url()?>assets/assets/images/reading.png" class="" alt="Photo">
+					<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" class="" alt="Photo">
 				</div>
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>

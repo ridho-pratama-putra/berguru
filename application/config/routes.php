@@ -66,6 +66,7 @@ $route['register-pilih-proses']		= 'Auth/registerPilihProses/';
 /*****************************************************BEGIN ADMIN*****************************************************/
 $route['profil-admin']				= 'Admin/profilAdmin/';
 
+
 $route['kelola-daftar-message']			= 'Admin/kelolaDaftarMessage/';
 $route['kelola-daftar-message-all']		= 'Admin/getDaftarMessage/all';
 $route['kelola-daftar-message-solved']	= 'Admin/getDaftarMessage/solved';
@@ -102,13 +103,19 @@ $route['lowongan-kerja']			= 'Admin/kelolaLowonganKerja';
 
 $route['pesan-mahasiswa']			= 'Mahasiswa/pesan';
 $route['profil-mahasiswa']			= 'Mahasiswa/profil';
+$route['edit-profil-mahasiswa']		= 'Mahasiswa/editProfil';
 
 /*****************************************************END OF MAHASISWA********************************************************/
 
 /*****************************************************BEGIN TENAGA PENDIDIK********************************************************/
 
 $route['pesan-tenaga-pendidik']		= 'Pendidik/pesan';
+
 $route['profil-tenaga-pendidik']	= 'Pendidik/profil';
+$route['edit-profil-pendidik']		= 'Pendidik/editProfil';
+$route['submit-edit-profil-pendidik']		= 'Pendidik/submitEditProfil';
+
+
 $route['pertanyaan-saya']			= 'Pendidik/pertanyaanSaya';
 $route['buat-pertanyaan']			= 'Pendidik/buatPertanyaan';
 $route['insert-pertanyaan']			= 'Pendidik/insertPertanyaan';

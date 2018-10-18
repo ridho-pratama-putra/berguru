@@ -20,7 +20,7 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="profile-pic">
-								<img src="<?=base_url()?>assets/assets/images/reading.png" class="" alt="Photo">
+								<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="img-circle" alt="Photo">
 							</div>
 						</div>
 
@@ -45,7 +45,7 @@
 						</tr>
 					</table>
 				</div>
-				<a href="#" class="btn btn-normal btn-plonk-green btn-block">Edit Profil</a>
+				<a href="<?=base_url()?>edit-profil-pendidik" class="btn btn-normal btn-plonk-green btn-block">Edit Profil</a>
 			</div>
 		</div>
 	</div>
@@ -64,7 +64,7 @@
 						<div class="media">
 							<div class="media-left media-middle">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
@@ -87,7 +87,7 @@
 						<div class="media">
 							<div class="media-left media-middle">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
@@ -110,7 +110,7 @@
 						<div class="media">
 							<div class="media-left media-middle">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber

@@ -7,7 +7,7 @@ class Pendidik extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'pendidik') {
-			redirect(base_url().'logout');
+			redirect('logout');
 		}
 		// $menu['notif_permasalahan'] = $this->model->read("notif_permasalahan",array("untuk"=>"mahasiswa OR untuk='".$this->session->userdata('loginSession')['id']."'"));
 
@@ -88,6 +88,21 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
+	* function untuk menampilkan halaman edit profil
+	*/
+	function editProfil()
+	{
+		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
+		$header['title'] = "Pendidik - Edit Profil";
+		$menu['active'] = "editProfil";
+		$menu['breadcrumb'] = "Edit Profil";
+		$this->load->view('statis/header',$header);
+		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/edit-profil',$record);
+		$this->load->view('statis/footer');
+	}
+
+	/*
 	* function untuk action form pada halaman tambah pertanyaan
 	*/
 	function insertPertanyaan()
@@ -117,10 +132,10 @@ class Pendidik extends CI_Controller {
 				alert('pertanyaan','success','Berhasil!','Pertanyaan telah di publish');
 			}else{
 				alert('buatPertanyaan','danger','Gagal!','Pertanyaan tidak dipublish. Kesalahan sistem');
-				redirect(base_url().'buat-pertanyaan');
+				redirect('buat-pertanyaan');
 				return true;
 			}
-			redirect(base_url().'pertanyaan-saya');
+			redirect('pertanyaan-saya');
 		}
 	}
 
@@ -145,6 +160,92 @@ class Pendidik extends CI_Controller {
 			}else{
 				alert('pertanyaan','danger','Gagal!','Pertanyaan tidak dapat dihapus');
 			}
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Tidak ada data yang di POST</p>';
+			$this->load->view('errors/html/error_404',$error);
+		}
+	}
+
+	/*
+	* function untuk handling form edit profil
+	*/
+	function submitEditProfil()
+	{
+		if ($this->input->post() !== array()) {
+
+			// cek apakah ada pergantian password
+			$recordPengguna = ''; // variabel akan tidak kosong apabila ada perintah update password. untuk simpan record pengguna sebagai pencocokan
+			if ($this->input->post('password') !== '') {
+				$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
+				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
+					alert('editProfil','danger','Gagal!','Edit profil gagal. Password salah');
+					redirect('edit-profil-pendidik');
+					return true;
+				}else{
+					// cek apakah password_ ada isinya
+					if ($this->input->post('password_') == '') {
+						alert('editProfil','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password hanya jika ingin mengganti password');
+						redirect('edit-profil-pendidik');
+						return true;
+					}else{
+						// masukkan password baru ke array untuk bahan eksekusi
+						$queryUpdate['password'] = md5($this->input->post('password'));
+					}
+				}
+			}
+			
+			// cek apakah ada perintah update foto
+			if ($_FILES['foto']['name'] !== '') {
+				$config['upload_path']	= FCPATH.'userprofiles/';
+				$config['allowed_types']= 'gif|jpg|png';
+				$config['file_name'] = $this->input->post('nama')." - profil";
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('foto'))
+				{
+					alert('editProfil','danger','Gagal!',$this->upload->display_errors());
+					redirect('edit-profil-pendidik');
+					return false;
+				}
+				else
+				{
+					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
+				}
+			}
+
+			$this->form_validation->set_rules('nama','Nama','trim|required');
+			$this->form_validation->set_rules('email','Email','trim|required|valid_email');
+			$this->form_validation->set_rules('no_hp','Nomor telepon','trim|required');
+
+			if ($this->form_validation->run() !== FALSE) {
+				$queryUpdate['nama'] = ucwords($this->input->post('nama'));
+				$queryUpdate['email'] = $this->input->post('email');
+				$queryUpdate['no_hp'] = $this->input->post('no_hp');
+				$runUpdate = $this->model->update('pengguna',array('id'=>$this->input->post('id')),$queryUpdate);
+				$runUpdate = json_decode($runUpdate);
+
+				if ($runUpdate->status) {
+					alert('editProfil','success','Barhasil!','Profil telah di perbarui');
+					redirect('edit-profil-pendidik');
+				}else{
+					if ($runUpdate->error_message->code == 1062) {
+						alert('editProfil','danger','Gagal!',$runUpdate->error_message->message);
+						redirect('edit-profil-pendidik');
+					}else{
+						echo "<pre>";
+						var_dump($runUpdate);
+						die();
+					}
+				}
+			}else{
+				$register = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+				'</div>');
+				$this->session->set_flashdata('editProfil', $register);
+				redirect('edit-profil-pendidik');
+			}
+			// var_dump($queryUpdate);
+			// var_dump($runUpdate);
 		}else{
 			$error['heading'] = '404 Page Not Found';
 			$error['message'] = '<p>Tidak ada data yang di POST</p>';

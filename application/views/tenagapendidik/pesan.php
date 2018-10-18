@@ -7,7 +7,7 @@
 			$("#listPesan").append('<div class="pesan-item">'+
 							'<div class="pi-left">'+
 								'<div class="user-photo">'+
-									'<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">'+
+									'<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">'+
 								'</div>'+
 								'<div class="user-nama">'+
 									'Daniel Webber'+
@@ -65,7 +65,7 @@
 						<!-- <div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
@@ -84,7 +84,7 @@
 						<div class="pesan-item pi-read">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Aleister Don
@@ -103,7 +103,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Juminten Antartika
@@ -122,7 +122,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Adam McMahon
@@ -141,7 +141,7 @@
 						<div class="pesan-item">
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Fanny Wibowo
@@ -161,7 +161,7 @@
 				</div>
 				<div class="col-sm-7 col-md-8 col-lg-9 panel-pright">
 					<div class="panel-body detail-pesan-empty">
-							<img src="<?=base_url()?>assets/assets/images/empty-thing.png" alt="Image" class="img-circle">
+							<img src="<?=base_url()?>assets/dashboard/assets/images/empty-thing.png" alt="Image" class="img-circle">
 							<div class="empty-msg">
 								Tidak ada pesan yang dipilih
 							</div>

@@ -33,6 +33,7 @@ class Mahasiswa extends CI_Controller {
 	function pesan()
 	{
 		$header['title'] = "Mahasiswa - Pesan";
+		$this->menu['active'] = "Pesan";
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
 		$this->load->view('mahasiswa/pesan');
@@ -49,6 +50,19 @@ class Mahasiswa extends CI_Controller {
 		$this->load->view('mahasiswa/profil');
 		$this->load->view('statis/footer');
 
+	}
+
+	/*
+	* function untuk menampilkan halaman edit profil
+	*/
+	function editProfil()
+	{
+		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
+		$header['title'] = "Mahasiswa - Edit Profil";
+		$this->load->view('statis/header',$header);
+		$this->load->view('mahasiswa/menu',$this->menu);
+		$this->load->view('mahasiswa/edit-profil',$record);
+		$this->load->view('statis/footer');
 	}
 
 
@@ -97,10 +111,10 @@ class Mahasiswa extends CI_Controller {
 		/*UNTUK PER MAHASISWA*/
 
 		// baca notif yang untuk masing-masing user yang belum terlihat untuk generate icon angka pada icon amplop
-		$this->menu['notif_message_individu_terlihat'] = $this->model->rawQuery("SELECT  id, dari, untuk, datetime FROM notif_permasalahan WHERE untuk='".$this->session->userdata('loginSession')['id']."' AND terlihat='0'")->result();
+		$this->menu['notif_message_individu_terlihat'] = $this->model->rawQuery("SELECT  id, dari, untuk, datetime FROM notif_permasalahan WHERE untuk='".$this->session->userdata('loginSession')['id']."' AND terlihat='0' ORDER BY datetime LIMIT 4")->result();
 
 		// baca notif yang untuk masing-masing user yang belum terlihat untuk generate icon angka pada icon amplop
-		$this->menu['notif_message_individu_terbaca'] = $this->model->rawQuery("SELECT  id, dari, untuk, datetime FROM notif_permasalahan WHERE untuk='".$this->session->userdata('loginSession')['id']."' AND terbaca='0'")->result();
+		$this->menu['notif_message_individu_terbaca'] = $this->model->rawQuery("SELECT  id, dari, untuk, datetime FROM notif_permasalahan WHERE untuk='".$this->session->userdata('loginSession')['id']."' AND terbaca='0' ORDER BY datetime LIMIT 4")->result();
 
 		/*UNTUK PER MAHASISWA*/
 		// echo "<pre>";
