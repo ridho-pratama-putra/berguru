@@ -1,6 +1,14 @@
 	<script type="text/javascript">
+		<!-- SCRIPT UNTUK ADD ACTIVE PADA SUB MENU KELOLA DAN ACTIVE COLLAPSE MENU KELOLA JIKA MASUK LIST SUBMENU KELOLA-->
+		$( document ).ready(function() {
+			$("#<?=$active?>").attr("class","active");
+		});
+		<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
+
 		function setToTerlihat() {
-			
+			$.post( "<?=base_url()?>Mahasiswa/setTerlihat",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+				$('#jumlah_notif').html('');
+			});
 		}
 	</script>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -12,7 +20,7 @@
 					<span class="icon-bar"></span></button>
 					<div class="row">
 						<div class="col-xs-12 col-sm-3 col-lg-2 left-header">
-							<a class="navbar-brand" href="#">Berguru.com</a>
+							<a class="navbar-brand" href="<?=base_url()?>">Berguru.com</a>
 						</div>
 						<div class="col-xs-12 col-sm-9 col-lg-10 right-header">
 							<div class="nav-breadcrumb hidden-xs">
@@ -25,45 +33,39 @@
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
 								<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihat()">
-									<em class="fa fa-envelope"></em><span class="label label-danger"><?php echo sizeof($notif_message_mahasiswa)+sizeof($notif_message_individu_terlihat); ?></span>
+									<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
 								</a>
 								<ul class="dropdown-menu dropdown-messages">
 									<li class="divider"></li>
-									<?php foreach ($notif_message_mahasiswa as $key => $value) { ?>
+									<?php foreach ($notif as $key => $value) { ?>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
 											<img alt="image" class="img-circle" src="<?=base_url()?>assets/dashboard/assets/images/reading.png">
 										</a>
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
+											<?php if ($value->untuk == 'mahasiswa') { ?>
 											<a href="#">Pesan baru dari <strong><?=$value->dari?></strong>.</a>
+											<?php }else{?>
+											<a href="#"><strong><?=$value->dari?></strong> memberikan komentar kepada anda.</a>
+											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>
 									</li>
 									<li class="divider"></li>
 									<?php } ?>
-									<?php /*foreach ($notif_message_individu_terlihat as $key => $value) {*/ ?>
-									<!-- <li class="divider"></li>
-									<li>
-										<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=base_url()?>assets/dashboard/assets/images/reading.png">
-										</a>
-										<div class="message-body"><small class="pull-right">3 mins ago</small>
-											<a href="#"><strong><?=$value->dari?></strong> commented on <strong>your photo</strong>.</a>
-											<br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-										</div>
-									</li> -->
-									<?php /*}*/ ?>
-									<!-- <li class="divider"></li>
-									<li>
-										<div class="all-button"><a href="#">
-											<em class="fa fa-inbox"></em> <strong>All Messages</strong>
-										</a></div>
-									</li> -->
+									<?php if ($notif !== array()) { ?>
 									<li>
 										<div class="all-button"><a href="#">
 											<em class="fa fa-inbox"></em> <strong>All Messages</strong>
 										</a></div>
 									</li>
+									<?php }else{ ?>
+										<li>
+										<div class="all-button"><a href="#">
+											<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+										</a></div>
+									</li>
+									<?php } ?>
 								</ul>
 							</li>
 							<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -129,11 +131,11 @@
 		</div>
 	</form> -->
 	<ul class="nav menu">
-		<li class=""><a href="index.html"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a></li>
-		<li><a href="#"><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a></li>
-		<li class="active"><a href="#"><em class="fa fa-comments">&nbsp;</em> Pesan</a></li>
-		<li><a href="#"><em class="fa fa-layer-group">&nbsp;</em> Materi</a></li>
-		<li class=""><a href="#"><em class="fa fa-briefcase">&nbsp;</em> Karir</a></li>
+		<li class="" id="dashboard"><a href="<?=base_url()?>dashboard-mahasiswa"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a></li>
+		<li class="" id="pertanyaanSaya"><a href="#"><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a></li>
+		<li class="" id="pesan"><a href="<?=base_url()?>pesan-mahasiswa"><em class="fa fa-comments">&nbsp;</em> Pesan</a></li>
+		<li class="" id="materi"><a href="#"><em class="fa fa-layer-group">&nbsp;</em> Materi</a></li>
+		<li class="" id="karir"><a href="#"><em class="fa fa-briefcase">&nbsp;</em> Karir</a></li>
 		<li><a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a></li>
 	</ul>
 	<div class="side-credit">

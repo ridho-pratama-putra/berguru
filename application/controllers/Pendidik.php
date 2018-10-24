@@ -114,6 +114,7 @@ class Pendidik extends CI_Controller {
 																			'siapa'	=> $this->session->userdata('loginSession')['id'],
 																			'kategori'=>$this->input->post('kategori'),
 																			'jumlah_dilihat'=>'0',
+																			'jumlah_dibaca'=>'0',
 																			'jumlah_komen'=>'0',
 																			'status'=>'UNSOLVED',
 																			'beku'=>'ACTIVE'
@@ -123,7 +124,7 @@ class Pendidik extends CI_Controller {
 				// tell all mahasiswa kalau ada pesan baru. baca dulu id semua pengguna yang bertipe mahasiswa, kalau sudah, masukkan kan ke tabel notidikasi_message
 				$insertNotifikasiMessage = $this->model->create('notif_permasalahan',array(
 																						'id_permasalahan' => $queryPermasalahan->message,
-																						'dari'=>$this->session->userdata('loginSession')['nama'],
+																						'dari'=>$this->session->userdata('loginSession')['id'],
 																						'untuk'=>'mahasiswa',
 																						'datetime'=>date('Y-m-d H:i:s')
 																					)
@@ -150,7 +151,7 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-	* function untk menghapus pertanyaan
+	* function untk menghapus pertanyaan via js post
 	*/
 	function deletePertanyaan(){
 		if ($this->input->post() !== array()) {
@@ -251,5 +252,50 @@ class Pendidik extends CI_Controller {
 			$error['message'] = '<p>Tidak ada data yang di POST</p>';
 			$this->load->view('errors/html/error_404',$error);
 		}
+	}
+
+	/*
+	* function untuk melihat detail pertanyaan
+	*/
+	function detailPertanyaan($id)
+	{
+		$record['pertanyaan'] = $this->model->rawQuery("
+			SELECT 
+				permasalahan.id,
+				permasalahan.teks,
+				permasalahan.tanggal,
+				pengguna.nama AS nama_pengguna,
+				permasalahan.jumlah_komen,
+				permasalahan.jumlah_dilihat,
+				kategori.nama AS nama_kategori,
+				permasalahan.status,
+				permasalahan.beku
+			FROM permasalahan
+			LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
+			LEFT JOIN kategori ON permasalahan.kategori = kategori.id
+			WHERE permasalahan.id='$id'
+			")->result();
+
+		$record['komentar'] = $this->model->rawQuery("
+			SELECT
+				komentar.teks,
+				komentar.tanggal,
+				pengguna.nama,
+				komentar.solver,
+				komentar.parent
+			FROM komentar
+			LEFT JOIN pengguna ON komentar.siapa=pengguna.id
+			WHERE komentar.permasalahan ='$id'
+			")->result();
+		// echo "<pre>";
+		// var_dump($record);
+		$header['title'] = 'Pendidik - Pertanyaan Detail';
+		$menu['breadcrumb'] 	= 'Pertanyaan Saya';
+		$menu['active'] 		= 'pertanyaanSaya';
+		$this->load->view('statis/header',$header);
+		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/pertanyaan-detail',$record);
+		$this->load->view('statis/footer');
+
 	}
 }

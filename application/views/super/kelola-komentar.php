@@ -80,10 +80,10 @@
 								</div>
 							</td>
 							<td>
-								<?=($value->jumlah_komen == '')? '0' : $value->jumlah_komen ?>
+								<?=$value->jumlah_komen ?>
 							</td>
 							<td>
-								<?=($value->jumlah_dilihat == '')? '0' : $value->jumlah_dilihat ?>
+								<?=$value->jumlah_dilihat ?>
 							</td>
 							<td class="td-right">
 								<div class="dropdown td-menu">

@@ -32,7 +32,7 @@
 								<ul class="dropdown-menu dropdown-messages">
 									<li>
 										<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=base_url().$this->session->userdata('loginSession')['foto']?>">
+											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
 										</a>
 										<div class="message-body"><small class="pull-right">3 mins ago</small>
 											<a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
@@ -42,7 +42,7 @@
 									<li class="divider"></li>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=base_url().$this->session->userdata('loginSession')['foto']?>">
+											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
 										</a>
 										<div class="message-body"><small class="pull-right">1 hour ago</small>
 											<a href="#">New message from <strong>Jane Doe</strong>.</a>
@@ -80,11 +80,11 @@
 									<li class="dropdown user-menu"><a class="dropdown-toggle" data-toggle="dropdown" href="#">
 										<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?></div>
 										<div class="user-photo">
-											<img src="<?=base_url().$this->session->userdata('loginSession')['foto']?>" alt="Photo">
+											<img src="<?=$this->session->userdata('loginSession')['foto']?>" alt="Photo">
 										</div>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href="<?=base_url()?>profil-tenaga-pendidik">
+										<li><a href="<?=base_url()?>profil-pendidik">
 											<div><em class="fa fa-user"></em> Profile</div>
 										</a></li>
 										<li class="divider"></li>
@@ -104,7 +104,7 @@
 			<div class="profile-sidebar">
 				<a href="#" class="profile-option"><i class="fa fa-cog"></i></a>
 				<div class="profile-userpic">
-					<img src="<?=base_url().$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
+					<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
 				</div>
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
@@ -127,7 +127,7 @@
 			<a href="<?=base_url()?>pertanyaan-saya" ><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>
 		</li>
 		<li class="" id="pesan">
-			<a href="<?=base_url()?>pesan-tenaga-pendidik" ><em class="fa fa-comments">&nbsp;</em> Pesan</a>
+			<a href="<?=base_url()?>pesan-pendidik" ><em class="fa fa-comments">&nbsp;</em> Pesan</a>
 		</li>
 		<li class="" id="materi">
 			<a href="#"><em class="fa fa-layer-group">&nbsp;</em> Materi</a>

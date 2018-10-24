@@ -14,3 +14,12 @@ fa-flask
 fa-graduation-cap
 fa-bicycle
 fa-car
+
+
+
+
+bgicon-learn-indo
+bgicon-learn-physics
+bgicon-learn-history
+bgicon-learn-social
+bgicon-learn-sports

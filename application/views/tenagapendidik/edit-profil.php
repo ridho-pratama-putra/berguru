@@ -16,7 +16,7 @@
 				<!-- </div> -->
 				<div class="panel panel-plain">
 					<div class="panel-nav">
-						<a href="<?=base_url()?>profil-tenaga-pendidik" class="panel-link"><i class="fa fa-chevron-left"></i> Kembali</a>
+						<a href="<?=base_url()?>profil-pendidik" class="panel-link"><i class="fa fa-chevron-left"></i> Kembali</a>
 					</div>
 					<div class="panel-heading">
 						<h1>Edit Profil</h1>

@@ -68,6 +68,8 @@ class Admin extends CI_Controller {
 		}else if ($dataCondition == 'unsolved') {
 			$query .= " WHERE permasalahan.status = 'UNSOLVED'";
 		}
+
+		$query .= " ORDER BY permasalahan.tanggal DESC ";
 		$record = $this->model->rawQuery($query)->result();
 		echo json_encode($record);
 	}
@@ -225,24 +227,31 @@ class Admin extends CI_Controller {
 	function tambahKategoriKonten()
 	{
 		if ($this->input->post() != null) {
-			$createKategoriRecord = $this->model->create(
-															'kategori',
-															array(
-																	'nama'					=> ucwords($this->input->post('nama')),
-																	'icon'					=> $this->input->post('icon'),
-																	'status'				=> $this->input->post('status'),
-																	'jumlah_pertanyaan'		=> 0,
-																	'jumlah_jawaban'		=> 0,
-																	'tanggal' 				=> date('Y-m-d'),
-																	'nama_folder'			=> "materi/".ucwords($this->input->post('nama'))
-																)
-														);
-			$createKategoriRecord = json_decode($createKategoriRecord);
-			if ($createKategoriRecord->status){
-				mkdir("materi/".ucwords($this->input->post('nama'))."",0755);
-				alert('kelolaKategoriKonten','success','Berhasil!','Kategori '.ucwords($this->input->post('nama')).' telah ditambahkan');
+			// cek  duplikasi kategori berdsarkan nama kategori
+			$cekDuplikasiKategori = $this->model->read('kategori',array('nama'=>$this->input->post('nama')));
+			if ($cekDuplikasiKategori->num_rows() == 0) {
+				
+				$createKategoriRecord = $this->model->create(
+																'kategori',
+																array(
+																		'nama'					=> ucwords($this->input->post('nama')),
+																		'icon'					=> $this->input->post('icon'),
+																		'status'				=> $this->input->post('status'),
+																		'jumlah_pertanyaan'		=> 0,
+																		'jumlah_jawaban'		=> 0,
+																		'tanggal' 				=> date('Y-m-d'),
+																		'nama_folder'			=> "materi/".ucwords($this->input->post('nama'))
+																	)
+															);
+				$createKategoriRecord = json_decode($createKategoriRecord);
+				if ($createKategoriRecord->status){
+					mkdir("materi/".ucwords($this->input->post('nama'))."",0755);
+					alert('kelolaKategoriKonten','success','Berhasil!','Kategori '.ucwords($this->input->post('nama')).' telah ditambahkan');
+				}else{
+					alert('kelolaKategoriKonten','danger','Gagal!','Kategori '.ucwords($this->input->post('nama')).' gagal ditambahkan');
+				}
 			}else{
-				alert('kelolaKategoriKonten','danger','Gagal!','Kategori '.ucwords($this->input->post('nama')).' gagal ditambahkan');
+				alert('kelolaKategoriKonten','danger','Gagal!','Kategori '.ucwords($this->input->post('nama')).' gagal ditambahkan. Kategori telah ada sebelumnya');
 			}
 		}else{
 			alert('kelolaKategoriKonten','warning','Perhatian!','Tidak ada data yang di POST');

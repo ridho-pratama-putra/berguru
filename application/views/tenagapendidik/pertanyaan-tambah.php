@@ -51,7 +51,7 @@
 			</div>
 
 			<div class="col-sm-4 col-md-3">
-				<a href="#"><img src="<?=base_url()?>assets/assets/images/iklan.png" alt="Image" class="img-responsive iklan-sidebar"></a>
+				<a href="#"><img src="<?=base_url()?>assets/dashboard/assets/images/iklan.png" alt="Image" class="img-responsive iklan-sidebar"></a>
 			</div>
 
 

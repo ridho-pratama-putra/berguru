@@ -1,7 +1,7 @@
 	<div class="login-layout">
 		<div class="left-side-wrap">
 			<div class="logo-header">
-				<a href=""><img src="<?=base_url()?>assets_/images/group-9.png" alt=""></a>
+				<a href="<?=base_url()?>"><img src="<?=base_url()?>assets_/images/group-9.png" alt=""></a>
 			</div>
 			<div class="login-bg">
 				<img src="<?=base_url()?>assets_/images/bitmap.png" alt="" style="width: 90%;">

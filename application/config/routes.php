@@ -49,9 +49,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'Auth/login';
+$route['default_controller'] = 'Home/home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/*******************************************************Home****************************************************************/
+$route['home']						= 'Home/home';
+$route['kategori-pertanyaan']	= 'Home/getPertanyaan';
+/*******************************************************END AUTH****************************************************************/
 
 /*******************************************************AUTH****************************************************************/
 $route['login']						= 'Auth/login/';
@@ -60,7 +65,6 @@ $route['register']					= 'Auth/register/';
 $route['register-proses']			= 'Auth/registerProses/';
 $route['register-pilih']			= 'Auth/registerPilih/';
 $route['register-pilih-proses']		= 'Auth/registerPilihProses/';
-
 /*******************************************************END AUTH****************************************************************/
 
 /*****************************************************BEGIN ADMIN*****************************************************/
@@ -101,25 +105,39 @@ $route['lowongan-kerja']			= 'Admin/kelolaLowonganKerja';
 
 /*****************************************************BEGIN MAHASISWA********************************************************/
 
-$route['pesan-mahasiswa']			= 'Mahasiswa/pesan';
-$route['profil-mahasiswa']			= 'Mahasiswa/profil';
-$route['edit-profil-mahasiswa']		= 'Mahasiswa/editProfil';
+$route['dashboard-mahasiswa']					= 'Mahasiswa/dashboard';
+$route['pesan-mahasiswa']						= 'Mahasiswa/pesan';
+$route['profil-mahasiswa']						= 'Mahasiswa/profil';
+$route['edit-profil-mahasiswa']					= 'Mahasiswa/editProfil';
+
+// set komen yang sudah dilihat untuk tampilan notifikasi
+$route['update-to-terlihat']					= 'Mahasiswa/setTerlihat';
+
+// ajax untuk lihat permasalahan by kategori
+$route['get-permasalahan-by-kategori']			= 'Mahasiswa/getPermasalahanByKategori';
+
+
+$route['pertanyaan-detail-mahasiswa/(:num)']	= 'Mahasiswa/pertanyaanDetail/$1';
+$route['pertanyaan-jawab-mahasiswa/(:num)']		= 'Mahasiswa/pertanyaanJawab/$1';
+$route['pertanyaan-jawab-proses']		= 'Mahasiswa/insertJawaban';
+
 
 /*****************************************************END OF MAHASISWA********************************************************/
 
 /*****************************************************BEGIN TENAGA PENDIDIK********************************************************/
 
-$route['pesan-tenaga-pendidik']		= 'Pendidik/pesan';
+$route['pesan-pendidik']				= 'Pendidik/pesan';
+$route['get-pesan-pendidik']			= 'Pendidik/getPesan'; // untuk membaca semua pesan pendidik. action pada saat halaman pesan-pendidik diload
+$route['profil-pendidik']				= 'Pendidik/profil';
+$route['edit-profil-pendidik']			= 'Pendidik/editProfil';
+$route['submit-edit-profil-pendidik']	= 'Pendidik/submitEditProfil';
 
-$route['profil-tenaga-pendidik']	= 'Pendidik/profil';
-$route['edit-profil-pendidik']		= 'Pendidik/editProfil';
-$route['submit-edit-profil-pendidik']		= 'Pendidik/submitEditProfil';
 
-
-$route['pertanyaan-saya']			= 'Pendidik/pertanyaanSaya';
-$route['buat-pertanyaan']			= 'Pendidik/buatPertanyaan';
-$route['insert-pertanyaan']			= 'Pendidik/insertPertanyaan';
-$route['delete-pertanyaan']			= 'Pendidik/deletePertanyaan';
+$route['pertanyaan-saya']				= 'Pendidik/pertanyaanSaya';
+$route['buat-pertanyaan']				= 'Pendidik/buatPertanyaan';
+$route['insert-pertanyaan']				= 'Pendidik/insertPertanyaan';
+$route['delete-pertanyaan']				= 'Pendidik/deletePertanyaan';
+$route['detail-pertanyaan/(:num)']		= 'Pendidik/detailPertanyaan/$1';
 
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/
 

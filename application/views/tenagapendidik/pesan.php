@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
-		$.post( "<?=base_url()?>getPesan",{id:<?=$this->session->userdata('loginSession')['id']?>}, function( data ) {
+		$.post("<?=base_url()?>get-pesan-pendidik",{id:<?=$this->session->userdata('loginSession')['id']?>}, function( data ) {
 		  	$( ".result" ).html( data );
 		});
 		for (var i = 0; i < 3; i++) {

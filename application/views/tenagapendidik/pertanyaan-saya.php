@@ -1,4 +1,12 @@
 <script type="text/javascript">
+	// Script untuk panel search diluar tabel
+	$( document ).ready(function() {
+		var table = $('#tabel-pertanyaan-saya').DataTable(); 
+		$('#cari-pertanyaan-saya').on( 'keyup', function () {
+		    table.search( this.value ).draw();
+		} );
+	});
+	
 	// script untuk hapus pertanyaan
 	function hapus(id){
 		$.post( "<?=base_url()?>delete-pertanyaan",{ id: id },function(data){
@@ -32,7 +40,7 @@
 						<form class="" action="index.html" method="post">
 							<div class="form-group">
 								<div class="input-group plain-group">
-									<input type="text" name="" value="" placeholder="Cari Pertanyaan" class="form-control dt-search">
+									<input type="text" name="" value="" placeholder="Cari Pertanyaan" class="form-control dt-search" id="cari-pertanyaan-saya">
 									<span class="input-group-btn">
 										<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
 									</span>
@@ -47,7 +55,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
-					<table class="table datatable">
+					<table class="table datatable table-hover" id="tabel-pertanyaan-saya">
 						<thead>
 							<tr>
 								<th>Permasalahan</th>
@@ -61,7 +69,7 @@
 							foreach ($pertanyaan as $key => $value) {?>
 							<tr>
 								<td>
-									<?=$value->teks?>
+									<?=$value->teks?> <a href="<?=base_url().'detail-pertanyaan/'.$value->id?>">LINK</a>
 									<div class="td-meta">
 										<i class="far fa-clock"></i> <?=date('M, d Y',strtotime($value->tanggal))?>
 										<i class="fa fa-circle"></i>
