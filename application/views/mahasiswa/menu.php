@@ -28,7 +28,7 @@
 									<li><a href="#">
 										Home
 									</a></li>
-									<li class="active"><?=$active?></li>
+									<li class="active"><?=$breadcrumb?></li>
 								</ol>
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
@@ -121,7 +121,7 @@
 					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
 					<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
 				</div>
-				<div class="btn-hakakses"><em class="fa fa-user"></em> <?=$this->session->userdata('loginSession')['aktor']?></div>
+				<div class="btn-hakakses"><em class="fa fa-user"></em> Mahasiswa</div>
 				<div class="clear"></div>
 			</div>
 			<div class="divider"></div>
@@ -134,8 +134,8 @@
 		<li class="" id="dashboard"><a href="<?=base_url()?>dashboard-mahasiswa"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a></li>
 		<li class="" id="pertanyaanSaya"><a href="#"><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a></li>
 		<li class="" id="pesan"><a href="<?=base_url()?>pesan-mahasiswa"><em class="fa fa-comments">&nbsp;</em> Pesan</a></li>
-		<li class="" id="materi"><a href="#"><em class="fa fa-layer-group">&nbsp;</em> Materi</a></li>
-		<li class="" id="karir"><a href="#"><em class="fa fa-briefcase">&nbsp;</em> Karir</a></li>
+		<li class="" id="materi"><a href="<?=base_url()?>materi-mahasiswa"><em class="fa fa-layer-group">&nbsp;</em> Materi</a></li>
+		<li class="" id="karir"><a href="<?=base_url()?>karir-mahasiswa"><em class="fa fa-briefcase">&nbsp;</em> Karir</a></li>
 		<li><a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a></li>
 	</ul>
 	<div class="side-credit">

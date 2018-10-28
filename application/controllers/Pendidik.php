@@ -7,7 +7,8 @@ class Pendidik extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'pendidik') {
-			redirect('logout');
+			alert('login','warning','Peringatan!',"Anda belum terdaftar sebagai pendidik. Anda dapat mendaftar <a href='".base_url()."register'> disini</a>");
+			redirect('login');
 		}
 		// $menu['notif_permasalahan'] = $this->model->read("notif_permasalahan",array("untuk"=>"mahasiswa OR untuk='".$this->session->userdata('loginSession')['id']."'"));
 
@@ -133,10 +134,10 @@ class Pendidik extends CI_Controller {
 				alert('pertanyaan','success','Berhasil!','Pertanyaan telah di publish');
 			}else{
 				alert('buatPertanyaan','danger','Gagal!','Pertanyaan tidak dipublish. Kesalahan sistem');
-				redirect('buat-pertanyaan');
+				redirect('buat-pertanyaan-pendidik');
 				return true;
 			}
-			redirect('pertanyaan-saya');
+			redirect('pertanyaan-pendidik');
 		}
 	}
 
@@ -274,21 +275,24 @@ class Pendidik extends CI_Controller {
 			LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
 			LEFT JOIN kategori ON permasalahan.kategori = kategori.id
 			WHERE permasalahan.id='$id'
-			")->result();
+		")->result();
 
 		$record['komentar'] = $this->model->rawQuery("
 			SELECT
 				komentar.teks,
 				komentar.tanggal,
 				pengguna.nama,
+				pengguna.foto,
 				komentar.solver,
 				komentar.parent
 			FROM komentar
 			LEFT JOIN pengguna ON komentar.siapa=pengguna.id
 			WHERE komentar.permasalahan ='$id'
-			")->result();
-		// echo "<pre>";
-		// var_dump($record);
+		")->result();
+
+		$record['penjawab'] = $this->getPenjawab($id)['foto_nama'];
+		$record['remaining_penjawab'] = $this->getPenjawab($id)['remaining_penjawab'];
+		
 		$header['title'] = 'Pendidik - Pertanyaan Detail';
 		$menu['breadcrumb'] 	= 'Pertanyaan Saya';
 		$menu['active'] 		= 'pertanyaanSaya';
@@ -296,6 +300,169 @@ class Pendidik extends CI_Controller {
 		$this->load->view('tenagapendidik/menu',$menu);
 		$this->load->view('tenagapendidik/pertanyaan-detail',$record);
 		$this->load->view('statis/footer');
+	}
 
+	/*
+	* funtion untuk ambil data siapa saja beserta foto penjawah sebuah pertanyaan di db.
+	* $pertanyaan itu id nya
+	* $limit berupa angka atau all untuk nampilkan fotofoto komentator
+	*/
+	function getPenjawab($pertanyaan,$limit = 4)
+	{
+		if ($limit == "all") {
+			// $record['penjawab'] = '';
+		}else{
+			$foto_nama = $this->model->rawQuery("
+				SELECT 
+						DISTINCT
+						pengguna.nama,
+						pengguna.foto
+				FROM komentar
+				LEFT JOIN pengguna ON komentar.siapa = pengguna.id
+				WHERE permasalahan = '".$pertanyaan."'
+				ORDER BY komentar.tanggal DESC
+				LIMIT ".$limit
+			)->result();
+
+			$remaining_penjawab = $this->model->rawQuery("
+				SELECT 
+					COUNT(DISTINCT siapa) AS semua
+				FROM komentar 
+				WHERE permasalahan=".$pertanyaan
+			)->result();
+
+			$remaining_penjawab = $remaining_penjawab[0]->semua;
+			$remaining_penjawab -= 4;
+			if ($remaining_penjawab < 0 ) {
+				$remaining_penjawab = 0;
+			}
+		}
+		$record['foto_nama'] = $foto_nama;
+		$record['remaining_penjawab'] = $remaining_penjawab;
+		return $record;
+	}
+
+	/*
+	* function untuk menampilkan halaman edit pertanyaan
+	*/
+	function editPertanyaan($id)
+	{
+		$record['pertanyaan'] = $this->model->read("permasalahan",array('id'=>$id));
+		if ($record['pertanyaan']->num_rows() != 0) {
+			$record['pertanyaan'] = $record['pertanyaan']->result();
+			$record['kategori'] = $this->model->readS("kategori")->result();
+
+			$header['title'] = "Pendidik | Pertanyaan Edit";
+			$menu['breadcrumb'] = "Pertanyaan Edit";
+			$menu['active'] = "pertanyaanSaya";
+			$this->load->view("statis/header",$header);
+			$this->load->view("tenagapendidik/menu",$menu);
+			$this->load->view("tenagapendidik/pertanyaan-edit",$record);
+			$this->load->view("statis/footer");
+			
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Data tidak ditemukan</p>';
+			$this->load->view('errors/html/error_404',$error);
+		}
+	}
+
+	/*
+	* function untuk handle submit form pada halaman edit pertanyaan 
+	*/
+	function submitEditPertanyaan()
+	{
+		if ($this->input->post() !== array()) {
+			$id 					= $this->input->post('id');
+			$dataForm['teks'] 		= $this->input->post('pertanyaan');
+			$dataForm['kategori'] 	= $this->input->post('kategori');
+			$dataForm['tanggal'] 	= date("y-m-d H:i:s");
+
+			$queryUpdate = $this->model->update('permasalahan',array('id'=>$id),$dataForm);
+			$queryUpdate = json_decode($queryUpdate);
+			if ($queryUpdate->status) {
+				alert('pertanyaan','success','Barhasil!','Pertanyaan telah diperbarui');
+				redirect('pertanyaan-pendidik');
+			}else{
+				alert('pertanyaan','danger','Gagal!','Pertanyaan gagal diperbarui');
+				redirect('pertanyaan-edit/'.$id);
+			}
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Tidak ada data yang di POST</p>';
+			$this->load->view('errors/html/error_404',$error);
+		}
+	}
+
+	/*
+	* function unutk menamplkan halaman dashboard
+	*/
+	function dashboard()
+	{
+		$this->load->view("statis/header");
+		$this->load->view("pendidik/menu");
+		$this->load->view("pendidik/dashboard");
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* function untuk menampilkan halaman materi
+	*/
+	function materi()
+	{
+		$header['title'] = "Pendidik - Materi";
+		$menu['breadcrumb'] = "Materi";
+		$menu['active'] = "materi";
+		$record['kategori'] = $this->model->readS("kategori")->result();
+		$this->load->view("statis/header",$header);
+		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/materi",$record);
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* funtion untuk menampilkan halaman tambah materi
+	*/
+	function tambahMateri()
+	{
+		$header['title'] = "Pendidik - Materi Tambah";
+		$menu['breadcrumb'] = "Materi";
+		$menu['active'] = "materi";
+		$record['kategori'] = $this->model->readS("kategori")->result();
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/materi-tambah",$record);
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* function untuk menampilkan halaman karir
+	*/
+	function karir()
+	{
+		$header['title'] = "Pendidik - Karir";
+		$menu['breadcrumb'] = "Karir";
+		$menu['active'] = "karir";
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/karir");
+		$this->load->view("statis/footer");
+	}
+
+		/*
+	* function untuk menampilkan halaman karir
+	*/
+	function tambahKarir()
+	{
+		$header['title'] = "Pendidik - Karir Tambah";
+		$menu['breadcrumb'] = "Karir";
+		$menu['active'] = "karir";
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/karir-tambah");
+		$this->load->view("statis/footer");
 	}
 }

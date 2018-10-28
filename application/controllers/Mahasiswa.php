@@ -7,17 +7,9 @@ class Mahasiswa extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'mahasiswa') {
-			// ngetrack apa sebenarnya keinginan user saat bypass session
-			// $this->goal = $this->uri->uri_string();
-			// echo "<pre>";
-			// var_dump($this->goal);
-			// die();
 			alert('login','warning','Peringatan!',"Anda harus login terlebih dahulu untuk menjawab pertanyaan tersebut. Atau daftar <a href='".base_url()."register'>disini</a> jika belum memiliki akun");
 			redirect(base_url().'login');
 		}
-
-
-
 		// set array koasong untuk simpan notif2
 		$this->menu['notif'] = array();
 		$this->menu['belum_dilihat'] = array();
@@ -29,6 +21,7 @@ class Mahasiswa extends CI_Controller {
 	function dashboard()
 	{
 		$header['title'] = "Mahasiswa - Dashboard";
+		$this->menu['breadcrumb'] = "Dashboard";
 		$this->menu['active'] = "dashboard";
 		$record['kategori'] = $this->model->readS('kategori')->result();
 
@@ -63,6 +56,7 @@ class Mahasiswa extends CI_Controller {
 				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
 				ORDER BY permasalahan.tanggal
 				")->result();
+				
 			}else{
 				$record['permasalahan'] = $this->model->rawQuery("
 				SELECT
@@ -83,6 +77,11 @@ class Mahasiswa extends CI_Controller {
 				WHERE permasalahan.kategori = '".$this->input->get('kategori')."' 
 				ORDER BY permasalahan.tanggal
 				")->result();
+				
+			}
+			foreach ($record['permasalahan'] as $key => $value) {
+				$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];
+				$record['permasalahan'][$key]->remaining_penjawab = $this->getPenjawab($value->id)['remaining_penjawab'];
 			}
 			echo json_encode($record);
 		}
@@ -106,6 +105,7 @@ class Mahasiswa extends CI_Controller {
 	function pesan()
 	{
 		$header['title'] = "Mahasiswa - Pesan";
+		$this->menu['breadcrumb'] = "Pesan";
 		$this->menu['active'] = "pesan";
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
@@ -218,7 +218,7 @@ class Mahasiswa extends CI_Controller {
 	}
 
 	/*
-	* function untuk menampilkan halaman pertanyaa saya 
+	* function untuk menampilkan halaman pertanyaa saya. saat ingin menjawab
 	*/
 	function pertanyaanDetail($id)
 	{
@@ -226,10 +226,11 @@ class Mahasiswa extends CI_Controller {
 		if ($cariPertanyaan->num_rows() != 0) {
 			$cariRiwayatLihatPermasalahan = $this->model->read("riwayat_permasalahan_dilihat",array('id_pengguna'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$id))->num_rows();
 			if ($cariRiwayatLihatPermasalahan == 0) {
+				
 				// insert into riwayat permasalahan dilihat. sedangkan update tabel pertanyaan kolom jumlah_dilihat otomatis dari trigger
 				$this->model->create('riwayat_permasalahan_dilihat',array('id_pengguna'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$id,'tanggal'=>date('Y-m-d H:i:s')));
 			}
-			$record['permasalahan'] = $cariPertanyaan->result();
+			$record['pertanyaan'] 	= $cariPertanyaan->result();
 			$record['jawaban']		= $this->model->rawQuery("
 				SELECT
 						komentar.teks,
@@ -241,7 +242,11 @@ class Mahasiswa extends CI_Controller {
 				WHERE komentar.permasalahan ='".$id."'
 				")->result();
 			
+			$record['penjawab'] = $this->getPenjawab($id)['foto_nama'];
+			$record['remaining_penjawab'] = $this->getPenjawab($id)['remaining_penjawab'];
+
 			$header['title'] = "Mahasiswa - Pertanyaan Detail";
+			$header['breadcrumb'] = "Pertanyaan Detail";
 			$this->menu['active'] = "Pertanyaan Detail";
 			$this->load->view('statis/header',$header);
 			$this->load->view('mahasiswa/menu',$this->menu);
@@ -255,6 +260,46 @@ class Mahasiswa extends CI_Controller {
 	}
 
 	/*
+	* funtion untuk ambil data siapa saja beserta foto penjawah sebuah pertanyaan di db.
+	* $pertanyaan itu id nya
+	* $limit berupa angka atau all untuk nampilkan fotofoto komentator
+	*/
+	function getPenjawab($pertanyaan,$limit = 4)
+	{
+		if ($limit == "all") {
+			// $record['penjawab'] = '';
+		}else{
+			$foto_nama = $this->model->rawQuery("
+				SELECT 
+						DISTINCT
+						pengguna.nama,
+						pengguna.foto
+				FROM komentar
+				LEFT JOIN pengguna ON komentar.siapa = pengguna.id
+				WHERE permasalahan = '".$pertanyaan."'
+				ORDER BY komentar.tanggal DESC
+				LIMIT ".$limit
+			)->result();
+
+			$remaining_penjawab = $this->model->rawQuery("
+				SELECT 
+					COUNT(DISTINCT siapa) AS semua
+				FROM komentar 
+				WHERE permasalahan=".$pertanyaan
+			)->result();
+
+			$remaining_penjawab = $remaining_penjawab[0]->semua;
+			$remaining_penjawab -= 4;
+			if ($remaining_penjawab < 0 ) {
+				$remaining_penjawab = 0;
+			}
+		}
+		$record['foto_nama'] = $foto_nama;
+		$record['remaining_penjawab'] = $remaining_penjawab;
+		return $record;
+	}
+
+	/*
 	* function untuk menampilkan halaman jawab pertanyaan
 	*/
 	function pertanyaanJawab($id)
@@ -264,6 +309,7 @@ class Mahasiswa extends CI_Controller {
 			$record['permasalahan'] = $cariPertanyaan->result();
 
 			$header['title'] = "Mahasiswa - Pertanyaan Jawab";
+			$header['breadcrumb'] = "Pertanyaan Jawab";
 			$this->menu['active'] = "dashboard";
 			$this->load->view('statis/header',$header);
 			$this->load->view('mahasiswa/menu',$this->menu);
@@ -307,5 +353,66 @@ class Mahasiswa extends CI_Controller {
 			$error['message'] = '<p>Tidak ada data yang dipost</p>';
 			$this->load->view('errors/html/error_404',$error);
 		}
+	}
+
+	/*
+	* function untuk menampilkan halaman materi
+	*/
+	function materi()
+	{
+		$header['title'] = "Pendidik - Materi";
+		$this->menu['breadcrumb'] = "Materi";
+		$this->menu['active'] = "materi";
+		$record['kategori'] = $this->model->readS("kategori")->result();
+		$this->load->view("statis/header",$header);
+		$this->load->view("mahasiswa/menu",$this->menu);
+		$this->load->view("mahasiswa/materi",$record);
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* funtion untuk menampilkan halaman tambah materi
+	*/
+	function tambahMateri()
+	{
+		$header['title'] = "Pendidik - Materi Tambah";
+		$this->menu['breadcrumb'] = "Materi";
+		$this->menu['active'] = "materi";
+		$record['kategori'] = $this->model->readS("kategori")->result();
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("mahasiswa/menu",$this->menu);
+		$this->load->view("mahasiswa/materi-tambah",$record);
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* function untuk menampilkan halaman karir
+	*/
+	function karir()
+	{
+		$header['title'] = "Pendidik - Karir";
+		$this->menu['breadcrumb'] = "Karir";
+		$this->menu['active'] = "karir";
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("mahasiswa/menu",$this->menu);
+		$this->load->view("mahasiswa/karir");
+		$this->load->view("statis/footer");
+	}
+
+		/*
+	* function untuk menampilkan halaman karir
+	*/
+	function tambahKarir()
+	{
+		$header['title'] = "Pendidik - Karir Tambah";
+		$this->menu['breadcrumb'] = "Karir";
+		$this->menu['active'] = "karir";
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("mahasiswa/menu",$this->menu);
+		$this->load->view("mahasiswa/karir-tambah");
+		$this->load->view("statis/footer");
 	}
 }

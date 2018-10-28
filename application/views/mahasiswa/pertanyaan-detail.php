@@ -21,23 +21,23 @@
 									<a href="<?=base_url()?>dashboard-mahasiswa" class="panel-link"><i class="fa fa-chevron-left"></i> Dashboard</a>
 								</div>
 								<div class="col-sm-6 text-right">
-									<a href="<?=base_url()?>pertanyaan-jawab-mahasiswa/<?=$permasalahan[0]->id?>" class="btn btn-normal btn-success">Bantu Jawab</a>
+									<a href="<?=base_url()?>pertanyaan-jawab-mahasiswa/<?=$pertanyaan[0]->id?>" class="btn btn-normal btn-success">Bantu Jawab</a>
 								</div>
 							</div>
 						</div>
 						<div class="panel-body">
 							<div class="detper-pertanyaan">
-								<?=$permasalahan[0]->teks?>
+								<?=$pertanyaan[0]->teks?>
 							</div>
 							<div class="detper-meta">
 								<div class="row">
 									<div class="col-md-8">
 										<div class="td-meta">
-											<i class="far fa-clock"></i> <?=date('M, d Y',strtotime($permasalahan[0]->tanggal))?>
+											<i class="far fa-clock"></i> <?=date('M, d Y',strtotime($pertanyaan[0]->tanggal))?>
 											<i class="fa fa-circle"></i>
-											<i class="far fa-comment"></i> <?=$permasalahan[0]->jumlah_komen?>
+											<i class="far fa-comment"></i> <?=$pertanyaan[0]->jumlah_komen?>
 											<i class="fa fa-circle"></i>
-											<i class="far fa-eye"></i> <?=$permasalahan[0]->jumlah_dilihat?>
+											<i class="far fa-eye"></i> <?=$pertanyaan[0]->jumlah_dilihat?>
 										</div>
 									</div>
 									<div class="col-md-4 text-right">
@@ -57,16 +57,16 @@
 									</div>
 									<div class="col-sm-6">
 										<span class="text-muted">Penjawab</span>
-										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-										</div>
-										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-										</div>
-										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-										</div>
-										<div class="user-more">9+</div>
+										<?php
+										 foreach ($penjawab as $key => $value) { ?>
+											<div class="user-photo">
+												<img src="<?=base_url().$value->foto?>" alt="Photo" title="<?=$value->nama?>">
+											</div>
+										<?php } ?>
+										
+										<?php if ($remaining_penjawab !== 0) { ?>
+											<div class="user-more"> <?=$remaining_penjawab?></div>
+										<?php } ?>
 									</div>
 								</div>
 							</div>

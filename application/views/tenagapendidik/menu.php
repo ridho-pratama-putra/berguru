@@ -14,7 +14,7 @@
 					<span class="icon-bar"></span></button>
 					<div class="row">
 						<div class="col-xs-12 col-sm-3 col-lg-2 left-header">
-							<a class="navbar-brand" href="#">Berguru.com</a>
+							<a class="navbar-brand" href="<?=base_url()?>">Berguru.com</a>
 						</div>
 						<div class="col-xs-12 col-sm-9 col-lg-10 right-header">
 							<div class="nav-breadcrumb hidden-xs">
@@ -110,7 +110,7 @@
 					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
 					<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
 				</div>
-				<div class="btn-hakakses" style="width: 150px"><em class="fa fa-user"></em> Pendidik</div>
+				<div class="btn-hakakses"><em class="fa fa-user"></em> Pendidik</div>
 				<div class="clear"></div>
 			</div>
 			<div class="divider"></div>
@@ -124,16 +124,16 @@
 			<a href="index.html"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a>
 		</li>
 		<li class="" id="pertanyaanSaya">
-			<a href="<?=base_url()?>pertanyaan-saya" ><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>
+			<a href="<?=base_url()?>pertanyaan-pendidik" ><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>
 		</li>
 		<li class="" id="pesan">
 			<a href="<?=base_url()?>pesan-pendidik" ><em class="fa fa-comments">&nbsp;</em> Pesan</a>
 		</li>
 		<li class="" id="materi">
-			<a href="#"><em class="fa fa-layer-group">&nbsp;</em> Materi</a>
+			<a href="<?=base_url()?>materi-pendidik"><em class="fa fa-layer-group">&nbsp;</em> Materi</a>
 		</li>
 		<li class="" id="karir">
-			<a href="#" ><em class="fa fa-briefcase">&nbsp;</em> Karir</a>
+			<a href="<?=base_url()?>karir-pendidik" ><em class="fa fa-briefcase">&nbsp;</em> Karir</a>
 		</li>
 		<li>
 			<a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a>

@@ -117,7 +117,7 @@
 					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
 					<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
 				</div>
-				<div class="btn-hakakses"><em class="fa fa-user"></em>Admin</div>
+				<div class="btn-hakakses"><em class="fa fa-user"></em>Super Admin</div>
 				<div class="clear"></div>
 			</div>
 			<div class="divider"></div>

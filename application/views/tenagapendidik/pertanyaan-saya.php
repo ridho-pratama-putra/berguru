@@ -49,7 +49,7 @@
 						</form>
 					</div>
 					<div class="col-sm-4 col-md-3">
-						<a href="<?=base_url()?>buat-pertanyaan" class="btn btn-success btn-normal btn-block">Buat Pertanyaan</a>
+						<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-success btn-normal btn-block">Buat Pertanyaan</a>
 					</div>
 				</div>
 			</div>
@@ -69,7 +69,7 @@
 							foreach ($pertanyaan as $key => $value) {?>
 							<tr>
 								<td>
-									<?=$value->teks?> <a href="<?=base_url().'detail-pertanyaan/'.$value->id?>">LINK</a>
+									<?=$value->teks?> <a href="<?=base_url().'detail-pertanyaan-pendidik/'.$value->id?>">LINK</a>
 									<div class="td-meta">
 										<i class="far fa-clock"></i> <?=date('M, d Y',strtotime($value->tanggal))?>
 										<i class="fa fa-circle"></i>
@@ -85,7 +85,7 @@
 									<span class="btn btn-custom <?=($value->status == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?> "><i class="fa <?=($value->status == 'SOLVED') ? 'fa-check-circle' : 'fa-times-circle'?>"></i><?=$value->status?></span>
 								</td>
 								<td>
-									<span class="btn btn-custom btn-plonk-blue">Edit</span>
+									<a href="<?=base_url()?>edit-pertanyaan-pendidik/<?=$value->id?>"><span class="btn btn-custom btn-plonk-blue">Edit</span></a>
 									<span class="btn btn-custom btn-plonk-red" onclick="hapus(<?=$value->id?>)">Hapus</span>
 								</td>
 							</tr>

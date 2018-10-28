@@ -25,11 +25,11 @@
 						<div class="panel-nav">
 							<div class="row">
 								<div class="col-sm-6">
-									<a href="<?=base_url()?>pertanyaan-saya" class="panel-link"><i class="fa fa-chevron-left"></i> Detail
+									<a href="<?=base_url()?>pertanyaan-pendidik" class="panel-link"><i class="fa fa-chevron-left"></i> Detail
 										Pertanyaan</a>
 								</div>
 								<div class="col-sm-6 text-right">
-									<a href="#" class="btn btn-normal btn-blue">Edit</a>
+									<a href="<?=base_url()?>edit-pertanyaan-pendidik/<?=$pertanyaan[0]->id?>" class="btn btn-normal btn-blue">Edit</a>
 									<span class="hidden-sm hidden-xs">&nbsp;</span>
 									<a class="btn btn-normal btn-red" onclick="hapus(<?=$pertanyaan[0]->id?>)">Hapus</a>
 								</div>
@@ -57,106 +57,61 @@
 							</div>
 						</div>
 					</div>
-<?php
-if ($komentar !==array()) { ?>
-					<div class="panel panel-plain">
-						<div class="panel-body">
-							<div class="detper-jawaban-heading">
-								<div class="row">
-									<div class="col-sm-6">
-										<i class="fa fa-unlock"></i> 3 Jawaban
-									</div>
-									<div class="col-sm-6">
-										<span class="text-muted">Penjawab</span>
-										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+					<?php
+					if ($komentar !== array()) { ?>
+						<div class="panel panel-plain">
+							<div class="panel-body">
+								<div class="detper-jawaban-heading">
+									<div class="row">
+										<div class="col-sm-6">
+											<i class="fa fa-unlock"></i> <?=sizeof($komentar)?> Jawaban
 										</div>
-										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-										</div>
-										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-										</div>
-										<div class="user-more">9+</div>
-									</div>
-								</div>
-							</div>
-							<div class="detper-jawaban-list">
-								<div class="detper-jawaban-item">
-									<div class="detper-jawaban">
-										Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu
-										yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-									</div>
-									<div class="detper-jawaban-footer">
-										<div class="row">
-											<div class="col-sm-6 col-md-8 col-lg-4">
+										<div class="col-sm-6">
+											<span class="text-muted">Penjawab</span>
+											<?php
+											 foreach ($penjawab as $key => $value) { ?>
 												<div class="user-photo">
-													<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+													<img src="<?=base_url().$value->foto?>" alt="Photo" title="<?=$value->nama?>">
 												</div>
-												<div class="user-nama">
-													Daniel Webber
-												</div>
-											</div>
-											<div class="col-sm-6 col-md-4 col-lg-8 text-right">
-												<span class="text-muted">Review Jawaban</span>
-												<div class="rate-input"></div>
-												<a href="#" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
-											</div>
+											<?php } ?>
+											
+											<?php if ($remaining_penjawab !== 0) { ?>
+												<div class="user-more"> <?=$remaining_penjawab?></div>
+											<?php } ?>
 										</div>
 									</div>
 								</div>
-								<div class="detper-jawaban-item">
-									<div class="detper-jawaban">
-										Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu
-										yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-									</div>
-									<div class="detper-jawaban-footer">
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="user-photo">
-													<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+								<div class="detper-jawaban-list">
+									<?php foreach ($komentar as $key => $value) { ?>
+									<div class="detper-jawaban-item">
+										<div class="detper-jawaban">
+											<?=$value->teks?>
+										</div>
+										<div class="detper-jawaban-footer">
+											<div class="row">
+												<div class="col-sm-6 col-md-8 col-lg-4">
+													<div class="user-photo">
+														<img src="<?=base_url().$value->foto?>" alt="Photo">
+													</div>
+													<div class="user-nama">
+														<?=$value->nama?>
+													</div>
 												</div>
-												<div class="user-nama">
-													Daniel Webber
+												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
+													<span class="text-muted">Review Jawaban</span>
+													<div class="rate-input"></div>
+													<a href="#" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
 												</div>
-											</div>
-											<div class="col-sm-8 text-right">
-												<span class="text-muted">Review Jawaban</span>
-												<div class="rate-input"></div>
-												<a href="#" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="detper-jawaban-item">
-									<div class="detper-jawaban">
-										Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu
-										yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-									</div>
-									<div class="detper-jawaban-footer">
-										<div class="row">
-											<div class="col-sm-4">
-												<div class="user-photo">
-													<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-												</div>
-												<div class="user-nama">
-													Daniel Webber
-												</div>
-											</div>
-											<div class="col-sm-8 text-right">
-												<span class="text-muted">Review Jawaban</span>
-												<div class="rate-input"></div>
-												<a href="#" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
-											</div>
-										</div>
-									</div>
+									<?php } ?>
 								</div>
 							</div>
 						</div>
-					</div>
-<?php	
-}
-?>
+					<?php }else{ ?>
+						<h4 class="text-center"><strong>Belum ditemukan komentar</strong></h4> 
+					<?php } ?>
 				</div>
 
 				<div class="col-sm-4 col-md-3">

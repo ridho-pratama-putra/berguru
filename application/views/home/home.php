@@ -123,11 +123,13 @@
 										"</li>";
 											
 										}
-
+										if(data.permasalahan[i].remaining_penjawab !== 0){
+											elementToRender +=
+											"<li class='commentator-count'>"+
+												"<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
+											"</li>";
+										}
 										elementToRender +=
-										"<li class='commentator-count'>"+
-											"<a href='#' class='img-circle'>9+</a>"+
-										"</li>"+
 									"</ul>"+
 								"</div>"+
 								"<div class='col-md-6 ask-action'>"+
@@ -180,7 +182,7 @@
 								<a href="#">
 									<div class="panel panel-default">
 										<div class="panel-body">
-											<span class="bgicon bgicon-learn-math"></span>
+											<span class="bgicon bgicon-learn-sports"></span>
 											<p><?=$value->nama?></p>
 										</div>
 									</div>
@@ -204,7 +206,9 @@
 								<h3 class="title">Pertanyaan</h3>
 							</div>
 							<div class="col-md-6 title-right">
-								<a href="<?=base_url()?>buat-pertanyaan" class="btn btn-green">Buat Pertanyaan</a>
+								<?php if ($this->session->userdata('loginSession')['aktor'] == 'pendidik') { ?>
+									<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-green">Buat Pertanyaan</a>
+								<?php } ?>
 							</div>
 						</div>
 						

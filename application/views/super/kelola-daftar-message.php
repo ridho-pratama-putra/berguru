@@ -105,10 +105,11 @@
 							<tr>
 								<th>Permasalahan</th>
 								<th>Komentar</th>
-								<th width="10" class="no-sort"></th>
+								<th class="no-sort"></th>
 							</tr>
 						</thead>
 						<tbody>
+
 							
 						</tbody>
 					</table>

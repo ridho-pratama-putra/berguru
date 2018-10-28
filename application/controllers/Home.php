@@ -81,23 +81,55 @@ class Home extends CI_Controller {
 				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
 				LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
 				WHERE permasalahan.status = '".$this->input->get('kategori')."' 
-				ORDER BY permasalahan.tanggal DESC");
+				ORDER BY permasalahan.tanggal ");
 		}
 		$record['jumlah'] 		= $record_->num_rows();
 		$record['permasalahan'] = $record_->result();
 
 		foreach ($record['permasalahan'] as $key => $value) {
-			$record_ = $this->model->rawQuery("
+			$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];
+			$record['permasalahan'][$key]->remaining_penjawab = $this->getPenjawab($value->id)['remaining_penjawab'];
+		}
+		echo json_encode($record);
+	}
+
+	/*
+	* funtion untuk ambil data siapa saja beserta foto penjawah sebuah pertanyaan di db.
+	* $pertanyaan itu id nya
+	* $limit berupa angka atau all untuk nampilkan fotofoto komentator
+	*/
+	function getPenjawab($pertanyaan,$limit = 4)
+	{
+		if ($limit == "all") {
+			// $record['penjawab'] = '';
+		}else{
+			$foto_nama = $this->model->rawQuery("
 				SELECT 
+						DISTINCT
 						pengguna.nama,
 						pengguna.foto
 				FROM komentar
 				LEFT JOIN pengguna ON komentar.siapa = pengguna.id
-				WHERE permasalahan = '".$value->id."'
+				WHERE permasalahan = '".$pertanyaan."'
 				ORDER BY komentar.tanggal DESC
-				")->result();
-			$record['permasalahan'][$key]->komentator = $record_;
+				LIMIT ".$limit
+			)->result();
+
+			$remaining_penjawab = $this->model->rawQuery("
+				SELECT 
+					COUNT(DISTINCT siapa) AS semua
+				FROM komentar 
+				WHERE permasalahan=".$pertanyaan
+			)->result();
+
+			$remaining_penjawab = $remaining_penjawab[0]->semua;
+			$remaining_penjawab -= 4;
+			if ($remaining_penjawab < 0 ) {
+				$remaining_penjawab = 0;
+			}
 		}
-		echo json_encode($record);
+		$record['foto_nama'] = $foto_nama;
+		$record['remaining_penjawab'] = $remaining_penjawab;
+		return $record;
 	}
 }

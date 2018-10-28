@@ -1,3 +1,8 @@
+<script type="text/javascript">
+	$( document ).ready(function() {
+		$("#kategori").val("<?=$pertanyaan[0]->kategori?>");
+	});
+</script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -9,24 +14,25 @@
 	</div><!--/.row-->
 
 	<div class="main-container">
-		<?=$this->session->flashdata("buatPertanyaan")?>
+		<?=$this->session->flashdata("pertanyaan")?>
 
 		<div class="row">
 			<div class="col-sm-8 col-md-9">
 				<div class="panel panel-plain">
 					<div class="panel-nav">
-						<a href="<?=base_url()?>pertanyaan-pendidik"><i class="fa fa-chevron-left"></i> Kembali</a>
+						<a href="<?=base_url()?>pertanyaan-saya"><i class="fa fa-chevron-left"></i> Kembali</a>
 					</div>
 					<div class="panel-heading">
-						<h1>Buat Pertanyaan Baru</h1>
-						<p>membuat pertanyaan baru untuk mendapatkan jawaban</p>
+						<h1>Edit Pertanyaan</h1>
+						<p>mengubah konten pertanyaan</p>
 					</div>
 					<div class="panel-body">
-						<form action="<?=base_url()?>insert-pertanyaan" class="input-55" method="POST">
+						<form action="<?=base_url()?>submit-edit-pertanyaan" class="input-55" method="POST">
+							<input type="hidden" name="id" value="<?=$pertanyaan[0]->id?>">
 							<div class="form-group">
-								<label for="pertanyaan">Ajukan Pertanyaan</label>
+								<label for="pertanyaan">Pertanyaan</label>
 								<textarea name="pertanyaan" id="pertanyaan" rows="5" class="form-control" 
-								placeholder="Contoh: Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih" required=""></textarea>
+								placeholder="Contoh: Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih" required=""><?=$pertanyaan[0]->teks?></textarea>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-6 col-lg-4">

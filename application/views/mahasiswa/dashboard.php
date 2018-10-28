@@ -65,6 +65,9 @@
 		setTimeout(timeAgo, 60000);
 	};
 
+	/*
+	* funtion untuk kirim request pertanyaan biar jadi penl-panel kecil, termasuk komponennya
+	*/
 	function kategori(argument) {
 		$(".cfc-item").removeClass("active");
 		$("#"+argument).addClass("active");
@@ -120,17 +123,19 @@
 								"<div class='ci-footer'>"+
 									"<div class='row'>"+
 										"<div class='col-xs-12 col-md-8 col-lg-9'>"+
-											"<span class='text-muted'>Penjawab</span>"+
+											"<span class='text-muted'>Penjawab</span>";
+											for (j in data.permasalahan[i].komentator) {
+											elementToRender += 
 											"<div class='user-photo'>"+
-												"<img src='<?=base_url()?>assets/dashboard/assets/images/reading.png' alt='Photo'>"+
-											"</div>"+
-											"<div class='user-photo'>"+
-												"<img src='<?=base_url()?>assets/dashboard/assets/images/reading.png' alt='Photo'>"+
-											"</div>"+
-											"<div class='user-photo'>"+
-												"<img src='<?=base_url()?>assets/dashboard/assets/images/reading.png' alt='Photo'>"+
-											"</div>"+
-											"<div class='user-more'>9+</div>"+
+												"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
+											"</div>";
+											}
+											if(data.permasalahan[i].remaining_penjawab !== 0){
+											elementToRender +=
+												"<div class='user-more'>"+data.permasalahan[i].remaining_penjawab+"+</div>";
+											}
+											
+											elementToRender +=
 										"</div>"+
 										"<div class='col-xs-12 col-md-4 col-lg-3'>"+
 											"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-block btn-normal btn-plonk-green'> Bantu Jawab</a>"+
