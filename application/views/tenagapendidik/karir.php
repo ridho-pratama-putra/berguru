@@ -10,6 +10,8 @@
 
 
 	<div class="main-container">
+		<?=$this->session->flashdata("karir")?>
+		
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">

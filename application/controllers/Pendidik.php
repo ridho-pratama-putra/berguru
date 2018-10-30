@@ -7,7 +7,7 @@ class Pendidik extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'pendidik') {
-			alert('login','warning','Peringatan!',"Anda belum terdaftar sebagai pendidik. Anda dapat mendaftar <a href='".base_url()."register'> disini</a>");
+			alert('login','warning','Peringatan!',"Anda tidak memiliki hak akses sebagai pendidik. Atau mendaftar <a href='".base_url()."register'> disini</a> jika belum memiliki akun");
 			redirect('login');
 		}
 		// $menu['notif_permasalahan'] = $this->model->read("notif_permasalahan",array("untuk"=>"mahasiswa OR untuk='".$this->session->userdata('loginSession')['id']."'"));
@@ -279,11 +279,13 @@ class Pendidik extends CI_Controller {
 
 		$record['komentar'] = $this->model->rawQuery("
 			SELECT
+				komentar.id,
 				komentar.teks,
 				komentar.tanggal,
 				pengguna.nama,
 				pengguna.foto,
 				komentar.solver,
+				komentar.rating,
 				komentar.parent
 			FROM komentar
 			LEFT JOIN pengguna ON komentar.siapa=pengguna.id
@@ -451,11 +453,12 @@ class Pendidik extends CI_Controller {
 		$this->load->view("statis/footer");
 	}
 
-		/*
+	/*
 	* function untuk menampilkan halaman karir
 	*/
 	function tambahKarir()
 	{
+		
 		$header['title'] = "Pendidik - Karir Tambah";
 		$menu['breadcrumb'] = "Karir";
 		$menu['active'] = "karir";
@@ -465,4 +468,59 @@ class Pendidik extends CI_Controller {
 		$this->load->view("tenagapendidik/karir-tambah");
 		$this->load->view("statis/footer");
 	}
+
+	/*
+	* funtion untuk handle form tambah karir
+	*/
+	function insertkarir()
+	{
+		if ($this->input->post() !== array()) {
+			$this->form_validation->set_rules('teks','Nama','trim|required');
+			$this->form_validation->set_rules('kontak','Kontak','trim|required|numeric');
+			$this->form_validation->set_rules('instansi','Instansi','trim|required');
+			$this->form_validation->set_rules('lokasi','Lokasi','trim|required');
+			if ($this->form_validation->run()==TRUE) {
+				
+				$newdata = array(
+				        'nama'  					=> $this->input->post('teks'),
+				        'kontak'     				=> $this->input->post('kontak'),
+				        'instansi'     				=> $this->input->post('instansi'),
+				        'lokasi'     				=> $this->input->post('lokasi'),
+				        'valid'     				=> 'belum',
+				        'tanggal'     				=> date('Y-m-d H:i:s')
+				);
+				$queryInsert = $this->model->create('lowongan',$newdata);
+				$queryInsert = json_decode($queryInsert);
+				if ($queryInsert->status) {
+					alert('karir','success','Berhasil!',"Lowongan yang telah anda buat berhasil dibuat dan masih dalam proses konfirmasi oleh Admin");
+					redirect('karir-pendidik');
+				}else{
+					alert('karir','danger','Gagal!',"Lowongan yang telah anda buat gagal dipublish. Eror : ".$queryInsert->error_message->message);
+					redirect('karir-tambah-pendidik');
+				}
+			}else{
+				$karir = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+	            	'</div>');
+	            $this->session->set_flashdata('karir', $karir);
+				redirect('karir-tambah-pendidik');
+			}
+		}
+	}
+
+	/*
+	* funtion untuk submit rating sebuah komentar
+	*/
+	function submitRating()
+	{
+		if ($this->input->post() !== array()) {
+			$queryUpdate = $this->model->update("komentar",array('id'=>$this->input->post('id')),array('rating'=>$this->input->post('rating')));
+			echo $queryUpdate;
+		}else{
+			echo json_encode("asdasd");
+		}
+	}
+
+	/*
+	* function untuk 
+	*/
 }

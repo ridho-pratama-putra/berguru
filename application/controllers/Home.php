@@ -14,6 +14,7 @@ class Home extends CI_Controller {
 	function home()
 	{
 		$record['kategori'] = $this->model->readS('kategori')->result();
+		$record['lowongan'] = $this->model->readS('lowongan')->result();
 		$this->load->view("home/header");
 		$this->load->view("home/menu",$record);
 		$this->load->view("home/home",$record);

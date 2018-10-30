@@ -7,7 +7,7 @@ class Mahasiswa extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'mahasiswa') {
-			alert('login','warning','Peringatan!',"Anda harus login terlebih dahulu untuk menjawab pertanyaan tersebut. Atau daftar <a href='".base_url()."register'>disini</a> jika belum memiliki akun");
+			alert('register','warning','Peringatan!',"Anda harus login terlebih dahulu untuk menjawab pertanyaan tersebut. Atau daftar <a href='".base_url()."register'>disini</a> jika belum memiliki akun");
 			redirect(base_url().'login');
 		}
 		// set array koasong untuk simpan notif2

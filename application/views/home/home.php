@@ -206,7 +206,7 @@
 								<h3 class="title">Pertanyaan</h3>
 							</div>
 							<div class="col-md-6 title-right">
-								<?php if ($this->session->userdata('loginSession')['aktor'] == 'pendidik') { ?>
+								<?php if ($this->session->userdata('loginSession') == array() OR $this->session->userdata('loginSession')['aktor'] == 'pendidik') { ?>
 									<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-green">Buat Pertanyaan</a>
 								<?php } ?>
 							</div>
@@ -253,7 +253,7 @@
 														<p>Tertarik untuk ikut memberi pertanyaan atau solusi?</p>
 													</div>
 													<div class="ask-cta-right">
-														<a href="#" class="btn btn-transparent-white">Daftar Sekarang</a>
+														<a href="<?=base_url()?>register" class="btn btn-transparent-white">Daftar Sekarang</a>
 													</div>
 												</div>
 											</div>
@@ -414,16 +414,13 @@
 								<h3 class="title">Lowongan Pekerjaan</h3>
 							</div>
 							<div class="panel-body">
+								<?php foreach ($lowongan as $key => $value) { ?>
 								<div class="vacancy-item">
-									<h4 class="vacancy-title"><a href="#">Guru Tingkat SD yang Ulet, Bisa Microsoft Office Nilai Plus</a></h4>
-									<p class="vacancy-desc">SDN Sukoharjo 1 <span class="bgicon bgicon-map-marker"></span> <i>Malang Kota</i></p>
+									<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
+									<p class="vacancy-desc"><?=$value->instansi?><span class="bgicon bgicon-map-marker"></span> <i><?=$value->lokasi?></i></p>
 									<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
 								</div>
-								<div class="vacancy-item">
-									<h4 class="vacancy-title"><a href="#">Guru Tingkat SD yang Ulet, Bisa Microsoft Office Nilai Plus</a></h4>
-									<p class="vacancy-desc">SDN Sukoharjo 1 <span class="bgicon bgicon-map-marker"></span> <i>Malang Kota</i></p>
-									<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
-								</div>
+								<?php } ?>
 							</div>
 							<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
 						</div>

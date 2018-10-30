@@ -132,29 +132,33 @@ $route['karir-tambah-mahasiswa']='Mahasiswa/tambahKarir';
 
 /*****************************************************BEGIN TENAGA PENDIDIK********************************************************/
 
-$route['dashboard-pendidik']				= 'Pendidik/dashboard';
-$route['pesan-pendidik']				= 'Pendidik/pesan';
-$route['get-pesan-pendidik']			= 'Pendidik/getPesan'; // untuk membaca semua pesan pendidik. action pada saat halaman pesan-pendidik diload
-$route['profil-pendidik']				= 'Pendidik/profil';
-$route['edit-profil-pendidik']			= 'Pendidik/editProfil';
-$route['submit-edit-profil-pendidik']	= 'Pendidik/submitEditProfil';
+$route['dashboard-pendidik']					= 'Pendidik/dashboard';
+$route['pesan-pendidik']						= 'Pendidik/pesan';
+$route['get-pesan-pendidik']					= 'Pendidik/getPesan'; // untuk membaca semua pesan pendidik. action pada saat halaman pesan-pendidik diload
+$route['profil-pendidik']						= 'Pendidik/profil';
+$route['edit-profil-pendidik']					= 'Pendidik/editProfil';
+$route['submit-edit-profil-pendidik']			= 'Pendidik/submitEditProfil';
 
 /*view page*/
-$route['pertanyaan-pendidik']			= 'Pendidik/pertanyaanSaya';
-$route['buat-pertanyaan-pendidik']		= 'Pendidik/buatPertanyaan';
-$route['detail-pertanyaan-pendidik/(:num)']	= 'Pendidik/detailPertanyaan/$1';
-$route['edit-pertanyaan-pendidik/(:num)']= 'Pendidik/editPertanyaan/$1';
+$route['pertanyaan-pendidik']					= 'Pendidik/pertanyaanSaya';
+$route['buat-pertanyaan-pendidik']				= 'Pendidik/buatPertanyaan';
+$route['detail-pertanyaan-pendidik/(:num)']		= 'Pendidik/detailPertanyaan/$1';
+$route['edit-pertanyaan-pendidik/(:num)']		= 'Pendidik/editPertanyaan/$1';
 
-$route['materi-pendidik']				= 'Pendidik/materi';
-$route['materi-tambah-pendidik']		= 'Pendidik/tambahMateri';
+$route['submit-rating-pendidik']				= 'Pendidik/submitRating';
 
-$route['karir-pendidik']				= 'Pendidik/karir';
-$route['karir-tambah-pendidik']				= 'Pendidik/tambahKarir';
+
+$route['materi-pendidik']						= 'Pendidik/materi';
+$route['materi-tambah-pendidik']				= 'Pendidik/tambahMateri';
+
+$route['karir-pendidik']						= 'Pendidik/karir';
+$route['karir-tambah-pendidik']					= 'Pendidik/tambahKarir';
+$route['insert-karir-pendidik']					= 'Pendidik/insertKarir';
 
 /*handle form*/
-$route['insert-pertanyaan']				= 'Pendidik/insertPertanyaan';
-$route['delete-pertanyaan']				= 'Pendidik/deletePertanyaan';
-$route['submit-edit-pertanyaan']		= 'Pendidik/submitEditPertanyaan';
+$route['insert-pertanyaan']						= 'Pendidik/insertPertanyaan';
+$route['delete-pertanyaan']						= 'Pendidik/deletePertanyaan';
+$route['submit-edit-pertanyaan']				= 'Pendidik/submitEditPertanyaan';
 
 
 

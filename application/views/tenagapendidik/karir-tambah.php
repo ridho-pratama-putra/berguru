@@ -9,6 +9,8 @@
 	</div><!--/.row-->
 
 	<div class="main-container">
+		<?=$this->session->flashdata("karir")?>
+
 		<div class="row">
 			<div class="col-sm-8 col-md-9">
 				<div class="panel panel-plain">
@@ -20,30 +22,30 @@
 						<p>membuat lowongan baru untuk mendapatkan pekerja</p>
 					</div>
 					<div class="panel-body">
-						<form action="#" class="input-55">
+						<form action="<?=base_url()?>insert-karir-pendidik" class="input-55" method="POST">
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
 										<label for="">Nama Lowongan</label>
-										<input type="text" class="form-control" placeholder="Contoh: Guru SD ulet, bisa ms. Word nilai plus">
+										<input type="text" class="form-control" placeholder="Contoh: Guru SD ulet, bisa ms. Word nilai plus" name="teks">
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="">Instansi / Perusahaan</label>
-										<input type="text" class="form-control" placeholder="Nama Instansi">
+										<input type="text" class="form-control" placeholder="Nama Instansi" name="instansi">
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="">Lokasi Lowongan</label>
-										<input type="text" class="form-control" placeholder="Lokasi">
+										<input type="text" class="form-control" placeholder="Lokasi" name="lokasi">
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="">Kontak Person</label>
-										<input type="text" class="form-control" placeholder="No. Telepon / HP">
+										<input type="text" class="form-control" placeholder="No. Telepon / HP" name="kontak">
 									</div>
 								</div>
 							</div>

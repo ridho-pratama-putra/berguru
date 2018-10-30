@@ -5,7 +5,15 @@
 			window.location.replace("<?=base_url()?>pertanyaan-saya");
 		});
 	}
+
 	// end script untuk hapus pertanyaan
+	
+	// function untuk kirim rate-input
+	function submitRating(arguments){ 
+		var rating 			= $('#'+arguments).raty('score');
+		$.post("<?=base_url()?>submit-rating-pendidik",{ id : arguments, rating : rating});
+	}
+	
 </script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row visible-xs">
@@ -99,8 +107,8 @@
 												</div>
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
-													<div class="rate-input"></div>
-													<a href="#" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
+													<div class="rate-input" id="<?=$value->id?>" data-score="<?=$value->rating?>" onclick="submitRating(<?=$value->id?>)"></div>
+													<a href="<?=base_url()?>pesan-pendidik/new-chat/<?=$pertanyaan[0]->id?>/<?=$value->id?>" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
 												</div>
 											</div>
 										</div>

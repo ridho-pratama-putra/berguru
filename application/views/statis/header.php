@@ -28,7 +28,7 @@
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/datatables/datatables.min.js" charset="utf-8"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/malihu-scroll/jquery.mCustomScrollbar.js"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/raty/jquery.raty.js" charset="utf-8"></script>
-	<script src="<?=base_url()?>assets/dashboard/assets/libs/raty/jquery.raty.js" charset="utf-8"></script>
+	<!-- <script src="<?=base_url()?>assets/dashboard/assets/libs/raty29/jquery.raty.js" charset="utf-8"></script> -->
 
 
 </head>
