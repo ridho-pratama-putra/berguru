@@ -14,19 +14,44 @@ class Pendidik extends CI_Controller {
 
 	}
 
+
 	/*
 	* function untuk menampilkan pesan
 	*/
-	function pesan()
+	function pesan($newChat = '')
 	{
+		// echo "<pre>";
+		// var_dump($this->input->get());
+		// die();
 		$header['title'] 		= 'Pendidik - Pesan';
 		$menu['breadcrumb'] 	= 'Pesan';
 		$menu['active'] 		= 'pesan';
+		$record = array();
 		$this->load->view('statis/header',$header);
 		$this->load->view('tenagapendidik/menu',$menu);
-		$this->load->view('tenagapendidik/pesan');
+
+		// kirim ke client sebuah tanda, apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
+		if ($newChat == 'new-chat') {
+			$record['new_chat'] = $this->model->create('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->get('id_komentator'),'permasalahan'=>$this->input->get('id_permasalahan'),'komentar'=>$this->input->get('id_komentar'),'tanggal'=>date('Y-m-d H:i:s')));
+			$record['get_data'] = array('id_komentator'=>$this->input->get('id_komentator'),'id_permasalahan'=>$this->input->get('id_permasalahan'),'id_komentar'=>$this->input->get('id_komentar'),'tanggal'=>date('Y-m-d H:i:s'));
+		}
+		$this->load->view('tenagapendidik/pesan',$record);
 		$this->load->view('statis/footer');
 	}
+
+	/*
+	* function untuk get record pesan pada database dengan parameter where adalah seoranga guru tersebut. dipanggil di pesan.php
+	*/
+	function getPesan()
+	{
+		if ($this->input->post() != array()) {
+			// $recordPesan = $this->model->read('pesan',array('id'=>))	
+		}
+	}
+
+	/*
+	* funtion untuk mengambil 
+	*/
 
 	/*
 	* function untuk menampilkan profil
@@ -138,16 +163,6 @@ class Pendidik extends CI_Controller {
 				return true;
 			}
 			redirect('pertanyaan-pendidik');
-		}
-	}
-
-	/*
-	* function untuk get record pesan pada database dengan parameter where adalah seoranga guru tersebut
-	*/
-	function getPesan()
-	{
-		if ($this->input->post() != array()) {
-			// $recordPesan = $this->model->read('pesan',array('id'=>))	
 		}
 	}
 
@@ -282,6 +297,7 @@ class Pendidik extends CI_Controller {
 				komentar.id,
 				komentar.teks,
 				komentar.tanggal,
+				pengguna.id AS id_komentator,
 				pengguna.nama,
 				pengguna.foto,
 				komentar.solver,
@@ -520,7 +536,4 @@ class Pendidik extends CI_Controller {
 		}
 	}
 
-	/*
-	* function untuk 
-	*/
 }

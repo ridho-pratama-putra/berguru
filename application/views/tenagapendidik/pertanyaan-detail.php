@@ -13,6 +13,13 @@
 		var rating 			= $('#'+arguments).raty('score');
 		$.post("<?=base_url()?>submit-rating-pendidik",{ id : arguments, rating : rating});
 	}
+
+	// funtion untuk redirect + kirim GET
+	function openNewChat(id_komentator,id_permasalahan,id_komentar) {
+		$.get("<?=base_url()?>pesan-pendidik/new-chat",{ id_komentator : id_komentator, id_permasalahan : id_permasalahan, id_komentar : id_komentar},function () {
+			// window.location.href = "<?=base_url()?>pesan-pendidik/new-chat";
+		});
+	}
 	
 </script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -51,7 +58,7 @@
 								<div class="row">
 									<div class="col-md-8">
 										<div class="td-meta">
-											<i class="far fa-clock"></i><?=date('M, d Y',strtotime($pertanyaan[0]->tanggal))?>
+											<i class="far fa-clock"></i> <?=date('M, d Y',strtotime($pertanyaan[0]->tanggal))?>
 											<i class="fa fa-circle"></i>
 											<i class="far fa-comment"></i> <?=$pertanyaan[0]->jumlah_komen?>
 											<i class="fa fa-circle"></i>
@@ -59,7 +66,7 @@
 										</div>
 									</div>
 									<div class="col-md-4 text-right">
-										<span class="btn btn-custom <?=($pertanyaan[0]->status == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?> "><i class="fa <?=($pertanyaan[0]->status == 'ACTIVE') ? 'fa-check-circle' : 'fa-times-circle'?> "></i><?=$pertanyaan[0]->status?></span>
+										<span class="btn btn-custom <?=($pertanyaan[0]->status == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?> "><i class="fa <?=($pertanyaan[0]->status == 'ACTIVE') ? 'fa-check-circle' : 'fa-times-circle'?> "></i> <?=$pertanyaan[0]->status?></span>
 									</div>
 								</div>
 							</div>
@@ -108,7 +115,7 @@
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
 													<div class="rate-input" id="<?=$value->id?>" data-score="<?=$value->rating?>" onclick="submitRating(<?=$value->id?>)"></div>
-													<a href="<?=base_url()?>pesan-pendidik/new-chat/<?=$pertanyaan[0]->id?>/<?=$value->id?>" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
+													<a href="<?=base_url()?>pesan-pendidik/new-chat?id_komentator=<?=$value->id_komentator?>&id_permasalahan=<?=$pertanyaan[0]->id?>&id_komentar=<?=$value->id?>" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
 												</div>
 											</div>
 										</div>

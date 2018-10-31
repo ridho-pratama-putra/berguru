@@ -1,7 +1,8 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
 		$.post("<?=base_url()?>get-pesan-pendidik",{id:<?=$this->session->userdata('loginSession')['id']?>}, function( data ) {
-		  	$( ".result" ).html( data );
+			console.log(data);
+		  	// $( ".result" ).html( data );
 		});
 		for (var i = 0; i < 3; i++) {
 			$("#listPesan").append('<div class="pesan-item">'+
@@ -46,6 +47,7 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<h1>Pesan</h1>
+								
 							</div>
 							<div class="col-xs-12">
 								<form class="" action="index.html" method="post">

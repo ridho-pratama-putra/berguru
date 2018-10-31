@@ -69,7 +69,7 @@
 							foreach ($pertanyaan as $key => $value) {?>
 							<tr>
 								<td>
-									<?=$value->teks?> <a href="<?=base_url().'detail-pertanyaan-pendidik/'.$value->id?>">LINK</a>
+									<?=$value->teks?> <a href="<?=base_url().'detail-pertanyaan-pendidik/'.$value->id?>">Klik untuk lebih detil</a>
 									<div class="td-meta">
 										<i class="far fa-clock"></i> <?=date('M, d Y',strtotime($value->tanggal))?>
 										<i class="fa fa-circle"></i>
