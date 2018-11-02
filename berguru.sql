@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-10-24 09:41:14
+Date: 2018-11-01 10:18:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,6 +33,31 @@ CREATE TABLE `attachment` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for direct_message
+-- ----------------------------
+DROP TABLE IF EXISTS `direct_message`;
+CREATE TABLE `direct_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teks` text,
+  `dari` varchar(255) DEFAULT NULL,
+  `untuk` varchar(255) DEFAULT NULL,
+  `permasalahan` varchar(255) DEFAULT NULL,
+  `komentar` varchar(255) DEFAULT NULL,
+  `tanggal` datetime DEFAULT NULL,
+  `terpecahkan` varchar(255) DEFAULT NULL,
+  `rating` varchar(255) DEFAULT NULL,
+  `is_open` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of direct_message
+-- ----------------------------
+
+
+
+
+-- ----------------------------
 -- Table structure for kategori
 -- ----------------------------
 DROP TABLE IF EXISTS `kategori`;
@@ -46,18 +71,18 @@ CREATE TABLE `kategori` (
   `icon` varchar(255) DEFAULT NULL,
   `nama_folder` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kategori
 -- ----------------------------
-INSERT INTO `kategori` VALUES ('1', 'Matematika', '2018-10-22', '0', '0', 'ACTIVE', 'fa-puzzle-piece', 'materi/Matematika');
-INSERT INTO `kategori` VALUES ('2', 'Seni Budaya', '2018-10-22', '1', '0', 'ACTIVE', 'fa-globe', 'materi/Seni Budaya');
-INSERT INTO `kategori` VALUES ('3', 'Penjaskes', '2018-10-22', '1', '0', 'ACTIVE', 'fa-flask', 'materi/Penjaskes');
-INSERT INTO `kategori` VALUES ('4', 'Bahasa Indonesia', '2018-10-22', '0', '0', 'ACTIVE', 'fa-users', 'materi/Bahasa Indonesia');
-INSERT INTO `kategori` VALUES ('5', 'Bahasa Inggris', '2018-10-22', '0', '0', 'ACTIVE', 'fa-book', 'materi/Bahasa Inggris');
-INSERT INTO `kategori` VALUES ('6', 'Kimia', '2018-10-22', '0', '0', 'ACTIVE', 'fa-bicycle', 'materi/Kimia');
-INSERT INTO `kategori` VALUES ('7', 'Fisika', '2018-10-22', '0', '0', 'ACTIVE', 'fa-flag', 'materi/Fisika');
+
+
+
+
+
+
+
 
 -- ----------------------------
 -- Table structure for komentar
@@ -71,21 +96,27 @@ CREATE TABLE `komentar` (
   `permasalahan` int(11) DEFAULT NULL,
   `solver` varchar(255) DEFAULT NULL,
   `parent` int(11) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `permasalahan_mana` (`permasalahan`),
   KEY `parent_komentar` (`parent`),
   KEY `siapa_komen` (`siapa`),
   CONSTRAINT `parent_komentar` FOREIGN KEY (`parent`) REFERENCES `komentar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siapa_komen` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of komentar
 -- ----------------------------
-INSERT INTO `komentar` VALUES ('1', 'boleh2', '2018-10-24 09:22:38', '2', '2', null, null);
-INSERT INTO `komentar` VALUES ('2', 'nggak ah, aku takut kesurupan', '2018-10-24 09:24:05', '2', '1', null, null);
-INSERT INTO `komentar` VALUES ('3', 'aku ikut, aku mau jadi jarannya, siapa mau naik', '2018-10-24 09:25:10', '4', '1', null, null);
-INSERT INTO `komentar` VALUES ('4', 'aku udah siap nih, cuss', '2018-10-24 09:26:04', '4', '1', null, null);
+
+
+
+
+
+
+
+
+
 
 -- ----------------------------
 -- Table structure for komentar_message
@@ -120,12 +151,16 @@ CREATE TABLE `lowongan` (
   `lokasi` varchar(255) DEFAULT NULL,
   `kontak` varchar(255) DEFAULT NULL,
   `valid` int(11) DEFAULT NULL,
+  `kategori` varchar(255) DEFAULT NULL,
+  `tanggal` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of lowongan
 -- ----------------------------
+
+
 
 -- ----------------------------
 -- Table structure for mahasiswa
@@ -181,15 +216,19 @@ CREATE TABLE `max_notif_id_per_user` (
   `id_pengguna` varchar(255) DEFAULT NULL,
   `max_notif_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of max_notif_id_per_user
 -- ----------------------------
-INSERT INTO `max_notif_id_per_user` VALUES ('1', '1', '0');
-INSERT INTO `max_notif_id_per_user` VALUES ('2', '2', '2');
-INSERT INTO `max_notif_id_per_user` VALUES ('3', '3', '0');
-INSERT INTO `max_notif_id_per_user` VALUES ('4', '4', '2');
+
+
+
+
+
+
+
+
 
 -- ----------------------------
 -- Table structure for message
@@ -222,15 +261,26 @@ CREATE TABLE `notif_mhs_per_user` (
   `terlihat` varchar(255) DEFAULT NULL,
   `terbaca` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of notif_mhs_per_user
 -- ----------------------------
-INSERT INTO `notif_mhs_per_user` VALUES ('1', '2', '1', '1', '0');
-INSERT INTO `notif_mhs_per_user` VALUES ('2', '2', '2', '1', '0');
-INSERT INTO `notif_mhs_per_user` VALUES ('3', '4', '2', '1', '0');
-INSERT INTO `notif_mhs_per_user` VALUES ('4', '4', '1', '1', '0');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- ----------------------------
 -- Table structure for notif_permasalahan
@@ -245,13 +295,14 @@ CREATE TABLE `notif_permasalahan` (
   `terlihat` varchar(255) DEFAULT NULL COMMENT 'sudah diilhat di notif',
   `terbaca` varchar(255) DEFAULT NULL COMMENT 'terlihat dengan detil melaui klik pada notif',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of notif_permasalahan
 -- ----------------------------
-INSERT INTO `notif_permasalahan` VALUES ('1', '1', '3', 'mahasiswa', '2018-10-22 22:24:02', null, null);
-INSERT INTO `notif_permasalahan` VALUES ('2', '2', '3', 'mahasiswa', '2018-10-23 17:36:32', null, null);
+
+
+
 
 -- ----------------------------
 -- Table structure for pengguna
@@ -275,15 +326,19 @@ CREATE TABLE `pengguna` (
   `jumlah_dm_solved` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_pengguna` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of pengguna
 -- ----------------------------
-INSERT INTO `pengguna` VALUES ('1', 'admin', 'admin@admin.com', '+6289987009', null, null, '0', 'ACTIVE', 'admin', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', '8Xs4bPdJ7QnoRf2ryNgsEf9X7quKLaY4hz3aHxwKHcSVtoMvbg0ehEmpjenA9Oyr', '0', '0');
-INSERT INTO `pengguna` VALUES ('2', 'Maha Siswa', 'mahasiswa@mahasiswa.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('3', 'Maha Guru', 'guru@guru.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('4', 'Siswa Siswi', 'siswa@siswa.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
+
+
+
+
+
+
+
+
 
 -- ----------------------------
 -- Table structure for permasalahan
@@ -305,13 +360,14 @@ CREATE TABLE `permasalahan` (
   KEY `siapa_add` (`siapa`),
   CONSTRAINT `kategori_apa` FOREIGN KEY (`kategori`) REFERENCES `kategori` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siapa_add` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of permasalahan
 -- ----------------------------
-INSERT INTO `permasalahan` VALUES ('1', 'jaran kepangan yuk?', '2018-10-22 22:24:02', '3', '2', '0', '3', '2', 'UNSOLVED', 'ACTIVE');
-INSERT INTO `permasalahan` VALUES ('2', 'lari pagi yuk??', '2018-10-23 17:36:32', '3', '1', '0', '1', '3', 'UNSOLVED', 'ACTIVE');
+
+
+
 
 -- ----------------------------
 -- Table structure for pesan_info
@@ -342,14 +398,20 @@ CREATE TABLE `riwayat_permasalahan_dilihat` (
   `permasalahan` int(11) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of riwayat_permasalahan_dilihat
 -- ----------------------------
-INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('1', '2', '2', '2018-10-24 09:21:18');
-INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('2', '2', '1', '2018-10-24 09:23:51');
-INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('3', '4', '1', '2018-10-24 09:24:43');
+
+
+
+
+
+
+
+
+
 
 -- ----------------------------
 -- Table structure for tags
@@ -367,34 +429,3 @@ CREATE TABLE `tags` (
 -- ----------------------------
 -- Records of tags
 -- ----------------------------
-DROP TRIGGER IF EXISTS `tambah_jumlah_komen_permasalahan`;
-DELIMITER ;;
-CREATE TRIGGER `tambah_jumlah_komen_permasalahan` AFTER INSERT ON `komentar` FOR EACH ROW UPDATE permasalahan SET jumlah_komen = jumlah_komen + 1 WHERE permasalahan.id=NEW.permasalahan
-;;
-DELIMITER ;
-DROP TRIGGER IF EXISTS `kurangi_jumlah_komen_permasalahan`;
-DELIMITER ;;
-CREATE TRIGGER `kurangi_jumlah_komen_permasalahan` AFTER DELETE ON `komentar` FOR EACH ROW UPDATE permasalahan SET jumlah_komen = jumlah_komen - 1 WHERE permasalahan.id = OLD.permasalahan
-;;
-DELIMITER ;
-DROP TRIGGER IF EXISTS `tambah_jumlah_pertanyaan_di_kategori`;
-DELIMITER ;;
-CREATE TRIGGER `tambah_jumlah_pertanyaan_di_kategori` AFTER INSERT ON `permasalahan` FOR EACH ROW UPDATE kategori SET jumlah_pertanyaan = jumlah_pertanyaan + 1 WHERE id = NEW.kategori
-;
-;;
-DELIMITER ;
-DROP TRIGGER IF EXISTS `kurangi_jumlah_pertanyaan_di_kategori`;
-DELIMITER ;;
-CREATE TRIGGER `kurangi_jumlah_pertanyaan_di_kategori` AFTER DELETE ON `permasalahan` FOR EACH ROW UPDATE kategori SET jumlah_pertanyaan = jumlah_pertanyaan - 1 WHERE id = OLD.kategori
-;;
-DELIMITER ;
-DROP TRIGGER IF EXISTS `tambah_jumlah_dilihat_permasalahan`;
-DELIMITER ;;
-CREATE TRIGGER `tambah_jumlah_dilihat_permasalahan` AFTER INSERT ON `riwayat_permasalahan_dilihat` FOR EACH ROW UPDATE permasalahan SET jumlah_dilihat = jumlah_dilihat + 1 WHERE permasalahan.id = NEW.permasalahan
-;;
-DELIMITER ;
-DROP TRIGGER IF EXISTS `kurangi_jumlah_dilihat_permasalahan`;
-DELIMITER ;;
-CREATE TRIGGER `kurangi_jumlah_dilihat_permasalahan` AFTER DELETE ON `riwayat_permasalahan_dilihat` FOR EACH ROW UPDATE permasalahan SET jumlah_dilihat = jumlah_dilihat - 1 WHERE permasalahan.id = OLD.permasalahan
-;;
-DELIMITER ;

@@ -50,10 +50,6 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-	* funtion untuk mengambil 
-	*/
-
-	/*
 	* function untuk menampilkan profil
 	*/
 	function profil(){
@@ -171,7 +167,15 @@ class Pendidik extends CI_Controller {
 	*/
 	function deletePertanyaan(){
 		if ($this->input->post() !== array()) {
+			// delete di tabel master, yakni permasalahan
 			$deletePertanyaan = $this->model->delete('permasalahan',array('id'=>$this->input->post('id')));
+
+			// delete di tabel notifikasi
+			$this->model->delete('notif_permasalahan',array('id_permasalahan'=>$this->input->post('id')));			
+
+			// delete di tabel riwayat_notifikasi
+			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));			
+
 			if ($deletePertanyaan) {
 				alert('pertanyaan','success','Berhasil!','Pertanyaan telah dihapus');
 			}else{
@@ -233,7 +237,7 @@ class Pendidik extends CI_Controller {
 
 			$this->form_validation->set_rules('nama','Nama','trim|required');
 			$this->form_validation->set_rules('email','Email','trim|required|valid_email');
-			$this->form_validation->set_rules('no_hp','Nomor telepon','trim|required');
+			$this->form_validation->set_rules('no_hp','Nomor telepon','trim');
 
 			if ($this->form_validation->run() !== FALSE) {
 				$queryUpdate['nama'] = ucwords($this->input->post('nama'));
@@ -243,7 +247,7 @@ class Pendidik extends CI_Controller {
 				$runUpdate = json_decode($runUpdate);
 
 				if ($runUpdate->status) {
-					alert('editProfil','success','Barhasil!','Profil telah di perbarui');
+					alert('editProfil','success','Barhasil!','Profil telah di perbarui di database. Saat ini data yang ditampilkan belum berubah, anda harus login kembali untuk melihat perubahan.');
 					redirect('edit-profil-pendidik');
 				}else{
 					if ($runUpdate->error_message->code == 1062) {

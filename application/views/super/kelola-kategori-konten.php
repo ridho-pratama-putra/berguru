@@ -106,7 +106,7 @@
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<form class="" action="<?=base_url()?>tambah-kategori" method="POST">
+						<form class="" action="<?=base_url()?>submit-tambah-kategori" method="POST">
 							<div class="form-group">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="Icon" name="icon" >

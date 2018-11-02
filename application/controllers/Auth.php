@@ -49,8 +49,8 @@ class Auth extends CI_Controller {
 							$this->session->set_userdata('loginSession',$newdata);
 
 							if ($recordPengguna[0]->aktor == "admin") {
-								alert('login','success','Hai Admin '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
-								redirect('kelola-daftar-message');
+								alert('kelolaPengguna','success','Hai Admin '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
+								redirect('kelola-pengguna');
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "mahasiswa") {
 								alert('login','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');

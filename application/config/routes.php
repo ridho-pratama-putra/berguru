@@ -77,7 +77,7 @@ $route['kelola-daftar-message-solved']	= 'Admin/getDaftarMessage/solved';
 $route['kelola-daftar-message-unsolved']= 'Admin/getDaftarMessage/unsolved';
 
 $route['kelola-kategori-konten'] 	= 'Admin/kelolaKategoriKonten';
-$route['tambah-kategori'] 			= 'Admin/tambahKategoriKonten';
+$route['submit-tambah-kategori'] 			= 'Admin/tambahKategoriKonten';
 $route['edit-kategori'] 			= 'Admin/editKategoriKonten';
 $route['delete-kategori'] 			= 'Admin/deleteKategoriKonten';
 
@@ -88,6 +88,7 @@ $route['delete-permasalahan']		= 'Admin/deletePermasalahan';
 
 $route['kelola-materi']				= 'Admin/kelolaMateri';
 $route['tambah-materi']				= 'Admin/tambahMateri';
+$route['delete-materi/(:num)']		= 'Admin/deleteMateri/$1';
 
 $route['kelola-pengguna']			= 'Admin/kelolaPengguna';
 $route['delete-pengguna']			= 'Admin/deletePengguna';
@@ -109,6 +110,7 @@ $route['dashboard-mahasiswa']					= 'Mahasiswa/dashboard';
 $route['pesan-mahasiswa']						= 'Mahasiswa/pesan';
 $route['profil-mahasiswa']						= 'Mahasiswa/profil';
 $route['edit-profil-mahasiswa']					= 'Mahasiswa/editProfil';
+$route['submit-edit-profil-mahasiswa']			= 'Mahasiswa/submitEditProfil';
 
 // set komen yang sudah dilihat untuk tampilan notifikasi
 $route['update-to-terlihat']					= 'Mahasiswa/setTerlihat';

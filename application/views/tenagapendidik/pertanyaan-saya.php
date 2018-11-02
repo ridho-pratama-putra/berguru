@@ -10,7 +10,7 @@
 	// script untuk hapus pertanyaan
 	function hapus(id){
 		$.post( "<?=base_url()?>delete-pertanyaan",{ id: id },function(data){
-			window.location.replace("<?=base_url()?>pertanyaan-saya");
+			window.location.replace("<?=base_url()?>pertanyaan-pendidik");
 		}).fail(function() {
 		    alert( "Data tidak dapat dihapus. Data sedang digunakan" );
 		});

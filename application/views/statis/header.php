@@ -6,8 +6,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?=$title?> - Berguru.com</title>
 	<link href="<?=base_url()?>assets/dashboard/assets/css/bootstrap.min.css" rel="stylesheet">
-	<!-- <link href="<?=base_url()?>assets/dashboard/assets/css/font-awesome.min.css" rel="stylesheet"> -->
+	<!-- admin -->
+	<link href="<?=base_url()?>assets/dashboard/assets/css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- other -->
 	<link rel="stylesheet" href="<?=base_url()?>assets/dashboard/assets/libs/fontawesome-free-5.3.1-web/css/all.min.css">
+	
 	<link href="<?=base_url()?>assets/dashboard/assets/css/datepicker3.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?=base_url()?>assets/dashboard/assets/libs/datatables/datatables.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/dashboard/assets/libs/malihu-scroll/jquery.mCustomScrollbar.min.css">

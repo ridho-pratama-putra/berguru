@@ -3,37 +3,39 @@
 	$( document ).ready(function() {
 		var table = $('#tabel-materi').DataTable(); 
 		$('#cari-materi').on( 'keyup', function () {
-		    table.search( this.value ).draw();
+			table.search( this.value ).draw();
 		} );
 	});
 	// END Script untuk panel search diluar tabel
-var _validFileExtensions = [".pdf", ".docx", ".doc", ".xlsx", ".xls"];    
-function publishMateri(oForm) {
-    var arrInputs = oForm.getElementsByTagName("input");
-    for (var i = 0; i < arrInputs.length; i++) {
-        var oInput = arrInputs[i];
-        if (oInput.type == "file") {
-            var sFileName = oInput.value;
-            if (sFileName.length > 0) {
-                var blnValid = false;
-                for (var j = 0; j < _validFileExtensions.length; j++) {
-                    var sCurExtension = _validFileExtensions[j];
-                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-                        blnValid = true;
-                        break;
-                    }
-                }
-                
-                if (!blnValid) {
-                    alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
-                    return false;
-                }
-            }
-        }
-    }
-  
-    return true;
-}	
+
+	// script untuk prevent submit sebuah file yang tidak termasuk di list extension
+	var _validFileExtensions = [".pdf", ".docx", ".doc", ".xlsx", ".xls"];    
+	function publishMateri(oForm) {
+		var arrInputs = oForm.getElementsByTagName("input");
+		for (var i = 0; i < arrInputs.length; i++) {
+			var oInput = arrInputs[i];
+			if (oInput.type == "file") {
+				var sFileName = oInput.value;
+				if (sFileName.length > 0) {
+					var blnValid = false;
+					for (var j = 0; j < _validFileExtensions.length; j++) {
+						var sCurExtension = _validFileExtensions[j];
+						if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+							blnValid = true;
+							break;
+						}
+					}
+					
+					if (!blnValid) {
+						alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+						return false;
+					}
+				}
+			}
+		}
+	  
+		return true;
+	}	
 </script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
@@ -44,7 +46,9 @@ function publishMateri(oForm) {
 			<li class="active">Kelola Materi</li>
 		</ol>
 	</div><!--/.row-->
-
+	<div class="main-container mr-1">
+		<?=$this->session->flashdata("kelolaMateri");?>
+	</div>
 	<div class="panel panel-plain main-container">
 		<div class="panel-heading">
 			<div class="row">
@@ -123,15 +127,15 @@ function publishMateri(oForm) {
 
 <!-- Modal -->
 <div class="modal fade" id="modal-addmateri" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  	<div class="modal-dialog modal-lg" role="document">
-	    <div class="modal-content">
-	      <form class="input-55" action="<?=base_url()?>tambah-materi" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="form-tambah-baru" onsubmit="return publishMateri(this);">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		  <form class="input-55" action="<?=base_url()?>tambah-materi" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="form-tambah-baru" onsubmit="return publishMateri(this);">
 				<div class="modal-header">
-		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        	<h4 class="modal-title" id="myModalLabel">Tambah Materi Baru</h4>
-		        	<h5 class="modal-subtitle">Tambahkan materi baru</h5>
-		      	</div>
-		      	<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Tambah Materi Baru</h4>
+					<h5 class="modal-subtitle">Tambahkan materi baru</h5>
+				</div>
+				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-5">
 							<div class="form-group">
@@ -142,7 +146,7 @@ function publishMateri(oForm) {
 						<div class="col-md-7">
 							<div class="form-group">
 								<label for="thefile">Upload File Materi</label>
-								<input type="file" id="thefile" class="input-file" data-multiple-caption="{count} files selected" multiple name="file[]">
+								<input type="file" id="thefile" class="input-file" data-multiple-caption="{count} files selected" name="files[]" multiple >
 								<label for="thefile" class="input-label">
 									<span class="placeholder">Pilih file...</span>
 									<span class="tombol"><i class="fa fa-cloud-upload"></i> Upload file</span>
@@ -152,7 +156,7 @@ function publishMateri(oForm) {
 						<div class="col-md-5">
 							<div class="form-group">
 								<label for="">Pilih Kategori</label>
-								<select name="kategori" id="" class="form-control">
+								<select name="kategori" id="" class="form-control" required="">
 									<option value="" disabled="" selected="">Pilih kategori</option>
 									<?php foreach ($kategori as $key => $value) { ?>
 										<option value="<?=$value->id?>"><?=$value->nama?></option>
@@ -171,12 +175,12 @@ function publishMateri(oForm) {
 							<textarea name="deskripsi" id="" rows="6" class="form-control" placeholder="Deskripsi" required=""></textarea>
 						</div>
 					</div>
-		      	</div>
-		      	<div class="modal-footer">
-		    		<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
-		        	<button type="submit" class="pull-right btn btn-normal btn-success" >Publish Materi</button>
-		      	</div>
-	      	</form>
-	    </div>
-  	</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
+					<button type="submit" class="pull-right btn btn-normal btn-success" >Publish Materi</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>

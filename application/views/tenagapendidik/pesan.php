@@ -47,7 +47,6 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<h1>Pesan</h1>
-								
 							</div>
 							<div class="col-xs-12">
 								<form class="" action="index.html" method="post">

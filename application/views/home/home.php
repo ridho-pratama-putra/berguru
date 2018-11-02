@@ -413,16 +413,23 @@
 							<div class="sidebar-title panel-header">
 								<h3 class="title">Lowongan Pekerjaan</h3>
 							</div>
+								<?php 
+								if ($lowongan !== array()) {
+									foreach ($lowongan as $key => $value) { ?>
 							<div class="panel-body">
-								<?php foreach ($lowongan as $key => $value) { ?>
 								<div class="vacancy-item">
 									<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
 									<p class="vacancy-desc"><?=$value->instansi?><span class="bgicon bgicon-map-marker"></span> <i><?=$value->lokasi?></i></p>
 									<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
 								</div>
-								<?php } ?>
 							</div>
 							<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+								<?php }
+								}else{ ?>
+								<div class="panel-body">
+									<h6 class="title text-center"> Data lowongan masih kosong</h6>
+								</div>
+								<?php }								?>
 						</div>
 						
 						<!-- Daftar Materi -->

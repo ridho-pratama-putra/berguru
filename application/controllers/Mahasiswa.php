@@ -118,6 +118,7 @@ class Mahasiswa extends CI_Controller {
 	*/
 	function profil(){
 		$header['title'] = "Mahasiswa - Profil";
+		$this->menu['breadcrumb'] = "Profil";
 		$this->menu['active'] = "";
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
@@ -133,10 +134,97 @@ class Mahasiswa extends CI_Controller {
 	{
 		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 		$header['title'] = "Mahasiswa - Edit Profil";
+		$this->menu['breadcrumb'] = "Profil";
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
 		$this->load->view('mahasiswa/edit-profil',$record);
 		$this->load->view('statis/footer');
+	}
+
+	/*
+	* function untuk handling form edit profil
+	*/
+	function submitEditProfil()
+	{
+		if ($this->input->post() !== array()) {
+
+			// cek apakah ada pergantian password
+			$recordPengguna = ''; // variabel akan tidak kosong apabila ada perintah update password. untuk simpan record pengguna sebagai pencocokan
+			if ($this->input->post('password') !== '') {
+				$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
+				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
+					alert('editProfil','danger','Gagal!','Edit profil gagal. Password salah');
+					redirect('edit-profil-mahasiswa');
+					return true;
+				}else{
+					// cek apakah password_ ada isinya
+					if ($this->input->post('password_') == '') {
+						alert('editProfil','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password hanya jika ingin mengganti password');
+						redirect('edit-profil-mahasiswa');
+						return true;
+					}else{
+						// masukkan password baru ke array untuk bahan eksekusi
+						$queryUpdate['password'] = md5($this->input->post('password'));
+					}
+				}
+			}
+			
+			// cek apakah ada perintah update foto
+			if ($_FILES['foto']['name'] !== '') {
+				$config['upload_path']	= FCPATH.'userprofiles/';
+				$config['allowed_types']= 'gif|jpg|png';
+				$config['file_name'] = $this->input->post('nama')." - profil";
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('foto'))
+				{
+					alert('editProfil','danger','Gagal!',$this->upload->display_errors());
+					redirect('edit-profil-mahasiswa');
+					return false;
+				}
+				else
+				{
+					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
+				}
+			}
+
+			$this->form_validation->set_rules('nama','Nama','trim|required');
+			$this->form_validation->set_rules('email','Email','trim|required|valid_email');
+			$this->form_validation->set_rules('no_hp','Nomor telepon','trim');
+
+			if ($this->form_validation->run() !== FALSE) {
+				$queryUpdate['nama'] = ucwords($this->input->post('nama'));
+				$queryUpdate['email'] = $this->input->post('email');
+				$queryUpdate['no_hp'] = $this->input->post('no_hp');
+				$runUpdate = $this->model->update('pengguna',array('id'=>$this->input->post('id')),$queryUpdate);
+				$runUpdate = json_decode($runUpdate);
+
+				if ($runUpdate->status) {
+					alert('editProfil','success','Barhasil!','Profil telah di perbarui di database. Saat ini data yang ditampilkan belum berubah, anda harus login kembali untuk melihat perubahan.');
+					redirect('edit-profil-mahasiswa');
+				}else{
+					if ($runUpdate->error_message->code == 1062) {
+						alert('editProfil','danger','Gagal!',$runUpdate->error_message->message);
+						redirect('edit-profil-mahasiswa');
+					}else{
+						echo "<pre>";
+						var_dump($runUpdate);
+						die();
+					}
+				}
+			}else{
+				$register = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+				'</div>');
+				$this->session->set_flashdata('editProfil', $register);
+				redirect('edit-profil-mahasiswa');
+			}
+			// var_dump($queryUpdate);
+			// var_dump($runUpdate);
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Tidak ada data yang di POST</p>';
+			$this->load->view('errors/html/error_404',$error);
+		}
 	}
 
 
@@ -224,7 +312,10 @@ class Mahasiswa extends CI_Controller {
 	{
 		$cariPertanyaan = $this->model->read("permasalahan",array('id'=>$id));
 		if ($cariPertanyaan->num_rows() != 0) {
+
+			// apakah seorang mahasiswa sudah melihat permasalahan
 			$cariRiwayatLihatPermasalahan = $this->model->read("riwayat_permasalahan_dilihat",array('id_pengguna'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$id))->num_rows();
+			
 			if ($cariRiwayatLihatPermasalahan == 0) {
 				
 				// insert into riwayat permasalahan dilihat. sedangkan update tabel pertanyaan kolom jumlah_dilihat otomatis dari trigger

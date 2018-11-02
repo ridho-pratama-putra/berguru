@@ -81,7 +81,7 @@
 											<div class="row">
 												<div class="col-sm-6 col-md-8 col-lg-4">
 													<div class="user-photo">
-														<img src="<?=base_url($value->foto)?>" alt="Photo">
+														<img src="<?=base_url($value->foto)?>" class="img-circle" alt="Photo">
 													</div>
 													<div class="user-nama">
 														<?=$value->siapa?>
@@ -89,7 +89,7 @@
 												</div>
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
-													<div class="rate-input"></div>
+													<div class="rate-result"></div>
 												</div>
 											</div>
 										</div>

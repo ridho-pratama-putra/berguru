@@ -102,6 +102,8 @@ class Admin extends CI_Controller {
 			
 			LEFT JOIN pengguna A ON komentar.siapa = A.id
 			LEFT JOIN pengguna B ON permasalahan.siapa = B.id
+
+			ORDER BY tanggal_komentar DESC
 			')->result();
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$menu);
@@ -436,45 +438,77 @@ class Admin extends CI_Controller {
 	function tambahMateri()
 	{
 		if ($this->input->post() !== null) {
-			echo "<pre>";
-			$queryMateri['nama'] 		= $this->input->post('nama');
-			$queryMateri['kategori'] 	= $this->input->post('kategori');
-			$tags 			 			= $this->input->post('tags');
-			$tags 						= explode(",", $tags);
-			$file				 		= $this->input->post('file[]');
-			$queryMateri['deskripsi'] 	= $this->input->post('deskripsi');
-			$queryMateri['waktu_terakhir_edit'] = date('Y-m-d');
-
-			$config['upload_path']          = FCPATH.'/materi/';
-   //          $config['allowed_types']        = 'docx|doc|xls|pdf|xlsx';
-
-   //          $this->load->library('upload', $config);
+			$queryMateri['nama'] 				= ucwords($this->input->post('nama'));
+			$queryMateri['kategori'] 			= $this->input->post('kategori');
+			$tags 			 					= $this->input->post('tags');
+			$tags 								= explode(",", $tags);
+			$queryMateri['deskripsi'] 			= $this->input->post('deskripsi');
+			$queryMateri['waktu_terakhir_edit'] = date('Y-m-d H:i:s');
+			$queryMateri['siapa_terakhir_edit'] = $this->session->userdata('loginSession')['id'];
+			$queryMateri['jumlah_diunduh'] 		= 0;
+			$queryMateri['jumlah_dilihat'] 		= 0;
 			
-			// $insertMateri = $this->model->create_id('materi',$queryMateri);
-			// $insertMateri = json_decode($insertMateri);
-
+			$insertMateri = $this->model->create_id('materi',$queryMateri);
+			$insertMateri = json_decode($insertMateri);
 
 			// if (TRUE) {
-			// if ($insertMateri->status) {
-				// insert batch ke tabel attachment
-				// if ($file != array()) {
-					// $queryAttachment = 'INSERT INTO attachment VALUES ';
-					// foreach ($file as $key => $value) {
-						// var_dump($value);
-					// }
-				// }
+			if ($insertMateri->status) {
+				// baca destinasi penyimpanan yang sudah terdefinisi di tabel kategori
+				$direktori = $this->model->read('kategori',array('id'=>$queryMateri['kategori']))->result();
+				
+				$config['upload_path']          = FCPATH.$direktori[0]->nama_folder.'/';
+				$config['allowed_types']        = 'docx|doc|xls|pdf|xlsx';
 
-				// insert batch ke tabel tags, untuk menyimpan tag yang tertau pada setiap materi
-				// $queryTags = 'INSERT INTO tags VALUES ';
-				// foreach ($tags as $key => $value) {
-				// 	$queryTags .= "(NULL,'".$insertMateri->message."','".$value."'),";
-				// }
-				// $queryTags =  rtrim($queryTags,", ");
-				// $insertTags = $this->model->rawQuery($queryTags);
-			// }
-			die();
+				$this->load->library('upload', $config);
+				$filesCount = count($_FILES['files']['name']);
+				
+
+				$queryAttachment = 'INSERT INTO attachment VALUES ';
+				
+				// upload dan masnipulais string
+				for ($i= 0; $i < $filesCount; $i++) { 
+					$_FILES['file']['name']     = $_FILES['files']['name'][$i];
+					$_FILES['file']['type']     = $_FILES['files']['type'][$i];
+					$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+					$_FILES['file']['error']     = $_FILES['files']['error'][$i];
+					$_FILES['file']['size']     = $_FILES['files']['size'][$i];
+									
+					if( ! $this->upload->do_upload('file')){
+						echo $this->upload->display_errors();
+						die();
+					}else{
+						$queryAttachment .= "(NULL,'".$insertMateri->message."','".$direktori[0]->nama_folder."/".$this->upload->data('file_name')."'), ";
+					}
+				}
+				$queryAttachment =  rtrim($queryAttachment,", ");
+
+				// manipulasi string insert batch ke tabel tags, untuk menyimpan tag yang tertau pada setiap materi
+				$queryTags = 'INSERT INTO tags VALUES ';
+				foreach ($tags as $key => $value) {
+					$queryTags .= "(NULL,'".$insertMateri->message."','".$value."'),";
+				}
+				$queryTags =  rtrim($queryTags,", ");
+
+				// insert batch
+				$this->model->rawQuery($queryAttachment);
+				$this->model->rawQuery($queryTags);
+			}
+			alert('kelolaMateri','success','Berhasil!','Materi telah ditambahkan');
+			redirect('kelola-materi');
 		}else{
-
+			alert('kelolaMateri','danger','Gagal!','Materi gagal ditambahkan');
+			redirect('kelola-materi');
 		}
+	}
+
+	/*
+	* function untuk delete materi
+	*/
+	function deleteMateri($id)
+	{
+		$this->model->delete('materi',array('id'=>$id));
+		$this->model->delete('attachment',array('id_materi'=>$id));
+		alert('kelolaMateri','success','Berhasil!','Materi telah dihapus');
+		redirect('kelola-materi');
 	}
 }

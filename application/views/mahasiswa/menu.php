@@ -40,7 +40,7 @@
 									<?php foreach ($notif as $key => $value) { ?>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=base_url()?>assets/dashboard/assets/images/reading.png">
+											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
 										</a>
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
 											<?php if ($value->untuk == 'mahasiswa') { ?>
@@ -91,7 +91,7 @@
 									<li class="dropdown user-menu"><a class="dropdown-toggle" data-toggle="dropdown" href="#">
 										<div class="user-name"> <?=$this->session->userdata('loginSession')['nama']?></div>
 										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+											<img src="<?=$this->session->userdata('loginSession')['foto']?>" alt="Photo">
 										</div>
 									</a>
 									<ul class="dropdown-menu">
@@ -115,7 +115,7 @@
 			<div class="profile-sidebar">
 				<a href="#" class="profile-option"><i class="fa fa-cog"></i></a>
 				<div class="profile-userpic">
-					<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" class="" alt="Photo">
+					<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
 				</div>
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>

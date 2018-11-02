@@ -127,7 +127,7 @@
 											for (j in data.permasalahan[i].komentator) {
 											elementToRender += 
 											"<div class='user-photo'>"+
-												"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
+												"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' class='img-circle' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
 											"</div>";
 											}
 											if(data.permasalahan[i].remaining_penjawab !== 0){

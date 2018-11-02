@@ -1,4 +1,3 @@
-
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -21,7 +20,7 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="profile-pic">
-								<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
+								<img class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -55,7 +54,7 @@
 						</tr>
 					</table>
 				</div>
-				<a href="#" class="btn btn-normal btn-plonk-green btn-block">Edit Profil</a>
+				<a href="<?=base_url()?>edit-profil-mahasiswa" class="btn btn-normal btn-plonk-green btn-block">Edit Profil</a>
 			</div>
 		</div>
 	</div>
@@ -74,7 +73,7 @@
 						<div class="media">
 							<div class="media-left media-middle">
 								<div class="user-photo">
-									<img src="assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
@@ -97,7 +96,7 @@
 						<div class="media">
 							<div class="media-left media-middle">
 								<div class="user-photo">
-									<img src="assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
@@ -120,7 +119,7 @@
 						<div class="media">
 							<div class="media-left media-middle">
 								<div class="user-photo">
-									<img src="assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
 								</div>
 								<div class="user-nama">
 									Daniel Webber
