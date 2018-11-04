@@ -110,12 +110,13 @@
 							"</div>"+
 							"<div class='row panel-ask-answer'>"+
 								"<div class='col-md-6'>"+
-									"<ul class='list-inline list-commentator'>"+
-										"<li>"+
-											"<p>Penjawab</p>"+
-										"</li>";
+									"<ul class='list-inline list-commentator'>";
+										
 										for(var j in data.permasalahan[i].komentator){
 										elementToRender += 
+										"<li>"+
+											"<p>Penjawab</p>"+
+										"</li>"+
 										"<li>"+
 											"<a href='#' class='img-circle'>"+
 												"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
