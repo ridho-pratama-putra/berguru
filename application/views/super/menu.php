@@ -22,7 +22,7 @@
 					<span class="icon-bar"></span></button>
 					<div class="row">
 						<div class="col-xs-12 col-sm-3 col-lg-2 left-header">
-							<a class="navbar-brand" href="#">Berguru.com</a>
+							<a class="navbar-brand" href="<?=base_url()?>">Berguru.com</a>
 						</div>
 						<div class="col-xs-12 col-sm-9 col-lg-10 right-header">
 							<div class="nav-breadcrumb hidden-xs">

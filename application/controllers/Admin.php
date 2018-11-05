@@ -248,7 +248,7 @@ class Admin extends CI_Controller {
 				$createKategoriRecord = json_decode($createKategoriRecord);
 				if ($createKategoriRecord->status){
 					mkdir("materi/".ucwords($this->input->post('nama'))."",0755);
-					alert('kelolaKategoriKonten','success','Berhasil!','Kategori '.ucwords($this->input->post('nama')).' telah ditambahkan');
+ 					alert('kelolaKategoriKonten','success','Berhasil!','Kategori '.ucwords($this->input->post('nama')).' telah ditambahkan');
 				}else{
 					alert('kelolaKategoriKonten','danger','Gagal!','Kategori '.ucwords($this->input->post('nama')).' gagal ditambahkan');
 				}

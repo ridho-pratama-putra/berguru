@@ -11,9 +11,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <!-- Icon -->
-        <link rel="shortcut icon" href="images/icons/favicon.ico">
-        <link rel="icon" sizes="130x128" href="images/icons/favicon.ico">
-        <link rel="apple-touch-icon" sizes="130x128" href="images/icons/favicon.ico">
+        <link rel="shortcut icon" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+        <link rel="icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+        <link rel="apple-touch-icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
         
         <!-- Stylesheets -->
         <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/libs/bootstrap.3.3.7/css/bootstrap.css">

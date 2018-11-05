@@ -15,8 +15,12 @@ class Home extends CI_Controller {
 	{
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->readS('lowongan')->result();
+
+		// sebenarnya
+		$menu['active'] =	"home";
+		$menu['kategori'] =	$record['kategori'];
 		$this->load->view("home/header");
-		$this->load->view("home/menu",$record);
+		$this->load->view("home/menu",$menu);
 		$this->load->view("home/home",$record);
 		$this->load->view("home/footer");
 	}
@@ -43,28 +47,19 @@ class Home extends CI_Controller {
 				FROM permasalahan
 				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
 				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-				ORDER BY permasalahan.tanggal
+				ORDER BY permasalahan.tanggal DESC
+				LIMIT 4
 			");
 		}elseif($this->input->get('kategori') == 'populer'){
 			$record_ = $this->model->rawQuery("
-				SELECT
-						permasalahan.id,
-						permasalahan.teks,
-						permasalahan.tanggal,
-						pengguna.nama AS nama_pengguna,
-						permasalahan.jumlah_komen,
-						permasalahan.jumlah_dilihat,
-						permasalahan.kategori,
-						kategori.nama AS nama_kategori,
-						permasalahan.status,
-						permasalahan.beku,
-						pengguna.foto
-				FROM permasalahan
-				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-			 	ORDER BY jumlah_komen LIMIT 4
-			 ");
-		}else{
+			SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.jumlah_dilihat, permasalahan.jumlah_komen, permasalahan.kategori, kategori.nama AS nama_kategori, permasalahan.status, permasalahan.beku, pengguna.foto
+FROM permasalahan
+LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
+LEFT JOIN kategori ON permasalahan.kategori = kategori.id
+ORDER BY permasalahan.jumlah_komen DESC
+LIMIT 4 
+			");
+		}elseif($this->input->get('kategori') == 'solved' || $this->input->get('kategori') == 'unsolved'){
 			$record_ = $this->model->rawQuery("
 				SELECT
 						permasalahan.id,
@@ -82,7 +77,10 @@ class Home extends CI_Controller {
 				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
 				LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
 				WHERE permasalahan.status = '".$this->input->get('kategori')."' 
-				ORDER BY permasalahan.tanggal ");
+				ORDER BY permasalahan.tanggal DESC
+				LIMIT 4
+
+				");
 		}
 		$record['jumlah'] 		= $record_->num_rows();
 		$record['permasalahan'] = $record_->result();

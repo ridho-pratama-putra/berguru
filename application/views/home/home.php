@@ -72,7 +72,8 @@
 			$("#pertanyaanDitemukan").html(data.jumlah+" pertanyaan ditemukan");
 			if (data.permasalahan.length != 0) {				
 				var elementToRender = '';
-				for (var i = data.permasalahan.length - 1; i >= 0; i--) {
+				for (var i in data.permasalahan) {
+				// for (var i = data.permasalahan.length - 1; i >= 0; i--) {
 					elementToRender += 
 					"<div class='panel panel-default panel-ask'>"+
 						"<div class='panel-body'>"+
@@ -111,12 +112,15 @@
 							"<div class='row panel-ask-answer'>"+
 								"<div class='col-md-6'>"+
 									"<ul class='list-inline list-commentator'>";
+										if (data.permasalahan[i].komentator.length > 0 ) {
+										elementToRender +=	
+										"<li>"+
+											"<p>Penjawab</p>"+
+										"</li>";
+										}
 										
 										for(var j in data.permasalahan[i].komentator){
 										elementToRender += 
-										"<li>"+
-											"<p>Penjawab</p>"+
-										"</li>"+
 										"<li>"+
 											"<a href='#' class='img-circle'>"+
 												"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+

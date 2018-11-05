@@ -56,8 +56,13 @@
 										<i class="fa fa-unlock"></i> <?=sizeof($jawaban)?> Jawaban
 									</div>
 									<div class="col-sm-6">
-										<span class="text-muted">Penjawab</span>
+										
 										<?php
+										if ($penjawab !== array()) {
+										?>
+											<span class="text-muted">Penjawab</span>
+										<?php 
+										}
 										 foreach ($penjawab as $key => $value) { ?>
 											<div class="user-photo">
 												<img src="<?=base_url().$value->foto?>" alt="Photo" title="<?=$value->nama?>">

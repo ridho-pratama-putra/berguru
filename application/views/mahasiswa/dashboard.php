@@ -122,8 +122,11 @@
 								"</h3>"+
 								"<div class='ci-footer'>"+
 									"<div class='row'>"+
-										"<div class='col-xs-12 col-md-8 col-lg-9'>"+
-											"<span class='text-muted'>Penjawab</span>";
+										"<div class='col-xs-12 col-md-8 col-lg-9'>";
+											if (data.permasalahan[i].komentator > 0) {
+												elementToRender +=
+												"<span class='text-muted'>Penjawab</span>";
+											}
 											for (j in data.permasalahan[i].komentator) {
 											elementToRender += 
 											"<div class='user-photo'>"+
