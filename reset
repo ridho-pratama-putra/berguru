@@ -1,0 +1,15 @@
+truncate table attachment;
+truncate table direct_message;
+truncate table kategori;
+truncate table komentar;
+truncate table komentar_message;
+ truncate table lowongan;
+ truncate table mahasiswa;
+truncate table materi;
+truncate table message;
+truncate table notif_flag;
+truncate table notif;
+truncate table permasalahan;
+truncate table pesan_info;
+truncate table riwayat_permasalahan_dilihat;
+truncate table tags;

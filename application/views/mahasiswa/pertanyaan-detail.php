@@ -94,7 +94,7 @@
 												</div>
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
-													<div class="rate-result"></div>
+													<div class="rate-result"  data-score="<?=$value->rating?>"></div>
 												</div>
 											</div>
 										</div>

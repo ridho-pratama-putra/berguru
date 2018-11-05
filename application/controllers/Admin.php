@@ -7,8 +7,13 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'admin') {
-			redirect(base_url().'logout');
+			redirect('logout');
 		}
+
+		// set array koasong untuk simpan notif2
+		$this->menu['notif'] = array();
+		$this->menu['belum_dilihat'] = array();
+		$this->notifikasiMenu();
 	}
 
 	/*
@@ -18,10 +23,10 @@ class Admin extends CI_Controller {
 	{
 		$data['kategori'] 	= $this->model->readS('kategori')->result();
 		$header['title'] 	= 'Kelola Kategori Konten';
-		$menu['breadcrumb'] = 'Kelola Kategori Konten';
-		$menu['active'] 	= 'kategorikonten';
+		$this->menu['breadcrumb'] = 'Kelola Kategori Konten';
+		$this->menu['active'] 	= 'kategorikonten';
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-kategori-konten',$data);
 		$this->load->view('statis/footer');
 	}
@@ -31,11 +36,11 @@ class Admin extends CI_Controller {
 	*/
 	function kelolaDaftarMessage($dataCondition){
 		$header['title'] 	= 'Kelola Daftar Message';
-		$menu['breadcrumb'] = 'Kelola Daftar Message';
-		$menu['active'] 	= 'daftarmessage';
-		$menu['sort_active']= $dataCondition;
+		$this->menu['breadcrumb'] = 'Kelola Daftar Message';
+		$this->menu['active'] 	= 'daftarmessage';
+		$this->menu['sort_active']= $dataCondition;
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-daftar-message');
 		$this->load->view('statis/footer');
 
@@ -80,8 +85,8 @@ class Admin extends CI_Controller {
 	function kelolaKomentar()
 	{
 		$header['title'] 	= 'Kelola Komentar';
-		$menu['breadcrumb'] = 'Kelola Komentar';
-		$menu['active'] 	= 'komentar';
+		$this->menu['breadcrumb'] = 'Kelola Komentar';
+		$this->menu['active'] 	= 'komentar';
 		$record['kelola_komentar'] = $this->model->rawQuery('
 			SELECT 
 					komentar.id,
@@ -106,7 +111,7 @@ class Admin extends CI_Controller {
 			ORDER BY tanggal_komentar DESC
 			')->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-komentar',$record);
 		$this->load->view('statis/footer');
 	}
@@ -117,8 +122,8 @@ class Admin extends CI_Controller {
 	function kelolaKontenPermasalahan()
 	{
 		$header['title'] 	= 'Kelola Konten Permasalahan';
-		$menu['breadcrumb'] = 'Kelola Konten Permasalahan';
-		$menu['active'] 	= 'kontenpermasalahan';
+		$this->menu['breadcrumb'] = 'Kelola Konten Permasalahan';
+		$this->menu['active'] 	= 'kontenpermasalahan';
 		$record['permasalahan']=$this->model->rawQuery('
 				SELECT 
 						permasalahan.id,
@@ -132,7 +137,7 @@ class Admin extends CI_Controller {
 				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
 				')->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-konten-permasalahan',$record);
 		$this->load->view('statis/footer');
 	}
@@ -143,8 +148,8 @@ class Admin extends CI_Controller {
 	function kelolaMateri()
 	{
 		$header['title'] 	= 'Kelola Materi';
-		$menu['breadcrumb'] = 'Kelola Materi';
-		$menu['active'] 	= 'materi';
+		$this->menu['breadcrumb'] = 'Kelola Materi';
+		$this->menu['active'] 	= 'materi';
 		$record['materi']	= $this->model->rawQuery('
 			SELECT 
 					materi.nama AS nama_materi,
@@ -159,7 +164,7 @@ class Admin extends CI_Controller {
 		')->result();
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-materi',$record);
 		$this->load->view('statis/footer');
 	}
@@ -170,12 +175,12 @@ class Admin extends CI_Controller {
 	function kelolaPengguna()
 	{
 		$header['title'] 	= 'Kelola Pengguna';
-		$menu['breadcrumb'] = 'Kelola Pengguna';
-		$menu['active'] 	= 'pengguna';
+		$this->menu['breadcrumb'] = 'Kelola Pengguna';
+		$this->menu['active'] 	= 'pengguna';
 
 		$record['mahasiswa'] = $this->model->read('pengguna',array('aktor'=>'mahasiswa'))->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-pengguna',$record);
 		$this->load->view('statis/footer');
 	}
@@ -186,10 +191,10 @@ class Admin extends CI_Controller {
 	function kelolaPesanInfo()
 	{
 		$header['title'] 	= 'Kelola Pesan Info';
-		$menu['breadcrumb'] = 'Kelola Pesan Info';
-		$menu['active'] 	= 'pesaninfo';
+		$this->menu['breadcrumb'] = 'Kelola Pesan Info';
+		$this->menu['active'] 	= 'pesaninfo';
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-pesan-info');
 		$this->load->view('statis/footer');
 	}
@@ -200,11 +205,11 @@ class Admin extends CI_Controller {
 	function kelolaTenagaPendidik()
 	{
 		$header['title'] 	= 'Kelola Tenaga Pendidik';
-		$menu['breadcrumb'] = 'Kelola Tenaga Pendidik';
-		$menu['active'] 	= 'tenagapendidik';
+		$this->menu['breadcrumb'] = 'Kelola Tenaga Pendidik';
+		$this->menu['active'] 	= 'tenagapendidik';
 		$record['tenagapendidik']=$this->model->read('pengguna',array('aktor'=>'pendidik'))->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-tenaga-pendidik',$record);
 		$this->load->view('statis/footer');
 	}
@@ -215,10 +220,10 @@ class Admin extends CI_Controller {
 	function kelolaLowonganKerja()
 	{
 		$header['title'] 	= 'Kelola Lowongan Kerja';
-		$menu['breadcrumb'] = 'Kelola Lowongan Kerja';
-		$menu['active'] 	= 'lowongan';
+		$this->menu['breadcrumb'] = 'Kelola Lowongan Kerja';
+		$this->menu['active'] 	= 'lowongan';
 		$this->load->view('statis/header',$header);
-		$this->load->view('super/menu',$menu);
+		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-lowongan-kerja');
 		$this->load->view('statis/footer');
 	}	
@@ -258,7 +263,7 @@ class Admin extends CI_Controller {
 		}else{
 			alert('kelolaKategoriKonten','warning','Perhatian!','Tidak ada data yang di POST');
 		}
-		redirect(base_url().'kelola-kategori-konten');
+		redirect('kelola-kategori-konten');
 	}
 
 	/*
@@ -266,7 +271,7 @@ class Admin extends CI_Controller {
 	*/
 	function editKategoriKonten()
 	{
-		redirect(base_url().'kelola-kategori-konten');
+		redirect('kelola-kategori-konten');
 	}
 
 
@@ -300,6 +305,7 @@ class Admin extends CI_Controller {
 			$deletePengguna = $this->model->delete('pengguna',array('id'=>$this->input->post('id')));
 			if ($deletePengguna) {
 				alert('kelolaPengguna','success','Berhasil!','Pengguna telah dihapus');
+				$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
 			}else{
 				alert('kelolaPengguna','danger','Gagal!','Pengguna tidak dapat dihapus');
 			}
@@ -321,6 +327,7 @@ class Admin extends CI_Controller {
 			if ($this->input->post('status') == 'ACTIVE') {
 				if ($ubahStatus->status) {
 					alert('kelolaPengguna','success','Berhasil!','Status Pengguna telah diaktifkan');
+					$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
 				}else{
 					alert('kelolaPengguna','danger','Gagal!','Status Pengguna tidak dapat diaktifkan');
 				}
@@ -346,6 +353,7 @@ class Admin extends CI_Controller {
 			$deleteTenagaPendidik = $this->model->delete('pengguna',array('id'=>$this->input->post('id')));
 			if ($deleteTenagaPendidik) {
 				alert('kelolaTenagaPendidik','success','Berhasil!','Tenaga Pendidik telah dihapus');
+				$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
 			}else{
 				alert('kelolaTenagaPendidik','danger','Gagal!','Tenaga Pendidik tidak dapat dihapus');
 			}
@@ -367,6 +375,8 @@ class Admin extends CI_Controller {
 			if ($this->input->post('status') == 'ACTIVE') {
 				if ($ubahStatus->status) {
 					alert('kelolaTenagaPendidik','success','Berhasil!','Status tenaga pendidik telah diaktifkan');
+					$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
+
 				}else{
 					alert('kelolaTenagaPendidik','danger','Gagal!','Status tenaga pendidik tidak dapat diaktifkan');
 				}
@@ -510,5 +520,103 @@ class Admin extends CI_Controller {
 		$this->model->delete('attachment',array('id_materi'=>$id));
 		alert('kelolaMateri','success','Berhasil!','Materi telah dihapus');
 		redirect('kelola-materi');
+	}
+
+	/*
+	* function untuk search sesuatu pada array, bisa multidimensi
+	*/
+	function in_array_r($needle, $haystack, $strict = false) {
+		foreach ($haystack as $item) {
+			if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/*
+	* funtion untuk menampilkan icon angka pada icon amplop
+	*/
+	function notifikasiMenu()
+	{
+		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
+		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
+
+		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
+		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
+		if ($notifBaruDanUntukSaya->num_rows() > 0) {
+
+		}*/
+
+
+		// baca notif untuk para admin dan dia seorang
+		$notif_admin = $this->model->rawQuery("
+			SELECT  
+					notif.id,
+					notif.konteks,
+					notif.id_konteks,
+					pengguna.nama AS dari, 
+					pengguna.aktor, 
+					notif.untuk,
+					notif.datetime 
+			FROM notif 
+			LEFT JOIN pengguna ON pengguna.id = notif.dari
+			WHERE 
+					untuk='admin'
+			OR 
+					untuk='".$this->session->userdata('loginSession')['id']."'
+			ORDER BY datetime DESC
+		");
+
+
+		if ($notif_admin->num_rows() != 0) {
+			$notif_admin = $notif_admin->result();
+			
+			// baca notif yang untuk para admin yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para admin
+			$notif_admin_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_flag WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
+
+			// array matang untuk dikirim ke menu
+			$notif_ = array();
+
+			// berlaku untuk notif admin atau notif untuk saya
+			foreach ($notif_admin as $key => $value) {
+				$notif_[$key] = $value;
+				if ($this->in_array_r($value->id,$notif_admin_terlihat)) {
+					$notif_[$key]->terlihat = 'sudah';
+				}else{
+					$notif_[$key]->terlihat = 'belum';
+					array_push($this->menu['belum_dilihat'], $value->id);
+				}
+			}
+
+			// insert max notif id per user
+			$runQuery = $this->model->rawQuery("UPDATE max_notif_id_per_user SET max_notif_id =".$notif_admin[0]->id." WHERE id_pengguna='".$this->session->userdata('loginSession')['id']."'");
+			// var_dump($runQuery);die();
+
+			unset($notif_admin);unset($notif_admin_terlihat);unset($notif_admin_terbaca);
+
+			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
+			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
+			$this->menu['notif'] = array_slice($notif_, 0, 8);
+		}
+	}
+
+	/*
+	* funtion untuk update notifikasi ke terlihat
+	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
+	*/
+	function setTerlihat()
+	{
+		if ($this->input->post() !== array()) {
+			if ($this->menu['belum_dilihat'] !== array()) {
+				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
+				foreach ($this->menu['belum_dilihat'] as $key => $value) {
+					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
+				}
+				$idToUpdate =  rtrim($idToUpdate,", ");				
+				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
+				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
+			}
+		}
 	}
 }

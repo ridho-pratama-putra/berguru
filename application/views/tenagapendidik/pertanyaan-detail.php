@@ -9,9 +9,9 @@
 	// end script untuk hapus pertanyaan
 	
 	// function untuk kirim rate-input
-	function submitRating(arguments){ 
+	function submitRating(arguments,arguments_){ 
 		var rating 			= $('#'+arguments).raty('score');
-		$.post("<?=base_url()?>submit-rating-pendidik",{ id : arguments, rating : rating});
+		$.post("<?=base_url()?>submit-rating-pendidik",{ id : arguments, id_ : arguments_, rating : rating});
 	}
 
 	// funtion untuk redirect + kirim GET
@@ -114,7 +114,7 @@
 												</div>
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
-													<div class="rate-input" id="<?=$value->id?>" data-score="<?=$value->rating?>" onclick="submitRating(<?=$value->id?>)"></div>
+													<div class="rate-input" id="<?=$value->id?>" data-score="<?=$value->rating?>" onclick="submitRating(<?=$value->id?>,<?=$pertanyaan[0]->id?>)"></div>
 													<a href="<?=base_url()?>pesan-pendidik/new-chat?id_komentator=<?=$value->id_komentator?>&id_permasalahan=<?=$pertanyaan[0]->id?>&id_komentar=<?=$value->id?>" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
 												</div>
 											</div>

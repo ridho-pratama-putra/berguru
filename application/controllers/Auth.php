@@ -190,7 +190,7 @@ class Auth extends CI_Controller {
 			$queryPengguna = json_decode($queryPengguna);
 			// var_dump($queryPengguna);die();
 			// insert ke tabel max_notif_id_per_user
-			$this->model->create('max_notif_id_per_user',array('id_pengguna'=>$queryPengguna->message,'max_notif_id'=>0));
+			$this->model->create_id('max_notif_id_per_user',array('id_pengguna'=>$queryPengguna->message,'max_notif_id'=>0));
 			
 			if ($queryPengguna->status) {
 				$this->session->unset_userdata('registrasiSession');
@@ -198,6 +198,9 @@ class Auth extends CI_Controller {
 			}else{
 				alert('register','danger','Gagal!','Kegagalan database. Data tidak dapat masuk');
 			}
+
+			// create alert untuk admin kalau ada pengguna yang harus diaktifkan
+			$this->model->create('notif',array('konteks'=>'penggunaBaru','dari'=>$queryPengguna->message,'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s'),'terlihat'=>0,'terbaca'=>0));
 			redirect('login');
 		}else{
 			$error['heading'] = '404 Page Not Found';

@@ -7,14 +7,15 @@ class Mahasiswa extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('loginSession')['aktor'] !== 'mahasiswa') {
-			alert('login','warning','Peringatan!',"Anda harus login terlebih dahulu untuk menjawab pertanyaan tersebut. Atau daftar <a href='".base_url()."register'>disini</a> jika belum memiliki akun");
-			redirect(base_url().'login');
+			alert('login','warning','Peringatan!',"Anda harus login terlebih dahulu. Atau daftar <a href='".base_url()."register'>disini</a> jika belum memiliki akun");
+			redirect('login');
 		}
 		// set array koasong untuk simpan notif2
 		$this->menu['notif'] = array();
 		$this->menu['belum_dilihat'] = array();
 		$this->notifikasiMenu();
 	}
+	
 	/*
 	* function untuk menampilkan halaman dashboard
 	*/
@@ -229,42 +230,51 @@ class Mahasiswa extends CI_Controller {
 
 
 	/*
-	* funtion untuk pesan icon angka pada icon amplop
+	* funtion untuk menampilkan icon angka pada icon amplop
 	*/
 	function notifikasiMenu()
 	{
-		// cek max notif id, jika lebih dari max id di db, maka eksekusi hitung notif 
-		// $maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
+		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
+		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
 
-		// $notifBaruDanUntukSaya = $this->model->rawQuery("SELECT")
-		// if ($maxIdDb_[0]->max_notif_id) {
-			
-		// }
-		
+		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
+		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
+		if ($notifBaruDanUntukSaya->num_rows() > 0) {
+
+		}*/
+
+
 		// baca notif untuk para mahasiswa dan dia seorang
 		$notif_mahasiswa = $this->model->rawQuery("
 			SELECT  
-					notif_permasalahan.id, 
+					notif.id,
+					notif.konteks,
+					notif.id_konteks,
 					pengguna.nama AS dari, 
-					notif_permasalahan.untuk, 
-					notif_permasalahan.datetime 
-			FROM notif_permasalahan 
-			LEFT JOIN pengguna ON pengguna.id = notif_permasalahan.dari
+					notif.untuk,
+					notif.datetime 
+			FROM notif 
+			LEFT JOIN pengguna ON pengguna.id = notif.dari
 			WHERE 
+					untuk='semua' 
+			OR 
 					untuk='mahasiswa' 
 			OR 
 					untuk='".$this->session->userdata('loginSession')['id']."'
 			ORDER BY datetime DESC
 		");
+
+
 		if ($notif_mahasiswa->num_rows() != 0) {
 			$notif_mahasiswa = $notif_mahasiswa->result();
 			
 			// baca notif yang untuk para mahasiswa yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para mahasiswa
-			$notif_mahasiswa_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_mhs_per_user WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
+			$notif_mahasiswa_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_flag WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
 
 			// array matang untuk dikirim ke menu
 			$notif_ = array();
 
+			// berlaku untuk notif mahasiswa atau notif untuk saya
 			foreach ($notif_mahasiswa as $key => $value) {
 				$notif_[$key] = $value;
 				if ($this->in_array_r($value->id,$notif_mahasiswa_terlihat)) {
@@ -281,20 +291,21 @@ class Mahasiswa extends CI_Controller {
 
 			unset($notif_mahasiswa);unset($notif_mahasiswa_terlihat);unset($notif_mahasiswa_terbaca);
 
-			// array noti_ siap dikirim ke menu
+			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
+			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
 			$this->menu['notif'] = array_slice($notif_, 0, 7);
 		}
 	}
 
 	/*
 	* funtion untuk update notifikasi ke terlihat
-	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat atau belum
+	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
 	*/
 	function setTerlihat()
 	{
 		if ($this->input->post() !== array()) {
 			if ($this->menu['belum_dilihat'] !== array()) {
-				$updateToNotifMhsPerUser 	= "INSERT INTO notif_mhs_per_user VALUES ";
+				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
 				foreach ($this->menu['belum_dilihat'] as $key => $value) {
 					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
 				}
@@ -325,6 +336,7 @@ class Mahasiswa extends CI_Controller {
 			$record['jawaban']		= $this->model->rawQuery("
 				SELECT
 						komentar.teks,
+						komentar.rating,
 						komentar.tanggal,
 						pengguna.nama AS siapa,
 						pengguna.foto
@@ -429,6 +441,9 @@ class Mahasiswa extends CI_Controller {
 				$queryInsert = json_decode($queryInsert);
 				if ($queryInsert->status) {
 					alert('jawab','success','Berhasil!','Jawaban anda telah dipublish');
+
+					// id_konteks adalah id permasalahan
+					$this->model->create('notif',array('konteks'=>'komentar','id_konteks'=>$this->input->post('id'),'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('pendidik'),'datetime'=>date('Y-m-d H:i:s')));
 					redirect('pertanyaan-detail-mahasiswa/'.$this->input->post('id'));
 				}else{
 					alert('jawab','warning','Gagal!','Jawaban anda gagal dipublish');

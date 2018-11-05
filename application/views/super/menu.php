@@ -11,7 +11,15 @@
 			$('#chevron').removeClass('fa-chevron-up').addClass('fa-chevron-down');
 		}
 	});
+
 	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
+
+	// function ajax untuk set alert badge
+	function setToTerlihat() {
+		$.post( "<?=base_url()?>Admin/setTerlihat",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif').html('');
+		});
+	}
 </script>	
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
@@ -34,35 +42,41 @@
 								</ol>
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
-								<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-									<em class="fa fa-envelope"></em><span class="label label-danger">15</span>
+								<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihat()">
+									<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
 								</a>
 								<ul class="dropdown-menu dropdown-messages">
+									<?php foreach ($notif as $key => $value) { ?>
 									<li>
-										<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
+										<div class="dropdown-messages-box"><a href="#" class="pull-left">
 											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
 										</a>
-										<div class="message-body"><small class="pull-right">3 mins ago</small>
-											<a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-											<br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
+										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
+											<?php if ($value->untuk == 'admin' AND $value->konteks == 'penggunaBaru' AND $value->aktor == 'mahasiswa') { ?>
+											<a href="<?=base_url()?>kelola-pengguna">Mahasiswa baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
+											<?php }elseif($value->untuk == 'admin' AND $value->konteks == 'penggunaBaru' AND $value->aktor == 'pendidik'){?>
+											<a href="<?=base_url()?>kelola-tenaga-pendidik">Pendidik baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
+											<?php }else{ ?>
+											<a href="#"><strong><?=$value->dari?></strong> memberikan komentar kepada anda.</a>
+											<?php } ?>
+											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>
 									</li>
 									<li class="divider"></li>
-									<li>
-										<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
-										</a>
-										<div class="message-body"><small class="pull-right">1 hour ago</small>
-											<a href="#">New message from <strong>Jane Doe</strong>.</a>
-											<br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
-										</div>
-									</li>
-									<li class="divider"></li>
+									<?php } ?>
+									<?php if ($notif !== array()) { ?>
 									<li>
 										<div class="all-button"><a href="#">
 											<em class="fa fa-inbox"></em> <strong>All Messages</strong>
 										</a></div>
 									</li>
+									<?php }else{ ?>
+										<li>
+										<div class="all-button"><a href="#">
+											<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+										</a></div>
+									</li>
+									<?php } ?>
 								</ul>
 							</li>
 							<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">

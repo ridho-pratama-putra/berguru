@@ -10,7 +10,11 @@ class Pendidik extends CI_Controller {
 			alert('login','warning','Peringatan!',"Anda tidak memiliki hak akses sebagai pendidik. Atau mendaftar <a href='".base_url()."register'> disini</a> jika belum memiliki akun");
 			redirect('login');
 		}
-		// $menu['notif_permasalahan'] = $this->model->read("notif_permasalahan",array("untuk"=>"mahasiswa OR untuk='".$this->session->userdata('loginSession')['id']."'"));
+		// set array koasong untuk simpan notif2
+		$this->menu['notif'] = array();
+		$this->menu['belum_dilihat'] = array();
+		$this->notifikasiMenu();
+		// $this->menu['notif'] = $this->model->read("notif",array("untuk"=>"mahasiswa OR untuk='".$this->session->userdata('loginSession')['id']."'"));
 
 	}
 
@@ -24,11 +28,11 @@ class Pendidik extends CI_Controller {
 		// var_dump($this->input->get());
 		// die();
 		$header['title'] 		= 'Pendidik - Pesan';
-		$menu['breadcrumb'] 	= 'Pesan';
-		$menu['active'] 		= 'pesan';
+		$this->menu['breadcrumb'] 	= 'Pesan';
+		$this->menu['active'] 		= 'pesan';
 		$record = array();
 		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 
 		// kirim ke client sebuah tanda, apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
 		if ($newChat == 'new-chat') {
@@ -54,10 +58,10 @@ class Pendidik extends CI_Controller {
 	*/
 	function profil(){
 		$header['title'] = 'Pendidik - Profil';
-		$menu['breadcrumb'] 	= 'Profil';
-		$menu['active'] 		= '';
+		$this->menu['breadcrumb'] 	= 'Profil';
+		$this->menu['active'] 		= '';
 		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 		$this->load->view('tenagapendidik/profil');
 		$this->load->view('statis/footer');
 
@@ -69,8 +73,8 @@ class Pendidik extends CI_Controller {
 	function pertanyaanSaya()
 	{
 		$header['title'] = 'Pendidik - Pertanyaan Saya';
-		$menu['active'] = 'pertanyaanSaya';
-		$menu['breadcrumb'] = 'Pertanyaan Saya';
+		$this->menu['active'] = 'pertanyaanSaya';
+		$this->menu['breadcrumb'] = 'Pertanyaan Saya';
 		$record['pertanyaan'] = $this->model->rawQuery("
 			SELECT 
 					permasalahan.id,
@@ -89,7 +93,7 @@ class Pendidik extends CI_Controller {
 			ORDER BY permasalahan.tanggal DESC
 			")->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 		$this->load->view('tenagapendidik/pertanyaan-saya',$record);
 		$this->load->view('statis/footer');
 	}
@@ -100,11 +104,11 @@ class Pendidik extends CI_Controller {
 	function buatPertanyaan()
 	{
 		$header['title'] = 'Pendidik - Buat Pertanyaan';
-		$menu['active'] = 'pertanyaanSaya';
-		$menu['breadcrumb'] = 'Pertanyaan Saya';
+		$this->menu['active'] = 'pertanyaanSaya';
+		$this->menu['breadcrumb'] = 'Pertanyaan Saya';
 		$recordPertanyaan['kategori'] = $this->model->read('kategori',array('status'=>'ACTIVE'))->result();
 		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 		$this->load->view('tenagapendidik/pertanyaan-tambah',$recordPertanyaan);
 		$this->load->view('statis/footer');
 	}
@@ -116,10 +120,10 @@ class Pendidik extends CI_Controller {
 	{
 		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 		$header['title'] = "Pendidik - Edit Profil";
-		$menu['active'] = "editProfil";
-		$menu['breadcrumb'] = "Edit Profil";
+		$this->menu['active'] = "editProfil";
+		$this->menu['breadcrumb'] = "Edit Profil";
 		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 		$this->load->view('tenagapendidik/edit-profil',$record);
 		$this->load->view('statis/footer');
 	}
@@ -144,11 +148,12 @@ class Pendidik extends CI_Controller {
 			$queryPermasalahan = json_decode($queryPermasalahan);
 			if ($queryPermasalahan->status) {
 				// tell all mahasiswa kalau ada pesan baru. baca dulu id semua pengguna yang bertipe mahasiswa, kalau sudah, masukkan kan ke tabel notidikasi_message
-				$insertNotifikasiMessage = $this->model->create('notif_permasalahan',array(
-																						'id_permasalahan' => $queryPermasalahan->message,
-																						'dari'=>$this->session->userdata('loginSession')['id'],
-																						'untuk'=>'mahasiswa',
-																						'datetime'=>date('Y-m-d H:i:s')
+				$insertNotifikasiMessage = $this->model->create('notif',array(
+																						'konteks'			=> 'pertanyaan',
+																						'id_konteks' 		=> $queryPermasalahan->message,
+																						'dari'				=>$this->session->userdata('loginSession')['id'],
+																						'untuk'				=>'mahasiswa',
+																						'datetime'			=>date('Y-m-d H:i:s')
 																					)
 				);
 
@@ -171,7 +176,7 @@ class Pendidik extends CI_Controller {
 			$deletePertanyaan = $this->model->delete('permasalahan',array('id'=>$this->input->post('id')));
 
 			// delete di tabel notifikasi
-			$this->model->delete('notif_permasalahan',array('id_permasalahan'=>$this->input->post('id')));			
+			$this->model->delete('notif',array('konteks'=>'pertanyaan', 'id_konteks'=>$this->input->post('id')));			
 
 			// delete di tabel riwayat_notifikasi
 			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));			
@@ -316,10 +321,10 @@ class Pendidik extends CI_Controller {
 		$record['remaining_penjawab'] = $this->getPenjawab($id)['remaining_penjawab'];
 		
 		$header['title'] = 'Pendidik - Pertanyaan Detail';
-		$menu['breadcrumb'] 	= 'Pertanyaan Saya';
-		$menu['active'] 		= 'pertanyaanSaya';
+		$this->menu['breadcrumb'] 	= 'Pertanyaan Saya';
+		$this->menu['active'] 		= 'pertanyaanSaya';
 		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$menu);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 		$this->load->view('tenagapendidik/pertanyaan-detail',$record);
 		$this->load->view('statis/footer');
 	}
@@ -375,10 +380,10 @@ class Pendidik extends CI_Controller {
 			$record['kategori'] = $this->model->readS("kategori")->result();
 
 			$header['title'] = "Pendidik | Pertanyaan Edit";
-			$menu['breadcrumb'] = "Pertanyaan Edit";
-			$menu['active'] = "pertanyaanSaya";
+			$this->menu['breadcrumb'] = "Pertanyaan Edit";
+			$this->menu['active'] = "pertanyaanSaya";
 			$this->load->view("statis/header",$header);
-			$this->load->view("tenagapendidik/menu",$menu);
+			$this->load->view("tenagapendidik/menu",$this->menu);
 			$this->load->view("tenagapendidik/pertanyaan-edit",$record);
 			$this->load->view("statis/footer");
 			
@@ -433,11 +438,11 @@ class Pendidik extends CI_Controller {
 	function materi()
 	{
 		$header['title'] = "Pendidik - Materi";
-		$menu['breadcrumb'] = "Materi";
-		$menu['active'] = "materi";
+		$this->menu['breadcrumb'] = "Materi";
+		$this->menu['active'] = "materi";
 		$record['kategori'] = $this->model->readS("kategori")->result();
 		$this->load->view("statis/header",$header);
-		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/materi",$record);
 		$this->load->view("statis/footer");
 	}
@@ -448,12 +453,12 @@ class Pendidik extends CI_Controller {
 	function tambahMateri()
 	{
 		$header['title'] = "Pendidik - Materi Tambah";
-		$menu['breadcrumb'] = "Materi";
-		$menu['active'] = "materi";
+		$this->menu['breadcrumb'] = "Materi";
+		$this->menu['active'] = "materi";
 		$record['kategori'] = $this->model->readS("kategori")->result();
 
 		$this->load->view("statis/header",$header);
-		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/materi-tambah",$record);
 		$this->load->view("statis/footer");
 	}
@@ -464,11 +469,11 @@ class Pendidik extends CI_Controller {
 	function karir()
 	{
 		$header['title'] = "Pendidik - Karir";
-		$menu['breadcrumb'] = "Karir";
-		$menu['active'] = "karir";
+		$this->menu['breadcrumb'] = "Karir";
+		$this->menu['active'] = "karir";
 
 		$this->load->view("statis/header",$header);
-		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/karir");
 		$this->load->view("statis/footer");
 	}
@@ -480,11 +485,11 @@ class Pendidik extends CI_Controller {
 	{
 		
 		$header['title'] = "Pendidik - Karir Tambah";
-		$menu['breadcrumb'] = "Karir";
-		$menu['active'] = "karir";
+		$this->menu['breadcrumb'] = "Karir";
+		$this->menu['active'] = "karir";
 
 		$this->load->view("statis/header",$header);
-		$this->load->view("tenagapendidik/menu",$menu);
+		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/karir-tambah");
 		$this->load->view("statis/footer");
 	}
@@ -528,16 +533,120 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-	* funtion untuk submit rating sebuah komentar
+	* funtion untuk submit rating sebuah komentar dipanggil di halaman detail-pertanyaan-pendidik
 	*/
 	function submitRating()
 	{
 		if ($this->input->post() !== array()) {
 			$queryUpdate = $this->model->update("komentar",array('id'=>$this->input->post('id')),array('rating'=>$this->input->post('rating')));
+
+			// berikan notifikasi pada specified pengguna. id_konteks adalah id_pertanyaan
+			$id_komentator = $this->model->readCol('komentar',array('id'=>$this->input->post('id')),array('siapa'))->result();
+			$this->model->create('notif',array('konteks'=>'ratingKomentar','id_konteks'=>$this->input->post('id_'),'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator[0]->siapa,'datetime'=>date('Y-m-d H:i:s')));
 			echo $queryUpdate;
+			return true;
 		}else{
-			echo json_encode("asdasd");
+			echo json_encode("error");
+			return true;
 		}
 	}
 
+	/*
+	* function untuk search sesuatu pada array, bisa multidimensi
+	*/
+	function in_array_r($needle, $haystack, $strict = false) {
+		foreach ($haystack as $item) {
+			if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/*
+	* funtion untuk menampilkan icon angka pada icon amplop
+	*/
+	function notifikasiMenu()
+	{
+		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
+		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
+
+		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
+		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
+		if ($notifBaruDanUntukSaya->num_rows() > 0) {
+
+		}*/
+
+
+		// baca notif untuk para mahasiswa dan dia seorang
+		$notif_pendidik = $this->model->rawQuery("
+			SELECT  
+					notif.id,
+					notif.konteks,
+					notif.id_konteks,
+					pengguna.nama AS dari, 
+					notif.untuk,
+					notif.datetime 
+			FROM notif 
+			LEFT JOIN pengguna ON pengguna.id = notif.dari
+			WHERE 
+					untuk='semua' 
+			OR 
+					untuk='pendidik' 
+			OR 
+					untuk='".$this->session->userdata('loginSession')['id']."'
+			ORDER BY datetime DESC
+		");
+
+
+		if ($notif_pendidik->num_rows() != 0) {
+			$notif_pendidik = $notif_pendidik->result();
+			
+			// baca notif yang untuk para mahasiswa yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para mahasiswa
+			$notif_pendidik_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_flag WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
+
+			// array matang untuk dikirim ke menu
+			$notif_ = array();
+
+			// berlaku untuk notif mahasiswa atau notif untuk saya
+			foreach ($notif_pendidik as $key => $value) {
+				$notif_[$key] = $value;
+				if ($this->in_array_r($value->id,$notif_pendidik_terlihat)) {
+					$notif_[$key]->terlihat = 'sudah';
+				}else{
+					$notif_[$key]->terlihat = 'belum';
+					array_push($this->menu['belum_dilihat'], $value->id);
+				}
+			}
+
+			// insert max notif id per user
+			$runQuery = $this->model->rawQuery("UPDATE max_notif_id_per_user SET max_notif_id =".$notif_pendidik[0]->id." WHERE id_pengguna='".$this->session->userdata('loginSession')['id']."'");
+			// var_dump($runQuery);die();
+
+			unset($notif_pendidik);unset($notif_pendidik_terlihat);unset($notif_pendidik_terbaca);
+
+			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
+			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
+			$this->menu['notif'] = array_slice($notif_, 0, 7);
+		}
+	}
+
+	/*
+	* funtion untuk update notifikasi ke terlihat
+	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
+	*/
+	function setTerlihat()
+	{
+		if ($this->input->post() !== array()) {
+			if ($this->menu['belum_dilihat'] !== array()) {
+				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
+				foreach ($this->menu['belum_dilihat'] as $key => $value) {
+					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
+				}
+				$idToUpdate =  rtrim($idToUpdate,", ");				
+				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
+				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
+			}
+		}
+	}
 }

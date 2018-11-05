@@ -3,6 +3,11 @@
 	$( document ).ready(function() {
 		$("#<?=$active?>").attr("class","active");
 	});
+	function setToTerlihat() {
+		$.post( "<?=base_url()?>Pendidik/setTerlihat",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif').html('');
+		});
+	}
 	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
 </script>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -26,35 +31,39 @@
 								</ol>
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
-								<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-									<em class="fa fa-envelope"></em><span class="label label-danger">15</span>
+								<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihat()">
+									<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
 								</a>
 								<ul class="dropdown-menu dropdown-messages">
-									<li>
-										<div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
-										</a>
-										<div class="message-body"><small class="pull-right">3 mins ago</small>
-											<a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-											<br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-										</div>
-									</li>
-									<li class="divider"></li>
+									<?php foreach ($notif as $key => $value) { ?>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
 											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
 										</a>
-										<div class="message-body"><small class="pull-right">1 hour ago</small>
-											<a href="#">New message from <strong>Jane Doe</strong>.</a>
-											<br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
+										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
+											<?php if ($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'komentar') { ?>
+											<a href="<?=base_url()?>detail-pertanyaan-pendidik/<?=$value->id_konteks?>" title='klik untuk melihat komentar'><strong><?=$value->dari?></strong> mengomentari pertanyaan anda</a>
+											<?php }elseif($value->untuk == 'semua'){?>
+												<a href="#"><strong>Pemberitahuan!</strong></a>
+											<?php } ?>
+											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>
 									</li>
 									<li class="divider"></li>
+									<?php } ?>
+									<?php if ($notif !== array()) { ?>
 									<li>
 										<div class="all-button"><a href="#">
 											<em class="fa fa-inbox"></em> <strong>All Messages</strong>
 										</a></div>
 									</li>
+									<?php }else{ ?>
+										<li>
+										<div class="all-button"><a href="#">
+											<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+										</a></div>
+									</li>
+									<?php } ?>
 								</ul>
 							</li>
 							<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">

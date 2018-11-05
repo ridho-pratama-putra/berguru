@@ -1,10 +1,10 @@
 	<div class="login-layout">
 		<div class="left-side-wrap">
 			<div class="logo-header">
-				<a href=""><img src="<?=base_url()?>assets_/images/group-9.png" alt=""></a>
+				<a href=""><img src="<?=base_url()?>assets/assets/images/icons/group-9.png" alt=""></a>
 			</div>
 			<div class="login-bg">
-				<img src="<?=base_url()?>assets_/images/bitmap.png" alt="" style="width: 90%;">
+				<img src="<?=base_url()?>assets/assets/images/thumbnails/testimoni.png" alt="" style="width: 90%;">
 			</div>
 			<div class="front-slider">
 					<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -79,7 +79,7 @@
 								<label class="container-radio">
 								  <input type="radio" checked="checked" name="profesi" value="pendidik">
 								  <span class="checkmark">
-								  	<img src="<?=base_url()?>assets_/images/teacher-1@3x.png" alt="">
+								  	<img src="<?=base_url()?>assets/assets/images/icons/teacher.png" alt="">
 									<p>pendidik</p>
 								  </span>
 								  <span class="check-icon"><i class="fa fa-check"></i></span>
@@ -88,7 +88,7 @@
 								<label class="container-radio   student">
 								  <input type="radio" name="profesi" value="mahasiswa">
 								  <span class="checkmark" >
-								  	<img src="<?=base_url()?>assets_/images/nurse@3x.png" alt="">
+								  	<img src="<?=base_url()?>assets/assets/images/icons/nurse.png" alt="">
 									<p>mahasiswa</p>
 								  </span>
 								  <span class="check-icon"><i class="fa fa-check"></i></span>

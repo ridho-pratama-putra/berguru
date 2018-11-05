@@ -23,6 +23,7 @@
 						</div>
 						<form action="<?=base_url()?>pertanyaan-jawab-proses" class="input-55" method="POST">
 							<input type="hidden" name="id" value="<?=$permasalahan[0]->id?>">
+							<input type="hidden" name="pendidik" value="<?=$permasalahan[0]->siapa?>">
 							<div class="form-group">
 								<label for="pertanyaan">Jawaban Untuk Pertanyaan</label>
 								<textarea name="jawaban" id="pertanyaan" rows="5" class="form-control"
