@@ -487,7 +487,9 @@ class Admin extends CI_Controller {
 						echo $this->upload->display_errors();
 						die();
 					}else{
+						$this->zip->read_file(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name')); 
 						$queryAttachment .= "(NULL,'".$insertMateri->message."','".$direktori[0]->nama_folder."/".$this->upload->data('file_name')."'), ";
+						unlink(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name'));
 					}
 				}
 				$queryAttachment =  rtrim($queryAttachment,", ");
@@ -497,11 +499,15 @@ class Admin extends CI_Controller {
 				foreach ($tags as $key => $value) {
 					$queryTags .= "(NULL,'".$insertMateri->message."','".$value."'),";
 				}
+
 				$queryTags =  rtrim($queryTags,", ");
 
 				// insert batch
 				$this->model->rawQuery($queryAttachment);
 				$this->model->rawQuery($queryTags);
+
+				// proses zipping
+				$this->zip->archive(FCPATH.$direktori[0]->nama_folder.'/'.date('Ymd_His').'.zip');
 			}
 			alert('kelolaMateri','success','Berhasil!','Materi telah ditambahkan');
 			redirect('kelola-materi');

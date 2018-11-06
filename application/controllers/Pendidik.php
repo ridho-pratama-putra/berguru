@@ -22,7 +22,7 @@ class Pendidik extends CI_Controller {
 	/*
 	* function untuk menampilkan pesan
 	*/
-	function pesan($newChat = '')
+	function pesan()
 	{
 		// echo "<pre>";
 		// var_dump($this->input->get());
@@ -34,12 +34,23 @@ class Pendidik extends CI_Controller {
 		$this->load->view('statis/header',$header);
 		$this->load->view('tenagapendidik/menu',$this->menu);
 
-		// kirim ke client sebuah tanda, apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
-		if ($newChat == 'new-chat') {
-			$record['new_chat'] = $this->model->create('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->get('id_komentator'),'permasalahan'=>$this->input->get('id_permasalahan'),'komentar'=>$this->input->get('id_komentar'),'tanggal'=>date('Y-m-d H:i:s')));
-			$record['get_data'] = array('id_komentator'=>$this->input->get('id_komentator'),'id_permasalahan'=>$this->input->get('id_permasalahan'),'id_komentar'=>$this->input->get('id_komentar'),'tanggal'=>date('Y-m-d H:i:s'));
+		// apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
+		if ($this->input->post() !== array()) {
+
+			// cek apakah direct message sudah d inisialisasi
+			$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('id_komentator'),'permasalahan'=>$this->input->post('id_permasalahan')));
+			if ($bacaDirectMessage->num_rows() == 0) {
+				$record['new_chat'] = $this->model->create('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('id_komentator'),'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date('Y-m-d H:i:s')));
+			}
+
+			
+			$record['komentator'] = $this->model->readCol('pengguna',array('id'=>$this->input->post('id_komentator')),array('nama','email','foto'))->result();
+			$record['pertanyaan'] = $this->model->read('permasalahan',array('id'=>$this->input->post('id_permasalahan')))->result();
+			$record['komentar'] = $this->model->read('komentar',array('id'=>$this->input->post('id_komentar')))->result();
+			$this->load->view('tenagapendidik/pesan-detail',$record);
+		}else{
+			$this->load->view('tenagapendidik/pesan');
 		}
-		$this->load->view('tenagapendidik/pesan',$record);
 		$this->load->view('statis/footer');
 	}
 

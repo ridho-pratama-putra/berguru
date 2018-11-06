@@ -5,25 +5,26 @@
 		  	// $( ".result" ).html( data );
 		});
 		for (var i = 0; i < 3; i++) {
-			$("#listPesan").append('<div class="pesan-item">'+
-							'<div class="pi-left">'+
-								'<div class="user-photo">'+
-									'<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">'+
-								'</div>'+
-								'<div class="user-nama">'+
-									'Daniel Webber'+
-								'</div>'+
-								'<div class="last-pesan">'+
-									'Wah, kenapa ya padahal hal ini sangatlah asik dan gitu'+
-								'</div>'+
-							'</div>'+
-							'<div class="pi-right">'+
-								'<span class="time">'+
-									'1h'+
-								'</span>'+
-								'<span class="badge">2</span>'+
-							'</div>'+
-						'</div>')
+			$("#listPesan").append(
+				'<div class="pesan-item">'+
+					'<div class="pi-left">'+
+						'<div class="user-photo">'+
+							'<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">'+
+						'</div>'+
+						'<div class="user-nama">'+
+							'Daniel Webber'+
+						'</div>'+
+						'<div class="last-pesan">'+
+							'Wah, kenapa ya padahal hal ini sangatlah asik dan gitu'+
+						'</div>'+
+					'</div>'+
+					'<div class="pi-right">'+
+						'<span class="time">'+
+							'1h'+
+						'</span>'+
+						'<span class="badge">2</span>'+
+					'</div>'+
+				'</div>')
 		}
 	});
 </script>

@@ -14,11 +14,12 @@
 		$.post("<?=base_url()?>submit-rating-pendidik",{ id : arguments, id_ : arguments_, rating : rating});
 	}
 
-	// funtion untuk redirect + kirim GET
+	// funtion untuk set form pembukaan chat baru
 	function openNewChat(id_komentator,id_permasalahan,id_komentar) {
-		$.get("<?=base_url()?>pesan-pendidik/new-chat",{ id_komentator : id_komentator, id_permasalahan : id_permasalahan, id_komentar : id_komentar},function () {
-			// window.location.href = "<?=base_url()?>pesan-pendidik/new-chat";
-		});
+		$('#new_chat_id_komentar').val(id_komentar);
+		$('#new_chat_id_komentator').val(id_komentator);
+		$('#new_chat_id_permasalahan').val(id_permasalahan);
+		$('#formNewChat').submit();
 	}
 	
 </script>
@@ -86,7 +87,7 @@
 											<?php
 											 foreach ($penjawab as $key => $value) { ?>
 												<div class="user-photo">
-													<img src="<?=base_url().$value->foto?>" alt="Photo" title="<?=$value->nama?>">
+													<img src="<?=base_url().$value->foto?>" class="img-circle" alt="Photo" title="<?=$value->nama?>">
 												</div>
 											<?php } ?>
 											
@@ -106,7 +107,7 @@
 											<div class="row">
 												<div class="col-sm-6 col-md-8 col-lg-4">
 													<div class="user-photo">
-														<img src="<?=base_url().$value->foto?>" alt="Photo">
+														<img src="<?=base_url().$value->foto?>" class="img-circle" alt="Photo">
 													</div>
 													<div class="user-nama">
 														<?=$value->nama?>
@@ -115,7 +116,7 @@
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
 													<div class="rate-input" id="<?=$value->id?>" data-score="<?=$value->rating?>" onclick="submitRating(<?=$value->id?>,<?=$pertanyaan[0]->id?>)"></div>
-													<a href="<?=base_url()?>pesan-pendidik/new-chat?id_komentator=<?=$value->id_komentator?>&id_permasalahan=<?=$pertanyaan[0]->id?>&id_komentar=<?=$value->id?>" class="btn btn-custom btn-plonk-green">Kirim Pesan</a>
+													<a href="#" class="btn btn-custom btn-plonk-green" onclick="openNewChat(<?=$value->id_komentator?>,<?=$pertanyaan[0]->id?>,<?=$value->id?>)">Kirim Pesan</a>
 												</div>
 											</div>
 										</div>
@@ -132,15 +133,12 @@
 				<div class="col-sm-4 col-md-3">
 					<a href="#"><img src="<?=base_url()?>assets/dashboard/assets/images/iklan.png" alt="Image" class="img-fw"></a>
 				</div>
-
-
 			</div>
-
 		</div>
-
-
-
-
-
-
+	<form method="POST" action="<?=base_url()?>pesan-pendidik" id="formNewChat">
+		<input type="hidden" name="id_komentator" value="" id="new_chat_id_komentator">
+		<input type="hidden" name="id_permasalahan" value="" id="new_chat_id_permasalahan">
+		<input type="hidden" name="id_komentar" value="" id="new_chat_id_komentar">
+		
+	</form>
 	</div>

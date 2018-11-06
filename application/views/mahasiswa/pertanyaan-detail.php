@@ -65,7 +65,7 @@
 										}
 										 foreach ($penjawab as $key => $value) { ?>
 											<div class="user-photo">
-												<img src="<?=base_url().$value->foto?>" alt="Photo" title="<?=$value->nama?>">
+												<img src="<?=base_url().$value->foto?>" class="img-circle" alt="Photo" title="<?=$value->nama?>">
 											</div>
 										<?php } ?>
 										

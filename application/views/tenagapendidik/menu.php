@@ -89,7 +89,7 @@
 									<li class="dropdown user-menu"><a class="dropdown-toggle" data-toggle="dropdown" href="#">
 										<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?></div>
 										<div class="user-photo">
-											<img src="<?=$this->session->userdata('loginSession')['foto']?>" alt="Photo">
+											<img src="<?=$this->session->userdata('loginSession')['foto']?>"  class="img-circle" alt="Photo">
 										</div>
 									</a>
 									<ul class="dropdown-menu">

@@ -78,15 +78,15 @@
 						<form action="<?=base_url()?>register" method="POST">
 							<div class="form-group">
 							    <label for="email">Email Utama</label>
-							    <input type="email" class="form-control" id="email" placeholder="Masukkan Email anda" name="email" value="<?php echo set_value('email'); ?>">
+							    <input type="email" class="form-control" id="email" placeholder="Masukkan Email anda" name="email" value="<?php echo set_value('email'); ?>" required="">
 						  	</div>
 						  	<div class="form-group">
 							    <label for="nama">Nama Lengkap</label>
-							    <input type="text" class="form-control" id="nama" placeholder="Masukkan nama anda" name="nama" value="<?php echo set_value('nama'); ?>">
+							    <input type="text" class="form-control" id="nama" placeholder="Masukkan nama anda" name="nama" value="<?php echo set_value('nama'); ?>" required="">
 						  	</div>
 						  	<div class="form-group mb-10">
 							    <label for="password">Password</label>
-							    <input type="password" class="form-control" id="password" placeholder="Masukkan password baru" name="password">
+							    <input type="password" class="form-control" id="password" placeholder="Masukkan password baru" name="password" required="">
 						  	</div>
 						  	<div class="form-group mb-30 clearfix">
 						  		<span class="pull-left">

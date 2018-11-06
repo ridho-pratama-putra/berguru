@@ -164,8 +164,7 @@ $route['submit-edit-pertanyaan']				= 'Pendidik/submitEditPertanyaan';
 
 
 // $route['pesan-pendidik/(:any)/(:num)/(:num)/(:num)']				= 'Pendidik/pesan/$1/$2/$3/$4';
-$route['pesan-pendidik/(:any)']				= 'Pendidik/pesan/$1';
-
+$route['pesan-pendidik']				= 'Pendidik/pesan';
 
 
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/

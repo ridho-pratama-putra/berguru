@@ -83,7 +83,7 @@
 									"<div class='row'>"+
 										"<div class='col-xs-9 col-md-8 col-lg-9'>"+
 											"<div class='user-photo'>"+
-												"<img src='<?=base_url()?>assets/dashboard/assets/images/reading.png' alt='Photo'>"+
+												"<img src='<?=base_url()?>"+data.permasalahan[i].foto+"' class='img-circle' alt='Photo'>"+
 											"</div>"+
 											"<div class='user-nama'>"+
 												data.permasalahan[i].nama_pengguna +
@@ -123,7 +123,7 @@
 								"<div class='ci-footer'>"+
 									"<div class='row'>"+
 										"<div class='col-xs-12 col-md-8 col-lg-9'>";
-											if (data.permasalahan[i].komentator > 0) {
+											if (data.permasalahan[i].komentator.length > 0) {
 												elementToRender +=
 												"<span class='text-muted'>Penjawab</span>";
 											}
