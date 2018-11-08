@@ -603,7 +603,7 @@ class Admin extends CI_Controller {
 
 			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
 			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
-			$this->menu['notif'] = array_slice($notif_, 0, 8);
+			$this->menu['notif'] = array_slice($notif_, 0, 7);
 		}
 	}
 

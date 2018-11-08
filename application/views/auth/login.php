@@ -1,10 +1,10 @@
 	<div class="login-layout">
 		<div class="left-side-wrap">
 			<div class="logo-header">
-				<a href="<?=base_url()?>"><img src="<?=base_url()?>assets_/images/group-9.png" alt=""></a>
+				<a href="<?=base_url()?>"><img src="<?=base_url()?>assets/assets/images/group-9.png" alt=""></a>
 			</div>
 			<div class="login-bg">
-				<img src="<?=base_url()?>assets_/images/bitmap.png" alt="" style="width: 90%;">
+				<img src="<?=base_url()?>assets/assets/images/bitmap.png" alt="" style="width: 90%;">
 			</div>
 			<div class="front-slider">
 					<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -88,7 +88,7 @@
 						  			<input type="checkbox" name="remember"> Ingat saya
 						  		</span>
 						  		<span class="pull-right">
-						  			<a href=""><img src="<?=base_url()?>assets_/images/question-circle-o-font-awesome.png" alt=""> Forgotten Password</a>
+						  			<a href=""><img src="<?=base_url()?>assets/assets/images/question-circle-o-font-awesome.png" alt=""> Forgotten Password</a>
 						  		</span>
 						  	</div>
 				  			<button type="submit" class="form-control btn btn-login">Masuk ke Berguru.com</button>
@@ -126,7 +126,7 @@
 		</div>
 	</div>
 
-<script src="<?=base_url()?>assets_/js/owl.carousel.min.js"></script>
+<script src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.min.js"></script>
 <script>
 	$(document).ready(function(){
 	  $(".owl-carousel").owlCarousel({
