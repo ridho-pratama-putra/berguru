@@ -10,6 +10,7 @@
 
 
 	<div class="main-container">
+		<?=$this->session->flashdata("karir")?>
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
@@ -64,54 +65,35 @@
 					</div>
 				</div>
 				<div class="content-list">
+					<?php 
+					if ($lowongan !==array()) {
+						foreach ($lowongan as $key => $value) { ?>
+							<div class="panel panel-plain content-item">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-8">
+											<h3 class="ci-title mh-56"><?=$value->nama?></h3>
+											<div class="ci-instansi"><?=$value->instansi?></div>
+										</div>
+										<div class="col-xs-12 col-sm-12 col-md-4 ci-right">
+											<div class="ci-lokasi">
+												<i class="fa fa-map-marker-alt"></i> <?=$value->lokasi?>
+											</div>
+											<a href="tel:<?=$value->kontak?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-flip-horizontal fa-phone"></i> Hubungi</a>
+										</div>
+									</div>
+								</div>
+							</div>
+				<?php }
+				}else{ ?>
 					<div class="panel panel-plain content-item">
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-8">
-									<h3 class="ci-title mh-56">Guru Tingkat SD yang Ulet, Bisa Microsoft Office Nilai Plus</h3>
-									<div class="ci-instansi">SMAN 2 Surabaya</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-4 ci-right">
-									<div class="ci-lokasi">
-										<i class="fa fa-map-marker-alt"></i> Surabaya
-									</div>
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-flip-horizontal fa-phone"></i> Hubungi</a>
-								</div>
+								<h3>Belum ada data lowongan</h3>
 							</div>
 						</div>
 					</div>
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-8">
-									<h3 class="ci-title mh-56">Dibutuhkan Guru SMA untuk Mapel IPA. URGENT!</h3>
-									<div class="ci-instansi">SMAN 2 Malang</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-4 ci-right">
-									<div class="ci-lokasi">
-										<i class="fa fa-map-marker-alt"></i> Malang Kota
-									</div>
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-flip-horizontal fa-phone"></i> Hubungi</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-8">
-									<h3 class="ci-title mh-56">Guru Tingkat SD yang Ulet, Bisa Microsoft Office Nilai Plus</h3>
-									<div class="ci-instansi">SMAN 2 Surakarta</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-4 ci-right">
-									<div class="ci-lokasi">
-										<i class="fa fa-map-marker-alt"></i> DI Jogjakarta
-									</div>
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-flip-horizontal fa-phone"></i> Hubungi</a>
-								</div>
-							</div>
-						</div>
-					</div>
+				<?php } ?>
 
 				</div>
 			</div>

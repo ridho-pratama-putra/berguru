@@ -251,6 +251,7 @@ class Mahasiswa extends CI_Controller {
 					notif.konteks,
 					notif.id_konteks,
 					pengguna.nama AS dari, 
+					pengguna.foto , 
 					notif.untuk,
 					notif.datetime 
 			FROM notif 
@@ -500,14 +501,15 @@ class Mahasiswa extends CI_Controller {
 		$header['title'] = "Pendidik - Karir";
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
+		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>1))->result();
 
 		$this->load->view("statis/header",$header);
 		$this->load->view("mahasiswa/menu",$this->menu);
-		$this->load->view("mahasiswa/karir");
+		$this->load->view("mahasiswa/karir",$record);
 		$this->load->view("statis/footer");
 	}
 
-		/*
+	/*
 	* function untuk menampilkan halaman karir
 	*/
 	function tambahKarir()
@@ -520,5 +522,45 @@ class Mahasiswa extends CI_Controller {
 		$this->load->view("mahasiswa/menu",$this->menu);
 		$this->load->view("mahasiswa/karir-tambah");
 		$this->load->view("statis/footer");
+	}
+
+	/*
+	* funtion untuk handle form tambah karir
+	*/
+	function InsertKarir()
+	{
+		if ($this->input->post() !== array()) {
+			$this->form_validation->set_rules('teks','Nama','trim|required');
+			$this->form_validation->set_rules('kontak','Kontak','trim|required|numeric');
+			$this->form_validation->set_rules('instansi','Instansi','trim|required');
+			$this->form_validation->set_rules('lokasi','Lokasi','trim|required');
+			if ($this->form_validation->run()==TRUE) {
+				
+				$newdata = array(
+				        'nama'  					=> $this->input->post('teks'),
+				        'kontak'     				=> $this->input->post('kontak'),
+				        'instansi'     				=> $this->input->post('instansi'),
+				        'lokasi'     				=> $this->input->post('lokasi'),
+				        'dari'     					=> $this->session->userdata('loginSession')['id'],
+				        'valid'     				=> 0,
+				        'tanggal'     				=> date('Y-m-d H:i:s')
+				);
+				$queryInsert = $this->model->create_id('lowongan',$newdata);
+				$queryInsert = json_decode($queryInsert);
+				if ($queryInsert->status) {
+					$this->model->create('notif',array('konteks'=>'lowongan','id_konteks'=>$queryInsert->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s')));
+					alert('karir','success','Berhasil!',"Lowongan yang telah anda buat berhasil dibuat dan masih dalam proses konfirmasi oleh Admin");
+					redirect('karir-mahasiswa');
+				}else{
+					alert('karir','danger','Gagal!',"Lowongan yang telah anda buat gagal dipublish. Eror : ".$queryInsert->error_message->message);
+					redirect('karir-tambah-mahasiswa');
+				}
+			}else{
+				$karir = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+	            	'</div>');
+	            $this->session->set_flashdata('karir', $karir);
+				redirect('karir-tambah-mahasiswa');
+			}
+		}
 	}
 }

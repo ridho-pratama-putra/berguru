@@ -56,8 +56,8 @@
 											<a href="<?=base_url()?>kelola-pengguna">Mahasiswa baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
 											<?php }elseif($value->untuk == 'admin' AND $value->konteks == 'penggunaBaru' AND $value->aktor == 'pendidik'){?>
 											<a href="<?=base_url()?>kelola-tenaga-pendidik">Pendidik baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
-											<?php }else{ ?>
-											<a href="#"><strong><?=$value->dari?></strong> memberikan komentar kepada anda.</a>
+											<?php }elseif($value->untuk == 'admin' AND $value->konteks == 'lowongan'){ ?>
+											<a href="<?=base_url()?>lowongan-kerja"><strong><?=$value->dari?></strong> meminta verifikasi lowongan.</a>
 											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>

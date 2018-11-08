@@ -482,10 +482,10 @@ class Pendidik extends CI_Controller {
 		$header['title'] = "Pendidik - Karir";
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
-
+		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>1))->result();
 		$this->load->view("statis/header",$header);
 		$this->load->view("tenagapendidik/menu",$this->menu);
-		$this->load->view("tenagapendidik/karir");
+		$this->load->view("tenagapendidik/karir",$record);
 		$this->load->view("statis/footer");
 	}
 
@@ -522,12 +522,14 @@ class Pendidik extends CI_Controller {
 				        'kontak'     				=> $this->input->post('kontak'),
 				        'instansi'     				=> $this->input->post('instansi'),
 				        'lokasi'     				=> $this->input->post('lokasi'),
-				        'valid'     				=> 'belum',
+				        'dari'     					=> $this->session->userdata('loginSession')['id'],
+				        'valid'     				=> 0,
 				        'tanggal'     				=> date('Y-m-d H:i:s')
 				);
-				$queryInsert = $this->model->create('lowongan',$newdata);
+				$queryInsert = $this->model->create_id('lowongan',$newdata);
 				$queryInsert = json_decode($queryInsert);
 				if ($queryInsert->status) {
+					$this->model->create('notif',array('konteks'=>'lowongan','id_konteks'=>$queryInsert->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s')));
 					alert('karir','success','Berhasil!',"Lowongan yang telah anda buat berhasil dibuat dan masih dalam proses konfirmasi oleh Admin");
 					redirect('karir-pendidik');
 				}else{
@@ -596,6 +598,7 @@ class Pendidik extends CI_Controller {
 					notif.konteks,
 					notif.id_konteks,
 					pengguna.nama AS dari, 
+					pengguna.foto, 
 					notif.untuk,
 					notif.datetime 
 			FROM notif 

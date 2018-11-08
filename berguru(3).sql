@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 08, 2018 at 10:20 PM
+-- Generation Time: Nov 09, 2018 at 03:49 AM
 -- Server version: 5.5.59-0ubuntu0.14.04.1
 -- PHP Version: 7.2.8-1+ubuntu14.04.1+deb.sury.org+1
 
@@ -32,11 +32,8 @@ CREATE TABLE IF NOT EXISTS `attachment` (
   `url_attachment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_materi_attachment` (`id_materi`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `attachment`
---
 -- --------------------------------------------------------
 
 --
@@ -80,12 +77,12 @@ CREATE TABLE IF NOT EXISTS `kategori` (
 --
 
 INSERT INTO `kategori` (`id`, `nama`, `tanggal`, `jumlah_pertanyaan`, `jumlah_jawaban`, `status`, `icon`, `nama_folder`) VALUES
-(1, 'Matematika', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Matematika'),
-(2, 'Seni Budaya', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Seni Budaya'),
-(3, 'Penjaskes', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Penjaskes'),
-(4, 'Bahasa Indonesia', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Bahasa Indonesia'),
-(5, 'Bahasa Inggris', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Bahasa Inggris'),
-(6, 'Kimia', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Kimia'),
+(1, 'Matematika', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Matematika'),
+(2, 'Seni Budaya', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Seni Budaya'),
+(3, 'Penjaskes', '2018-11-08', '1', '1', 'ACTIVE', '', 'materi/Penjaskes'),
+(4, 'Bahasa Indonesia', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Bahasa Indonesia'),
+(5, 'Bahasa Inggris', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Bahasa Inggris'),
+(6, 'Kimia', '2018-11-08', '1', '1', 'ACTIVE', '', 'materi/Kimia'),
 (7, 'Fisika', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Fisika');
 
 -- --------------------------------------------------------
@@ -108,8 +105,15 @@ CREATE TABLE IF NOT EXISTS `komentar` (
   KEY `permasalahan_mana` (`permasalahan`),
   KEY `parent_komentar` (`parent`),
   KEY `siapa_komen` (`siapa`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `komentar`
+--
+
+INSERT INTO `komentar` (`id`, `teks`, `tanggal`, `siapa`, `permasalahan`, `kategori_permasalahan`, `solver`, `parent`, `rating`) VALUES
+(1, 'Saya mahasiswa dari Prodi Penjas pak, dulu pernah membuat video tutorial servis dan pass bola voli untuk pemula. Semoga nanti bisa membantu menyelesaikan PTK dikelas bapak.', '2018-11-08 23:55:27', 6, 4, 0, NULL, NULL, NULL),
+(2, 'Saya pernah membuat lesson plan untuk materi benda padat bu, dengan menggunakan pendekatan inkuiri. Mungkin sangat akan membantu dalam pengembangan PBL.', '2018-11-08 23:58:55', 4, 5, 0, NULL, NULL, NULL);
 
 --
 -- Triggers `komentar`
@@ -166,8 +170,18 @@ CREATE TABLE IF NOT EXISTS `lowongan` (
   `valid` int(11) DEFAULT NULL,
   `kategori` varchar(255) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL,
+  `dari` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `lowongan`
+--
+
+INSERT INTO `lowongan` (`id`, `nama`, `instansi`, `lokasi`, `kontak`, `valid`, `kategori`, `tanggal`, `dari`) VALUES
+(1, 'Guru Tingkat SD yang Ulet, Bisa Microsoft Office Nilai Plus', 'SMAN 2 Surabaya', 'Surabaya', '+6281840345714', 1, NULL, '2018-11-09 00:23:08', 3),
+(2, 'Guru Tingkat SMP yang Ulet, Bisa Microsoft Office Nilai Plus', 'SMPN 2 MALANG', 'Kota Malang, Jwa Timur', '+628388845076', 1, NULL, '2018-11-09 01:39:02', 2),
+(3, 'Guru Tingkat MI/SD yang Ulet, Bisa Microsoft Office Nilai Plus', 'MIN 2 MALANG', 'Kota Malang, Jawa Timur', '+628388845076', 1, NULL, '2018-11-09 02:29:47', 1);
 
 -- --------------------------------------------------------
 
@@ -209,18 +223,18 @@ CREATE TABLE IF NOT EXISTS `max_notif_id_per_user` (
 --
 
 INSERT INTO `max_notif_id_per_user` (`id`, `id_pengguna`, `max_notif_id`) VALUES
-(1, '1', 0),
-(2, '2', 0),
-(3, '3', 0),
-(4, '4', 0),
+(1, '1', 9),
+(2, '2', 26),
+(3, '3', 17),
+(4, '4', 6),
 (5, '5', 0),
-(6, '6', 0),
+(6, '6', 6),
 (7, '7', 0),
-(8, '2', 0),
-(9, '3', 0),
-(10, '4', 0),
+(8, '2', 26),
+(9, '3', 17),
+(10, '4', 6),
 (11, '5', 0),
-(12, '6', 0),
+(12, '6', 6),
 (13, '7', 0),
 (14, '8', 0),
 (15, '9', 0),
@@ -271,8 +285,24 @@ CREATE TABLE IF NOT EXISTS `notif` (
   `terbaca` varchar(255) DEFAULT NULL COMMENT 'terlihat dengan detil melaui klik pada notif',
   PRIMARY KEY (`id`),
   KEY `dari_pengguna` (`dari`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
 
+--
+-- Dumping data for table `notif`
+--
+
+INSERT INTO `notif` (`id`, `konteks`, `id_konteks`, `dari`, `untuk`, `datetime`, `terlihat`, `terbaca`) VALUES
+(1, 'pertanyaan', 1, 18, 'mahasiswa', '2018-11-08 23:44:36', NULL, NULL),
+(2, 'pertanyaan', 2, 16, 'mahasiswa', '2018-11-08 23:45:46', NULL, NULL),
+(3, 'pertanyaan', 3, 14, 'mahasiswa', '2018-11-08 23:46:43', NULL, NULL),
+(4, 'pertanyaan', 4, 15, 'mahasiswa', '2018-11-08 23:47:39', NULL, NULL),
+(5, 'pertanyaan', 5, 17, 'mahasiswa', '2018-11-08 23:48:52', NULL, NULL),
+(6, 'pertanyaan', 6, 20, 'mahasiswa', '2018-11-08 23:49:49', NULL, NULL),
+(7, 'komentar', 4, 6, '15', '2018-11-08 23:55:27', NULL, NULL),
+(8, 'komentar', 5, 4, '17', '2018-11-08 23:58:55', NULL, NULL),
+(12, 'lowonganValid', 2, 1, '2', '2018-11-09 03:27:28', NULL, NULL),
+(25, 'lowonganValid', 1, 1, '3', '2018-11-09 03:48:01', NULL, NULL),
+(26, 'lowonganAvailable', 1, 1, 'semua', '2018-11-09 03:48:01', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -288,9 +318,33 @@ CREATE TABLE IF NOT EXISTS `notif_flag` (
   `terbaca` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_notif_notif` (`id_notif`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 --
+-- Dumping data for table `notif_flag`
+--
+
+INSERT INTO `notif_flag` (`id`, `id_pengguna`, `id_notif`, `terlihat`, `terbaca`) VALUES
+(1, '6', 6, '1', '0'),
+(2, '6', 5, '1', '0'),
+(3, '6', 4, '1', '0'),
+(4, '6', 3, '1', '0'),
+(5, '6', 2, '1', '0'),
+(6, '6', 1, '1', '0'),
+(7, '4', 6, '1', '0'),
+(8, '4', 5, '1', '0'),
+(9, '4', 4, '1', '0'),
+(10, '4', 3, '1', '0'),
+(11, '4', 2, '1', '0'),
+(12, '4', 1, '1', '0'),
+(13, '2', 6, '1', '0'),
+(14, '2', 5, '1', '0'),
+(15, '2', 4, '1', '0'),
+(16, '2', 3, '1', '0'),
+(17, '2', 2, '1', '0'),
+(18, '2', 1, '1', '0'),
+(27, '2', 12, '1', '0'),
+(28, '2', 26, '1', '0');
 
 -- --------------------------------------------------------
 
@@ -365,7 +419,19 @@ CREATE TABLE IF NOT EXISTS `permasalahan` (
   PRIMARY KEY (`id`),
   KEY `kategori_apa` (`kategori`),
   KEY `siapa_add` (`siapa`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `permasalahan`
+--
+
+INSERT INTO `permasalahan` (`id`, `teks`, `tanggal`, `siapa`, `jumlah_dilihat`, `jumlah_dibaca`, `jumlah_komen`, `kategori`, `status`, `beku`) VALUES
+(1, 'Dalam dua minggu kedepan, saya akan mengajar materi tenses untuk siswa kelas tiga SD. Adakah yang dapat membantu merancang media presentasi yang interaktif untuk membuat siswa lebih terlibat dalam materi pelajaran? Terima kasih', '2018-11-08 23:44:36', 18, 0, 0, 0, 5, 'UNSOLVED', 'ACTIVE'),
+(2, 'Saya membutuhkan bantuan untuk melaksanakan PTK untuk materi geometri di kelas VII, adakah yang bisa mengembangkan media tayangannya? Terima kasih', '2018-11-08 23:45:46', 16, 0, 0, 0, 1, 'UNSOLVED', 'ACTIVE'),
+(3, 'Saya ingin melaksanakan PTK di materi tari kreasi untuk siswa SMA kelas XI, adakah yang dapat membantu merancang judul? Terima kasih', '2018-11-08 23:46:43', 14, 0, 0, 0, 2, 'UNSOLVED', 'ACTIVE'),
+(4, 'saya mau menyusun PTK dimateri servis bola voli, adakah yang dapat membantu merancang proposal dan media tayangan tutorial? Terima kasih', '2018-11-08 23:47:39', 15, 1, 0, 1, 3, 'UNSOLVED', 'ACTIVE'),
+(5, 'Saya membutuhkan bantuan dalam membuat lesson plan berbasis pembelajaran berbasis proyek untuk materi "perubahan zat" untuk anak kelas 5 SD. Terima kasih', '2018-11-08 23:48:52', 17, 1, 0, 1, 6, 'UNSOLVED', 'ACTIVE'),
+(6, 'Saya ingin melaksanakan PTK dengan topik jenis paragraf dan tulisan, adakah model yang tepat untuk diimplementasikan? Terima kasih', '2018-11-08 23:49:49', 20, 0, 0, 0, 4, 'UNSOLVED', 'ACTIVE');
 
 --
 -- Triggers `permasalahan`
@@ -411,8 +477,15 @@ CREATE TABLE IF NOT EXISTS `riwayat_permasalahan_dilihat` (
   `permasalahan` int(11) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `riwayat_permasalahan_dilihat`
+--
+
+INSERT INTO `riwayat_permasalahan_dilihat` (`id`, `id_pengguna`, `permasalahan`, `tanggal`) VALUES
+(1, '6', 4, '2018-11-08 23:55:14'),
+(2, '4', 5, '2018-11-08 23:58:48');
 
 --
 -- Triggers `riwayat_permasalahan_dilihat`
@@ -458,6 +531,7 @@ ALTER TABLE `attachment`
 -- Constraints for table `komentar`
 --
 ALTER TABLE `komentar`
+  ADD CONSTRAINT `id_permasalahan_permasalahan` FOREIGN KEY (`permasalahan`) REFERENCES `permasalahan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `parent_komentar` FOREIGN KEY (`parent`) REFERENCES `komentar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `siapa_komen` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 

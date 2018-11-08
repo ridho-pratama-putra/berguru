@@ -222,11 +222,96 @@ class Admin extends CI_Controller {
 		$header['title'] 	= 'Kelola Lowongan Kerja';
 		$this->menu['breadcrumb'] = 'Kelola Lowongan Kerja';
 		$this->menu['active'] 	= 'lowongan';
+
+		$record['lowongan'] = $this->model->readS('lowongan')->result();
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$this->menu);
-		$this->load->view('super/kelola-lowongan-kerja');
+		$this->load->view('super/kelola-lowongan-kerja',$record);
 		$this->load->view('statis/footer');
 	}	
+
+	/*
+	* submit validasi lowongan via ajax dihalaman kelola lowongan
+	*/
+	function submitValidasiLowongan()
+	{
+		$readStateOrigin = $this->model->read('lowongan',array('id'=>$this->input->post('id')))->result();
+		if ($readStateOrigin[0]->valid == 0) {
+			$queryUpdateLowongan = $this->model->update('lowongan',array('id'=>$this->input->post('id')),array('valid'=>1));
+		}else{
+			$queryUpdateLowongan = $this->model->update('lowongan',array('id'=>$this->input->post('id')),array('valid'=>0));
+		}
+		$queryUpdateLowongan = json_decode($queryUpdateLowongan);
+		if ($queryUpdateLowongan->status) {
+
+			// delete notifikasi buatan pengguna untuk admin perihal permintaan validasi lowongan. 
+			$this->model->delete('notif',array('konteks'=>'lowongan','id_konteks'=>$this->input->post('id')));
+
+			if ($readStateOrigin[0]->valid == 0) {
+				// delete notifikasi invalid buatan script untuk seorang pengguna
+				$this->model->delete('notif',array('konteks'=>'lowonganNotValid','id_konteks'=>$this->input->post('id')));
+
+				// create notif ke submiter lowongan kalau lowongan sudah divalidasi
+				$this->model->create('notif',array('konteks'=>'lowonganValid','id_konteks'=>$this->input->post('id'),'untuk'=>$readStateOrigin[0]->dari,'dari'=>$this->session->userdata('loginSession')['id'],'datetime'=>date('Y-m-d H:i:s')));
+
+				// createnotifikasi to alluser exclude admin
+				$this->model->create('notif',array('konteks'=>'lowonganAvailable','id_konteks'=>$this->input->post('id'),'untuk'=>'semua','dari'=>$this->session->userdata('loginSession')['id'],'datetime'=>date('Y-m-d H:i:s')));
+
+				alert('','success','Berhasil!','Lowongan berhasil di validasi',false);
+			}else{
+				// delete notifikasi invalid buatan script untuk seorang penggunga
+				$this->model->delete('notif',array('konteks'=>'lowonganValid','id_konteks'=>$this->input->post('id')));
+
+				// delete notifikasi ke semua pengguna kecuali admin perihal lowongan available tersebut
+				$this->model->delete('notif',array('konteks'=>'lowonganAvailable','id_konteks'=>$this->input->post('id')));
+
+				// create notif ke submiter lowongan kalau lowongan tidak valid
+				$this->model->create('notif',array('konteks'=>'lowonganNotValid','id_konteks'=>$this->input->post('id'),'untuk'=>$readStateOrigin[0]->dari,'dari'=>$this->session->userdata('loginSession')['id'],'datetime'=>date('Y-m-d H:i:s')));
+
+				alert('','success','Berhasil!','Validasi lowongan berhasil dibatalkan',false);
+			}
+		}else{
+			alert('','danger','Gagal!','Lowongan gagal di validasi',false);
+		}
+	}
+
+	/*
+	* submit add lowongan
+	*/
+	function submitInsertLowongan()
+	{
+		
+		$this->form_validation->set_rules('teks','Nama','trim|required');
+		$this->form_validation->set_rules('kontak','Kontak','trim|required|numeric');
+		$this->form_validation->set_rules('instansi','Instansi','trim|required');
+		$this->form_validation->set_rules('lokasi','Lokasi','trim|required');
+		if ($this->form_validation->run()==TRUE) {
+			
+			$newdata = array(
+			        'nama'  					=> $this->input->post('teks'),
+			        'kontak'     				=> $this->input->post('kontak'),
+			        'instansi'     				=> $this->input->post('instansi'),
+			        'lokasi'     				=> $this->input->post('lokasi'),
+			        'dari'     					=> $this->session->userdata('loginSession')['id'],
+			        'valid'     				=> 1,
+			        'tanggal'     				=> date('Y-m-d H:i:s')
+			);
+			$queryInsert = $this->model->create_id('lowongan',$newdata);
+			$queryInsert = json_decode($queryInsert);
+			if ($queryInsert->status) {
+				alert('kelolaLowongan','success','Berhasil!',"Lowongan berhasil dibuat");
+				redirect('lowongan-kerja');
+			}else{
+				alert('kelolaLowongan','danger','Gagal!',"Lowongan yang telah anda buat gagal dipublish. Eror : ".$queryInsert->error_message->message);
+				redirect('lowongan-kerja');
+			}
+		}else{
+			$kelolaLowongan = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+            	'</div>');
+            $this->session->set_flashdata('kelolaLowongan', $kelolaLowongan);
+			redirect('lowongan-kerja');
+		}
+	}
 
 	/*
 	* function untuk menangani submit form penambahan kategori pada halaman kelolakategori konten
@@ -280,7 +365,7 @@ class Admin extends CI_Controller {
 	*/
 	function deleteKategoriKonten()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$deleteKategoriKonten = $this->model->delete('kategori',array('id'=>$this->input->post('id')));
 			if ($deleteKategoriKonten) {
 				$this->model->update('kategori',array('id'=>$this->input->post('id')),array('nama_folder'=> 'materi/'.$this->input->post('nama')."_".date('d-M-Y')));
@@ -301,11 +386,12 @@ class Admin extends CI_Controller {
 	*/
 	function deletePengguna()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$deletePengguna = $this->model->delete('pengguna',array('id'=>$this->input->post('id')));
 			if ($deletePengguna) {
 				alert('kelolaPengguna','success','Berhasil!','Pengguna telah dihapus');
 				$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
+				$this->model->delete('permasalahan',array('siapa'=>$this->input->post('id')));
 			}else{
 				alert('kelolaPengguna','danger','Gagal!','Pengguna tidak dapat dihapus');
 			}
@@ -321,7 +407,7 @@ class Admin extends CI_Controller {
 	*/
 	function ubahStatusPengguna()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$ubahStatus = $this->model->update('pengguna',array('id'=>$this->input->post('id')),array('status'=>$this->input->post('status')));
 			$ubahStatus = json_decode($ubahStatus);
 			if ($this->input->post('status') == 'ACTIVE') {
@@ -349,7 +435,7 @@ class Admin extends CI_Controller {
 	*/
 	function deleteTenagaPendidik()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$deleteTenagaPendidik = $this->model->delete('pengguna',array('id'=>$this->input->post('id')));
 			if ($deleteTenagaPendidik) {
 				alert('kelolaTenagaPendidik','success','Berhasil!','Tenaga Pendidik telah dihapus');
@@ -369,7 +455,7 @@ class Admin extends CI_Controller {
 	*/
 	function ubahStatusTenagaPendidik()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$ubahStatus = $this->model->update('pengguna',array('id'=>$this->input->post('id')),array('status'=>$this->input->post('status')));
 			$ubahStatus = json_decode($ubahStatus);
 			if ($this->input->post('status') == 'ACTIVE') {
@@ -399,7 +485,7 @@ class Admin extends CI_Controller {
 	*/
 	function deletePermasalahan()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$this->model->delete('komentar',array('permasalahan'=>$this->input->post('id')));
 			$deletePermasalaan = $this->model->delete('permasalahan',array('id'=>$this->input->post('id')));
 			if ($deletePermasalaan) {
@@ -419,7 +505,7 @@ class Admin extends CI_Controller {
 	*/
 	function ubahStatusPermasalahan()
 	{
-		if ($this->input->post() !== array()) {
+		if ($this->input->post() !== NULL) {
 			$ubahStatus = $this->model->update('permasalahan',array('id'=>$this->input->post('id')),array('status'=>$this->input->post('status')));
 			$ubahStatus = json_decode($ubahStatus);
 			if ($this->input->post('status') == 'SOLVED') {
@@ -613,8 +699,8 @@ class Admin extends CI_Controller {
 	*/
 	function setTerlihat()
 	{
-		if ($this->input->post() !== array()) {
-			if ($this->menu['belum_dilihat'] !== array()) {
+		if ($this->input->post() !== NULL) {
+			if ($this->menu['belum_dilihat'] !== NULL) {
 				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
 				foreach ($this->menu['belum_dilihat'] as $key => $value) {
 					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";

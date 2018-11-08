@@ -1,4 +1,14 @@
+<script type="text/javascript">
 
+	// function untuk validasi lowongan
+	// param1 id
+	// param2 state origin
+	function valid(argument) {
+		$.post("<?=base_url()?>submit-validasi-lowongan",{id : argument},function (html) {			
+			$("#notif").html(html);
+		});
+	}
+</script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -8,6 +18,10 @@
 			<li class="active">Lowongan Kerja</li>
 		</ol>
 	</div><!--/.row-->
+
+	<div class="main-container mr-0" id="notif">
+		<?=$this->session->flashdata("kelolaLowongan");?>
+	</div>
 
 	<div class="panel panel-plain main-container">
 		<div class="panel-heading">
@@ -46,48 +60,23 @@
 						</tr>
 					</thead>
 					<tbody>
+						<?php foreach ($lowongan as $key => $value) { ?>
 						<tr>
 							<td>
-								Guru Tingkat SD yang ulet bisa ms. Office nilai plus
+								<?=$value->nama?>
 							</td>
-							<td>SDN Konoha 1</td>
-							<td>Kota Malang, Jawa Timur</td>
-							<td>+62889911119</td>
+							<td><?=$value->instansi?></td>
+							<td><?=$value->lokasi?></td>
+							<td><?=$value->kontak?></td>
 							<td data-order="valid">
 								<div class="saklar">
-									<input type="checkbox" class="saklar-switch" id="valid1" checked>
-									<label for="valid1"></label>
+									<input type="checkbox" class="saklar-switch" id="valid<?=$value->id?>" <?=($value->valid == 0 ? '' : 'checked')?>  onclick="valid(<?=$value->id?>)">
+									<label for="valid<?=$value->id?>"></label>
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td>
-								Guru Tingkat SD yang ulet bisa ms. Office nilai plus
-							</td>
-							<td>SDN Konoha 1</td>
-							<td>Kota Malang, Jawa Timur</td>
-							<td>+62889911119</td>
-							<td data-order="invalid">
-								<div class="saklar">
-									<input type="checkbox" class="saklar-switch" id="valid2">
-									<label for="valid2"></label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Guru Tingkat SD yang ulet bisa ms. Office nilai plus
-							</td>
-							<td>SDN Konoha 1</td>
-							<td>Kota Malang, Jawa Timur</td>
-							<td>+62889911119</td>
-							<td data-order="valid">
-								<div class="saklar">
-									<input type="checkbox" class="saklar-switch" id="valid3" checked>
-									<label for="valid3"></label>
-								</div>
-							</td>
-						</tr>
+						<?php } ?>
+						
 					</tbody>
 				</table>
 			</div>
@@ -105,7 +94,7 @@
 <div class="modal fade" id="modal-addlowongan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<form class="input-55" action="index.html" method="post">
+			<form class="input-55" action="<?=base_url()?>submit-insert-lowongan" method="POST">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Tambah Lowongan Baru</h4>
@@ -116,25 +105,25 @@
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="">Nama Lowongan</label>
-								<input type="text" class="form-control" placeholder="Contoh: Guru SD ulet, bisa ms. Word nilai plus">
+								<input type="text" class="form-control" placeholder="Contoh: Guru SD ulet, bisa ms. Word nilai plus" name="teks">
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="">Instansi / Perusahaan</label>
-								<input type="text" class="form-control" placeholder="Nama Instansi">
+								<input type="text" class="form-control" placeholder="Nama Instansi" name="instansi">
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="">Lokasi Lowongan</label>
-								<input type="text" class="form-control" placeholder="Lokasi">
+								<input type="text" class="form-control" placeholder="Lokasi" name="lokasi">
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="">Kontak Person</label>
-								<input type="text" class="form-control" placeholder="No. Telepon / HP">
+								<input type="text" class="form-control" placeholder="No. Telepon / HP" name="kontak">
 							</div>
 						</div>
 
@@ -142,7 +131,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
-					<button type="button" class="pull-right btn btn-normal btn-success">Publish Lowongan</button>
+					<button type="submit" name="insertLowongan" class="pull-right btn btn-normal btn-success">Publish Lowongan</button>
 				</div>
 			</form>
 		</div>

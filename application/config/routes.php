@@ -101,6 +101,8 @@ $route['delete-tenaga-pendidik']	= 'Admin/deleteTenagaPendidik';
 $route['ubah-status-tenaga-pendidik']= 'Admin/ubahStatusTenagaPendidik';
 
 $route['lowongan-kerja']			= 'Admin/kelolaLowonganKerja';
+$route['submit-validasi-lowongan']	= 'Admin/submitValidasiLowongan';
+$route['submit-insert-lowongan']	= 'Admin/submitInsertLowongan';
 
 /*****************************************************END OF SUPER ADMIN*****************************************************/
 
@@ -125,9 +127,12 @@ $route['pertanyaan-jawab-proses']				= 'Mahasiswa/insertJawaban';
 
 
 $route['materi-mahasiswa']='Mahasiswa/materi';
-$route['karir-mahasiswa']='Mahasiswa/karir';
 $route['materi-tambah-mahasiswa']='Mahasiswa/tambahMateri';
+
+$route['karir-mahasiswa']='Mahasiswa/karir';
 $route['karir-tambah-mahasiswa']='Mahasiswa/tambahKarir';
+$route['insert-karir-mahasiswa']='Mahasiswa/insertKarir';
+
 
 
 /*****************************************************END OF MAHASISWA********************************************************/

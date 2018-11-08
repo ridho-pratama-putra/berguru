@@ -39,13 +39,19 @@
 									<?php foreach ($notif as $key => $value) { ?>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
+											<img alt="image" class="img-circle" src="<?=base_url().$value->foto?>">
 										</a>
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
 											<?php if ($value->untuk == 'mahasiswa' AND $value->konteks == 'pertanyaan') { ?>
 											<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>">Pertanyaan baru dari <strong><?=$value->dari?></strong>.</a>
 											<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'ratingKomentar'){?>
 											<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>"><strong><?=$value->dari?></strong> memberikan rating untuk jawaban anda.</a>
+											<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganValid'){?>
+												<a href="#"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
+											<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganNotValid'){?>
+												<a href="#"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
+											<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'lowonganAvailable'){?>
+												<a href="<?=base_url('karir-mahasiswa')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
 											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>
