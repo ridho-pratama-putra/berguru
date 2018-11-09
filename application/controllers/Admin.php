@@ -47,7 +47,7 @@ class Admin extends CI_Controller {
 	}
 
 	/*
-	* 
+	* funtuin untuk get data message di halaman LUPA
 	*/
 	function getDaftarMessage($dataCondition)
 	{
@@ -571,6 +571,7 @@ class Admin extends CI_Controller {
 									
 					if( ! $this->upload->do_upload('file')){
 						echo $this->upload->display_errors();
+						echo "string";
 						die();
 					}else{
 						$this->zip->read_file(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name')); 

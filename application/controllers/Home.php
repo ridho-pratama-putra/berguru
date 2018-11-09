@@ -14,7 +14,22 @@ class Home extends CI_Controller {
 	function home()
 	{
 		$record['kategori'] = $this->model->readS('kategori')->result();
-		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>1))->result();
+		$record['lowongan'] = $this->model->rawQuery('SELECT * FROM lowongan WHERE valid=1 ORDER BY tanggal LIMIT 3 ')->result();
+		$record['materi'] = $this->model->rawQuery('
+													SELECT 
+														materi.deskripsi,
+														materi.waktu_terakhir_edit,
+														materi.nama,
+														materi.jumlah_diunduh,
+														materi.jumlah_dilihat,
+														materi.ikon_logo,
+														materi.ikon_warna,
+														pengguna.nama
+														
+													FROM materi 
+													INNER JOIN pengguna ON pengguna.id = materi.siapa_terakhir_edit
+													ORDER BY materi.waktu_terakhir_edit 
+													LIMIT 5')->result();
 
 		// sebenarnya
 		$menu['active'] =	"home";

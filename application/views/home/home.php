@@ -446,72 +446,26 @@
 										<option>Bulan Lalu</option>
 									</select>
 								</div>
-								<div class="material-item">
-									<div class="media cat-diamond">
-										<div class="media-left media-middle">
-											<div class="media-object">
-												<span class="bgicon bgicon-diamond"></span>
+								<?php if ($materi !== array()) { ?>
+								<?php foreach ($materi as $key => $value) { ?>
+									<div class="material-item">
+										<div class="media cat-diamond">
+											<div class="media-left media-middle">
+												<div class="media-object">
+													<span class="bgicon <?=$value->ikon_logo?>"></span>
+												</div>
+											</div>
+											<div class="media-body">
+												<h4 class="media-heading"><a href="#"><?=$value->deskripsi?></a></h4>
+												<p>Post oleh <cite><?=$value->nama?></cite> <span class="count"><i class="bgicon bgicon-download"></i> <?=$value->jumlah_dilihat?></span></p>
 											</div>
 										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><a href="#">Tips mendapatkan Emphaty Murid</a></h4>
-											<p>Post oleh <cite>Carol Arnold</cite> <span class="count"><i class="bgicon bgicon-download"></i> 1893</span></p>
-										</div>
 									</div>
-								</div>
-								<div class="material-item">
-									<div class="media cat-puzzle">
-										<div class="media-left media-middle">
-											<div class="media-object">
-												<span class="bgicon bgicon-puzzle"></span>
-											</div>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><a href="#">Tips mendapatkan Emphaty Murid</a></h4>
-											<p>Post oleh <cite>Carol Arnold</cite> <span class="count"><i class="bgicon bgicon-download"></i> 1893</span></p>
-										</div>
-									</div>
-								</div>
-								<div class="material-item">
-									<div class="media cat-chemistry">
-										<div class="media-left media-middle">
-											<div class="media-object">
-												<span class="bgicon bgicon-chemistry"></span>
-											</div>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><a href="#">Tips mendapatkan Emphaty Murid</a></h4>
-											<p>Post oleh <cite>Carol Arnold</cite> <span class="count"><i class="bgicon bgicon-download"></i> 1893</span></p>
-										</div>
-									</div>
-								</div>
-								<div class="material-item">
-									<div class="media cat-graduation">
-										<div class="media-left media-middle">
-											<div class="media-object">
-												<span class="bgicon bgicon-graduation"></span>
-											</div>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><a href="#">Tips mendapatkan Emphaty Murid</a></h4>
-											<p>Post oleh <cite>Carol Arnold</cite> <span class="count"><i class="bgicon bgicon-download"></i> 1893</span></p>
-										</div>
-									</div>
-								</div>
-								<div class="material-item">
-									<div class="media cat-plane">
-										<div class="media-left media-middle">
-											<div class="media-object">
-												<span class="bgicon bgicon-plane"></span>
-											</div>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><a href="#">Tips mendapatkan Emphaty Murid</a></h4>
-											<p>Post oleh <cite>Carol Arnold</cite> <span class="count"><i class="bgicon bgicon-download"></i> 1893</span></p>
-										</div>
-									</div>
-								</div>
-								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+								<?php } ?>
+									<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+								<?php }else{ ?>
+									<h6 class="title text-center"> Data materi masih kosong</h6>
+								<?php } ?>
 							</div>
 						</div>
 					</div>
