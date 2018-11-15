@@ -4,7 +4,7 @@
 				<a href="<?=base_url()?>"><img src="<?=base_url()?>assets/assets/images/group-9.png" alt=""></a>
 			</div>
 			<div class="login-bg">
-				<img src="<?=base_url()?>assets/assets/images/bitmap.png" alt="" style="width: 90%;">
+				<img src="<?=base_url()?>assets/assets/images/thumbnails/testimoni.png" alt="" style="width: 90%;">
 			</div>
 			<div class="front-slider">
 					<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -88,7 +88,7 @@
 						  			<input type="checkbox" name="remember"> Ingat saya
 						  		</span>
 						  		<span class="pull-right">
-						  			<a href=""><img src="<?=base_url()?>assets/assets/images/question-circle-o-font-awesome.png" alt=""> Forgotten Password</a>
+						  			<a href=""><img src="<?=base_url()?>assets/assets/images/icons/question.png"" alt=""> Forgotten Password</a>
 						  		</span>
 						  	</div>
 				  			<button type="submit" class="form-control btn btn-login">Masuk ke Berguru.com</button>

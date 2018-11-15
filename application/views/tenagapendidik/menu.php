@@ -43,8 +43,8 @@
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
 											<?php if ($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'komentar') { ?>
 											<a href="<?=base_url()?>detail-pertanyaan-pendidik/<?=$value->id_konteks?>" title='klik untuk melihat komentar'><strong><?=$value->dari?></strong> mengomentari pertanyaan anda</a>
-											<?php }elseif($value->untuk == 'semua'){?>
-												<a href="#"><strong>Pemberitahuan!</strong></a>
+											<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){?>
+												<a href="#"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
 											<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganValid'){?>
 												<a href="<?=base_url()?>"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
 											<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganNotValid'){?>

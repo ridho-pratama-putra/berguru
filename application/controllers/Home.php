@@ -24,7 +24,7 @@ class Home extends CI_Controller {
 														materi.jumlah_dilihat,
 														materi.ikon_logo,
 														materi.ikon_warna,
-														pengguna.nama
+														pengguna.nama AS siapa_terakhir_edit
 														
 													FROM materi 
 													INNER JOIN pengguna ON pengguna.id = materi.siapa_terakhir_edit

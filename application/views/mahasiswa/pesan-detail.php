@@ -5,7 +5,7 @@
 		$('#formNewChat').submit();
 	}
 </script>
-<form method="POST" action="<?=base_url()?>pesan-pendidik" id="formNewChat">
+<form method="POST" action="<?=base_url()?>pesan-mahasiswa" id="formNewChat">
 	<input type="hidden" name="id_komentator" value="" id="new_chat_id_komentator">
 </form>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -118,7 +118,7 @@
 								<?php foreach ($value as $keyA => $valueA) { ?>
 									<?php if ($valueA->jenis_pesan == 'permasalahan') { ?>
 										<div class="detpes-masalah">
-											<h4>Permasalahan Anda</h4>
+											<h4>Permasalahan</h4>
 											<?=$valueA->teks?>
 										</div>
 									<?php }else{ ?>
@@ -126,16 +126,14 @@
 											<?php if ($valueA->dari == $komentator[0]->id) { ?>
 												<div class="dchat dchat-keluar">
 													<div class="dchat-isi">
-															<?=$valueA->teks?>
+														<?=$valueA->teks?>
 													</div>
 													<div class="dchat-footer">
-														<small class="text-muted">Permasalahan terpecahkan?</small>
 														<div class="row">
-															<div class="col-md-8">
-																	<a href="#" class="btn btn-custom btn-plonk-green">Iya</a>
-																	<a href="#" class="btn btn-custom btn-plonk-red">Tidak</a>
+															<div class="col-xs-8">
+																	
 															</div>
-															<div class="col-md-4 text-right">
+															<div class="col-xs-4 text-right">
 																<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
 																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
 															</div>
@@ -145,7 +143,20 @@
 											<?php }elseif ($valueA->dari == $this->session->userdata('loginSession')['id']) { ?>
 												<div class="dchat dchat-masuk">
 													<div class="dchat-isi">
+														<div class="dchat-isi">
 															<?=$valueA->teks?>
+														</div>
+														<div class="dchat-footer">
+															<div class="row">
+																<div class="col-md-8">
+																		
+																</div>
+																<div class="col-md-4 text-right">
+																	<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
+																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 											<?php } ?>
@@ -159,7 +170,7 @@
 						</div>
 
 						<div class="detpes-write">
-							<form action="<?=base_url('submit-reply-pendidik')?>" method="POST">
+							<form action="<?=base_url('submit-reply-mahasiswa')?>" method="POST">
 								<div class="input-group">
 									<input type="hidden" class="form-control" name="permasalahan" value="<?=(isset($permasalahan[0]->id) ? $permasalahan[0]->id : '' )?>">
 									<input type="hidden" class="form-control" name="komentar" value="<?=(isset($komentar[0]->id) ? $komentar[0]->id : '' )?>">

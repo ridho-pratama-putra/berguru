@@ -11,7 +11,6 @@
 			$('#chevron').removeClass('fa-chevron-up').addClass('fa-chevron-down');
 		}
 	});
-
 	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
 
 	// function ajax untuk set alert badge
@@ -49,7 +48,7 @@
 									<?php foreach ($notif as $key => $value) { ?>
 									<li>
 										<div class="dropdown-messages-box"><a href="#" class="pull-left">
-											<img alt="image" class="img-circle" src="<?=$this->session->userdata('loginSession')['foto']?>">
+											<img alt="image" class="img-circle" src="<?=$value->foto?>">
 										</a>
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
 											<?php if ($value->untuk == 'admin' AND $value->konteks == 'penggunaBaru' AND $value->aktor == 'mahasiswa') { ?>
@@ -58,6 +57,8 @@
 											<a href="<?=base_url()?>kelola-tenaga-pendidik">Pendidik baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
 											<?php }elseif($value->untuk == 'admin' AND $value->konteks == 'lowongan'){ ?>
 											<a href="<?=base_url()?>lowongan-kerja"><strong><?=$value->dari?></strong> meminta verifikasi lowongan.</a>
+											<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){ ?>
+											<a href="<?=base_url()?>kelola-materi"><strong><?=$value->dari?></strong> menerbitkan materi baru.</a>
 											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>

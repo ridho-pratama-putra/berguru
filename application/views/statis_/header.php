@@ -4,6 +4,12 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Login | Berguru.com</title>
+
+	<!-- Icon -->
+    <link rel="shortcut icon" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+    <link rel="icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+    <link rel="apple-touch-icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+        
 	<link rel="stylesheet" href="<?=base_url()?>assets/assets/libs/bootstrap.3.3.7/css/bootstrap.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/assets/owl.carousel.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/assets/owl.theme.default.css">

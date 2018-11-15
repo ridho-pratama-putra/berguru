@@ -57,7 +57,7 @@ class Auth extends CI_Controller {
 								redirect('dashboard-mahasiswa');
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "pendidik") {
-								alert('login','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
+								alert('alert','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
 								redirect('pesan-pendidik');
 								return true;
 							}

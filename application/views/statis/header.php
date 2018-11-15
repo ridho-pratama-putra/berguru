@@ -7,6 +7,10 @@
 	<title><?=$title?> - Berguru.com</title>
 	<link href="<?=base_url()?>assets/dashboard/assets/css/bootstrap.min.css" rel="stylesheet">
 	
+	<!-- Icon -->
+    <link rel="shortcut icon" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+    <link rel="icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
+    <link rel="apple-touch-icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
 	
 	<!-- admin -->
 	<?php
@@ -42,6 +46,8 @@
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/malihu-scroll/jquery.mCustomScrollbar.js"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/raty/jquery.raty.js" charset="utf-8"></script>
 
+	<!-- list -->
+	<script src="<?=base_url()?>assets/assets/libs/list/list.min.js" charset="utf-8"></script>
 
 </head>
 <body>

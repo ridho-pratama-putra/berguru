@@ -8,6 +8,9 @@
 		</ol>
 	</div><!--/.row-->
 
+	<div class="main-container mr-1">
+		<?=$this->session->flashdata("alert");?>
+	</div>
 
 	<div class="main-container">
 		<div class="content-filter-top">
@@ -65,122 +68,50 @@
 					</div>
 				</div>
 				<div class="content-list">
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
-									<div class="materi-ikon materi-blue"><i class="fa fa-flask"></i></div>
-								</div>
-								<div class="col-xs-9 col-sm-10 col-md-7">
-									<h3 class="ci-title">Tips Mendapatkan Emphaty Murid</h3>
-									<div class="td-meta">
-										<i class="far fa-clock"></i> Sep, 24 2018
-										<i class="fa fa-circle"></i>
-										<i class="far fa-comment"></i> 122
-										<i class="fa fa-circle"></i>
-										<i class="far fa-eye"></i> 2022
+					<?php if ($materi !== array()) { ?>
+					<?php foreach ($materi as $key => $value) { ?>
+						<div class="panel panel-plain content-item">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
+										<div class="materi-ikon <?=$value->ikon_warna?>"><i class="fa <?=$value->ikon_logo?>"></i></div>
 									</div>
-									<div class="btn btn-custom btn-status-blue">Matematika</div>
-								</div>
-								<div class="col-xs-12 col-md-3 col-lg-4 ci-right">
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>
-									<div class="content-tag">
-										<span class="text-muted">Tags</span>
-										<a href="#">#materi</a>
-										<a href="#">#empathy</a>
-										<a href="#">#gurusd</a>
+									<div class="col-xs-9 col-sm-10 col-md-7">
+										<h3 class="ci-title"><?=$value->nama?></h3>
+										<div class="td-meta">
+											<i class="far fa-clock"></i>  <?=date('M, d Y',strtotime($value->waktu_terakhir_edit))?>
+											<i class="fa fa-circle"></i>
+											<i class="far fa-comment"></i> <?=$value->jumlah_diunduh?>
+											<i class="fa fa-circle"></i>
+											<i class="far fa-eye"></i> <?=$value->jumlah_dilihat?>
+										</div>
+										<div class="btn btn-custom btn-status-blue"><?=$value->kategori?></div>
 									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
-									<div class="materi-ikon materi-green"><i class="fa fa-puzzle-piece"></i></div>
-								</div>
-								<div class="col-xs-9 col-sm-10 col-md-7">
-									<h3 class="ci-title">Tips Mendapatkan Emphaty Murid</h3>
-									<div class="td-meta">
-										<i class="far fa-clock"></i> Sep, 24 2018
-										<i class="fa fa-circle"></i>
-										<i class="far fa-comment"></i> 122
-										<i class="fa fa-circle"></i>
-										<i class="far fa-eye"></i> 2022
-									</div>
-									<div class="btn btn-custom btn-status-green">Matematika</div>
-								</div>
-								<div class="col-xs-12 col-md-3 col-lg-4 ci-right">
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>
-									<div class="content-tag">
-										<span class="text-muted">Tags</span>
-										<a href="#">#materi</a>
-										<a href="#">#empathy</a>
-										<a href="#">#gurusd</a>
+									<div class="col-xs-12 col-md-3 col-lg-4 ci-right">
+										<a href="<?=base_url('download-materi-mahasiswa/').$value->id?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>
+										<div class="content-tag">
+											<span class="text-muted">Tags</span>
+											<?php $variable = $value->tags; $variable = explode(",", $variable);
+											foreach ($variable as $keyA => $valueA) { ?>
+												<a href="#">#<?=$valueA?></a>
+											<?php } ?>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
-									<div class="materi-ikon materi-black"><i class="fa fa-bicycle"></i></div>
-								</div>
-								<div class="col-xs-9 col-sm-10 col-md-7">
-									<h3 class="ci-title">Tips Mendapatkan Emphaty Murid</h3>
-									<div class="td-meta">
-										<i class="far fa-clock"></i> Sep, 24 2018
-										<i class="fa fa-circle"></i>
-										<i class="far fa-comment"></i> 122
-										<i class="fa fa-circle"></i>
-										<i class="far fa-eye"></i> 2022
-									</div>
-									<div class="btn btn-custom btn-status-black">Matematika</div>
-								</div>
-								<div class="col-xs-12 col-md-3 col-lg-4 ci-right">
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>
-									<div class="content-tag">
-										<span class="text-muted">Tags</span>
-										<a href="#">#materi</a>
-										<a href="#">#empathy</a>
-										<a href="#">#gurusd</a>
+					<?php } ?>
+					<?php }else{ ?>
+						<div class="panel panel-plain content-item">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col">
+										<h3 class="ci-title text-center">Data materi masih kosong</h3>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
-									<div class="materi-ikon materi-red"><i class="fa fa-flask"></i></div>
-								</div>
-								<div class="col-xs-9 col-sm-10 col-md-7">
-									<h3 class="ci-title">Tips Mendapatkan Emphaty Murid</h3>
-									<div class="td-meta">
-										<i class="far fa-clock"></i> Sep, 24 2018
-										<i class="fa fa-circle"></i>
-										<i class="far fa-comment"></i> 122
-										<i class="fa fa-circle"></i>
-										<i class="far fa-eye"></i> 2022
-									</div>
-									<div class="btn btn-custom btn-status-red">Matematika</div>
-								</div>
-								<div class="col-xs-12 col-md-3 col-lg-4 ci-right">
-									<a href="#" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>
-									<div class="content-tag">
-										<span class="text-muted">Tags</span>
-										<a href="#">#materi</a>
-										<a href="#">#empathy</a>
-										<a href="#">#gurusd</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<?php } ?>
 				</div>
 			</div>
 

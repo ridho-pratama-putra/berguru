@@ -60,7 +60,7 @@
 					<form class="" action="index.html" method="post">
 						<div class="form-group">
 							<div class="input-group plain-group">
-								<input type="text" name="" value="" placeholder="Cari Pendidik" class="form-control dt-search" id="cari-materi">
+								<input type="text" name="" value="" placeholder="Cari Materi" class="form-control dt-search" id="cari-materi">
 								<span class="input-group-addon"><i class="fa fa-search"></i></span>
 								<!-- <span class="input-group-btn">
 									<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>

@@ -109,7 +109,6 @@ $route['submit-insert-lowongan']	= 'Admin/submitInsertLowongan';
 /*****************************************************BEGIN MAHASISWA********************************************************/
 
 $route['dashboard-mahasiswa']					= 'Mahasiswa/dashboard';
-$route['pesan-mahasiswa']						= 'Mahasiswa/pesan';
 $route['profil-mahasiswa']						= 'Mahasiswa/profil';
 $route['edit-profil-mahasiswa']					= 'Mahasiswa/editProfil';
 $route['submit-edit-profil-mahasiswa']			= 'Mahasiswa/submitEditProfil';
@@ -121,18 +120,25 @@ $route['update-to-terlihat']					= 'Mahasiswa/setTerlihat';
 $route['get-permasalahan-by-kategori']			= 'Mahasiswa/getPermasalahanByKategori';
 
 
-$route['pertanyaan-detail-mahasiswa/(:num)']	= 'Mahasiswa/pertanyaanDetail/$1';
-$route['pertanyaan-jawab-mahasiswa/(:num)']		= 'Mahasiswa/pertanyaanJawab/$1';
-$route['pertanyaan-jawab-proses']				= 'Mahasiswa/insertJawaban';
+$route['pertanyaan-detail-mahasiswa/(:num)']	=	'Mahasiswa/pertanyaanDetail/$1';
+$route['pertanyaan-jawab-mahasiswa/(:num)']		=	'Mahasiswa/pertanyaanJawab/$1';
+$route['pertanyaan-jawab-proses']				=	'Mahasiswa/insertJawaban';
 
 
-$route['materi-mahasiswa']='Mahasiswa/materi';
-$route['materi-tambah-mahasiswa']='Mahasiswa/tambahMateri';
+$route['materi-mahasiswa']						=	'Mahasiswa/materi';
+$route['materi-tambah-mahasiswa']				=	'Mahasiswa/tambahMateri';
+$route['submit-tambah-materi-mahasiswa']		=	'Mahasiswa/insertMateri';
+
 
 $route['karir-mahasiswa']='Mahasiswa/karir';
 $route['karir-tambah-mahasiswa']='Mahasiswa/tambahKarir';
 $route['insert-karir-mahasiswa']='Mahasiswa/insertKarir';
 
+$route['pesan-mahasiswa']						= 'Mahasiswa/pesan';
+$route['delete-initialized-dm']					= 'mahasiswa/deleteInitializedDm';
+$route['submit-reply-mahasiswa']				= 'mahasiswa/submitReply';
+
+$route['download-materi-mahasiswa/(:num)']				= 'Mahasiswa/downloadMateri/$1';
 
 
 /*****************************************************END OF MAHASISWA********************************************************/
@@ -150,13 +156,18 @@ $route['submit-edit-profil-pendidik']			= 'Pendidik/submitEditProfil';
 $route['pertanyaan-pendidik']					= 'Pendidik/pertanyaanSaya';
 $route['buat-pertanyaan-pendidik']				= 'Pendidik/buatPertanyaan';
 $route['detail-pertanyaan-pendidik/(:num)']		= 'Pendidik/detailPertanyaan/$1';
+$route['delete-initialized-dm']					= 'Pendidik/deleteInitializedDm';
 $route['edit-pertanyaan-pendidik/(:num)']		= 'Pendidik/editPertanyaan/$1';
+
+$route['submit-reply-pendidik']					= 'Pendidik/submitReply';
+
 
 $route['submit-rating-pendidik']				= 'Pendidik/submitRating';
 
 
 $route['materi-pendidik']						= 'Pendidik/materi';
 $route['materi-tambah-pendidik']				= 'Pendidik/tambahMateri';
+$route['submit-tambah-materi-pendidik']			= 'Pendidik/insertMateri';
 
 $route['karir-pendidik']						= 'Pendidik/karir';
 $route['karir-tambah-pendidik']					= 'Pendidik/tambahKarir';
@@ -168,8 +179,11 @@ $route['delete-pertanyaan']						= 'Pendidik/deletePertanyaan';
 $route['submit-edit-pertanyaan']				= 'Pendidik/submitEditPertanyaan';
 
 
+
+
 // $route['pesan-pendidik/(:any)/(:num)/(:num)/(:num)']				= 'Pendidik/pesan/$1/$2/$3/$4';
 $route['pesan-pendidik']				= 'Pendidik/pesan';
+$route['download-materi-pendidik/(:num)']				= 'Pendidik/downloadMateri/$1';
 
 
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/

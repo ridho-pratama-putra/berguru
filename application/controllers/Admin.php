@@ -254,7 +254,7 @@ class Admin extends CI_Controller {
 				// create notif ke submiter lowongan kalau lowongan sudah divalidasi
 				$this->model->create('notif',array('konteks'=>'lowonganValid','id_konteks'=>$this->input->post('id'),'untuk'=>$readStateOrigin[0]->dari,'dari'=>$this->session->userdata('loginSession')['id'],'datetime'=>date('Y-m-d H:i:s')));
 
-				// createnotifikasi to alluser exclude admin
+				// createnotifikasi to alluser include admin
 				$this->model->create('notif',array('konteks'=>'lowonganAvailable','id_konteks'=>$this->input->post('id'),'untuk'=>'semua','dari'=>$this->session->userdata('loginSession')['id'],'datetime'=>date('Y-m-d H:i:s')));
 
 				alert('','success','Berhasil!','Lowongan berhasil di validasi',false);
@@ -543,9 +543,12 @@ class Admin extends CI_Controller {
 			$queryMateri['siapa_terakhir_edit'] = $this->session->userdata('loginSession')['id'];
 			$queryMateri['jumlah_diunduh'] 		= 0;
 			$queryMateri['jumlah_dilihat'] 		= 0;
+			$queryMateri['ikon_logo'] 			= "fa-flask";
+			$queryMateri['ikon_warna'] 			= "materi-blue";
 			
 			$insertMateri = $this->model->create_id('materi',$queryMateri);
 			$insertMateri = json_decode($insertMateri);
+
 
 			// if (TRUE) {
 			if ($insertMateri->status) {
@@ -559,7 +562,6 @@ class Admin extends CI_Controller {
 				$filesCount = count($_FILES['files']['name']);
 				
 
-				$queryAttachment = 'INSERT INTO attachment VALUES ';
 				
 				// upload dan masnipulais string
 				for ($i= 0; $i < $filesCount; $i++) { 
@@ -575,11 +577,10 @@ class Admin extends CI_Controller {
 						die();
 					}else{
 						$this->zip->read_file(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name')); 
-						$queryAttachment .= "(NULL,'".$insertMateri->message."','".$direktori[0]->nama_folder."/".$this->upload->data('file_name')."'), ";
+						
 						unlink(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name'));
 					}
 				}
-				$queryAttachment =  rtrim($queryAttachment,", ");
 
 				// manipulasi string insert batch ke tabel tags, untuk menyimpan tag yang tertau pada setiap materi
 				$queryTags = 'INSERT INTO tags VALUES ';
@@ -589,13 +590,21 @@ class Admin extends CI_Controller {
 
 				$queryTags =  rtrim($queryTags,", ");
 
+				
 				// insert batch
-				$this->model->rawQuery($queryAttachment);
 				$this->model->rawQuery($queryTags);
 
 				// proses zipping
 				$this->zip->archive(FCPATH.$direktori[0]->nama_folder.'/'.date('Ymd_His').'.zip');
 			}
+
+			// insert alamat direktori dari file attachment ke db
+			$queryAttachment = "INSERT INTO attachment VALUES (NULL,'".$insertMateri->message."','".$direktori[0]->nama_folder."/".date('Ymd_His').".zip')";
+			$this->model->rawQuery($queryAttachment);
+
+			// create notif to all user include admin
+			$this->model->create('notif',array('konteks'=>'materiBaru','id_konteks'=>$insertMateri->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'semua','datetime'=>date("Y-m-d H:i:s")));
+			
 			alert('kelolaMateri','success','Berhasil!','Materi telah ditambahkan');
 			redirect('kelola-materi');
 		}else{
@@ -650,11 +659,14 @@ class Admin extends CI_Controller {
 					notif.id_konteks,
 					pengguna.nama AS dari, 
 					pengguna.aktor, 
+					pengguna.foto, 
 					notif.untuk,
 					notif.datetime 
 			FROM notif 
 			LEFT JOIN pengguna ON pengguna.id = notif.dari
 			WHERE 
+					(untuk='semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
+			OR 
 					untuk='admin'
 			OR 
 					untuk='".$this->session->userdata('loginSession')['id']."'

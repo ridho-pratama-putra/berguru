@@ -14,7 +14,6 @@ class Pendidik extends CI_Controller {
 		$this->menu['notif'] = array();
 		$this->menu['belum_dilihat'] = array();
 		$this->notifikasiMenu();
-		// $this->menu['notif'] = $this->model->read("notif",array("untuk"=>"mahasiswa OR untuk='".$this->session->userdata('loginSession')['id']."'"));
 
 	}
 
@@ -24,43 +23,150 @@ class Pendidik extends CI_Controller {
 	*/
 	function pesan()
 	{
-		// echo "<pre>";
-		// var_dump($this->input->get());
-		// die();
+
 		$header['title'] 		= 'Pendidik - Pesan';
 		$this->menu['breadcrumb'] 	= 'Pesan';
 		$this->menu['active'] 		= 'pesan';
 		$record = array();
 		$this->load->view('statis/header',$header);
 		$this->load->view('tenagapendidik/menu',$this->menu);
+		
+		// delete dm yang terinit namun tidak terbalas (yang tidak jadi dm)
+		$this->deleteInitializedDm();
 
-		// apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
-		if ($this->input->post() !== array()) {
+		
+		/*
+			apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
+			DATA YANG DI POST 
+			id_komentator
+			id_permasalahan
+			id_komentar
+		*/
+		if ($this->input->post() !== array() OR $this->session->flashdata("id_komentator") !== NULL) {
 
-			// cek apakah direct message sudah d inisialisasi
-			$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('id_komentator'),'permasalahan'=>$this->input->post('id_permasalahan')));
-			if ($bacaDirectMessage->num_rows() == 0) {
-				$record['new_chat'] = $this->model->create('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('id_komentator'),'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date('Y-m-d H:i:s')));
+			// dibagian if adalah untuk redirect setelah submitReply, yang bagian else untuk yang dari klik sebuah chat dengan mahasiswa.  bagian if menggunakan flashdata karena kesulitan post sambil redirect
+			if ($this->input->post('id_komentator') == array()) {
+				$id_komentator = $this->session->flashdata("id_komentator")['id_komentator'];
+			}else{
+				$id_komentator = $this->input->post('id_komentator');
 			}
-
 			
-			$record['komentator'] = $this->model->readCol('pengguna',array('id'=>$this->input->post('id_komentator')),array('nama','email','foto'))->result();
-			$record['pertanyaan'] = $this->model->read('permasalahan',array('id'=>$this->input->post('id_permasalahan')))->result();
-			$record['komentar'] = $this->model->read('komentar',array('id'=>$this->input->post('id_komentar')))->result();
+			// jika dari tombol kirim pesan pada halaman pertanyaan detail (inisialisasi dm / mau melakukan dm terkait komentar seorang mahasaiswa)
+			if ($this->input->post('id_permasalahan') !== NULL AND $this->input->post('id_komentar') !== NULL) {
+				// cek apakah direct message dgn tipe permasalahan sudah d inisialisasi. untuk mecegah double inisialisasi
+				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
+				
+				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal'))->result();
+				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal'))->result();
+				if ($bacaDirectMessage->num_rows() == 0) {
+										
+					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan'));
+
+					$this->model->create('direct_message',array('teks'=>$record['komentar'][0]->teks,'dari'=>$id_komentator,'untuk'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'komentarpermasalahan'));
+					
+				}
+			}
+			
+			
+			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto'))->result();
+			
+			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
+			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
+			
+			$record['chat'] = array();
+			foreach ($chat as $key => $value) {
+				$temp = substr($value->tanggal, 0, 10);
+				if (!isset($record['chat'][$temp])) {
+					$record['chat'][$temp] = array();
+				}
+				array_push($record['chat'][$temp], $chat[$key]);
+			}
+			
+			// get daftar mahasiswa yang telah dicahat
+			$record['to']	=  $this->getInitializedDm();
+
 			$this->load->view('tenagapendidik/pesan-detail',$record);
 		}else{
-			$this->load->view('tenagapendidik/pesan');
+			
+			// get daftar mahasiswa yang telah dicahat
+			$record['to']	=  $this->getInitializedDm();
+
+			$this->load->view('tenagapendidik/pesan',$record);
 		}
 		$this->load->view('statis/footer');
 	}
 
+
 	/*
-	* function untuk get record pesan pada database dengan parameter where adalah seoranga guru tersebut. dipanggil di pesan.php
+	* untuk ambil siapa saja yang sudah dichat
 	*/
-	function getPesan()
+	function getInitializedDm()
 	{
-		if ($this->input->post() != array()) {
-			// $recordPesan = $this->model->read('pesan',array('id'=>))	
+		return $this->model->rawQuery("
+													SELECT DISTINCT
+														pengguna.id,
+														pengguna.nama,
+														pengguna.foto
+														-- ,direct_message.tanggal 
+													FROM 
+														direct_message
+													LEFT JOIN pengguna ON direct_message.dari = pengguna.id
+													WHERE untuk = '".$this->session->userdata('loginSession')['id']."'
+												")->result();
+	}
+
+
+	/*
+	* function untuk menangai post request di halaman pesan detail saat seorang user akan berpindah halaman
+	*/
+	function deleteInitializedDm()
+	{
+			return $this->model->rawQuery("
+											DELETE FROM direct_message 
+											WHERE 
+												(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
+												AND 
+												(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL");
+	}
+
+	/*
+	* function untuk handle submit form pada halaman edit pertanyaan 
+	*/
+	function submitReply()
+	{
+		if ($this->input->post() !== array()) {
+			$dataForm['teks'] 			= $this->input->post('message');
+			$dataForm['dari'] 			= $this->session->userdata('loginSession')['id'];
+			$dataForm['untuk'] 			= $this->input->post('untuk');
+			
+			if ($this->input->post('permasalahan') !== '' AND $this->input->post('komentar') !== '') {
+				$dataForm['permasalahan'] 	= $this->input->post('permasalahan');
+				$dataForm['komentar'] 		= $this->input->post('komentar');
+			}
+			
+			$dataForm['jenis_pesan'] 	= "komentardm";
+			$dataForm['tanggal'] 		= date("y-m-d H:i:s");
+
+			$queryInsert = $this->model->create_id('direct_message',$dataForm);
+			$this->model->rawQuery("UPDATE direct_message SET dibalas='sudah' WHERE (jenis_pesan = 'permasalahan' OR jenis_pesan = 'komentarpermasalahan') AND permasalahan = '$dataForm[permasalahan]' AND komentar = '$dataForm[komentar]'");
+			$queryInsert = json_decode($queryInsert);
+			if ($queryInsert->status) {
+				$data = array('id_komentator'=>$this->input->post('untuk'));
+				$this->session->set_flashdata('id_komentator',$data);
+
+				// create notification kalau ada dm baru untuk seorang pengguna. idkonteks di skip karena hanya perlu mengarah ke halaman pesan dengan pengguna bukan spesifik ke pesannya.
+				$this->model->create('notif',array('konteks'=>'dm','id_konteks'=>$queryInsert->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('untuk'),'datetime'=>date('Y-m-d H:i:s')));
+
+				alert('alert','success','Barhasil!','Direct message berhasil dikirim');
+				redirect('pesan-pendidik');
+			}else{
+				alert('alert','danger','Gagal!','Direct message gagal dikirim');
+				redirect('pesan-pendidik');
+			}
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Tidak ada data yang di POST</p>';
+			$this->load->view('errors/html/error_404',$error);
 		}
 	}
 
@@ -451,7 +557,26 @@ class Pendidik extends CI_Controller {
 		$header['title'] = "Pendidik - Materi";
 		$this->menu['breadcrumb'] = "Materi";
 		$this->menu['active'] = "materi";
+		
 		$record['kategori'] = $this->model->readS("kategori")->result();
+		$record['materi'] 	= $this->model->rawQuery("
+														SELECT 
+																materi.id,
+																materi.nama,
+																materi.waktu_terakhir_edit,
+																materi.jumlah_diunduh,
+																materi.jumlah_dilihat,
+																materi.ikon_logo,
+																materi.ikon_warna,
+																materi.deskripsi,
+																kategori.nama AS kategori,
+																(SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags
+														
+														FROM materi
+														LEFT JOIN kategori ON kategori.id = materi.kategori
+													")->result();
+		
+
 		$this->load->view("statis/header",$header);
 		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/materi",$record);
@@ -475,6 +600,91 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
+	* function untuk menangani add materi pada halaman kelola materi
+	*/
+	function insertMateri()
+	{
+		if ($this->input->post() !== null) {
+			$queryMateri['nama'] 				= ucwords($this->input->post('nama'));
+			$queryMateri['kategori'] 			= $this->input->post('kategori');
+			$tags 			 					= $this->input->post('tags');
+			$tags 								= explode(",", $tags);
+			$queryMateri['deskripsi'] 			= $this->input->post('deskripsi');
+			$queryMateri['waktu_terakhir_edit'] = date('Y-m-d H:i:s');
+			$queryMateri['siapa_terakhir_edit'] = $this->session->userdata('loginSession')['id'];
+			$queryMateri['jumlah_diunduh'] 		= 0;
+			$queryMateri['jumlah_dilihat'] 		= 0;
+			$queryMateri['ikon_logo'] 			= "fa-flask";
+			$queryMateri['ikon_warna'] 			= "materi-blue";
+			
+			$queryInsertMateri = $this->model->create_id('materi',$queryMateri);
+			$queryInsertMateri = json_decode($queryInsertMateri);
+
+
+			// if (TRUE) {
+			if ($queryInsertMateri->status) {
+				// baca destinasi penyimpanan yang sudah terdefinisi di tabel kategori
+				$direktori = $this->model->read('kategori',array('id'=>$queryMateri['kategori']))->result();
+				
+				$config['upload_path']          = FCPATH.$direktori[0]->nama_folder.'/';
+				$config['allowed_types']        = 'docx|doc|xls|pdf|xlsx';
+
+				$this->load->library('upload', $config);
+				$filesCount = count($_FILES['files']['name']);
+				
+
+				
+				// upload dan masnipulais string
+				for ($i= 0; $i < $filesCount; $i++) { 
+					$_FILES['file']['name']     = $_FILES['files']['name'][$i];
+					$_FILES['file']['type']     = $_FILES['files']['type'][$i];
+					$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+					$_FILES['file']['error']     = $_FILES['files']['error'][$i];
+					$_FILES['file']['size']     = $_FILES['files']['size'][$i];
+									
+					if( ! $this->upload->do_upload('file')){
+						echo $this->upload->display_errors();
+						echo "string";
+						die();
+					}else{
+						$this->zip->read_file(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name')); 
+						
+						unlink(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name'));
+					}
+				}
+
+				// manipulasi string insert batch ke tabel tags, untuk menyimpan tag yang tertau pada setiap materi
+				$queryTags = 'INSERT INTO tags VALUES ';
+				foreach ($tags as $key => $value) {
+					$queryTags .= "(NULL,'".$queryInsertMateri->message."','".$value."'),";
+				}
+
+				$queryTags =  rtrim($queryTags,", ");
+
+				
+				// insert batch
+				$this->model->rawQuery($queryTags);
+
+				// proses zipping
+				$this->zip->archive(FCPATH.$direktori[0]->nama_folder.'/'.date('Ymd_His').'.zip');
+			}
+
+			// insert alamat direktori dari file attachment ke db
+			$queryAttachment = "INSERT INTO attachment VALUES (NULL,'".$queryInsertMateri->message."','".$direktori[0]->nama_folder."/".date('Ymd_His').".zip')";
+			$this->model->rawQuery($queryAttachment);
+
+			// create notif to all user include admin
+			$this->model->create('notif',array('konteks'=>'materiBaru','id_konteks'=>$queryInsertMateri->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'semua','datetime'=>date("Y-m-d H:i:s")));
+			
+			alert('alert','success','Berhasil!','Materi telah ditambahkan');
+			redirect('materi-pendidik');
+		}else{
+			alert('alert','danger','Gagal!','Materi gagal ditambahkan');
+			redirect('materi-pendidik');
+		}
+	}
+
+	/*
 	* function untuk menampilkan halaman karir
 	*/
 	function karir()
@@ -483,6 +693,7 @@ class Pendidik extends CI_Controller {
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
 		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>1))->result();
+
 		$this->load->view("statis/header",$header);
 		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/karir",$record);
@@ -604,11 +815,11 @@ class Pendidik extends CI_Controller {
 			FROM notif 
 			LEFT JOIN pengguna ON pengguna.id = notif.dari
 			WHERE 
-					untuk='semua' 
+					(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
 			OR 
-					untuk='pendidik' 
+					untuk = 'pendidik' 
 			OR 
-					untuk='".$this->session->userdata('loginSession')['id']."'
+					untuk = '".$this->session->userdata('loginSession')['id']."'
 			ORDER BY datetime DESC
 		");
 
@@ -662,5 +873,23 @@ class Pendidik extends CI_Controller {
 				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
 			}
 		}
+	}
+
+	/*
+	* funtion untuk handle download
+	* id adalah idnya materi
+	*/
+	function downloadMateri($id){
+		$this->load->helper('download');
+		
+		$materi = $this->model->read('materi',array('id'=>$id))->result();
+		$attachment = $this->model->read('attachment',array('id_materi'=>$id))->result();
+		
+		$data = file_get_contents(FCPATH.$attachment[0]->url_attachment);
+		
+		// update harus diatas force. karena force langsung die melalui return (sepertinya). 
+		$this->model->rawQuery("UPDATE materi SET jumlah_diunduh = jumlah_diunduh + 1 WHERE id = ".$id);
+		
+		force_download($materi[0]->nama.".zip", $data);
 	}
 }

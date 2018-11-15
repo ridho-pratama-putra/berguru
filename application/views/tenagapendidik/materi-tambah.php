@@ -1,3 +1,33 @@
+<script type="text/javascript">
+	// script untuk prevent submit sebuah file yang tidak termasuk di list extension
+	var _validFileExtensions = [".pdf", ".docx", ".doc", ".xlsx", ".xls"];    
+	function publishMateri(oForm) {
+		var arrInputs = oForm.getElementsByTagName("input");
+		for (var i = 0; i < arrInputs.length; i++) {
+			var oInput = arrInputs[i];
+			if (oInput.type == "file") {
+				var sFileName = oInput.value;
+				if (sFileName.length > 0) {
+					var blnValid = false;
+					for (var j = 0; j < _validFileExtensions.length; j++) {
+						var sCurExtension = _validFileExtensions[j];
+						if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+							blnValid = true;
+							break;
+						}
+					}
+					
+					if (!blnValid) {
+						alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+						return false;
+					}
+				}
+			}
+		}
+	  
+		return true;
+	}	
+</script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -8,30 +38,31 @@
 		</ol>
 	</div><!--/.row-->
 
+	
 	<div class="main-container">
 		<div class="row">
 			<div class="col-sm-8 col-md-9">
 				<div class="panel panel-plain">
 					<div class="panel-nav">
-						<a href="pendidik-materi.html" class="panel-link"><i class="fa fa-chevron-left"></i> Kembali</a>
+						<a href="<?=base_url('materi-pendidik')?>" class="panel-link"><i class="fa fa-chevron-left"></i> Kembali</a>
 					</div>
 					<div class="panel-heading">
 						<h1>Tambah Materi Baru</h1>
 						<p>membuat materi baru</p>
 					</div>
 					<div class="panel-body">
-						<form action="#" class="input-55">
+						<form class="input-55" action="<?=base_url()?>submit-tambah-materi-pendidik" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="form-tambah-baru" onsubmit="return publishMateri(this);">
 							<div class="row">
 								<div class="col-md-5">
 									<div class="form-group">
 										<label for="">Nama Materi</label>
-										<input type="text" class="form-control" placeholder="Masukkan Nama Materi">
+										<input type="text" class="form-control" name="nama" placeholder="Masukkan Nama Materi">
 									</div>
 								</div>
 								<div class="col-md-7">
 									<div class="form-group">
 										<label for="thefile">Upload File Materi</label>
-										<input type="file" id="thefile" class="input-file" data-multiple-caption="{count} files selected" multiple>
+										<input type="file" id="thefile" class="input-file" data-multiple-caption="{count} files selected" name="files[]" multiple>
 										<label for="thefile" class="input-label">
 											<span class="placeholder">Pilih file...</span>
 											<span class="tombol"><i class="fa fa-cloud-upload-alt"></i> Upload file</span>
@@ -50,8 +81,8 @@
 									</div>
 									<div class="form-group">
 										<label for="">Tags</label>
-										<input type="text" class="form-control" placeholder="Masukkan tag anda">
-										<p class="help-block">contoh: sejarah, gratis, edukasi</p>
+										<input type="text" class="form-control" name="tags" placeholder="Masukkan tag anda">
+										<p class="help-block">contoh: sejarah,gratis,edukasi</p>
 									</div>
 								</div>
 								<div class="col-md-7">

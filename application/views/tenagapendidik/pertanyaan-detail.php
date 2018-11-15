@@ -16,9 +16,9 @@
 
 	// funtion untuk set form pembukaan chat baru
 	function openNewChat(id_komentator,id_permasalahan,id_komentar) {
-		$('#new_chat_id_komentar').val(id_komentar);
 		$('#new_chat_id_komentator').val(id_komentator);
 		$('#new_chat_id_permasalahan').val(id_permasalahan);
+		$('#new_chat_id_komentar').val(id_komentar);
 		$('#formNewChat').submit();
 	}
 	

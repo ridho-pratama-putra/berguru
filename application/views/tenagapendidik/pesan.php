@@ -1,34 +1,13 @@
 <script type="text/javascript">
-	$( document ).ready(function() {
-		$.post("<?=base_url()?>get-pesan-pendidik",{id:<?=$this->session->userdata('loginSession')['id']?>}, function( data ) {
-			console.log(data);
-		  	// $( ".result" ).html( data );
-		});
-		for (var i = 0; i < 3; i++) {
-			$("#listPesan").append(
-				'<div class="pesan-item">'+
-					'<div class="pi-left">'+
-						'<div class="user-photo">'+
-							'<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">'+
-						'</div>'+
-						'<div class="user-nama">'+
-							'Daniel Webber'+
-						'</div>'+
-						'<div class="last-pesan">'+
-							'Wah, kenapa ya padahal hal ini sangatlah asik dan gitu'+
-						'</div>'+
-					'</div>'+
-					'<div class="pi-right">'+
-						'<span class="time">'+
-							'1h'+
-						'</span>'+
-						'<span class="badge">2</span>'+
-					'</div>'+
-				'</div>')
-		}
-	});
+	// funtion untuk set form pembukaan chat baru
+	function openNewChat(id_komentator,id_permasalahan,id_komentar) {
+		$('#new_chat_id_komentator').val(id_komentator);
+		$('#formNewChat').submit();
+	}
 </script>
-
+<form method="POST" action="<?=base_url()?>pesan-pendidik" id="formNewChat">
+	<input type="hidden" name="id_komentator" value="" id="new_chat_id_komentator">
+</form>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -40,7 +19,7 @@
 	</div><!--/.row-->
 
 	<div class="main-container">
-		<?=$this->session->flashdata("login")?>
+		<?=$this->session->flashdata("alert")?>
 		<div class="panel panel-plain panel-pesan">
 			<div class="row">
 				<div class="col-sm-5 col-md-4 col-lg-3 panel-pleft">
@@ -64,101 +43,30 @@
 						</div>
 					</div>
 					<div class="panel-body list-pesan scrollable" id="listPesan">
-						<!-- <div class="pesan-item">
+						<?php foreach ($to as $key => $value) { ?>
+							
+						<div class="pesan-item" onclick="openNewChat(<?=$value->id?>)">
+							<!--  pi-read -->
+							<!--  pi-selected -->
 							<div class="pi-left">
 								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+									<img src="<?=base_url().$value->foto?>" class="img-circle" alt="Photo">
 								</div>
 								<div class="user-nama">
-									Daniel Webber
+									<?=$value->nama?>
 								</div>
 								<div class="last-pesan">
-									Wah, kenapa ya padahal hal ini sangatlah asik dan gitu
+									pesan
 								</div>
 							</div>
 							<div class="pi-right">
 								<span class="time">
 									1h
 								</span>
-								<span class="badge">2</span>
-							</div>
-						</div>
-						<div class="pesan-item pi-read">
-							<div class="pi-left">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Aleister Don
-								</div>
-								<div class="last-pesan">
-									Sweet sweet seventy, I am a whole show
-								</div>
-							</div>
-							<div class="pi-right">
-								<span class="time">
-									2d
-								</span>
 								<span class="badge">1</span>
 							</div>
 						</div>
-						<div class="pesan-item">
-							<div class="pi-left">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Juminten Antartika
-								</div>
-								<div class="last-pesan">
-									Sweet sweet seventy, I am a whole show
-								</div>
-							</div>
-							<div class="pi-right">
-								<span class="time">
-									2d
-								</span>
-								<span class="badge">1</span>
-							</div>
-						</div>
-						<div class="pesan-item">
-							<div class="pi-left">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Adam McMahon
-								</div>
-								<div class="last-pesan">
-									Sweet sweet seventy, I am a whole show
-								</div>
-							</div>
-							<div class="pi-right">
-								<span class="time">
-									2d
-								</span>
-								<span class="badge">1</span>
-							</div>
-						</div>
-						<div class="pesan-item">
-							<div class="pi-left">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Fanny Wibowo
-								</div>
-								<div class="last-pesan">
-									Sweet sweet seventy, I am a whole show
-								</div>
-							</div>
-							<div class="pi-right">
-								<span class="time">
-									2d
-								</span>
-								<span class="badge">99</span>
-							</div>
-						</div> -->
+						<?php } ?>
 					</div>
 				</div>
 				<div class="col-sm-7 col-md-8 col-lg-9 panel-pright">

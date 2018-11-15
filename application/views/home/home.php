@@ -427,12 +427,13 @@
 											<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon bgicon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
 											<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
 										</div>
+								</div>
+								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
 								<?php }
 								}else{ ?>
 									<h6 class="title text-center"> Data lowongan masih kosong</h6>
+								</div>
 								<?php }	?>
-							</div>
-										<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
 						</div>
 						
 						<!-- Daftar Materi -->
@@ -456,8 +457,8 @@
 												</div>
 											</div>
 											<div class="media-body">
-												<h4 class="media-heading"><a href="#"><?=$value->deskripsi?></a></h4>
-												<p>Post oleh <cite><?=$value->nama?></cite> <span class="count"><i class="bgicon bgicon-download"></i> <?=$value->jumlah_dilihat?></span></p>
+												<h4 class="media-heading"><a href="#"><?=$value->nama?></a></h4>
+												<p>Post oleh <cite><?=$value->siapa_terakhir_edit?></cite> <span class="count"><i class="bgicon bgicon-download"></i> <?=$value->jumlah_diunduh?></span></p>
 											</div>
 										</div>
 									</div>
