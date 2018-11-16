@@ -20,7 +20,7 @@
 			<div class="col-sm-8 col-md-9">
 				<div class="panel panel-plain">
 					<div class="panel-nav">
-						<a href="<?=base_url()?>pertanyaan-saya"><i class="fa fa-chevron-left"></i> Kembali</a>
+						<a href="<?=base_url('detail-pertanyaan-pendidik/').$pertanyaan[0]->id?>"><i class="fa fa-chevron-left"></i> Kembali</a>
 					</div>
 					<div class="panel-heading">
 						<h1>Edit Pertanyaan</h1>

@@ -51,6 +51,8 @@
 												<a href="<?=base_url()?>"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
 											<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'lowonganAvailable'){?>
 												<a href="<?=base_url('karir-pendidik')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
+											<?php }elseif($value->konteks == 'dm'){?>
+												<a href="#"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
 											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>

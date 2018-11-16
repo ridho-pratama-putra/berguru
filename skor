@@ -1,0 +1,5 @@
+Setiap jawaban dari user dapat diberikan rating oleh partner dengan skala (1 s.d. 5) dan oleh user lainnya dengan skala (1 s.d. 3).
+
+Skor yang didapatkan user akan diakumulasikan dalam profilnya terdapat rentang status user berdasarkan skor
+
+(misal 0 s.d. 40 à Beginner; 41 s.d. 100 à Rookie; 101 s.d. 180 à Regular; 181 s.d. 300 à Professional; 301 s.d. 400 à Top Player; dan 401 s.d. 500 à Superstar)
