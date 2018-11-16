@@ -341,7 +341,7 @@ class Pendidik extends CI_Controller {
 			// cek apakah ada perintah update foto
 			if ($_FILES['foto']['name'] !== '') {
 				$config['upload_path']	= FCPATH.'userprofiles/';
-				$config['allowed_types']= 'gif|jpg|png';
+				$config['allowed_types']= 'gif|jpg|jpeg|png|JPG|JPEG|PNG';
 				$config['file_name'] = $this->input->post('nama')." - profil";
 				$this->load->library('upload', $config);
 
