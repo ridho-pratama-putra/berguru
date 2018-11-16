@@ -67,13 +67,24 @@ class Home extends CI_Controller {
 			");
 		}elseif($this->input->get('kategori') == 'populer'){
 			$record_ = $this->model->rawQuery("
-			SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.jumlah_dilihat, permasalahan.jumlah_komen, permasalahan.kategori, kategori.nama AS nama_kategori, permasalahan.status, permasalahan.beku, pengguna.foto
-FROM permasalahan
-LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-ORDER BY permasalahan.jumlah_komen DESC
-LIMIT 4 
-			");
+				SELECT 
+						permasalahan.id, 
+						permasalahan.teks, 
+						permasalahan.tanggal, 
+						pengguna.nama AS nama_pengguna, 
+						permasalahan.jumlah_dilihat, 
+						permasalahan.jumlah_komen, 
+						permasalahan.kategori, 
+						kategori.nama AS nama_kategori, 
+						permasalahan.status, 
+						permasalahan.beku, 
+						pengguna.foto
+				FROM permasalahan
+				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
+				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
+				ORDER BY permasalahan.jumlah_komen DESC
+				LIMIT 4 
+					");
 		}elseif($this->input->get('kategori') == 'solved' || $this->input->get('kategori') == 'unsolved'){
 			$record_ = $this->model->rawQuery("
 				SELECT
@@ -97,7 +108,7 @@ LIMIT 4
 
 				");
 		}
-		$record['jumlah'] 		= $record_->num_rows();
+		$record['jumlah'] 		= $this->model->readSCol("permasalahan",['id'])->num_rows();
 		$record['permasalahan'] = $record_->result();
 
 		foreach ($record['permasalahan'] as $key => $value) {

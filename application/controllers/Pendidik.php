@@ -14,7 +14,7 @@ class Pendidik extends CI_Controller {
 		$this->menu['notif'] = array();
 		$this->menu['belum_dilihat'] = array();
 		$this->notifikasiMenu();
-
+		
 	}
 
 
@@ -317,10 +317,10 @@ class Pendidik extends CI_Controller {
 	{
 		if ($this->input->post() !== array()) {
 
+			$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
+			
 			// cek apakah ada pergantian password
-			$recordPengguna = ''; // variabel akan tidak kosong apabila ada perintah update password. untuk simpan record pengguna sebagai pencocokan
 			if ($this->input->post('password') !== '') {
-				$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
 					alert('editProfil','danger','Gagal!','Edit profil gagal. Password salah');
 					redirect('edit-profil-pendidik');
@@ -328,7 +328,7 @@ class Pendidik extends CI_Controller {
 				}else{
 					// cek apakah password_ ada isinya
 					if ($this->input->post('password_') == '') {
-						alert('editProfil','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password hanya jika ingin mengganti password');
+						alert('editProfil','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password baru hanya jika ingin mengganti password');
 						redirect('edit-profil-pendidik');
 						return true;
 					}else{
@@ -337,7 +337,7 @@ class Pendidik extends CI_Controller {
 					}
 				}
 			}
-			
+
 			// cek apakah ada perintah update foto
 			if ($_FILES['foto']['name'] !== '') {
 				$config['upload_path']	= FCPATH.'userprofiles/';
@@ -353,7 +353,26 @@ class Pendidik extends CI_Controller {
 				}
 				else
 				{
+					// unlink foto lama
+					unlink(FCPATH.$recordPengguna[0]->foto);
+
+					// siapkan record untuk ke datbase
 					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
+
+					// update session
+					$newdata = array(
+							        'id'     					=> $this->session->userdata('loginSession')['id'],
+							        'nama'  					=> $this->session->userdata('loginSession')['nama'],
+							        'email'     				=> $this->session->userdata('loginSession')['email'],
+							        'no_hp'     				=> $this->session->userdata('loginSession')['no_hp'],
+							        'aktor'     				=> $this->session->userdata('loginSession')['aktor'],
+							        'institusi_or_universitas'  => $this->session->userdata('loginSession')['institusi_or_universitas'],
+							        'nip_or_nim'  				=> $this->session->userdata('loginSession')['nip_or_nim'],
+							        'status'  					=> $this->session->userdata('loginSession')['status'],
+									'foto'						=> base_url()."userprofiles/".$this->upload->data()['file_name']
+							);
+
+					$this->session->set_userdata('loginSession',$newdata);
 				}
 			}
 
@@ -369,8 +388,20 @@ class Pendidik extends CI_Controller {
 				$runUpdate = json_decode($runUpdate);
 
 				if ($runUpdate->status) {
-					alert('editProfil','success','Barhasil!','Profil telah di perbarui di database. Saat ini data yang ditampilkan belum berubah, anda harus login kembali untuk melihat perubahan.');
-					redirect('edit-profil-pendidik');
+					if ($this->input->post('email') !== $recordPengguna[0]->email OR isset($queryUpdate['password']) ) {
+						// echo "<pre>";
+						// var_dump($this->input->post('email'));
+						// var_dump($recordPengguna[0]->email);
+						// var_dump($queryUpdate['password']);
+						// var_dump(isset($queryUpdate['password']));
+						alert('login','success','Perhatian!','anda telah berhasil merubah data email atau password anda. Mohon login kembali dengan email beserta password anda yang terbaru. Terimakasih');
+						redirect('logout');
+						return true;
+					}else{
+						alert('editProfil','success','Barhasil!','Profil telah di perbarui di database.');
+						redirect('edit-profil-pendidik');
+						return true;
+					}
 				}else{
 					if ($runUpdate->error_message->code == 1062) {
 						alert('editProfil','danger','Gagal!',$runUpdate->error_message->message);
