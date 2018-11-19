@@ -31,7 +31,7 @@ class Home extends CI_Controller {
 													ORDER BY materi.waktu_terakhir_edit 
 													LIMIT 5')->result();
 
-		$record['mahasiswa_poin_tertinggi'] = $this->model->rawQuery("SELECT * FROM pengguna WHERE aktor != 'admin' AND aktor != 'tenagapendidik' ORDER BY poin DESC Limit 5")->result();
+		$record['mahasiswa_poin_tertinggi'] = $this->model->rawQuery("SELECT * FROM pengguna WHERE aktor != 'admin' AND aktor != 'pendidik' ORDER BY poin DESC Limit 5")->result();
 		$record['pertanyaan_solved'] = $this->model->rawQuery("SELECT COUNT(id) AS id FROM permasalahan WHERE status = 'SOLVED'")->result();
 
 		
