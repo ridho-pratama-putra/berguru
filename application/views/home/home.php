@@ -187,7 +187,7 @@
 								<a href="#">
 									<div class="panel panel-default">
 										<div class="panel-body">
-											<span class="bgicon bgicon-learn-sports"></span>
+											<span class="bgicon <?=$value->icon?>"></span>
 											<p><?=$value->nama?></p>
 										</div>
 									</div>
@@ -360,7 +360,7 @@
 											</div>
 										</div>
 										<div class="media-body">
-											<h4 class="media-heading">1031</h4>
+											<h4 class="media-heading"><?=$pertanyaan_solved[0]->id?></h4>
 											<p class="media-caption">Pertanyaan Solved</p>
 										</div>
 									</div>
@@ -379,37 +379,28 @@
 										<option>Bulan Lalu</option>
 									</select>
 								</div>
+								<?php if ($mahasiswa_poin_tertinggi != array()) {
+									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
+									
 								<div class="student-item">
 									<div class="media">
 										<div class="media-left media-middle">
 											<a href="#" class="student-photo">
-												<img src="<?=base_url()?>assets/assets/images/thumbnails/Sylvian.png" width="" height="" alt="Image" class="media-object">
+												<img src="<?=base_url().$value->foto?>" width="" height="" class="img-circle" alt="Image" class="media-object">
 											</a>
 										</div>
 										<div class="media-body">
-											<h4 class="media-heading">Philip Newman</h4>
+											<h4 class="media-heading"><?=$value->nama?></h4>
 											<p class="student-solution">31 Solusi</p>
-											<a href="#" class="tag tag-orange student-point"><span class="bgicon bgicon-point"></span> 1205</a>
-											<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>
-										</div>
-									</div>
-								</div>
-								<div class="student-item">
-									<div class="media">
-										<div class="media-left media-middle">
-											<a href="#" class="student-photo">
-												<img src="<?=base_url()?>assets/assets/images/thumbnails/Sylvian.png" width="" height="" alt="Image" class="media-object">
-											</a>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading">Philip Newman</h4>
-											<p class="student-solution">31 Solusi</p>
-											<a href="#" class="tag tag-orange student-point"><span class="bgicon bgicon-point"></span> 1205</a>
+											<a href="#" class="tag tag-orange student-point"><span class="bgicon bgicon-point"></span> <?=$value->poin?></a>
 											<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>
 										</div>
 									</div>
 								</div>
 								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+								<?php }}else{ ?>
+								<h6 class="title text-center"> Data mahasiswa masih kosong</h6>
+								<?php } ?>
 							</div>
 						</div>
 						

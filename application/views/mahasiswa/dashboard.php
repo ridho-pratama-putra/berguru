@@ -234,10 +234,23 @@
 						<div class="panel-body">
 							<h3>Poin & Badge</h3>
 							<div class="profile-achievement">
-								<div class="profile-point"><span>P</span> 2003</div>
-								<div class="achie achie-orange" title="Pencapaian"><i class="fa fa-star"></i></div>
-								<div class="achie achie-green" title="Pencapaian"><i class="fa fa-trophy"></i></div>
-								<div class="achie achie-blue" title="Pencapaian"><i class="far fa-gem"></i></div>
+								<div class="profile-point"><span>P</span> <?=$pengguna[0]->poin?></div>
+								<?php
+									if ($pengguna[0]->poin < 40 ) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+									<?php }elseif ($pengguna[0]->poin < 100) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+										<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+									<?php }elseif ($pengguna[0]->poin < 180) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+										<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+										<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+									<?php }elseif ($pengguna[0]->poin < 300) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+										<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+										<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+										<div class="achie achie-black" title="Professional"><i class="fa fa-bicycle"></i></div>
+									<?php } ?>
 							</div>
 						</div>
 					</div>

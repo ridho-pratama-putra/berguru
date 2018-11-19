@@ -24,7 +24,9 @@ class Mahasiswa extends CI_Controller {
 		$header['title'] = "Mahasiswa - Dashboard";
 		$this->menu['breadcrumb'] = "Dashboard";
 		$this->menu['active'] = "dashboard";
+		
 		$record['kategori'] = $this->model->readS('kategori')->result();
+		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 
 		$this->load->view("statis/header",$header);
 		$this->load->view("mahasiswa/menu",$this->menu);
@@ -150,7 +152,7 @@ class Mahasiswa extends CI_Controller {
 			}
 			
 			
-			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto'))->result();
+			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
@@ -259,9 +261,11 @@ class Mahasiswa extends CI_Controller {
 		$header['title'] = "Mahasiswa - Profil";
 		$this->menu['breadcrumb'] = "Profil";
 		$this->menu['active'] = "";
+		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
+
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
-		$this->load->view('mahasiswa/profil');
+		$this->load->view('mahasiswa/profil',$record);
 		$this->load->view('statis/footer');
 
 	}

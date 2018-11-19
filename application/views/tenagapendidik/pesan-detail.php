@@ -77,10 +77,22 @@
 									<div class="col-md-6 text-right col-md-push-6">
 										<span class="text-muted">Badge</span>
 										<div class="profile-achievement">
-											<div class="achie achie-orange" title="Pencapaian"><i class="fa fa-star"></i></div>
-											<div class="achie achie-green" title="Pencapaian"><i class="fa fa-trophy"></i></div>
-											<div class="achie achie-blue" title="Pencapaian"><i class="far fa-gem"></i></div>
-											<!-- <div class="achie achie-black" title="Pencapaian"><i class="fa fa-bicycle"></i></div> -->
+											<?php
+											if ($komentator[0]->poin < 40 ) { ?>
+												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+											<?php }elseif ($komentator[0]->poin < 100) { ?>
+												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+												<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+											<?php }elseif ($komentator[0]->poin < 180) { ?>
+												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+												<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+												<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+											<?php }elseif ($komentator[0]->poin < 300) { ?>
+												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+												<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+												<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+												<div class="achie achie-black" title="Professional"><i class="fa fa-bicycle"></i></div>
+											<?php } ?>
 										</div>
 										<div class="dropdown detpes-menu">
 												<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -145,7 +157,15 @@
 											<?php }elseif ($valueA->dari == $this->session->userdata('loginSession')['id']) { ?>
 												<div class="dchat dchat-masuk">
 													<div class="dchat-isi">
-															<?=$valueA->teks?>
+														<?=$valueA->teks?>
+													</div>
+													<div class="dchat-footer">
+														<div class="row">
+															<div class="col-md-3 text-right">
+																<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
+																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
+															</div>
+														</div>
 													</div>
 												</div>
 											<?php } ?>

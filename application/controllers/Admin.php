@@ -327,7 +327,7 @@ class Admin extends CI_Controller {
 																'kategori',
 																array(
 																		'nama'					=> ucwords($this->input->post('nama')),
-																		'icon'					=> $this->input->post('icon'),
+																		'icon'					=> 'bgicon-learn-physics',
 																		'status'				=> $this->input->post('status'),
 																		'jumlah_pertanyaan'		=> 0,
 																		'jumlah_jawaban'		=> 0,

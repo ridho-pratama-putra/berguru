@@ -68,7 +68,7 @@ class Pendidik extends CI_Controller {
 			}
 			
 			
-			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto'))->result();
+			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
@@ -762,6 +762,21 @@ class Pendidik extends CI_Controller {
 	function submitRating()
 	{
 		if ($this->input->post() !== array()) {
+			// baca rating awal jika ada
+			$ratingAwal = $this->model->read("komentar",array('id'=>$this->input->post('id')));
+
+			// jika rating telah diset sebelumnya, maka increment atau decrement
+			$ratingAwal = $ratingAwal->result();
+			
+			if (intval($ratingAwal[0]->rating) > intval($this->input->post('rating'))) {
+				// decrement poin di mahasiswa
+				var_dump($this->model->rawQuery("UPDATE pengguna SET poin = poin - ".($ratingAwal[0]->rating - $this->input->post('rating'))." WHERE pengguna.id = ".$ratingAwal[0]->siapa));
+			}else{
+				// increment poin di mahasiswa
+				echo "string";
+				var_dump($this->model->rawQuery("UPDATE pengguna SET poin = poin + ".($this->input->post('rating') - $ratingAwal[0]->rating)." WHERE pengguna.id = ".$ratingAwal[0]->siapa));
+			}
+
 			$queryUpdate = $this->model->update("komentar",array('id'=>$this->input->post('id')),array('rating'=>$this->input->post('rating')));
 
 			// berikan notifikasi pada specified pengguna. id_konteks adalah id_pertanyaan

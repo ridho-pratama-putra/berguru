@@ -25,7 +25,7 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="profile-achievement">
-								<div class="profile-point"><span>P</span> 2003</div>
+								<div class="profile-point"><span>P</span> <?=$pengguna[0]->poin?></div>
 								<br/>
 								<div class="achie achie-orange" title="Pencapaian"><i class="fa fa-star"></i></div>
 								<div class="achie achie-green" title="Pencapaian"><i class="fa fa-trophy"></i></div>

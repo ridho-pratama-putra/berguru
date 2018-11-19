@@ -31,7 +31,10 @@ class Home extends CI_Controller {
 													ORDER BY materi.waktu_terakhir_edit 
 													LIMIT 5')->result();
 
-		// sebenarnya
+		$record['mahasiswa_poin_tertinggi'] = $this->model->rawQuery("SELECT * FROM pengguna WHERE aktor != 'admin' ORDER BY poin DESC Limit 5")->result();
+		$record['pertanyaan_solved'] = $this->model->rawQuery("SELECT COUNT(id) AS id FROM permasalahan WHERE status = 'SOLVED'")->result();
+
+		
 		$menu['active'] =	"home";
 		$menu['kategori'] =	$record['kategori'];
 		$this->load->view("home/header");
@@ -68,11 +71,11 @@ class Home extends CI_Controller {
 		}elseif($this->input->get('kategori') == 'populer'){
 			$record_ = $this->model->rawQuery("
 			SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.jumlah_dilihat, permasalahan.jumlah_komen, permasalahan.kategori, kategori.nama AS nama_kategori, permasalahan.status, permasalahan.beku, pengguna.foto
-FROM permasalahan
-LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-ORDER BY permasalahan.jumlah_komen DESC
-LIMIT 4 
+			FROM permasalahan
+			LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
+			LEFT JOIN kategori ON permasalahan.kategori = kategori.id
+			ORDER BY permasalahan.jumlah_komen DESC
+			LIMIT 4 
 			");
 		}elseif($this->input->get('kategori') == 'solved' || $this->input->get('kategori') == 'unsolved'){
 			$record_ = $this->model->rawQuery("
