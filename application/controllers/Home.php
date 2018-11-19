@@ -70,15 +70,6 @@ class Home extends CI_Controller {
 			");
 		}elseif($this->input->get('kategori') == 'populer'){
 			$record_ = $this->model->rawQuery("
-<<<<<<< HEAD
-			SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.jumlah_dilihat, permasalahan.jumlah_komen, permasalahan.kategori, kategori.nama AS nama_kategori, permasalahan.status, permasalahan.beku, pengguna.foto
-			FROM permasalahan
-			LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-			LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-			ORDER BY permasalahan.jumlah_komen DESC
-			LIMIT 4 
-			");
-=======
 				SELECT 
 						permasalahan.id, 
 						permasalahan.teks, 
@@ -97,7 +88,6 @@ class Home extends CI_Controller {
 				ORDER BY permasalahan.jumlah_komen DESC
 				LIMIT 4 
 					");
->>>>>>> 5156dfc99fc0c2ccbc4528532f7d5577c6727d1b
 		}elseif($this->input->get('kategori') == 'solved' || $this->input->get('kategori') == 'unsolved'){
 			$record_ = $this->model->rawQuery("
 				SELECT
