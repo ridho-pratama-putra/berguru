@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 04, 2018 at 02:45 PM
+-- Generation Time: Nov 19, 2018 at 09:33 PM
 -- Server version: 10.0.28-MariaDB-1~jessie
 -- PHP Version: 7.0.16-1~dotdeb+8.1
 
@@ -48,19 +48,20 @@ CREATE TABLE IF NOT EXISTS `direct_message` (
   `tanggal` datetime DEFAULT NULL,
   `terpecahkan` varchar(255) DEFAULT NULL,
   `rating` varchar(255) DEFAULT NULL,
-  `is_open` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  `is_open` varchar(255) DEFAULT NULL,
+  `jenis_pesan` varchar(255) DEFAULT NULL COMMENT 'isinya permasalahan | komentarpermasalahan, dua2 nya memilikikemungkinan dihapus oleh function deleteInitializedDm. Selain itu juga dapat berisi komentardm yang tidak dapat dihapus',
+  `dibalas` varchar(255) DEFAULT NULL COMMENT 'kolom untuk mengetahui apakah user telah membalas? jika sudah dibalas maka isinya sudah, jika belum maka isinya kosong dan akan dihapus segera setelah user meninggalkan halaman direct message dengan seorang pengguna'
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `direct_message`
 --
 
-INSERT INTO `direct_message` (`id`, `teks`, `dari`, `untuk`, `permasalahan`, `komentar`, `tanggal`, `terpecahkan`, `rating`, `is_open`) VALUES
-(1, NULL, '3', '90', '1', '9', '2018-10-31 16:33:37', NULL, NULL, NULL),
-(2, NULL, '3', '7', '1', '9', '2018-10-31 16:50:44', NULL, NULL, NULL),
-(3, NULL, '3', '7', '1', '9', '2018-10-31 17:11:18', NULL, NULL, NULL),
-(4, NULL, '5', '2', '5', '18', '2018-11-01 08:14:38', NULL, NULL, NULL),
-(5, NULL, '23', '10', '11', '19', '2018-11-02 08:35:08', NULL, NULL, NULL);
+INSERT INTO `direct_message` (`id`, `teks`, `dari`, `untuk`, `permasalahan`, `komentar`, `tanggal`, `terpecahkan`, `rating`, `is_open`, `jenis_pesan`, `dibalas`) VALUES
+(1, 'Saya mebutuhkan media 3D untuk pelajaran anatomi tubuh manusia dalam bentuk digital! ', '20', '7', '7', '3', '2018-11-16 19:13:35', NULL, NULL, NULL, 'permasalahan', 'sudah'),
+(2, 'Saya bisa membuat media 3D dengan aplikasi 4D dengan kombinasi kontral cerdas dari aplikasi Unity dan Google VR', '7', '20', '7', '3', '2018-11-16 19:13:35', NULL, NULL, NULL, 'komentarpermasalahan', 'sudah'),
+(3, 'software apa yang anda gunakan? dan bagaimana spesifikasi dari komputer pendukungnya?', '20', '7', '7', '3', '2018-11-16 19:14:27', NULL, NULL, NULL, 'komentardm', NULL),
+(4, 'kombinasi aplikasi dengan spek yang minimalis seperti pentium 4 dan RAm 2 Gb', '7', '20', NULL, NULL, '2018-11-16 19:16:49', NULL, NULL, NULL, 'komentardm', NULL);
 
 -- --------------------------------------------------------
 
@@ -84,13 +85,13 @@ CREATE TABLE IF NOT EXISTS `kategori` (
 --
 
 INSERT INTO `kategori` (`id`, `nama`, `tanggal`, `jumlah_pertanyaan`, `jumlah_jawaban`, `status`, `icon`, `nama_folder`) VALUES
-(1, 'Matematika', '2018-10-22', '2', '0', 'ACTIVE', 'fa-puzzle-piece', 'materi/Matematika'),
-(2, 'Seni Budaya', '2018-10-22', '1', '0', 'ACTIVE', 'fa-globe', 'materi/Seni Budaya'),
-(3, 'Penjaskes', '2018-10-22', '1', '0', 'ACTIVE', 'fa-flask', 'materi/Penjaskes'),
-(4, 'Bahasa Indonesia', '2018-10-22', '2', '0', 'ACTIVE', 'fa-users', 'materi/Bahasa Indonesia'),
-(5, 'Bahasa Inggris', '2018-10-22', '0', '0', 'ACTIVE', 'fa-book', 'materi/Bahasa Inggris'),
-(6, 'Kimia', '2018-10-22', '2', '0', 'ACTIVE', 'fa-bicycle', 'materi/Kimia'),
-(7, 'Fisika', '2018-10-22', '0', '0', 'ACTIVE', 'fa-flag', 'materi/Fisika');
+(1, 'Matematika', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Matematika'),
+(2, 'Seni Budaya', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Seni Budaya'),
+(3, 'Penjaskes', '2018-11-08', '2', '3', 'ACTIVE', '', 'materi/Penjaskes'),
+(4, 'Bahasa Indonesia', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Bahasa Indonesia'),
+(5, 'Bahasa Inggris', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Bahasa Inggris'),
+(6, 'Kimia', '2018-11-08', '1', '0', 'ACTIVE', '', 'materi/Kimia'),
+(7, 'Fisika', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Fisika');
 
 -- --------------------------------------------------------
 
@@ -104,38 +105,38 @@ CREATE TABLE IF NOT EXISTS `komentar` (
   `tanggal` datetime DEFAULT NULL,
   `siapa` int(11) DEFAULT NULL,
   `permasalahan` int(11) DEFAULT NULL,
+  `kategori_permasalahan` int(11) NOT NULL,
   `solver` varchar(255) DEFAULT NULL,
   `parent` int(11) DEFAULT NULL,
   `rating` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `komentar`
 --
 
-INSERT INTO `komentar` (`id`, `teks`, `tanggal`, `siapa`, `permasalahan`, `solver`, `parent`, `rating`) VALUES
-(11, 'metode yang diusulkan oleh nova lebih di rekomendasikan, karen XYZ', '2018-10-31 19:35:38', 7, 4, NULL, NULL, 1),
-(12, 'biasanya siswa sendiri juga ABC maka dari itu mungkin lebih baik XYZ', '2018-10-31 19:36:29', 7, 4, NULL, NULL, 3),
-(13, 'sejauh pengalaman saya kondisi ABC adalah sebuah kondisi dimana XYZ. maka dari itu , saran saya mungkin siswa diarahkan untuk melakukan kegiatan FGH disela-sela kegiatan belajar', '2018-10-31 19:38:15', 8, 4, NULL, NULL, 4),
-(14, 'mungkin kegiatan ABC lebih cocok, karena XYZ. atau mungkin usulan dari jamal juga tidak ada ruginya untuk dicoba', '2018-10-31 19:39:38', 2, 4, NULL, NULL, 5),
-(15, 'saya kurang setuju dengan jamal. karena pada kasus ini kondisi siswa adalah XYZ maka usulan jamal bisa dibilang kurang tepat', '2018-10-31 19:40:43', 4, 4, NULL, NULL, 3),
-(16, 'jika menurut A, mungkin bisa diterapkan metode A. dalam metode tersebut mengatakan bahwa ABC. berdasarkan teori tersebut, mungkin metode tersebut adalah metode yang paling tepat', '2018-10-31 19:43:10', 2, 5, NULL, NULL, 4),
-(17, 'saran dari maha siswa ada benarnya. namun saya memiliki teori yang sedikit berbeda, jika kondisi A maka metode yang harus diterapkan adalah B. Dan jika siswa dalam kondisi C maka metode yang harus diterapkan adalah D. saran saya terapkan metode ABC', '2018-10-31 19:45:30', 8, 5, NULL, NULL, 3),
-(18, 'Siswa diajak untuk melakukan pemecahan masalah berkaitan dengan teori yang diajarkan', '2018-11-01 08:12:56', 2, 5, NULL, NULL, 3),
-(19, 'Saya pernah membuat lesson plan untuk materi benda padat bu, dengan menggunakan pendekatan inkuiri. Mungkin sangat akan membantu dalam pengembangan PBL.', '2018-11-01 21:53:22', 10, 11, NULL, NULL, 5),
-(20, 'Saya mahasiswa dari Prodi Penjas pak, dulu pernah membuat video tutorial servis dan pass bola voli untuk pemula. Semoga nanti bisa membantu menyelesaikan PTK dikelas bapak.', '2018-11-02 07:11:00', 12, 10, NULL, NULL, NULL);
+INSERT INTO `komentar` (`id`, `teks`, `tanggal`, `siapa`, `permasalahan`, `kategori_permasalahan`, `solver`, `parent`, `rating`) VALUES
+(1, 'Saya bisa membuat media tersebut dengan menggunakan software Blender 3D', '2018-11-16 19:10:18', 4, 7, 0, NULL, NULL, 3),
+(2, 'Saya bisa mengembangkannya dengan menggunakan software Unity 3D yang lebih interaktif', '2018-11-16 19:11:30', 6, 7, 0, NULL, NULL, 4),
+(3, 'Saya bisa membuat media 3D dengan aplikasi 4D dengan kombinasi kontral cerdas dari aplikasi Unity dan Google VR', '2018-11-16 19:12:31', 7, 7, 0, NULL, NULL, 5);
 
 --
 -- Triggers `komentar`
 --
 DELIMITER //
 CREATE TRIGGER `kurangi_jumlah_komen_permasalahan` AFTER DELETE ON `komentar`
- FOR EACH ROW UPDATE permasalahan SET jumlah_komen = jumlah_komen - 1 WHERE permasalahan.id = OLD.permasalahan
+ FOR EACH ROW BEGIN
+UPDATE permasalahan SET jumlah_komen = jumlah_komen - 1 WHERE permasalahan.id = OLD.permasalahan;
+UPDATE kategori SET jumlah_jawaban = jumlah_jawaban - 1 WHERE kategori.id = (SELECT permasalahan.kategori FROM permasalahan WHERE permasalahan.id = OLD.permasalahan);
+END
 //
 DELIMITER ;
 DELIMITER //
 CREATE TRIGGER `tambah_jumlah_komen_permasalahan` AFTER INSERT ON `komentar`
- FOR EACH ROW UPDATE permasalahan SET jumlah_komen = jumlah_komen + 1 WHERE permasalahan.id=NEW.permasalahan
+ FOR EACH ROW BEGIN
+UPDATE permasalahan SET jumlah_komen = jumlah_komen + 1 WHERE permasalahan.id=NEW.permasalahan;
+UPDATE kategori SET jumlah_jawaban = jumlah_jawaban + 1 WHERE kategori.id = (SELECT permasalahan.kategori FROM permasalahan WHERE permasalahan.id = NEW.permasalahan);
+END
 //
 DELIMITER ;
 
@@ -169,30 +170,6 @@ CREATE TABLE IF NOT EXISTS `lowongan` (
   `valid` int(11) DEFAULT NULL,
   `kategori` varchar(255) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `lowongan`
---
-
-INSERT INTO `lowongan` (`id`, `nama`, `instansi`, `lokasi`, `kontak`, `valid`, `kategori`, `tanggal`) VALUES
-(1, 'Guru Tingkat SD yang Ulet, Bisa Microsoft Office Nilai Plus', 'TK ABA 16 Malang', 'Jalan Gajayana Gang 3D', '08155514054', 0, NULL, '2018-10-28 18:17:08'),
-(2, 'Guru Tingkat SMA yang Ulet, Bisa Microsoft Office Nilai Plus', 'SMAN 9 Malang', 'Jalan borobudur', '08155514054', 0, NULL, '2018-10-28 18:18:58');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mahasiswa`
---
-
-CREATE TABLE IF NOT EXISTS `mahasiswa` (
-`id` int(11) NOT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `universitas` varchar(255) DEFAULT NULL,
-  `nim` varchar(255) DEFAULT NULL,
-  `report` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -224,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `max_notif_id_per_user` (
 `id` int(11) NOT NULL,
   `id_pengguna` varchar(255) DEFAULT NULL,
   `max_notif_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `max_notif_id_per_user`
@@ -232,32 +209,58 @@ CREATE TABLE IF NOT EXISTS `max_notif_id_per_user` (
 
 INSERT INTO `max_notif_id_per_user` (`id`, `id_pengguna`, `max_notif_id`) VALUES
 (1, '1', 0),
-(2, '2', 5),
+(2, '2', 7),
 (3, '3', 0),
-(4, '4', 5),
+(4, '4', 7),
 (5, '5', 0),
-(6, '6', 5),
-(7, '7', 5),
-(8, '8', 5),
+(6, '6', 7),
+(7, '7', 14),
+(8, '8', 0),
 (9, '9', 0),
-(10, '10', 11),
+(10, '10', 0),
 (11, '11', 0),
-(12, '12', 11),
+(12, '12', 0),
 (13, '13', 0),
 (14, '14', 0),
 (15, '15', 0),
 (16, '16', 0),
-(17, '17', 11),
+(17, '17', 0),
 (18, '18', 0),
 (19, '19', 0),
-(20, '20', 0),
+(20, '20', 15),
 (21, '21', 0),
 (22, '22', 0),
 (23, '23', 0),
 (24, '24', 0),
 (25, '25', 0),
 (26, '26', 0),
-(27, '27', 0);
+(27, '27', 0),
+(28, '28', 0),
+(29, '29', 0),
+(30, '30', 0),
+(31, '31', 0),
+(32, '32', 0),
+(33, '33', 0),
+(34, '34', 0),
+(35, '35', 0),
+(36, '36', 0),
+(37, '37', 0),
+(38, '38', 0),
+(39, '39', 0),
+(40, '40', 0),
+(41, '41', 0),
+(42, '42', 0),
+(43, '43', 0),
+(44, '44', 0),
+(45, '45', 0),
+(46, '46', 0),
+(47, '47', 0),
+(48, '48', 0),
+(49, '49', 0),
+(50, '50', 0),
+(51, '51', 0),
+(52, '52', 0),
+(53, '53', 0);
 
 -- --------------------------------------------------------
 
@@ -277,81 +280,71 @@ CREATE TABLE IF NOT EXISTS `message` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notif_mhs_per_user`
+-- Table structure for table `notif`
 --
 
-CREATE TABLE IF NOT EXISTS `notif_mhs_per_user` (
+CREATE TABLE IF NOT EXISTS `notif` (
 `id` int(11) NOT NULL,
-  `id_pengguna` varchar(255) DEFAULT NULL,
-  `id_notif` varchar(255) DEFAULT NULL,
-  `terlihat` varchar(255) DEFAULT NULL,
-  `terbaca` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `notif_mhs_per_user`
---
-
-INSERT INTO `notif_mhs_per_user` (`id`, `id_pengguna`, `id_notif`, `terlihat`, `terbaca`) VALUES
-(1, '2', '1', '1', '0'),
-(2, '2', '2', '1', '0'),
-(3, '4', '2', '1', '0'),
-(4, '4', '1', '1', '0'),
-(5, '2', '3', '1', '0'),
-(6, '4', '3', '1', '0'),
-(7, '6', '3', '1', '0'),
-(8, '6', '2', '1', '0'),
-(9, '6', '1', '1', '0'),
-(10, '8', '3', '1', '0'),
-(11, '8', '2', '1', '0'),
-(12, '8', '1', '1', '0'),
-(13, '7', '3', '1', '0'),
-(14, '7', '2', '1', '0'),
-(15, '7', '1', '1', '0'),
-(16, '6', '5', '1', '0'),
-(17, '6', '4', '1', '0'),
-(18, '7', '5', '1', '0'),
-(19, '7', '4', '1', '0'),
-(20, '8', '5', '1', '0'),
-(21, '8', '4', '1', '0'),
-(22, '2', '5', '1', '0'),
-(23, '2', '4', '1', '0'),
-(24, '4', '5', '1', '0'),
-(25, '4', '4', '1', '0');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `notif_permasalahan`
---
-
-CREATE TABLE IF NOT EXISTS `notif_permasalahan` (
-`id` int(11) NOT NULL,
-  `id_permasalahan` int(11) DEFAULT NULL,
-  `dari` varchar(255) DEFAULT NULL,
+  `konteks` varchar(255) DEFAULT NULL COMMENT 'isinya permasalahan || dm || lainnya || komentar',
+  `id_konteks` int(11) DEFAULT NULL COMMENT 'bisa id_permasalahan || id_DM || komentar || lainlain',
+  `dari` int(11) DEFAULT NULL,
   `untuk` varchar(255) DEFAULT NULL,
   `datetime` datetime DEFAULT NULL,
   `terlihat` varchar(255) DEFAULT NULL COMMENT 'sudah diilhat di notif',
   `terbaca` varchar(255) DEFAULT NULL COMMENT 'terlihat dengan detil melaui klik pada notif'
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `notif_permasalahan`
+-- Dumping data for table `notif`
 --
 
-INSERT INTO `notif_permasalahan` (`id`, `id_permasalahan`, `dari`, `untuk`, `datetime`, `terlihat`, `terbaca`) VALUES
-(1, 1, '3', 'mahasiswa', '2018-10-22 22:24:02', NULL, NULL),
-(2, 2, '3', 'mahasiswa', '2018-10-23 17:36:32', NULL, NULL),
-(3, 3, '5', 'mahasiswa', '2018-10-28 15:32:50', NULL, NULL),
-(4, 4, '3', 'mahasiswa', '2018-10-31 19:24:22', NULL, NULL),
-(5, 5, '5', 'mahasiswa', '2018-10-31 19:29:22', NULL, NULL),
-(6, 6, '24', 'mahasiswa', '2018-11-01 21:22:22', NULL, NULL),
-(7, 7, '24', 'mahasiswa', '2018-11-01 21:23:30', NULL, NULL),
-(8, 8, '22', 'mahasiswa', '2018-11-01 21:27:12', NULL, NULL),
-(9, 9, '20', 'mahasiswa', '2018-11-01 21:29:37', NULL, NULL),
-(10, 10, '21', 'mahasiswa', '2018-11-01 21:46:50', NULL, NULL),
-(11, 11, '23', 'mahasiswa', '2018-11-01 21:50:51', NULL, NULL),
-(12, 12, '26', 'mahasiswa', '2018-11-02 08:42:44', NULL, NULL);
+INSERT INTO `notif` (`id`, `konteks`, `id_konteks`, `dari`, `untuk`, `datetime`, `terlihat`, `terbaca`) VALUES
+(1, 'pertanyaan', 1, 18, 'mahasiswa', '2018-11-16 14:20:35', NULL, NULL),
+(2, 'pertanyaan', 2, 16, 'mahasiswa', '2018-11-16 14:21:57', NULL, NULL),
+(3, 'pertanyaan', 3, 14, 'mahasiswa', '2018-11-16 14:22:59', NULL, NULL),
+(4, 'pertanyaan', 4, 15, 'mahasiswa', '2018-11-16 14:24:53', NULL, NULL),
+(5, 'pertanyaan', 5, 17, 'mahasiswa', '2018-11-16 14:25:42', NULL, NULL),
+(7, 'pertanyaan', 7, 20, 'mahasiswa', '2018-11-16 14:27:10', NULL, NULL),
+(8, 'komentar', 7, 4, '20', '2018-11-16 19:10:18', NULL, NULL),
+(9, 'komentar', 7, 6, '20', '2018-11-16 19:11:30', NULL, NULL),
+(10, 'komentar', 7, 7, '20', '2018-11-16 19:12:31', NULL, NULL),
+(11, 'ratingKomentar', 7, 20, '4', '2018-11-16 19:13:26', NULL, NULL),
+(12, 'ratingKomentar', 7, 20, '6', '2018-11-16 19:13:28', NULL, NULL),
+(13, 'ratingKomentar', 7, 20, '7', '2018-11-16 19:13:30', NULL, NULL),
+(14, 'dm', 3, 20, '7', '2018-11-16 19:14:27', NULL, NULL),
+(15, 'dm', 4, 7, '20', '2018-11-16 19:16:49', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notif_flag`
+--
+
+CREATE TABLE IF NOT EXISTS `notif_flag` (
+`id` int(11) NOT NULL,
+  `id_pengguna` varchar(255) DEFAULT NULL,
+  `id_notif` int(11) DEFAULT NULL,
+  `terlihat` varchar(255) DEFAULT NULL,
+  `terbaca` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `notif_flag`
+--
+
+INSERT INTO `notif_flag` (`id`, `id_pengguna`, `id_notif`, `terlihat`, `terbaca`) VALUES
+(1, '20', 10, '1', '0'),
+(2, '20', 9, '1', '0'),
+(3, '20', 8, '1', '0'),
+(4, '7', 14, '1', '0'),
+(5, '7', 13, '1', '0'),
+(6, '7', 7, '1', '0'),
+(8, '7', 5, '1', '0'),
+(9, '7', 4, '1', '0'),
+(10, '7', 3, '1', '0'),
+(11, '7', 2, '1', '0'),
+(12, '7', 1, '1', '0'),
+(13, '20', 15, '1', '0');
 
 -- --------------------------------------------------------
 
@@ -375,38 +368,66 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
   `cookie` varchar(255) DEFAULT NULL,
   `jumlah_dm` int(11) DEFAULT NULL,
   `jumlah_dm_solved` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pengguna`
 --
 
 INSERT INTO `pengguna` (`id`, `nama`, `email`, `no_hp`, `institusi_or_universitas`, `nip_or_nim`, `report`, `status`, `aktor`, `foto`, `password`, `poin`, `cookie`, `jumlah_dm`, `jumlah_dm_solved`) VALUES
-(1, 'admin', 'admin@admin.com', '+6289987009', NULL, NULL, 0, 'ACTIVE', 'admin', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, 'B5iOYauFR5f27ROKCQYSLGKJDZ0EPMACuq4NtsohQ13mj8AbFzgV67y9JtwEzXv0', 0, 0),
-(2, 'Maha Siswa', 'mahasiswa@mahasiswa.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, '4XsSfAfj10b3rZo7oxM5b3uUKGzrD1ZOFMkWqmjEWl6zYAiVCeI9YOVy0tqaaNPS', 0, 0),
-(3, 'Maha Guru', 'guru@guru.com', '', NULL, NULL, 0, 'DIBEKUKAN', 'pendidik', 'userprofiles/Maha_Guru_-_profil1.jpg', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
-(4, 'Siswa Siswi', 'siswa@siswa.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
-(7, 'Hasan Jamil', 'hasan@hasan.com', '', NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'userprofiles/Hasan_Jamil_-_profil2.jpg', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
-(8, 'Jamal Khashoggi', 'jamal@jamal.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
-(9, 'Ibnu Suhaemy', 'is_september@yahoo.com', NULL, NULL, NULL, 0, 'DIBEKUKAN', 'pendidik', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
-(10, 'Anton Bayangkara', 'anton@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, 'j3HIvSfAGqHV3zlK7rXpsYPbgtUpS4gJ7om2Z2EnQhyCYMNJiBUcxVvFnPw0j8R6', 0, 0),
-(11, 'Bagus Sandika', 'bagus@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(12, 'Cintya Restu', 'cintya@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(13, 'Dea Amanda', 'dea@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(14, 'Emilia Rina', 'emil@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(15, 'Farah Nabila', 'farah@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(16, 'Gina Sabrina', 'gina@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(17, 'Hamid Dian', 'hamid@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(18, 'Irfan Joni', 'irfan@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(19, 'Jaka Umbara', 'jaka@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(20, 'Mulyadi Fadil', 'mulyadi@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Mulyadi_Fadil_-_profil', 'e10adc3949ba59abbe56e057f20f883e', 0, '98PnfdmhgKGu0OH8os7taeZxJLeDVwVUXtziNRvkABq06y5qxbCInlFfEpPAXg54', 0, 0),
-(21, 'Hasan Wirayudha', 'hasan@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Hasan_Wirayudha_-_profil', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(22, 'Evania Yafie', 'evania@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Evania_Yafie_-_profil', 'e10adc3949ba59abbe56e057f20f883e', 0, 'HTDe0b8lvtPoHVy3aUq1oURrNcgs1M7Ir6a2dWX90SLixAsuqx6dtfKXcTpbWzGV', 0, 0),
-(23, 'Ni Luh Sakinah', 'niluh@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Ni_Luh_Sakinah_-_profil', 'e10adc3949ba59abbe56e057f20f883e', 0, '84uYKDgoEhtoabOT5BJnxMCeWCF6dkQXJ433HOd0UiSIRjBs2luPW0LGSIpPwfUt', 0, 0),
-(24, 'Herlina Ike', 'herlina@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Herlina_Ike_-_profil', 'e10adc3949ba59abbe56e057f20f883e', 0, '6n3hDIjid17pBuyPEl9QRtCYr5ayXcgWEGf8C0wMqT0YODt25JeelsT9ULpQhu4M', 0, 0),
-(25, 'Ence Surahman', 'ence@teacher.com', NULL, NULL, NULL, 0, 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(26, 'Yerry Soepriyanto', 'yerry@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Yerry_Soepriyanto_-_profil', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
-(27, 'Henry Praherdhiono', 'henry@teacher.com', NULL, NULL, NULL, 0, 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0);
+(1, 'Admin', 'admin@admin.com', NULL, NULL, NULL, 0, 'ACTIVE', 'admin', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, 'rHsTVEHQSClRehBL7ItfxZ8zFxCFnfQtO7vpzVAUyNa58cvuWWAPqYkndLqKgPKD', 0, 0),
+(2, 'Maha Siswa', 'mahasiswa@mahasiswa.com', '+6289987009', NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'userprofiles/Maha_Siswa_-_profil2.jpg', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
+(3, 'Muhammad Ridho', 'guru@guru.com', '089680752154', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Muhammad_Ridho_-_profil1.jpg', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0),
+(4, 'Anton Bayangkara', 'anton@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(5, 'Bagus Sandika', 'bagus@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(6, 'Cintya Restu', 'cintya@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(7, 'Dea Amanda', 'dea@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(8, 'Emilia Rina', 'emil@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(9, 'Farah Nabila', 'farah@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(10, 'Gina Sabrina', 'gina@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(11, 'Hamid Dian', 'hamid@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(12, 'Irfan Joni', 'irfan@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(13, 'Jaka Umbara', 'jaka@student.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(14, 'Mulyadi Fadil', 'mulyadi@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Mulyadi_Fadil_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(15, 'Hasan Wirayudha', 'hasan@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Hasan_Wirayudha_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(16, 'Evania Yafie', 'evania@teacher.com', NULL, NULL, NULL, 0, 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(17, 'Ni Luh Sakinah', 'niluh@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Ni_Luh_Sakinah_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(18, 'Herlina Ike', 'herlina@teacher.com', NULL, NULL, NULL, 0, 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(19, 'Ence Surahman', 'ence@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Ence_Surahman_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(20, 'Yerry Soepriyanto', 'yerry@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Yerry_Soepriyanto_-_profil.jpeg', 'e10adc3949ba59abbe56e057f20f883e', 0, 'FO3aBKlomea82Zt9cKALxUisTjr612CYGVJggWHq7hDIsCXc7p4dLAzbkQTubdij', 0, 0),
+(21, 'Henry Praherdhiono', 'henry@teacher.com', '', NULL, NULL, 0, 'ACTIVE', 'pendidik', 'userprofiles/Henry_Praherdhiono_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, 0, 0),
+(22, 'Miftakhul Sholikhah', 'miftakhulsholikhah@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'c68737b0ef27a9a79d936caa9b0ec1fe', 0, 'NTYIwLaQxvJchDukEBaT0LFn2Qg7ecgbXOdCSp2UKR9hdtu9M4rklwy7G6rzWsFz', 0, 0),
+(23, 'Ginanjar Septiana Supardiansyah', 'ginanjarsetiana4@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '0fae158952bdf312208d5b2d1d94d657', 0, 'uhqQNSNjcb2J98kU6ZDSfVXmZGdv644odTAWIgCCwxMzLnc3g5OvQTEk8FyxKXzf', 0, 0),
+(24, 'Ika Kharismadewi', 'rismaika016@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'd4da8d9e6e5c4b1c9db7b01bb7c6c5b3', 0, NULL, 0, 0),
+(25, 'Irfan Agung Purnomo', 'agungirfan630@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'ccbc7fda6d3cf74cf2a0c6be76ef05bf', 0, NULL, 0, 0),
+(26, 'Mila Noni Alfiolita', 'milanoni99@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'aef2afc5eceadab86921beb9b02b1904', 0, NULL, 0, 0),
+(27, 'Lisa Helendriani', 'lisahelend19@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '822ad60fd167aff9c07af373cbe0ef72', 0, NULL, 0, 0),
+(28, 'Ermian Hotnauli Silalahi', 'ermianhotnauli@yahoo.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '86f9933c52433750c83590a234555e67', 0, NULL, 0, 0),
+(29, 'Nafika Fikria Arifianda', 'nafikafikriaarifianda@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '8941a8eff97ee4405e9e2781e32ffbf5', 0, NULL, 0, 0),
+(30, 'Nur Roudlotul Jannah', 'nurroudloh.nrj@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'becb73795b3cdf701973a5f4c46a7c0a', 0, NULL, 0, 0),
+(31, 'Made Ema Parurahwani', 'emamade4@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '4d7ef38325543457eb2cb9cefce36214', 0, NULL, 0, 0),
+(32, 'Lailatul Mufida', 'ellamufida.00@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'ac03ebfafd59b65f494bf5d9cda778ad', 0, 'Ntpd1XMzP92YuXA4FrDWcqT4kEnyhLcSzISNJebyFZbio8QqW5ajpox7JOBlemi2', 0, 0),
+(33, 'Deah Arta Muviana', 'damuviana@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'cfb5a8202eb4e890a9195c9a7e08c7c1', 0, NULL, 0, 0),
+(34, 'Maziyatus Sariroh Yusro', 'sariroh74@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '3e06f2af88392a8943c423d7d36d307a', 0, 'c4S26xi9BmkRgLerbk0EX2IbZNtds8asGOCNtFwenjl8LyQYdXVA953BhDTVRnZO', 0, 0),
+(35, 'Maulidiyah Wiahnanda', 'diyahnanda6@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '77c84df87bcf58cc132ce5119f4623a8', 0, '5RhbmLiN8dCzkGn7pBoD4mkEvMjLKuoYsz0Oyl3XTVerthMFXN37b9x2gZBqeQPI', 0, 0),
+(36, 'Meridza Nur Audina', 'audinameridza@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '9c38e42876b09f089ea4a4b5dc7b84ae', 0, NULL, 0, 0),
+(37, 'Kurniawan Prasetyo', 'kurniawan1161@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '2803f0d8de6c6b2d80121f23489e3553', 0, NULL, 0, 0),
+(38, 'Maqfirotul Laily', 'maqfirotullaily23@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'a24229a75305bf7052d5b2f1a2a428b8', 0, NULL, 0, 0),
+(39, 'Kurniawan Prasetyo 1161', 'kurniawan1161@yahoo.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '3ee2a3262b635039690c7ffa88db860f', 0, NULL, 0, 0),
+(40, 'Eka Zunita Nurfadilah', 'ekazunitanurfadila@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '6a1b3f1a6f1facf5e9c940b34c76b092', 0, 'TPBdmGKHBoxVNpQXUhzqtY6bIWEqMouV5FDybe8QxejzCUR3R2OtLSgg7GXAYHcE', 0, 0),
+(41, 'Isvina Uma Izah', 'isvinaumaizah1@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'b4e1cb52739e7a0340881d40b1cd95fe', 0, NULL, 0, 0),
+(42, 'Agam Firdaus Junaidi', 'agamjunaidi010@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'd7bf52d2a0b546a735cc9f15730bfc82', 0, NULL, 0, 0),
+(43, 'Istiqomah Ahsanu Amala', 'istiamala28@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '86d9bcae56114714da37d1a7938e8d59', 0, NULL, 0, 0),
+(44, 'Dea Putri Lailatul Qudus', 'deaputri0527@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '331dfed457ebeee3e3bceb98f54a7243', 0, '1fCJurTyWC0PVNStRbN6dB9HqscAKWd7zDPQqf48vLUcoX1yGQeZSOen3Oh5E3GD', 0, 0),
+(45, 'Moh Hasan Safroni', 'hassansaffroni@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '6dc08c1e5df2e0152d1fb6a3eaf6b726', 0, NULL, 0, 0),
+(46, 'Indah Larasati', '1999indah@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '347101d0ff2538bc3f71a4c17831bdbc', 0, NULL, 0, 0),
+(47, 'Moch. Romadhoni', 'mochromadhoni20@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '261a794363c16c2a9969c2ee093673d6', 0, NULL, 0, 0),
+(48, 'Milasari Saharuddin', 'Milathahir@yahoo.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '5fc81072e9e3ea0558f417741d5da990', 0, NULL, 0, 0),
+(49, 'Leonarda Indra Suryati', 'nardasuryati@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '1762c9584d2822920b91ea8d0a83d1ec', 0, NULL, 0, 0),
+(50, 'Mareta Bunga Pratiwi', 'maretabungapratiwi@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '65f5613ed4048b905a51997d67cd0d80', 0, NULL, 0, 0),
+(51, 'Ahmad Dian Tri Raharjo', 'ahmaddiantriraharjo@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '41fe7581cfcb26bcbe22700512c6fcd0', 0, NULL, 0, 0),
+(52, 'Faricha Alif Vaniza', 'aliffaricha@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'de27825fca35ba8492b08765cda6cf98', 0, NULL, 0, 0),
+(53, 'Ibnu', 'ibnuspeedster@gmail.com', NULL, NULL, NULL, 0, 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', 0, NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -425,20 +446,19 @@ CREATE TABLE IF NOT EXISTS `permasalahan` (
   `kategori` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `beku` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `permasalahan`
 --
 
 INSERT INTO `permasalahan` (`id`, `teks`, `tanggal`, `siapa`, `jumlah_dilihat`, `jumlah_dibaca`, `jumlah_komen`, `kategori`, `status`, `beku`) VALUES
-(4, 'Saya mengalami kesulitan dalam menyampaikan mata pelajaran matematikakarena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih.', '2018-10-31 19:24:22', 3, 5, 0, 6, 1, 'UNSOLVED', 'ACTIVE'),
-(6, 'Dalam dua minggu kedepan, saya akan mengajar materi tenses untuk siswa kelas tiga SD. Adakah yang dapat membantu merancang media presentasi yang interaktif untuk membuat siswa lebih terlibat dalam materi pelajaran? Terima kasih', '2018-11-02 07:42:21', 24, 0, 0, 0, 5, 'UNSOLVED', 'ACTIVE'),
-(8, 'Saya membutuhkan bantuan untuk melaksanakan PTK untuk materi geometri di kelas VII, adakah yang bisa mengembangkan media tayangannya? Terima kasih', '2018-11-01 21:27:12', 22, 0, 0, 0, 1, 'UNSOLVED', 'ACTIVE'),
-(9, 'Saya ingin melaksanakan PTK di materi tari kreasi untuk siswa SMA kelas XI, adakah yang dapat membantu merancang judul? Terima kasih', '2018-11-01 21:29:37', 20, 0, 0, 0, 2, 'UNSOLVED', 'ACTIVE'),
-(10, 'saya mau menyusun PTK dimateri servis bola voli, adakah yang dapat membantu merancang proposal dan media tayangan tutorial? Terima kasih', '2018-11-01 21:46:50', 21, 1, 0, 1, 3, 'UNSOLVED', 'ACTIVE'),
-(11, 'Saya membutuhkan bantuan dalam membuat lesson plan berbasis pembelajaran berbasis proyek untuk materi ''perubahan zat'' untuk anak kelas 5 SD. Terima kasih', '2018-11-01 21:50:51', 23, 1, 0, 1, 6, 'UNSOLVED', 'ACTIVE'),
-(12, 'Saya ingin melaksanakan PTK dengan topik jenis paragraf dan tulisan, adakah model yang tepat untuk diimplementasikan? Terima kasih', '2018-11-02 08:42:44', 26, 0, 0, 0, 4, 'UNSOLVED', 'ACTIVE');
+(1, 'Dalam dua minggu kedepan, saya akan mengajar materi tenses untuk siswa kelas tiga SD. Adakah yang dapat membantu merancang media presentasi yang interaktif untuk membuat siswa lebih terlibat dalam materi pelajaran? Terima kasih', '2018-11-16 14:20:35', 18, 0, 0, 0, 5, 'UNSOLVED', 'ACTIVE'),
+(2, 'Saya membutuhkan bantuan untuk melaksanakan PTK untuk materi geometri di kelas VII, adakah yang bisa mengembangkan media tayangannya? Terima kasih', '2018-11-16 14:21:57', 16, 0, 0, 0, 1, 'UNSOLVED', 'ACTIVE'),
+(3, 'Saya ingin melaksanakan PTK di materi tari kreasi untuk siswa SMA kelas XI, adakah yang dapat membantu merancang judul? Terima kasih', '2018-11-16 14:22:59', 14, 0, 0, 0, 2, 'UNSOLVED', 'ACTIVE'),
+(4, 'saya mau menyusun PTK dimateri servis bola voli, adakah yang dapat membantu merancang proposal dan media tayangan tutorial? Terima kasih', '2018-11-16 14:24:53', 15, 0, 0, 0, 3, 'UNSOLVED', 'ACTIVE'),
+(5, 'Saya membutuhkan bantuan dalam membuat lesson plan berbasis pembelajaran berbasis proyek untuk materi "perubahan zat" untuk anak kelas 5 SD. Terima kasih ', '2018-11-16 14:25:42', 17, 0, 0, 0, 6, 'UNSOLVED', 'ACTIVE'),
+(7, 'Saya mebutuhkan media 3D untuk pelajaran anatomi tubuh manusia dalam bentuk digital! ', '2018-11-16 19:15:13', 20, 3, 0, 3, 3, 'UNSOLVED', 'ACTIVE');
 
 --
 -- Triggers `permasalahan`
@@ -479,32 +499,16 @@ CREATE TABLE IF NOT EXISTS `riwayat_permasalahan_dilihat` (
   `id_pengguna` varchar(255) DEFAULT NULL,
   `permasalahan` int(11) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `riwayat_permasalahan_dilihat`
 --
 
 INSERT INTO `riwayat_permasalahan_dilihat` (`id`, `id_pengguna`, `permasalahan`, `tanggal`) VALUES
-(1, '2', 2, '2018-10-24 09:21:18'),
-(2, '2', 1, '2018-10-24 09:23:51'),
-(3, '4', 1, '2018-10-24 09:24:43'),
-(4, '2', 3, '2018-10-28 15:33:59'),
-(5, '4', 3, '2018-10-28 15:34:32'),
-(6, '6', 3, '2018-10-28 16:13:55'),
-(7, '6', 1, '2018-10-28 16:14:41'),
-(8, '8', 1, '2018-10-28 16:32:41'),
-(9, '7', 1, '2018-10-28 16:33:58'),
-(10, '6', 4, '2018-10-31 19:30:21'),
-(11, '7', 4, '2018-10-31 19:34:56'),
-(12, '8', 4, '2018-10-31 19:36:53'),
-(13, '2', 4, '2018-10-31 19:38:49'),
-(14, '4', 4, '2018-10-31 19:39:57'),
-(15, '2', 5, '2018-10-31 19:41:48'),
-(16, '8', 5, '2018-10-31 19:43:29'),
-(17, '6', 5, '2018-10-31 19:45:48'),
-(18, '10', 11, '2018-11-01 21:52:09'),
-(19, '12', 10, '2018-11-02 07:09:41');
+(1, '4', 7, '2018-11-16 19:09:46'),
+(2, '6', 7, '2018-11-16 19:11:00'),
+(3, '7', 7, '2018-11-16 19:11:55');
 
 --
 -- Triggers `riwayat_permasalahan_dilihat`
@@ -573,12 +577,6 @@ ALTER TABLE `lowongan`
  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `mahasiswa`
---
-ALTER TABLE `mahasiswa`
- ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `materi`
 --
 ALTER TABLE `materi`
@@ -597,16 +595,16 @@ ALTER TABLE `message`
  ADD PRIMARY KEY (`id`), ADD KEY `siapa_tendik_message` (`siapa`);
 
 --
--- Indexes for table `notif_mhs_per_user`
+-- Indexes for table `notif`
 --
-ALTER TABLE `notif_mhs_per_user`
- ADD PRIMARY KEY (`id`);
+ALTER TABLE `notif`
+ ADD PRIMARY KEY (`id`), ADD KEY `dari_pengguna` (`dari`);
 
 --
--- Indexes for table `notif_permasalahan`
+-- Indexes for table `notif_flag`
 --
-ALTER TABLE `notif_permasalahan`
- ADD PRIMARY KEY (`id`);
+ALTER TABLE `notif_flag`
+ ADD PRIMARY KEY (`id`), ADD KEY `id_notif_notif` (`id_notif`);
 
 --
 -- Indexes for table `pengguna`
@@ -651,7 +649,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `direct_message`
 --
 ALTER TABLE `direct_message`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `kategori`
 --
@@ -661,7 +659,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 -- AUTO_INCREMENT for table `komentar`
 --
 ALTER TABLE `komentar`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `komentar_message`
 --
@@ -671,11 +669,6 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `lowongan`
 --
 ALTER TABLE `lowongan`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `mahasiswa`
---
-ALTER TABLE `mahasiswa`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `materi`
@@ -686,32 +679,32 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `max_notif_id_per_user`
 --
 ALTER TABLE `max_notif_id_per_user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `notif_mhs_per_user`
+-- AUTO_INCREMENT for table `notif`
 --
-ALTER TABLE `notif_mhs_per_user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+ALTER TABLE `notif`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
--- AUTO_INCREMENT for table `notif_permasalahan`
+-- AUTO_INCREMENT for table `notif_flag`
 --
-ALTER TABLE `notif_permasalahan`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+ALTER TABLE `notif_flag`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `permasalahan`
 --
 ALTER TABLE `permasalahan`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `pesan_info`
 --
@@ -721,7 +714,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `riwayat_permasalahan_dilihat`
 --
 ALTER TABLE `riwayat_permasalahan_dilihat`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tags`
 --
@@ -763,6 +756,18 @@ ADD CONSTRAINT `siapa_terakhir_edit_materi` FOREIGN KEY (`siapa_terakhir_edit`) 
 --
 ALTER TABLE `message`
 ADD CONSTRAINT `siapa_tendik_message` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `notif`
+--
+ALTER TABLE `notif`
+ADD CONSTRAINT `dari_pengguna` FOREIGN KEY (`dari`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `notif_flag`
+--
+ALTER TABLE `notif_flag`
+ADD CONSTRAINT `id_notif_notif` FOREIGN KEY (`id_notif`) REFERENCES `notif` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `permasalahan`
