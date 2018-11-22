@@ -293,7 +293,7 @@ class Pendidik extends CI_Controller {
 			$deletePertanyaan = $this->model->delete('permasalahan',array('id'=>$this->input->post('id')));
 
 			// delete di tabel notifikasi
-			$this->model->delete('notif',array('konteks'=>'pertanyaan', 'id_konteks'=>$this->input->post('id')));			
+			$this->model->rawQuery("DELETE notif WHERE (konteks ='pertanyaan' OR konteks ='ratingKomentar' OR konteks ='komentar') AND id_konteks = ".$this->input->post('id'));
 
 			// delete di tabel riwayat_notifikasi
 			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));			

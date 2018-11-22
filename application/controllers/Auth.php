@@ -104,7 +104,8 @@ class Auth extends CI_Controller {
 					}
 				}
 			}
-			$this->load->view("statis_/header");
+			$header['title'] = "Login";
+			$this->load->view("statis_/header",$header);
 			$this->load->view("auth/login");
 			$this->load->view("statis_/footer");
 		}
@@ -144,7 +145,8 @@ class Auth extends CI_Controller {
 		            $this->session->set_flashdata('register', $register);
 				}
 			}
-			$this->load->view("statis_/header");
+			$header['title'] = "Daftar";
+			$this->load->view("statis_/header",$header);
 			$this->load->view("auth/register");
 			$this->load->view("statis_/footer");
 		}
@@ -159,7 +161,8 @@ class Auth extends CI_Controller {
 			alert('register','warning','Perhatian!','Mohon memulai sesi pendaftaran');
 			redirect('register');
 		}else{
-			$this->load->view("statis_/header");
+			$header['title'] = "Daftar";
+			$this->load->view("statis_/header",$header);
 			$this->load->view("auth/register-pilih");
 			$this->load->view("statis_/footer");
 		}

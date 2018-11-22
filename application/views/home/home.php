@@ -78,7 +78,7 @@
 					"<div class='panel panel-default panel-ask'>"+
 						"<div class='panel-body'>"+
 							"<div class='row panel-ask-account'>"+
-								"<div class='col-md-6'>"+
+								"<div class='col-sm-6'>"+
 									"<div class='media'>"+
 										"<div class='media-left media-middle'>"+
 											"<a href='#' class='ask-photo'>"+
@@ -91,7 +91,7 @@
 										"</div>"+
 									"</div>"+
 								"</div>"+
-								"<div class='col-md-6 ask-data-list'>"+
+								"<div class='col-sm-6 ask-data-list'>"+
 									"<div class='ask-data'>"+
 										"<p class='data-value'>"+data.permasalahan[i].jumlah_dilihat+"</p>"+
 										"<p class='data-label'>Dilihat</p>"+
