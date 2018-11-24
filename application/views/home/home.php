@@ -66,7 +66,7 @@
 	
 	// untuk get pertanyaan berdsasrkan kategoir
 	function pertanyaan(argument) {
-		$.get("<?=base_url()?>kategori-pertanyaan",{kategori : argument},function( data ) {
+		$.get("<?=base_url()?>kategori-status",{tipe : argument},function( data ) {
 			data = JSON.parse(data);
 			// console.log(data);
 			$("#pertanyaanDitemukan").html(data.jumlah+" pertanyaan ditemukan");
@@ -87,7 +87,7 @@
 										"</div>"+
 										"<div class='media-body'>"+
 											"<h4 class='media-heading'>"+data.permasalahan[i].nama_pengguna+"</h4>"+
-											"<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'></p>"+
+											"<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'><span class='bgicon icon-clock'></span></p>"+
 										"</div>"+
 									"</div>"+
 								"</div>"+
@@ -110,11 +110,11 @@
 								"</div>"+
 							"</div>"+
 							"<div class='row panel-ask-answer'>"+
-								"<div class='col-md-6'>"+
+								"<div class='col-md-6 ask-commentator'>"+
 									"<ul class='list-inline list-commentator'>";
 										if (data.permasalahan[i].komentator.length > 0 ) {
 										elementToRender +=	
-										"<li>"+
+										"<li class='commentator-caption'>"+
 											"<p>Penjawab</p>"+
 										"</li>";
 										}
@@ -163,7 +163,7 @@
 					<div class="col-sm-6">
 						<p>Telusuri sesuai kategori</p>
 					</div>
-					<div class="col-sm-6 category-more">
+					<div class="col-sm-6 category-more hidden-xs">
 						<p><a href="#">Muat lebih banyak</a></p>
 					</div>
 				</div>
@@ -176,7 +176,7 @@
 									<a href="#">
 										<div class="panel panel-default">
 											<div class="panel-body">
-												<span class="bgicon bgicon-list"></span>
+												<span class="bgicon icon-lists"></span>
 												<p>Semua</p>
 											</div>
 										</div>
@@ -184,7 +184,7 @@
 								</li>
 							<?php foreach ($kategori as $key => $value) { ?>
 							<li>
-								<a href="#">
+								<a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>">
 									<div class="panel panel-default">
 										<div class="panel-body">
 											<span class="bgicon <?=$value->icon?>"></span>
@@ -194,6 +194,9 @@
 								</a>
 							</li>
 							<?php } ?>
+							<li class="learn-load visible-xs">
+                                <p><a href="#">Muat lebih banyak</a></p>
+                            </li>
 						</ul>
 					</div>
 				</div>
@@ -203,7 +206,7 @@
 		<section class="post-content">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8">
+					<div class="col-md-8">
 						
 						<!-- Pertanyaan -->
 						<div class="row content-title ask-title">
@@ -218,13 +221,13 @@
 						</div>
 						
 						<div class="row ask-header">
-							<div class="col-md-4">
+							<div class="col-lg-4">
 								<p class="ask-count" id="pertanyaanDitemukan"></p>
 							</div>
-							<div class="col-md-8 ask-menu">
+							<div class="col-lg-8 ask-menu">
 								<ul class="nav nav-tabs nav-ask" role="tablist">
 									<li role="presentation" class="active">
-										<a href="#all" aria-controls="home" role="tab" data-toggle="tab" onclick="pertanyaan('semua')">Semua</a>
+										<a href="#all" aria-controls="home" role="tab" data-toggle="tab" onclick="pertanyaan('all')">Semua</a>
 									</li>
 									<li role="presentation">
 										<a href="#populer" aria-controls="profile" role="tab" data-toggle="tab" onclick="pertanyaan('populer')">Populer</a>
@@ -241,7 +244,7 @@
 						
 						<div class="row ask-list">
 							<div class="col-xs-12">
-								<div class="tab-content">
+								<div class="tab-content" id="results">
 									
 									<!-- Semua Kategori -->
 									<div role="tabpanel" class="tab-pane active" id="all"></div>
@@ -337,7 +340,7 @@
 					</div>
 					
 					<!-- Sidebar -->
-					<div class="col-lg-4">
+					<div class="col-md-4">
 					   
 						<!-- Konten Iklan -->
 						<div class="adv-content">
@@ -356,7 +359,7 @@
 									<div class="media">
 										<div class="media-left media-middle">
 											<div class="media-object">
-												<span class="bgicon bgicon-comment"></span>
+												<span class="bgicon icon-comment"></span>
 											</div>
 										</div>
 										<div class="media-body">
@@ -392,7 +395,7 @@
 										<div class="media-body">
 											<h4 class="media-heading"><?=$value->nama?></h4>
 											<p class="student-solution">31 Solusi</p>
-											<a href="#" class="tag tag-orange student-point"><span class="bgicon bgicon-point"></span> <?=$value->poin?></a>
+											<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span> <?=$value->poin?></a>
 											<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>
 										</div>
 									</div>
@@ -415,7 +418,7 @@
 									foreach ($lowongan as $key => $value) { ?>
 										<div class="vacancy-item">
 											<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
-											<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon bgicon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
+											<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon icon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
 											<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
 										</div>
 								</div>
@@ -441,7 +444,7 @@
 								<?php if ($materi !== array()) { ?>
 								<?php foreach ($materi as $key => $value) { ?>
 									<div class="material-item">
-										<div class="media cat-diamond">
+										<div class="media <?=$value->ikon_cat?>">
 											<div class="media-left media-middle">
 												<div class="media-object">
 													<span class="bgicon <?=$value->ikon_logo?>"></span>
@@ -449,7 +452,7 @@
 											</div>
 											<div class="media-body">
 												<h4 class="media-heading"><a href="#"><?=$value->nama?></a></h4>
-												<p>Post oleh <cite><?=$value->siapa_terakhir_edit?></cite> <span class="count"><i class="bgicon bgicon-download"></i> <?=$value->jumlah_diunduh?></span></p>
+												<p>Post oleh <cite><?=$value->siapa_terakhir_edit?></cite> <span class="count"><i class="bgicon icon-download"></i> <?=$value->jumlah_diunduh?></span></p>
 											</div>
 										</div>
 									</div>

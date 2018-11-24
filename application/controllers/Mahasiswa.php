@@ -820,7 +820,7 @@ class Mahasiswa extends CI_Controller {
 		$data = file_get_contents(FCPATH.$attachment[0]->url_attachment);
 		
 		// update harus diatas force. karena force langsung die melalui return (sepertinya). 
-		$this->model->rawQuery("UPDATE materi SET jumlah_diunduh = jumlah_diunduh + 1 WHERE id = ".$id);
+		$this->model->rawQuery("UPDATE materi SET jumlah_diunduh = jumlah_diunduh + 1 WHERE id = '".$id."'");
 		
 		force_download($materi[0]->nama.".zip", $data);
 	}

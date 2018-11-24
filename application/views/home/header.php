@@ -19,6 +19,9 @@
         <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/libs/bootstrap.3.3.7/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/assets/owl.carousel.css">
         <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/assets/owl.theme.default.css">
+        <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/icon-doc/css/fontello.css">
+        
+        <!-- Customs -->
         <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/css/frontpage.css">
         <script type="text/javascript" src="<?=base_url()?>assets/assets/libs/jquery.3.3.1/jquery-3.3.1.js"></script>
         

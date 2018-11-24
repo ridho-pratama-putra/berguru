@@ -22,6 +22,7 @@ class Home extends CI_Controller {
 														materi.nama,
 														materi.jumlah_diunduh,
 														materi.jumlah_dilihat,
+														materi.ikon_cat,
 														materi.ikon_logo,
 														materi.ikon_warna,
 														pengguna.nama AS siapa_terakhir_edit
@@ -48,9 +49,7 @@ class Home extends CI_Controller {
 	*/
 	function getPertanyaan()
 	{
-		if ($this->input->get('kategori') == 'all') {
-			$record_ = $this->model->rawQuery("
-				SELECT
+		$query = "SELECT
 						permasalahan.id,
 						permasalahan.teks,
 						permasalahan.tanggal,
@@ -64,55 +63,28 @@ class Home extends CI_Controller {
 						pengguna.foto
 				FROM permasalahan
 				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-				ORDER BY permasalahan.tanggal DESC
-				LIMIT 4
-			");
-		}elseif($this->input->get('kategori') == 'populer'){
-			$record_ = $this->model->rawQuery("
-				SELECT 
-						permasalahan.id, 
-						permasalahan.teks, 
-						permasalahan.tanggal, 
-						pengguna.nama AS nama_pengguna, 
-						permasalahan.jumlah_dilihat, 
-						permasalahan.jumlah_komen, 
-						permasalahan.kategori, 
-						kategori.nama AS nama_kategori, 
-						permasalahan.status, 
-						permasalahan.beku, 
-						pengguna.foto
-				FROM permasalahan
-				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-				ORDER BY permasalahan.jumlah_komen DESC
-				LIMIT 4 
-					");
-		}elseif($this->input->get('kategori') == 'solved' || $this->input->get('kategori') == 'unsolved'){
-			$record_ = $this->model->rawQuery("
-				SELECT
-						permasalahan.id,
-						permasalahan.teks,
-						permasalahan.tanggal,
-						pengguna.nama AS nama_pengguna,
-						permasalahan.jumlah_komen,
-						permasalahan.jumlah_dilihat,
-						permasalahan.kategori,
-						kategori.nama AS nama_kategori,
-						permasalahan.status,
-						permasalahan.beku,
-						pengguna.foto
-				FROM permasalahan
-				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
-				LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
-				WHERE permasalahan.status = '".$this->input->get('kategori')."' 
-				ORDER BY permasalahan.tanggal DESC
-				LIMIT 4
-
-				");
+				LEFT JOIN kategori ON permasalahan.kategori = kategori.id";
+		if ($this->input->get('kategori') == '') {
+			if ($this->input->get('tipe') == 'all') {
+				$query .= " ORDER BY permasalahan.tanggal DESC LIMIT 4";
+			}elseif($this->input->get('tipe') == 'populer'){
+				$query.= " ORDER BY permasalahan.jumlah_komen DESC LIMIT 4";
+			}elseif($this->input->get('tipe') == 'solved' || $this->input->get('tipe') == 'unsolved'){
+				$query .= " WHERE permasalahan.status = '".$this->input->get('tipe')."' ORDER BY permasalahan.tanggal DESC LIMIT 4";
+			}
+			$record['jumlah'] 		= $this->model->readSCol("permasalahan",['id'])->num_rows();
+		}else{
+			if ($this->input->get('tipe') == 'all') {
+				$query .= " WHERE permasalahan.kategori = '".$this->input->get('kategori')."' ORDER BY permasalahan.tanggal DESC";
+			}elseif($this->input->get('tipe') == 'populer'){
+				$query .= " WHERE permasalahan.kategori = '".$this->input->get('kategori')."' ORDER BY permasalahan.jumlah_komen DESC";
+			}elseif($this->input->get('tipe') == 'solved' || $this->input->get('tipe') == 'unsolved'){
+				$query .= " WHERE permasalahan.kategori = '".$this->input->get('kategori')."' AND permasalahan.status = '".$this->input->get('tipe')."' ORDER BY permasalahan.tanggal DESC";
+			}
+			$record['jumlah'] 		= $this->model->rawQuery($query)->num_rows();
 		}
-		$record['jumlah'] 		= $this->model->readSCol("permasalahan",['id'])->num_rows();
-		$record['permasalahan'] = $record_->result();
+
+		$record['permasalahan'] = $this->model->rawQuery($query)->result();
 
 		foreach ($record['permasalahan'] as $key => $value) {
 			$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];
@@ -159,5 +131,29 @@ class Home extends CI_Controller {
 		$record['foto_nama'] = $foto_nama;
 		$record['remaining_penjawab'] = $remaining_penjawab;
 		return $record;
+	}
+
+	/*
+	* function untuk melihat detail kategori mapel di halaman home. untuk mencari pertanyaan setiap kategori seperti matematika, kimia,dll
+	*/
+	function mapel()
+	{
+		$namaKategori = $this->input->get('q');
+		$kategori = $this->model->read("kategori",array('nama'=>$namaKategori));
+		if ($kategori->num_rows() == 1) {
+			$menu['active'] 	=	"home";
+			$menu['selected_kategori'] 	=	$kategori->result();
+			$menu['kategori'] = $this->model->readS("kategori")->result();
+			$record['kategori'] = $menu['selected_kategori'];
+
+			$this->load->view("home/header");
+			$this->load->view("home/menu_per_kategori",$menu);
+			$this->load->view("home/kategori",$record);
+			$this->load->view("home/footer");	
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = "<p>Data tidak ditemukan. Klik <a href='".base_url()."'>disini</a></p>";
+			$this->load->view('errors/html/error_404',$error);
+		}
 	}
 }
