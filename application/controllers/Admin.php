@@ -332,6 +332,7 @@ class Admin extends CI_Controller {
 																		'jumlah_pertanyaan'		=> 0,
 																		'jumlah_jawaban'		=> 0,
 																		'tanggal' 				=> date('Y-m-d'),
+																		'icon'					=> "icon-material-book",
 																		'nama_folder'			=> "materi/".ucwords($this->input->post('nama'))
 																	)
 															);

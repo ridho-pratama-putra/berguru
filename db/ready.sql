@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-11-24 20:23:39
+Date: 2018-11-24 20:49:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -51,7 +51,7 @@ CREATE TABLE `direct_message` (
   `jenis_pesan` varchar(255) DEFAULT NULL COMMENT 'isinya permasalahan | komentarpermasalahan, dua2 nya memilikikemungkinan dihapus oleh function deleteInitializedDm. Selain itu juga dapat berisi komentardm yang tidak dapat dihapus',
   `dibalas` varchar(255) DEFAULT NULL COMMENT 'kolom untuk mengetahui apakah user telah membalas? jika sudah dibalas maka isinya sudah, jika belum maka isinya kosong dan akan dihapus segera setelah user meninggalkan halaman direct message dengan seorang pengguna',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of direct_message
@@ -80,13 +80,13 @@ CREATE TABLE `kategori` (
 -- ----------------------------
 -- Records of kategori
 -- ----------------------------
-INSERT INTO `kategori` VALUES ('1', 'Matematika', '2018-11-08', '1', '1', 'ACTIVE', 'bgicon-learn-indo', 'materi/Matematika');
-INSERT INTO `kategori` VALUES ('2', 'Seni Budaya', '2018-11-08', '1', '0', 'ACTIVE', 'bgicon-learn-history', 'materi/Seni Budaya');
-INSERT INTO `kategori` VALUES ('3', 'Penjaskes', '2018-11-08', '2', '3', 'ACTIVE', 'bgicon-learn-indo', 'materi/Penjaskes');
-INSERT INTO `kategori` VALUES ('4', 'Bahasa Indonesia', '2018-11-08', '0', '0', 'ACTIVE', 'bgicon-learn-indo', 'materi/Bahasa Indonesia');
-INSERT INTO `kategori` VALUES ('5', 'Bahasa Inggris', '2018-11-08', '1', '1', 'ACTIVE', 'bgicon-learn-social', 'materi/Bahasa Inggris');
-INSERT INTO `kategori` VALUES ('6', 'Kimia', '2018-11-08', '1', '0', 'ACTIVE', 'bgicon-learn-history', 'materi/Kimia');
-INSERT INTO `kategori` VALUES ('7', 'Fisika', '2018-11-08', '0', '0', 'ACTIVE', 'bgicon-learn-physics', 'materi/Fisika');
+INSERT INTO `kategori` VALUES ('1', 'Matematika', '2018-11-08', '1', '1', 'ACTIVE', 'icon-material-puzzle', 'materi/Matematika');
+INSERT INTO `kategori` VALUES ('2', 'Seni Budaya', '2018-11-08', '1', '0', 'ACTIVE', 'icon-material-note', 'materi/Seni Budaya');
+INSERT INTO `kategori` VALUES ('3', 'Penjaskes', '2018-11-08', '2', '3', 'ACTIVE', 'icon-material-stack', 'materi/Penjaskes');
+INSERT INTO `kategori` VALUES ('4', 'Bahasa Indonesia', '2018-11-08', '0', '0', 'ACTIVE', 'icon-material-book', 'materi/Bahasa Indonesia');
+INSERT INTO `kategori` VALUES ('5', 'Bahasa Inggris', '2018-11-08', '1', '1', 'ACTIVE', 'icon-material-stack', 'materi/Bahasa Inggris');
+INSERT INTO `kategori` VALUES ('6', 'Kimia', '2018-11-08', '1', '0', 'ACTIVE', 'icon-material-people', 'materi/Kimia');
+INSERT INTO `kategori` VALUES ('7', 'Fisika', '2018-11-08', '0', '0', 'ACTIVE', 'icon-material-basketball', 'materi/Fisika');
 
 -- ----------------------------
 -- Table structure for komentar
@@ -174,6 +174,7 @@ CREATE TABLE `materi` (
   `siapa_terakhir_edit` int(11) DEFAULT NULL,
   `jumlah_diunduh` varchar(255) DEFAULT NULL,
   `jumlah_dilihat` varchar(255) DEFAULT NULL,
+  `ikon_cat` varchar(255) DEFAULT NULL,
   `ikon_logo` varchar(255) DEFAULT NULL,
   `ikon_warna` varchar(255) DEFAULT NULL,
   `deskripsi` varchar(255) DEFAULT NULL,
@@ -187,7 +188,7 @@ CREATE TABLE `materi` (
 -- ----------------------------
 -- Records of materi
 -- ----------------------------
-INSERT INTO `materi` VALUES ('1', 'Aljabar Linier', '1', '2018-11-20', '20', '20', '0', 'fa-flask', 'materi-blue', 'Ini adalah deskripsi dari suatu materi');
+INSERT INTO `materi` VALUES ('1', 'Aljabar Linier', '1', '2018-11-20', '20', '20', '0', null, 'fa-flask', 'materi-blue', 'Ini adalah deskripsi dari suatu materi');
 
 -- ----------------------------
 -- Table structure for max_notif_id_per_user
@@ -296,7 +297,7 @@ CREATE TABLE `notif` (
   PRIMARY KEY (`id`),
   KEY `dari_pengguna` (`dari`),
   CONSTRAINT `dari_pengguna` FOREIGN KEY (`dari`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of notif
@@ -492,7 +493,7 @@ CREATE TABLE `permasalahan` (
   KEY `siapa_add` (`siapa`),
   CONSTRAINT `kategori_apa` FOREIGN KEY (`kategori`) REFERENCES `kategori` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siapa_add` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of permasalahan

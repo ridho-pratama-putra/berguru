@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-11-15 11:36:53
+Date: 2018-11-24 20:49:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,13 +26,12 @@ CREATE TABLE `attachment` (
   PRIMARY KEY (`id`),
   KEY `id_materi_attachment` (`id_materi`),
   CONSTRAINT `id_materi_attachment` FOREIGN KEY (`id_materi`) REFERENCES `materi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of attachment
 -- ----------------------------
-INSERT INTO `attachment` VALUES ('1', '1', 'materi/Matematika/20181114_214611.zip');
-INSERT INTO `attachment` VALUES ('2', '2', 'materi/Matematika/20181114_223237.zip');
+INSERT INTO `attachment` VALUES ('1', '1', 'materi/Matematika/20181120_095836.zip');
 
 -- ----------------------------
 -- Table structure for direct_message
@@ -52,18 +51,15 @@ CREATE TABLE `direct_message` (
   `jenis_pesan` varchar(255) DEFAULT NULL COMMENT 'isinya permasalahan | komentarpermasalahan, dua2 nya memilikikemungkinan dihapus oleh function deleteInitializedDm. Selain itu juga dapat berisi komentardm yang tidak dapat dihapus',
   `dibalas` varchar(255) DEFAULT NULL COMMENT 'kolom untuk mengetahui apakah user telah membalas? jika sudah dibalas maka isinya sudah, jika belum maka isinya kosong dan akan dihapus segera setelah user meninggalkan halaman direct message dengan seorang pengguna',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of direct_message
 -- ----------------------------
-INSERT INTO `direct_message` VALUES ('1', 'sapa', '3', '7', '1', '3', '2018-11-14 11:36:24', null, null, null, 'permasalahan', 'sudah');
-INSERT INTO `direct_message` VALUES ('2', 'tau', '7', '3', '1', '3', '2018-11-14 11:36:24', null, null, null, 'komentarpermasalahan', 'sudah');
-INSERT INTO `direct_message` VALUES ('3', 'bisa jadi', '3', '7', '1', '3', '2018-11-14 11:36:32', null, null, null, 'komentardm', null);
-INSERT INTO `direct_message` VALUES ('4', 'tapi karena', '3', '7', null, null, '2018-11-14 11:37:45', null, null, null, 'komentardm', null);
-INSERT INTO `direct_message` VALUES ('5', 'terimakasih banyak atas sarannya', '3', '7', null, null, '2018-11-14 11:37:58', null, null, null, 'komentardm', null);
-INSERT INTO `direct_message` VALUES ('6', 'sebentar', '3', '7', null, null, '2018-11-14 11:41:02', null, null, null, 'komentardm', null);
-INSERT INTO `direct_message` VALUES ('7', 'sepertinya', '3', '7', null, null, '2018-11-14 11:41:14', null, null, null, 'komentardm', null);
+INSERT INTO `direct_message` VALUES ('1', 'Saya mebutuhkan media 3D untuk pelajaran anatomi tubuh manusia dalam bentuk digital! ', '20', '7', '7', '3', '2018-11-16 19:13:35', null, null, null, 'permasalahan', 'sudah');
+INSERT INTO `direct_message` VALUES ('2', 'Saya bisa membuat media 3D dengan aplikasi 4D dengan kombinasi kontral cerdas dari aplikasi Unity dan Google VR', '7', '20', '7', '3', '2018-11-16 19:13:35', null, null, null, 'komentarpermasalahan', 'sudah');
+INSERT INTO `direct_message` VALUES ('3', 'software apa yang anda gunakan? dan bagaimana spesifikasi dari komputer pendukungnya?', '20', '7', '7', '3', '2018-11-16 19:14:27', null, null, null, 'komentardm', null);
+INSERT INTO `direct_message` VALUES ('4', 'kombinasi aplikasi dengan spek yang minimalis seperti pentium 4 dan RAm 2 Gb', '7', '20', null, null, '2018-11-16 19:16:49', null, null, null, 'komentardm', null);
 
 -- ----------------------------
 -- Table structure for kategori
@@ -84,13 +80,13 @@ CREATE TABLE `kategori` (
 -- ----------------------------
 -- Records of kategori
 -- ----------------------------
-INSERT INTO `kategori` VALUES ('1', 'Matematika', '2018-11-08', '1', '4', 'ACTIVE', '', 'materi/Matematika');
-INSERT INTO `kategori` VALUES ('2', 'Seni Budaya', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Seni Budaya');
-INSERT INTO `kategori` VALUES ('3', 'Penjaskes', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Penjaskes');
-INSERT INTO `kategori` VALUES ('4', 'Bahasa Indonesia', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Bahasa Indonesia');
-INSERT INTO `kategori` VALUES ('5', 'Bahasa Inggris', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Bahasa Inggris');
-INSERT INTO `kategori` VALUES ('6', 'Kimia', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Kimia');
-INSERT INTO `kategori` VALUES ('7', 'Fisika', '2018-11-08', '0', '0', 'ACTIVE', '', 'materi/Fisika');
+INSERT INTO `kategori` VALUES ('1', 'Matematika', '2018-11-08', '1', '1', 'ACTIVE', 'icon-material-puzzle', 'materi/Matematika');
+INSERT INTO `kategori` VALUES ('2', 'Seni Budaya', '2018-11-08', '1', '0', 'ACTIVE', 'icon-material-note', 'materi/Seni Budaya');
+INSERT INTO `kategori` VALUES ('3', 'Penjaskes', '2018-11-08', '2', '3', 'ACTIVE', 'icon-material-stack', 'materi/Penjaskes');
+INSERT INTO `kategori` VALUES ('4', 'Bahasa Indonesia', '2018-11-08', '0', '0', 'ACTIVE', 'icon-material-book', 'materi/Bahasa Indonesia');
+INSERT INTO `kategori` VALUES ('5', 'Bahasa Inggris', '2018-11-08', '1', '1', 'ACTIVE', 'icon-material-stack', 'materi/Bahasa Inggris');
+INSERT INTO `kategori` VALUES ('6', 'Kimia', '2018-11-08', '1', '0', 'ACTIVE', 'icon-material-people', 'materi/Kimia');
+INSERT INTO `kategori` VALUES ('7', 'Fisika', '2018-11-08', '0', '0', 'ACTIVE', 'icon-material-basketball', 'materi/Fisika');
 
 -- ----------------------------
 -- Table structure for komentar
@@ -112,15 +108,16 @@ CREATE TABLE `komentar` (
   KEY `siapa_komen` (`siapa`),
   CONSTRAINT `parent_komentar` FOREIGN KEY (`parent`) REFERENCES `komentar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siapa_komen` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of komentar
 -- ----------------------------
-INSERT INTO `komentar` VALUES ('1', 'terharu', '2018-11-12 22:49:24', '2', '1', '0', null, null, null);
-INSERT INTO `komentar` VALUES ('2', 'waktu', '2018-11-12 22:49:32', '2', '1', '0', null, null, null);
-INSERT INTO `komentar` VALUES ('3', 'tau', '2018-11-13 09:55:24', '7', '1', '0', null, null, null);
-INSERT INTO `komentar` VALUES ('4', 'semesta', '2018-11-13 17:06:26', '2', '1', '0', null, null, null);
+INSERT INTO `komentar` VALUES ('1', 'Saya bisa membuat media tersebut dengan menggunakan software Blender 3D', '2018-11-16 19:10:18', '4', '7', '0', null, null, '2');
+INSERT INTO `komentar` VALUES ('2', 'Saya bisa mengembangkannya dengan menggunakan software Unity 3D yang lebih interaktif', '2018-11-16 19:11:30', '6', '7', '0', null, null, '3');
+INSERT INTO `komentar` VALUES ('3', 'Saya bisa membuat media 3D dengan aplikasi 4D dengan kombinasi kontral cerdas dari aplikasi Unity dan Google VR', '2018-11-16 19:12:31', '7', '7', '0', null, null, '5');
+INSERT INTO `komentar` VALUES ('4', 'Saran saya bisa mencoba dengan media yang menarik perhatian siswa jadi tidak hanya menggunakan buku saja, terima kasih ', '2018-11-20 12:46:05', '55', '8', '0', null, null, '5');
+INSERT INTO `komentar` VALUES ('5', 'Untuk media tenses, saya bisa membuat video simulasi buat formula tenses', '2018-11-22 14:39:03', '7', '1', '0', null, null, null);
 
 -- ----------------------------
 -- Table structure for komentar_message
@@ -157,6 +154,7 @@ CREATE TABLE `lowongan` (
   `valid` int(11) DEFAULT NULL,
   `kategori` varchar(255) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL,
+  `dari` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -176,6 +174,7 @@ CREATE TABLE `materi` (
   `siapa_terakhir_edit` int(11) DEFAULT NULL,
   `jumlah_diunduh` varchar(255) DEFAULT NULL,
   `jumlah_dilihat` varchar(255) DEFAULT NULL,
+  `ikon_cat` varchar(255) DEFAULT NULL,
   `ikon_logo` varchar(255) DEFAULT NULL,
   `ikon_warna` varchar(255) DEFAULT NULL,
   `deskripsi` varchar(255) DEFAULT NULL,
@@ -184,13 +183,12 @@ CREATE TABLE `materi` (
   KEY `siapa_terakhir_edit_materi` (`siapa_terakhir_edit`),
   CONSTRAINT `kategori_materi` FOREIGN KEY (`kategori`) REFERENCES `kategori` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siapa_terakhir_edit_materi` FOREIGN KEY (`siapa_terakhir_edit`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of materi
 -- ----------------------------
-INSERT INTO `materi` VALUES ('1', 'Matematika Kelas 12 Semester 1', '1', '2018-11-14', '3', '6', '0', 'fa-flask', 'materi-blue', 'matemika');
-INSERT INTO `materi` VALUES ('2', 'Kimia Kelas 12 Semester 1', '1', '2018-11-14', '2', '0', '0', 'fa-flask', 'materi-blue', 'asdkljasljbfa sas');
+INSERT INTO `materi` VALUES ('1', 'Aljabar Linier', '1', '2018-11-20', '20', '20', '0', null, 'fa-flask', 'materi-blue', 'Ini adalah deskripsi dari suatu materi');
 
 -- ----------------------------
 -- Table structure for max_notif_id_per_user
@@ -201,18 +199,18 @@ CREATE TABLE `max_notif_id_per_user` (
   `id_pengguna` varchar(255) DEFAULT NULL,
   `max_notif_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of max_notif_id_per_user
 -- ----------------------------
-INSERT INTO `max_notif_id_per_user` VALUES ('1', '1', '18');
-INSERT INTO `max_notif_id_per_user` VALUES ('2', '2', '17');
-INSERT INTO `max_notif_id_per_user` VALUES ('3', '3', '18');
-INSERT INTO `max_notif_id_per_user` VALUES ('4', '4', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('1', '1', '19');
+INSERT INTO `max_notif_id_per_user` VALUES ('2', '2', '19');
+INSERT INTO `max_notif_id_per_user` VALUES ('3', '3', '19');
+INSERT INTO `max_notif_id_per_user` VALUES ('4', '4', '7');
 INSERT INTO `max_notif_id_per_user` VALUES ('5', '5', '0');
-INSERT INTO `max_notif_id_per_user` VALUES ('6', '6', '0');
-INSERT INTO `max_notif_id_per_user` VALUES ('7', '7', '10');
+INSERT INTO `max_notif_id_per_user` VALUES ('6', '6', '7');
+INSERT INTO `max_notif_id_per_user` VALUES ('7', '7', '19');
 INSERT INTO `max_notif_id_per_user` VALUES ('8', '8', '0');
 INSERT INTO `max_notif_id_per_user` VALUES ('9', '9', '0');
 INSERT INTO `max_notif_id_per_user` VALUES ('10', '10', '0');
@@ -225,8 +223,43 @@ INSERT INTO `max_notif_id_per_user` VALUES ('16', '16', '0');
 INSERT INTO `max_notif_id_per_user` VALUES ('17', '17', '0');
 INSERT INTO `max_notif_id_per_user` VALUES ('18', '18', '0');
 INSERT INTO `max_notif_id_per_user` VALUES ('19', '19', '0');
-INSERT INTO `max_notif_id_per_user` VALUES ('20', '20', '0');
-INSERT INTO `max_notif_id_per_user` VALUES ('21', '21', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('20', '20', '15');
+INSERT INTO `max_notif_id_per_user` VALUES ('21', '21', '19');
+INSERT INTO `max_notif_id_per_user` VALUES ('22', '22', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('23', '23', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('24', '24', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('25', '25', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('26', '26', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('27', '27', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('28', '28', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('29', '29', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('30', '30', '19');
+INSERT INTO `max_notif_id_per_user` VALUES ('31', '31', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('32', '32', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('33', '33', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('34', '34', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('35', '35', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('36', '36', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('37', '37', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('38', '38', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('39', '39', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('40', '40', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('41', '41', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('42', '42', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('43', '43', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('44', '44', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('45', '45', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('46', '46', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('47', '47', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('48', '48', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('49', '49', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('50', '50', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('51', '51', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('52', '52', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('53', '53', '0');
+INSERT INTO `max_notif_id_per_user` VALUES ('54', '54', '23');
+INSERT INTO `max_notif_id_per_user` VALUES ('55', '55', '24');
+INSERT INTO `max_notif_id_per_user` VALUES ('56', '56', '19');
 
 -- ----------------------------
 -- Table structure for message
@@ -264,29 +297,32 @@ CREATE TABLE `notif` (
   PRIMARY KEY (`id`),
   KEY `dari_pengguna` (`dari`),
   CONSTRAINT `dari_pengguna` FOREIGN KEY (`dari`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of notif
 -- ----------------------------
-INSERT INTO `notif` VALUES ('1', 'pertanyaan', '1', '3', 'mahasiswa', '2018-11-12 22:49:10', null, null);
-INSERT INTO `notif` VALUES ('2', 'komentar', '1', '2', '3', '2018-11-12 22:49:24', null, null);
-INSERT INTO `notif` VALUES ('3', 'komentar', '1', '2', '3', '2018-11-12 22:49:32', null, null);
-INSERT INTO `notif` VALUES ('4', 'komentar', '1', '7', '3', '2018-11-13 09:55:24', null, null);
-INSERT INTO `notif` VALUES ('5', 'komentar', '1', '2', '3', '2018-11-13 17:06:26', null, null);
-INSERT INTO `notif` VALUES ('6', 'dm', '3', '3', '7', '2018-11-14 11:36:32', null, null);
-INSERT INTO `notif` VALUES ('7', 'dm', '4', '3', '7', '2018-11-14 11:37:45', null, null);
-INSERT INTO `notif` VALUES ('8', 'dm', '5', '3', '7', '2018-11-14 11:37:58', null, null);
-INSERT INTO `notif` VALUES ('9', 'dm', '6', '3', '7', '2018-11-14 11:41:02', null, null);
-INSERT INTO `notif` VALUES ('10', 'dm', '7', '3', '7', '2018-11-14 11:41:14', null, null);
-INSERT INTO `notif` VALUES ('11', 'materiBaru', '1', '1', 'semua', '2018-11-14 15:35:27', null, null);
-INSERT INTO `notif` VALUES ('12', 'materiBaru', '2', '1', 'semua', '2018-11-14 15:55:11', null, null);
-INSERT INTO `notif` VALUES ('13', 'materiBaru', null, '1', 'semua', '2018-11-14 16:56:18', null, null);
-INSERT INTO `notif` VALUES ('14', 'materiBaru', null, '1', 'semua', '2018-11-14 16:57:38', null, null);
-INSERT INTO `notif` VALUES ('15', 'materiBaru', '1', '1', 'semua', '2018-11-14 17:00:36', null, null);
-INSERT INTO `notif` VALUES ('16', 'materiBaru', '1', '1', 'semua', '2018-11-14 17:04:12', null, null);
-INSERT INTO `notif` VALUES ('17', 'materiBaru', '1', '3', 'semua', '2018-11-14 21:46:11', null, null);
-INSERT INTO `notif` VALUES ('18', 'materiBaru', '2', '2', 'semua', '2018-11-14 22:32:37', null, null);
+INSERT INTO `notif` VALUES ('1', 'pertanyaan', '1', '18', 'mahasiswa', '2018-11-16 14:20:35', null, null);
+INSERT INTO `notif` VALUES ('2', 'pertanyaan', '2', '16', 'mahasiswa', '2018-11-16 14:21:57', null, null);
+INSERT INTO `notif` VALUES ('3', 'pertanyaan', '3', '14', 'mahasiswa', '2018-11-16 14:22:59', null, null);
+INSERT INTO `notif` VALUES ('4', 'pertanyaan', '4', '15', 'mahasiswa', '2018-11-16 14:24:53', null, null);
+INSERT INTO `notif` VALUES ('5', 'pertanyaan', '5', '17', 'mahasiswa', '2018-11-16 14:25:42', null, null);
+INSERT INTO `notif` VALUES ('7', 'pertanyaan', '7', '20', 'mahasiswa', '2018-11-16 14:27:10', null, null);
+INSERT INTO `notif` VALUES ('8', 'komentar', '7', '4', '20', '2018-11-16 19:10:18', null, null);
+INSERT INTO `notif` VALUES ('9', 'komentar', '7', '6', '20', '2018-11-16 19:11:30', null, null);
+INSERT INTO `notif` VALUES ('10', 'komentar', '7', '7', '20', '2018-11-16 19:12:31', null, null);
+INSERT INTO `notif` VALUES ('11', 'ratingKomentar', '7', '20', '4', '2018-11-16 19:13:26', null, null);
+INSERT INTO `notif` VALUES ('12', 'ratingKomentar', '7', '20', '6', '2018-11-16 19:13:28', null, null);
+INSERT INTO `notif` VALUES ('13', 'ratingKomentar', '7', '20', '7', '2018-11-16 19:13:30', null, null);
+INSERT INTO `notif` VALUES ('14', 'dm', '3', '20', '7', '2018-11-16 19:14:27', null, null);
+INSERT INTO `notif` VALUES ('15', 'dm', '4', '7', '20', '2018-11-16 19:16:49', null, null);
+INSERT INTO `notif` VALUES ('16', 'ratingKomentar', '7', '20', '4', '2018-11-20 04:55:38', null, null);
+INSERT INTO `notif` VALUES ('17', 'ratingKomentar', '7', '20', '6', '2018-11-20 04:55:39', null, null);
+INSERT INTO `notif` VALUES ('18', 'ratingKomentar', '7', '20', '7', '2018-11-20 04:55:41', null, null);
+INSERT INTO `notif` VALUES ('19', 'materiBaru', '1', '20', 'semua', '2018-11-20 09:58:36', null, null);
+INSERT INTO `notif` VALUES ('23', 'komentar', '8', '55', '54', '2018-11-20 12:46:05', null, null);
+INSERT INTO `notif` VALUES ('24', 'ratingKomentar', '8', '54', '55', '2018-11-20 12:46:41', null, null);
+INSERT INTO `notif` VALUES ('25', 'komentar', '1', '7', '18', '2018-11-22 14:39:03', null, null);
 
 -- ----------------------------
 -- Table structure for notif_flag
@@ -301,39 +337,57 @@ CREATE TABLE `notif_flag` (
   PRIMARY KEY (`id`),
   KEY `id_notif_notif` (`id_notif`),
   CONSTRAINT `id_notif_notif` FOREIGN KEY (`id_notif`) REFERENCES `notif` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of notif_flag
 -- ----------------------------
-INSERT INTO `notif_flag` VALUES ('1', '2', '1', '1', '0');
-INSERT INTO `notif_flag` VALUES ('2', '3', '3', '1', '0');
-INSERT INTO `notif_flag` VALUES ('3', '3', '2', '1', '0');
-INSERT INTO `notif_flag` VALUES ('4', '7', '1', '1', '0');
-INSERT INTO `notif_flag` VALUES ('5', '3', '4', '1', '0');
-INSERT INTO `notif_flag` VALUES ('6', '3', '5', '1', '0');
-INSERT INTO `notif_flag` VALUES ('7', '7', '10', '1', '0');
-INSERT INTO `notif_flag` VALUES ('8', '7', '9', '1', '0');
-INSERT INTO `notif_flag` VALUES ('9', '7', '8', '1', '0');
-INSERT INTO `notif_flag` VALUES ('10', '7', '7', '1', '0');
-INSERT INTO `notif_flag` VALUES ('11', '7', '6', '1', '0');
-INSERT INTO `notif_flag` VALUES ('12', '3', '11', '1', '0');
-INSERT INTO `notif_flag` VALUES ('13', '3', '12', '1', '0');
-INSERT INTO `notif_flag` VALUES ('14', '3', '16', '1', '0');
-INSERT INTO `notif_flag` VALUES ('15', '3', '15', '1', '0');
-INSERT INTO `notif_flag` VALUES ('16', '3', '14', '1', '0');
-INSERT INTO `notif_flag` VALUES ('17', '3', '13', '1', '0');
-INSERT INTO `notif_flag` VALUES ('18', '3', '17', '1', '0');
-INSERT INTO `notif_flag` VALUES ('19', '2', '17', '1', '0');
-INSERT INTO `notif_flag` VALUES ('20', '2', '16', '1', '0');
-INSERT INTO `notif_flag` VALUES ('21', '2', '15', '1', '0');
-INSERT INTO `notif_flag` VALUES ('22', '2', '14', '1', '0');
-INSERT INTO `notif_flag` VALUES ('23', '2', '13', '1', '0');
-INSERT INTO `notif_flag` VALUES ('24', '2', '12', '1', '0');
-INSERT INTO `notif_flag` VALUES ('25', '2', '11', '1', '0');
-INSERT INTO `notif_flag` VALUES ('26', '3', '18', '1', '0');
-INSERT INTO `notif_flag` VALUES ('27', '1', '18', '1', '0');
-INSERT INTO `notif_flag` VALUES ('28', '1', '17', '1', '0');
+INSERT INTO `notif_flag` VALUES ('1', '20', '10', '1', '0');
+INSERT INTO `notif_flag` VALUES ('2', '20', '9', '1', '0');
+INSERT INTO `notif_flag` VALUES ('3', '20', '8', '1', '0');
+INSERT INTO `notif_flag` VALUES ('4', '7', '14', '1', '0');
+INSERT INTO `notif_flag` VALUES ('5', '7', '13', '1', '0');
+INSERT INTO `notif_flag` VALUES ('6', '7', '7', '1', '0');
+INSERT INTO `notif_flag` VALUES ('8', '7', '5', '1', '0');
+INSERT INTO `notif_flag` VALUES ('9', '7', '4', '1', '0');
+INSERT INTO `notif_flag` VALUES ('10', '7', '3', '1', '0');
+INSERT INTO `notif_flag` VALUES ('11', '7', '2', '1', '0');
+INSERT INTO `notif_flag` VALUES ('12', '7', '1', '1', '0');
+INSERT INTO `notif_flag` VALUES ('13', '20', '15', '1', '0');
+INSERT INTO `notif_flag` VALUES ('14', '3', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('16', '55', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('17', '55', '7', '1', '0');
+INSERT INTO `notif_flag` VALUES ('18', '55', '5', '1', '0');
+INSERT INTO `notif_flag` VALUES ('19', '55', '4', '1', '0');
+INSERT INTO `notif_flag` VALUES ('20', '55', '3', '1', '0');
+INSERT INTO `notif_flag` VALUES ('21', '55', '2', '1', '0');
+INSERT INTO `notif_flag` VALUES ('22', '55', '1', '1', '0');
+INSERT INTO `notif_flag` VALUES ('23', '1', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('24', '30', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('25', '30', '7', '1', '0');
+INSERT INTO `notif_flag` VALUES ('26', '30', '5', '1', '0');
+INSERT INTO `notif_flag` VALUES ('27', '30', '4', '1', '0');
+INSERT INTO `notif_flag` VALUES ('28', '30', '3', '1', '0');
+INSERT INTO `notif_flag` VALUES ('29', '30', '2', '1', '0');
+INSERT INTO `notif_flag` VALUES ('30', '30', '1', '1', '0');
+INSERT INTO `notif_flag` VALUES ('31', '55', '24', '1', '0');
+INSERT INTO `notif_flag` VALUES ('33', '56', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('34', '56', '7', '1', '0');
+INSERT INTO `notif_flag` VALUES ('35', '56', '5', '1', '0');
+INSERT INTO `notif_flag` VALUES ('36', '56', '4', '1', '0');
+INSERT INTO `notif_flag` VALUES ('37', '56', '3', '1', '0');
+INSERT INTO `notif_flag` VALUES ('38', '56', '2', '1', '0');
+INSERT INTO `notif_flag` VALUES ('39', '56', '1', '1', '0');
+INSERT INTO `notif_flag` VALUES ('40', '21', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('41', '7', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('42', '7', '18', '1', '0');
+INSERT INTO `notif_flag` VALUES ('43', '2', '19', '1', '0');
+INSERT INTO `notif_flag` VALUES ('44', '2', '7', '1', '0');
+INSERT INTO `notif_flag` VALUES ('45', '2', '5', '1', '0');
+INSERT INTO `notif_flag` VALUES ('46', '2', '4', '1', '0');
+INSERT INTO `notif_flag` VALUES ('47', '2', '3', '1', '0');
+INSERT INTO `notif_flag` VALUES ('48', '2', '2', '1', '0');
+INSERT INTO `notif_flag` VALUES ('49', '2', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for pengguna
@@ -357,32 +411,67 @@ CREATE TABLE `pengguna` (
   `jumlah_dm_solved` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_pengguna` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of pengguna
 -- ----------------------------
-INSERT INTO `pengguna` VALUES ('1', 'Admin', 'admin@admin.com', null, null, null, '0', 'ACTIVE', 'admin', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('2', 'Maha Siswa', 'mahasiswa@mahasiswa.com', '+6289987009', null, null, '0', 'ACTIVE', 'mahasiswa', 'userprofiles/Maha_Siswa_-_profil.jpg', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('3', 'Guruururu', 'guru@guru.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Guruururu_-_profil.jpg', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('4', 'Anton Bayangkara', 'anton@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('1', 'Admin', 'admin@admin.com', null, null, null, '0', 'ACTIVE', 'admin', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', 'rHsTVEHQSClRehBL7ItfxZ8zFxCFnfQtO7vpzVAUyNa58cvuWWAPqYkndLqKgPKD', '0', '0');
+INSERT INTO `pengguna` VALUES ('2', 'Maha Siswa', 'mahasiswa@mahasiswa.com', '+6289987009', null, null, '0', 'ACTIVE', 'mahasiswa', 'userprofiles/Maha_Siswa_-_profil2.jpg', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('3', 'Muhammad Ridho', 'guru@guru.com', '089680752154', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Muhammad_Ridho_-_profil1.jpg', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('4', 'Anton Bayangkara', 'anton@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '2', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('5', 'Bagus Sandika', 'bagus@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('6', 'Cintya Restu', 'cintya@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('7', 'Dea Amanda', 'dea@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('6', 'Cintya Restu', 'cintya@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '3', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('7', 'Dea Amanda', 'dea@student.com', '', null, null, '0', 'ACTIVE', 'mahasiswa', 'userprofiles/Dea_Amanda_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', '5', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('8', 'Emilia Rina', 'emil@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('9', 'Farah Nabila', 'farah@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('10', 'Gina Sabrina', 'gina@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('11', 'Hamid Dian', 'hamid@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('12', 'Irfan Joni', 'irfan@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('13', 'Jaka Umbara', 'jaka@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('14', 'Mulyadi Fadil', 'mulyadi@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('15', 'Hasan Wirayudha', 'hasan@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('14', 'Mulyadi Fadil', 'mulyadi@teacher.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Mulyadi_Fadil_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('15', 'Hasan Wirayudha', 'hasan@teacher.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Hasan_Wirayudha_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('16', 'Evania Yafie', 'evania@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('17', 'Ni Luh Sakinah', 'niluh@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('17', 'Ni Luh Sakinah', 'niluh@teacher.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Ni_Luh_Sakinah_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
 INSERT INTO `pengguna` VALUES ('18', 'Herlina Ike', 'herlina@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('19', 'Ence Surahman', 'ence@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('20', 'Yerry Soepriyanto', 'yerry@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
-INSERT INTO `pengguna` VALUES ('21', 'Henry Praherdhiono', 'henry@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('19', 'Ence Surahman', 'ence@teacher.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Ence_Surahman_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('20', 'Yerry Soepriyanto', 'yerry@teacher.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Yerry_Soepriyanto_-_profil.jpeg', 'e10adc3949ba59abbe56e057f20f883e', '0', 'FO3aBKlomea82Zt9cKALxUisTjr612CYGVJggWHq7hDIsCXc7p4dLAzbkQTubdij', '0', '0');
+INSERT INTO `pengguna` VALUES ('21', 'Henry Praherdhiono', 'henry@teacher.com', '', null, null, '0', 'ACTIVE', 'pendidik', 'userprofiles/Henry_Praherdhiono_-_profil.png', 'e10adc3949ba59abbe56e057f20f883e', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('22', 'Miftakhul Sholikhah', 'miftakhulsholikhah@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'c68737b0ef27a9a79d936caa9b0ec1fe', '0', 'NTYIwLaQxvJchDukEBaT0LFn2Qg7ecgbXOdCSp2UKR9hdtu9M4rklwy7G6rzWsFz', '0', '0');
+INSERT INTO `pengguna` VALUES ('23', 'Ginanjar Septiana Supardiansyah', 'ginanjarsetiana4@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '0fae158952bdf312208d5b2d1d94d657', '0', 'uhqQNSNjcb2J98kU6ZDSfVXmZGdv644odTAWIgCCwxMzLnc3g5OvQTEk8FyxKXzf', '0', '0');
+INSERT INTO `pengguna` VALUES ('24', 'Ika Kharismadewi', 'rismaika016@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'd4da8d9e6e5c4b1c9db7b01bb7c6c5b3', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('25', 'Irfan Agung Purnomo', 'agungirfan630@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'ccbc7fda6d3cf74cf2a0c6be76ef05bf', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('26', 'Mila Noni Alfiolita', 'milanoni99@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'aef2afc5eceadab86921beb9b02b1904', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('27', 'Lisa Helendriani', 'lisahelend19@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '822ad60fd167aff9c07af373cbe0ef72', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('28', 'Ermian Hotnauli Silalahi', 'ermianhotnauli@yahoo.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '86f9933c52433750c83590a234555e67', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('29', 'Nafika Fikria Arifianda', 'nafikafikriaarifianda@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '8941a8eff97ee4405e9e2781e32ffbf5', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('30', 'Nur Roudlotul Jannah', 'nurroudloh.nrj@gmail.com', '085851597531', null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'becb73795b3cdf701973a5f4c46a7c0a', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('31', 'Made Ema Parurahwani', 'emamade4@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '4d7ef38325543457eb2cb9cefce36214', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('32', 'Lailatul Mufida', 'ellamufida.00@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'ac03ebfafd59b65f494bf5d9cda778ad', '0', 'Ntpd1XMzP92YuXA4FrDWcqT4kEnyhLcSzISNJebyFZbio8QqW5ajpox7JOBlemi2', '0', '0');
+INSERT INTO `pengguna` VALUES ('33', 'Deah Arta Muviana', 'damuviana@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'cfb5a8202eb4e890a9195c9a7e08c7c1', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('34', 'Maziyatus Sariroh Yusro', 'sariroh74@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '3e06f2af88392a8943c423d7d36d307a', '0', 'c4S26xi9BmkRgLerbk0EX2IbZNtds8asGOCNtFwenjl8LyQYdXVA953BhDTVRnZO', '0', '0');
+INSERT INTO `pengguna` VALUES ('35', 'Maulidiyah Wiahnanda', 'diyahnanda6@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '77c84df87bcf58cc132ce5119f4623a8', '0', '5RhbmLiN8dCzkGn7pBoD4mkEvMjLKuoYsz0Oyl3XTVerthMFXN37b9x2gZBqeQPI', '0', '0');
+INSERT INTO `pengguna` VALUES ('36', 'Meridza Nur Audina', 'audinameridza@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '9c38e42876b09f089ea4a4b5dc7b84ae', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('37', 'Kurniawan Prasetyo', 'kurniawan1161@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '2803f0d8de6c6b2d80121f23489e3553', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('38', 'Maqfirotul Laily', 'maqfirotullaily23@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'a24229a75305bf7052d5b2f1a2a428b8', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('39', 'Kurniawan Prasetyo 1161', 'kurniawan1161@yahoo.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '3ee2a3262b635039690c7ffa88db860f', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('40', 'Eka Zunita Nurfadilah', 'ekazunitanurfadila@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '6a1b3f1a6f1facf5e9c940b34c76b092', '0', 'TPBdmGKHBoxVNpQXUhzqtY6bIWEqMouV5FDybe8QxejzCUR3R2OtLSgg7GXAYHcE', '0', '0');
+INSERT INTO `pengguna` VALUES ('41', 'Isvina Uma Izah', 'isvinaumaizah1@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'b4e1cb52739e7a0340881d40b1cd95fe', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('42', 'Agam Firdaus Junaidi', 'agamjunaidi010@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'd7bf52d2a0b546a735cc9f15730bfc82', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('43', 'Istiqomah Ahsanu Amala', 'istiamala28@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '86d9bcae56114714da37d1a7938e8d59', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('44', 'Dea Putri Lailatul Qudus', 'deaputri0527@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '331dfed457ebeee3e3bceb98f54a7243', '0', '1fCJurTyWC0PVNStRbN6dB9HqscAKWd7zDPQqf48vLUcoX1yGQeZSOen3Oh5E3GD', '0', '0');
+INSERT INTO `pengguna` VALUES ('45', 'Moh Hasan Safroni', 'hassansaffroni@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '6dc08c1e5df2e0152d1fb6a3eaf6b726', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('46', 'Indah Larasati', '1999indah@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '347101d0ff2538bc3f71a4c17831bdbc', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('47', 'Moch. Romadhoni', 'mochromadhoni20@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '261a794363c16c2a9969c2ee093673d6', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('48', 'Milasari Saharuddin', 'Milathahir@yahoo.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '5fc81072e9e3ea0558f417741d5da990', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('49', 'Leonarda Indra Suryati', 'nardasuryati@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '1762c9584d2822920b91ea8d0a83d1ec', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('50', 'Mareta Bunga Pratiwi', 'maretabungapratiwi@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '65f5613ed4048b905a51997d67cd0d80', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('51', 'Ahmad Dian Tri Raharjo', 'ahmaddiantriraharjo@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '41fe7581cfcb26bcbe22700512c6fcd0', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('52', 'Faricha Alif Vaniza', 'aliffaricha@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', 'de27825fca35ba8492b08765cda6cf98', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('53', 'Ibnu', 'ibnuspeedster@gmail.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('54', 'Johnson Martin', 'johnson@teacher.com', null, null, null, '0', 'ACTIVE', 'pendidik', 'assets/dashboard/assets/images/reading.png', 'a426dcf72ba25d046591f81a5495eab7', '0', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('55', 'Ilham Kurniawan', 'ahmad@student.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '8de13959395270bf9d6819f818ab1a00', '5', null, '0', '0');
+INSERT INTO `pengguna` VALUES ('56', 'Si Kabayan', 'kabayan@students.com', null, null, null, '0', 'ACTIVE', 'mahasiswa', 'assets/dashboard/assets/images/reading.png', '202cb962ac59075b964b07152d234b70', '0', null, '0', '0');
 
 -- ----------------------------
 -- Table structure for permasalahan
@@ -404,12 +493,17 @@ CREATE TABLE `permasalahan` (
   KEY `siapa_add` (`siapa`),
   CONSTRAINT `kategori_apa` FOREIGN KEY (`kategori`) REFERENCES `kategori` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siapa_add` FOREIGN KEY (`siapa`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of permasalahan
 -- ----------------------------
-INSERT INTO `permasalahan` VALUES ('1', 'sapa', '2018-11-12 22:49:10', '3', '2', '0', '4', '1', 'UNSOLVED', 'ACTIVE');
+INSERT INTO `permasalahan` VALUES ('1', 'Dalam dua minggu kedepan, saya akan mengajar materi tenses untuk siswa kelas tiga SD. Adakah yang dapat membantu merancang media presentasi yang interaktif untuk membuat siswa lebih terlibat dalam materi pelajaran? Terima kasih', '2018-11-16 14:20:35', '18', '1', '0', '1', '5', 'UNSOLVED', 'ACTIVE');
+INSERT INTO `permasalahan` VALUES ('2', 'Saya membutuhkan bantuan untuk melaksanakan PTK untuk materi geometri di kelas VII, adakah yang bisa mengembangkan media tayangannya? Terima kasih', '2018-11-16 14:21:57', '16', '0', '0', '0', '1', 'UNSOLVED', 'ACTIVE');
+INSERT INTO `permasalahan` VALUES ('3', 'Saya ingin melaksanakan PTK di materi tari kreasi untuk siswa SMA kelas XI, adakah yang dapat membantu merancang judul? Terima kasih', '2018-11-16 14:22:59', '14', '1', '0', '0', '2', 'UNSOLVED', 'ACTIVE');
+INSERT INTO `permasalahan` VALUES ('4', 'saya mau menyusun PTK dimateri servis bola voli, adakah yang dapat membantu merancang proposal dan media tayangan tutorial? Terima kasih', '2018-11-16 14:24:53', '15', '1', '0', '0', '3', 'UNSOLVED', 'ACTIVE');
+INSERT INTO `permasalahan` VALUES ('5', 'Saya membutuhkan bantuan dalam membuat lesson plan berbasis pembelajaran berbasis proyek untuk materi \"perubahan zat\" untuk anak kelas 5 SD. Terima kasih ', '2018-11-16 14:25:42', '17', '0', '0', '0', '6', 'UNSOLVED', 'ACTIVE');
+INSERT INTO `permasalahan` VALUES ('7', 'Saya mebutuhkan media 3D untuk pelajaran anatomi tubuh manusia dalam bentuk digital! ', '2018-11-16 19:15:13', '20', '5', '0', '3', '3', 'UNSOLVED', 'ACTIVE');
 
 -- ----------------------------
 -- Table structure for pesan_info
@@ -440,13 +534,20 @@ CREATE TABLE `riwayat_permasalahan_dilihat` (
   `permasalahan` int(11) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of riwayat_permasalahan_dilihat
 -- ----------------------------
-INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('1', '2', '1', '2018-11-12 22:49:18');
-INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('2', '7', '1', '2018-11-13 09:55:18');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('1', '4', '7', '2018-11-16 19:09:46');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('2', '6', '7', '2018-11-16 19:11:00');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('3', '7', '7', '2018-11-16 19:11:55');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('4', '55', '8', '2018-11-20 12:44:19');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('5', '55', '7', '2018-11-20 12:44:23');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('6', '7', '1', '2018-11-22 14:38:32');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('7', '56', '7', '2018-11-22 19:55:37');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('8', '56', '3', '2018-11-22 19:55:53');
+INSERT INTO `riwayat_permasalahan_dilihat` VALUES ('9', '56', '4', '2018-11-22 19:56:06');
 
 -- ----------------------------
 -- Table structure for tags
@@ -459,19 +560,14 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`id`),
   KEY `id_materi` (`id_materi`),
   CONSTRAINT `id_materi` FOREIGN KEY (`id_materi`) REFERENCES `materi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tags
 -- ----------------------------
 INSERT INTO `tags` VALUES ('1', '1', 'matematika');
-INSERT INTO `tags` VALUES ('2', '1', 'gratis');
-INSERT INTO `tags` VALUES ('3', '1', 'edukasi');
-INSERT INTO `tags` VALUES ('4', '1', 'ebook');
-INSERT INTO `tags` VALUES ('5', '2', 'kimia');
-INSERT INTO `tags` VALUES ('6', '2', 'gratis');
-INSERT INTO `tags` VALUES ('7', '2', 'edukasi');
-INSERT INTO `tags` VALUES ('8', '2', 'ebook');
+INSERT INTO `tags` VALUES ('2', '1', 'sma');
+INSERT INTO `tags` VALUES ('3', '1', 'gratis');
 DROP TRIGGER IF EXISTS `tambah_jumlah_komen_permasalahan`;
 DELIMITER ;;
 CREATE TRIGGER `tambah_jumlah_komen_permasalahan` AFTER INSERT ON `komentar` FOR EACH ROW BEGIN
