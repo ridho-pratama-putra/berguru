@@ -4,6 +4,13 @@
 		$('#new_chat_id_komentator').val(id_komentator);
 		$('#formNewChat').submit();
 	}
+
+	$( document ).ready(function() {
+		$("#scrollable-pesan").mCustomScrollbar("update");
+	    setTimeout(function(){
+	        $("#scrollable-pesan").mCustomScrollbar("scrollTo","bottom");
+	    },1);
+	});
 </script>
 <form method="POST" action="<?=base_url()?>pesan-mahasiswa" id="formNewChat">
 	<input type="hidden" name="id_komentator" value="" id="new_chat_id_komentator">

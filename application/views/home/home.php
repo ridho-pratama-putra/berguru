@@ -145,6 +145,15 @@
 						"</div>"+
 					"</div>";
 				}
+				elementToRender += 
+									"<div>"+
+										"<div class='load-more'>"+
+											"<div class='load-line'></div>"+
+											"<div class='load-btn'>"+
+												"<a href='' class='btn btn-transparent-blue'>Muat Lebih Banyak </a> "+
+											"</div>"+
+										"</div>"+
+									"</div>"
 				$("#"+argument).html(elementToRender);
 				timeAgo();
 			}else{
@@ -251,7 +260,7 @@
 									<div role="tabpanel" class="tab-pane" id="populer"></div>
 									<div role="tabpanel" class="tab-pane" id="solved"></div>
 									<div role="tabpanel" class="tab-pane" id="unsolved"></div>
-									<?php if ($this->session->userdata('loginSession') ==array()) { ?>
+									<?php if ($this->session->userdata('loginSession') == array()) { ?>
 										
 									<div>
 										<div class="row">
@@ -267,12 +276,6 @@
 											</div>
 										</div>
 										
-										<div class="load-more">
-											<div class="load-line"></div>
-											<div class="load-btn">
-												<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-											</div>
-										</div>
 									</div>
 									<?php } ?>
 								</div>

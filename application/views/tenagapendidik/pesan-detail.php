@@ -4,6 +4,13 @@
 		$('#new_chat_id_komentator').val(id_komentator);
 		$('#formNewChat').submit();
 	}
+
+	$( document ).ready(function() {
+		$("#scrollable-pesan").mCustomScrollbar("update");
+	    setTimeout(function(){
+	        $("#scrollable-pesan").mCustomScrollbar("scrollTo","bottom");
+	    },1);
+	});
 </script>
 <form method="POST" action="<?=base_url()?>pesan-pendidik" id="formNewChat">
 	<input type="hidden" name="id_komentator" value="" id="new_chat_id_komentator">
@@ -71,7 +78,7 @@
 				</div>
 				<div class="col-sm-6 col-md-7 col-lg-9 panel-pright">
 					<div class="panel-body detail-pesan">
-						<div class="detpes-top scrollable">
+						<div class="detpes-top scrollable" id="scrollable-pesan">
 							<div class="detpes-header" style="margin-bottom: 10px">
 								<div class="row">
 									<div class="col-md-6 text-right col-md-push-6">
@@ -128,18 +135,51 @@
 									<div class="dchat-htime"><?=($key == date('Y-m-d') ? 'Hari Ini' : tgl_indo(substr($key, 0, 10))) ?></div>
 								</div>
 								<?php foreach ($value as $keyA => $valueA) { ?>
-									<?php if ($valueA->jenis_pesan == 'permasalahan') { ?>
+									<?php if ($valueA->jenis_pesan == 'permasalahan') { 
+
+										// variabel untuk menyimpan pada key berapa sebuah pertanyaan terletak. karena komentardm dan komentar permasalahan juga punya terpecahkan (karena 1 tabel, dibedakan pada jenis_pesan), sehingga harus get key nya biar tepat sasaran ke jenis_pesan permasalahannya bukan di komentardm atau komentarpermasalahan
+										$key_is_solved = $keyA;
+									?>
 										<div class="detpes-masalah">
 											<h4>Permasalahan Anda</h4>
 											<?=$valueA->teks?>
 										</div>
-									<?php }else{ ?>
+									<?php }elseif ($valueA->jenis_pesan == 'komentarpermasalahan') { ?>
+										<div class="detpes-chats">
+											<div class="dchat-htime">Hari ini</div>
+											<div class="dchat dchat-keluar">
+												<div class="dchat-isi">
+														<?=$valueA->teks?>
+												</div>
+												<div class="dchat-footer">
+													<small class="text-muted">Review jawaban</small>
+													<div class="row">
+														<div class="col-md-8">
+															<div class="rate-result" data-score="<?=$valueA->rating?>"></div> <div class="rate-terbilang"><?=$valueA->rating?> Poin</div>
+														</div>
+														<div class="col-md-4 text-right">
+															<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
+																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="dchat dchat-masuk">
+													<div class="dchat-isi">
+															Great! Jawaban yang sangat memuaskan, sangat cocok! Metode ABCD telah sesuai. Terimakasih juga untuk link rujukan yg telah dicantumkan :)
+													</div>
+											</div>
+
+											
+										</div>
+									<?php }elseif($valueA->jenis_pesan == 'komentardm'){ ?>
 										<div class="detpes-chats"  style="padding-bottom: 0px">
 											<?php if ($valueA->dari == $komentator[0]->id) { ?>
 												<div class="dchat dchat-keluar">
 													<div class="dchat-isi">
-															<?=$valueA->teks?>
+														<?=$valueA->teks?>
 													</div>
+													<?php if($value[$key_is_solved]->terpecahkan !== 'SOLVED' ){ ?>
 													<div class="dchat-footer">
 														<small class="text-muted">Permasalahan terpecahkan?</small>
 														<div class="row">
@@ -153,6 +193,19 @@
 															</div>
 														</div>
 													</div>
+													<?php }else{ ?>
+													<div class="dchat-footer">
+														<div class="row">
+															<div class="col-md-8">
+															</div>
+															<div class="col-md-4 text-right">
+																<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
+																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
+															</div>
+														</div>
+													</div>
+
+													<?php } ?>
 												</div>
 											<?php }elseif ($valueA->dari == $this->session->userdata('loginSession')['id']) { ?>
 												<div class="dchat dchat-masuk">
@@ -172,6 +225,7 @@
 										</div>
 									<?php } ?>
 								<?php } ?>
+								<span class="detpes-status">Pertanyaan berstatus</span> <span class="btn btn-custom <?=($value[$key_is_solved]->terpecahkan == 'SOLVED' ? 'btn-status-green' : 'btn-status-red')?>"><i class="fa fa-check-circle"></i> <?=$value[$key_is_solved]->terpecahkan ?></span>
 							<?php } ?>
 
 

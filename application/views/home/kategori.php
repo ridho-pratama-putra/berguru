@@ -70,7 +70,7 @@
             data = JSON.parse(data);
             // console.log(data);
             $("#pertanyaanDitemukan").html(data.jumlah+" pertanyaan ditemukan");
-            if (data.permasalahan.length != 0) {                
+            if (data.permasalahan.length != 0) {
                 var elementToRender = '';
                 elementToRender += 
                     "<div id='results'>";
@@ -154,9 +154,9 @@
                         elementToRender += "</div>";
                     }
                 }
+                elementToRender += "</div>";
                 $("#"+argument).html(elementToRender);
                 timeAgo();
-                elementToRender += "</div>";
             }else{
                 $("#"+argument).html("<p><h4 class='text-center'>Data belum ada</h4></p>");
             }
@@ -165,42 +165,42 @@
 
 </script>        
 
-        <div class="content-front content-pages">                
-            <section class="post-content">
-                <div class="container">
-                    <div class="row ask-header">
-                        <div class="col-md-4">
-                            <p class="ask-count" id="pertanyaanDitemukan"></p>
-                        </div>
-                        <div class="col-md-8 ask-menu">
-                            <ul class="nav nav-tabs nav-ask" role="tablist">
-                                <li role="presentation" class="active">
-                                    <a href="#all" aria-controls="home" role="tab" data-toggle="tab" onclick="pertanyaan('all')">Semua</a>
-                                </li>
-                                <li role="presentation" class="">
-                                    <a href="#populer" aria-controls="profile" role="tab" data-toggle="tab" onclick="pertanyaan('populer')">Populer</a>
-                                </li>
-                                <li role="presentation" class="">
-                                    <a href="#solved" aria-controls="messages" role="tab" data-toggle="tab" onclick="pertanyaan('solved')">Solved</a>
-                                </li>
-                                <li role="presentation" class="">
-                                    <a href="#unsolved" aria-controls="settings" role="tab" data-toggle="tab" onclick="pertanyaan('unsolved')">Unsolved</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row ask-list">
-                        <div class="col-md-12">
-                            <div class="tab-content">
+<div class="content-front content-pages">                
+    <section class="post-content">
+        <div class="container">
+            <div class="row ask-header">
+                <div class="col-md-4">
+                    <p class="ask-count" id="pertanyaanDitemukan"></p>
+                </div>
+                <div class="col-md-8 ask-menu">
+                    <ul class="nav nav-tabs nav-ask" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#all" aria-controls="home" role="tab" data-toggle="tab" onclick="pertanyaan('all')">Semua</a>
+                        </li>
+                        <li role="presentation" class="">
+                            <a href="#populer" aria-controls="profile" role="tab" data-toggle="tab" onclick="pertanyaan('populer')">Populer</a>
+                        </li>
+                        <li role="presentation" class="">
+                            <a href="#solved" aria-controls="messages" role="tab" data-toggle="tab" onclick="pertanyaan('solved')">Solved</a>
+                        </li>
+                        <li role="presentation" class="">
+                            <a href="#unsolved" aria-controls="settings" role="tab" data-toggle="tab" onclick="pertanyaan('unsolved')">Unsolved</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row ask-list">
+                <div class="col-md-12">
+                    <div class="tab-content">
 
-                                <!-- Semua Kategori -->
-                                <div role="tabpanel" class="tab-paneactive" id="all"></div>
-                                <div role="tabpanel" class="tab-pane" id="populer"></div>
-                                <div role="tabpanel" class="tab-pane" id="solved"></div>
-                                <div role="tabpanel" class="tab-pane" id="unsolved"></div>
-                            </div>
-                        </div>
+                        <!-- Semua Kategori -->
+                        <div role="tabpanel" class="tab-pane active" id="all"></div>
+                        <div role="tabpanel" class="tab-pane" id="populer"></div>
+                        <div role="tabpanel" class="tab-pane" id="solved"></div>
+                        <div role="tabpanel" class="tab-pane" id="unsolved"></div>
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
+    </section>
+</div>

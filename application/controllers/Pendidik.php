@@ -28,8 +28,8 @@ class Pendidik extends CI_Controller {
 		$this->menu['breadcrumb'] 	= 'Pesan';
 		$this->menu['active'] 		= 'pesan';
 		$record = array();
-		$this->load->view('statis/header',$header);
-		$this->load->view('tenagapendidik/menu',$this->menu);
+		// $this->load->view('statis/header',$header);
+		// $this->load->view('tenagapendidik/menu',$this->menu);
 		
 		// delete dm yang terinit namun tidak terbalas (yang tidak jadi dm)
 		$this->deleteInitializedDm();
@@ -37,10 +37,10 @@ class Pendidik extends CI_Controller {
 		
 		/*
 			apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
-			DATA YANG DI POST 
-			id_komentator
-			id_permasalahan
-			id_komentar
+			DATA YANG DI POST adalah :
+				- id_komentator
+				- id_permasalahan
+				- id_komentar
 		*/
 		if ($this->input->post() !== array() OR $this->session->flashdata("id_komentator") !== NULL) {
 
@@ -57,12 +57,14 @@ class Pendidik extends CI_Controller {
 				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
 				
 				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal'))->result();
-				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal'))->result();
+				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal','rating'))->result();
 				if ($bacaDirectMessage->num_rows() == 0) {
-										
-					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan'));
+					
+					// insert ke dm sebuah pertanyaan
+					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan','terpecahkan'=>$record['permasalahan'][0]->status));
 
-					$this->model->create('direct_message',array('teks'=>$record['komentar'][0]->teks,'dari'=>$id_komentator,'untuk'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'komentarpermasalahan'));
+					// insert ke dm sebuah komentar permasalahan
+					$this->model->create('direct_message',array('teks'=>$record['komentar'][0]->teks,'dari'=>$id_komentator,'untuk'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'komentarpermasalahan','rating'=>$record['komentar'][0]->rating,));
 					
 				}
 			}
@@ -74,13 +76,41 @@ class Pendidik extends CI_Controller {
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
 			
 			$record['chat'] = array();
+			
+				// $temp_flag untuk track posisi komentar mahasiswa yang terakhir
+			$temp_flag = 0;
+
+			// pemisahan chat setiap tanggal
 			foreach ($chat as $key => $value) {
-				$temp = substr($value->tanggal, 0, 10);
-				if (!isset($record['chat'][$temp])) {
-					$record['chat'][$temp] = array();
+				
+				// $temp digunakan untuk membuat indeks pada array
+				$temp_indeks = substr($value->tanggal, 0, 10);
+
+
+				// lupa
+				if (!isset($record['chat'][$temp_indeks])) {
+					$record['chat'][$temp_indeks] = array();
 				}
-				array_push($record['chat'][$temp], $chat[$key]);
+
+				// jika sebuah komentar dari mahasiswa, maka kasi tau flag nya disini. setiap "kasi tau", hapus flag pada komentar dengan indeks flag, lalu update flag  nya.. intinya ndetect the last komentar dari mahasiswa
+				if ($chat[$key]->dari !== $this->session->userdata('loginSession')['id']) {
+					if ($temp_flag !== 0) {
+						$chat[$temp_flag]->flag = 'as';
+					}
+					$chat[$key]->flag = 'mase';
+					$temp_flag = $key;
+				}
+
+				// push ke record untuk dikirim ke halaman pesan
+				array_push($record['chat'][$temp_indeks], $chat[$key]);
+				
 			}
+				echo "<pre>";
+				var_dump($chat);
+				echo "<br>";
+				echo "------------------------------------$temp_flag---------------------------------------------";
+				echo "<br>";
+			die();
 			
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
