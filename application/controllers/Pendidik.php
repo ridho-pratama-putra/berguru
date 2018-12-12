@@ -28,8 +28,8 @@ class Pendidik extends CI_Controller {
 		$this->menu['breadcrumb'] 	= 'Pesan';
 		$this->menu['active'] 		= 'pesan';
 		$record = array();
-		// $this->load->view('statis/header',$header);
-		// $this->load->view('tenagapendidik/menu',$this->menu);
+		$this->load->view('statis/header',$header);
+		$this->load->view('tenagapendidik/menu',$this->menu);
 		
 		// delete dm yang terinit namun tidak terbalas (yang tidak jadi dm)
 		$this->deleteInitializedDm();
@@ -56,7 +56,7 @@ class Pendidik extends CI_Controller {
 				// cek apakah direct message dgn tipe permasalahan sudah d inisialisasi. untuk mecegah double inisialisasi
 				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
 				
-				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal'))->result();
+				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal','status'))->result();
 				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal','rating'))->result();
 				if ($bacaDirectMessage->num_rows() == 0) {
 					
@@ -78,8 +78,8 @@ class Pendidik extends CI_Controller {
 			$record['chat'] = array();
 			
 				// $temp_flag untuk track posisi komentar mahasiswa yang terakhir
-			$temp_flag = 0;
 
+			$temp_flag = 0;
 			// pemisahan chat setiap tanggal
 			foreach ($chat as $key => $value) {
 				
@@ -95,9 +95,9 @@ class Pendidik extends CI_Controller {
 				// jika sebuah komentar dari mahasiswa, maka kasi tau flag nya disini. setiap "kasi tau", hapus flag pada komentar dengan indeks flag, lalu update flag  nya.. intinya ndetect the last komentar dari mahasiswa
 				if ($chat[$key]->dari !== $this->session->userdata('loginSession')['id']) {
 					if ($temp_flag !== 0) {
-						$chat[$temp_flag]->flag = 'as';
+						unset($chat[$temp_flag]->flag);
 					}
-					$chat[$key]->flag = 'mase';
+					$chat[$key]->flag = TRUE;
 					$temp_flag = $key;
 				}
 
@@ -105,12 +105,12 @@ class Pendidik extends CI_Controller {
 				array_push($record['chat'][$temp_indeks], $chat[$key]);
 				
 			}
-				echo "<pre>";
-				var_dump($chat);
-				echo "<br>";
-				echo "------------------------------------$temp_flag---------------------------------------------";
-				echo "<br>";
-			die();
+			// echo "<pre>";
+			// var_dump($chat);
+			// echo "<br>";
+			// echo "------------------------------------$temp_flag---------------------------------------------";
+			// echo "<br>";
+			// die();
 			
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
@@ -319,14 +319,18 @@ class Pendidik extends CI_Controller {
 	*/
 	function deletePertanyaan(){
 		if ($this->input->post() !== array()) {
+			
 			// delete di tabel master, yakni permasalahan
 			$deletePertanyaan = $this->model->delete('permasalahan',array('id'=>$this->input->post('id')));
 
 			// delete di tabel notifikasi
-			$this->model->rawQuery("DELETE notif WHERE (konteks ='pertanyaan' OR konteks ='ratingKomentar' OR konteks ='komentar') AND id_konteks = ".$this->input->post('id'));
+			$this->model->rawQuery("DELETE FROM notif WHERE (konteks ='pertanyaan' OR konteks ='ratingKomentar' OR konteks ='komentar') AND id_konteks = ".$this->input->post('id'));
 
 			// delete di tabel riwayat_notifikasi
-			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));			
+			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));
+
+			// delete komentar terkait permaslahan
+			$this->model->delete('komentar',array('permasalahan'=>$this->input->post('id')));
 
 			if ($deletePertanyaan) {
 				alert('pertanyaan','success','Berhasil!','Pertanyaan telah dihapus');
