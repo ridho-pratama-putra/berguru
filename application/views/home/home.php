@@ -223,7 +223,7 @@
 								<h3 class="title">Pertanyaan</h3>
 							</div>
 							<div class="col-md-6 title-right">
-								<?php if ($this->session->userdata('loginSession') == array() OR $this->session->userdata('loginSession')['aktor'] == 'pendidik') { ?>
+								<?php if ($this->session->userdata('loginSession') == NULL OR $this->session->userdata('loginSession')['aktor'] == NULL) { ?>
 									<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-green">Buat Pertanyaan</a>
 								<?php } ?>
 							</div>
@@ -386,7 +386,7 @@
 									</select>
 								</div>
 								<?php if ($mahasiswa_poin_tertinggi != array() ) {
-									if ($this->session->userdata('loginSession') !== array()) {
+									if ($this->session->userdata('loginSession') !== NULL) {
 									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
 									
 								<div class="student-item">
