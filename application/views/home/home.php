@@ -223,7 +223,7 @@
 								<h3 class="title">Pertanyaan</h3>
 							</div>
 							<div class="col-md-6 title-right">
-								<?php if ($this->session->userdata('loginSession') == NULL OR $this->session->userdata('loginSession')['aktor'] == NULL) { ?>
+								<?php if ($this->session->userdata('loginSession') == array() OR $this->session->userdata('loginSession')['aktor'] == 'pendidik') { ?>
 									<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-green">Buat Pertanyaan</a>
 								<?php } ?>
 							</div>
@@ -386,7 +386,7 @@
 									</select>
 								</div>
 								<?php if ($mahasiswa_poin_tertinggi != array() ) {
-									if ($this->session->userdata('loginSession') !== NULL) {
+									if ($this->session->userdata('loginSession') !== null) {
 									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
 									
 								<div class="student-item">
@@ -405,7 +405,9 @@
 									</div>
 								</div>
 								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-								<?php }}else{ ?>
+								<?php }
+								}else{ 
+									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
 								<div class="student-item">
 									<div class="media">
 										<div class="media-left media-middle">
@@ -421,7 +423,7 @@
 									</div>
 								</div>
 								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-								<?php }}else{ ?>
+								<?php }}}else{ ?>
 								<h6 class="title text-center"> Data mahasiswa masih kosong</h6>
 								<?php } ?>
 							</div>
