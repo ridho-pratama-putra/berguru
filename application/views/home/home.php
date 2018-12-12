@@ -385,7 +385,8 @@
 										<option>Bulan Lalu</option>
 									</select>
 								</div>
-								<?php if ($mahasiswa_poin_tertinggi != array()) {
+								<?php if ($mahasiswa_poin_tertinggi != array() ) {
+									if ($this->session->userdata('loginSession') == array()) {
 									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
 									
 								<div class="student-item">
@@ -400,6 +401,22 @@
 											<p class="student-solution">31 Solusi</p>
 											<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span> <?=$value->poin?></a>
 											<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>
+										</div>
+									</div>
+								</div>
+								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+								<?php }}else{ ?>
+								<div class="student-item">
+									<div class="media">
+										<div class="media-left media-middle">
+											<a href="#" class="student-photo">
+												<img src="<?=base_url().$value->foto?>" width="" height="" class="img-circle" alt="Image" class="media-object">
+											</a>
+										</div>
+										<div class="media-body">
+											<h4 class="media-heading"><?=$value->nama?></h4>
+											<p class="student-solution">31 Solusi</p>
+											<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span> <?=$value->poin?></a>
 										</div>
 									</div>
 								</div>
