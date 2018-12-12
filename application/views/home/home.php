@@ -223,9 +223,7 @@
 								<h3 class="title">Pertanyaan</h3>
 							</div>
 							<div class="col-md-6 title-right">
-								<?php if ($this->session->userdata('loginSession') == array() OR $this->session->userdata('loginSession')['aktor'] == 'pendidik') { ?>
-									<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-green">Buat Pertanyaan</a>
-								<?php } ?>
+								<a href="<?=base_url()?>buat-pertanyaan-pendidik" class="btn btn-green">Buat Pertanyaan</a>
 							</div>
 						</div>
 						
