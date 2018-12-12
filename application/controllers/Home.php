@@ -141,7 +141,7 @@ class Home extends CI_Controller {
 		$namaKategori = $this->input->get('q');
 		$kategori = $this->model->read("kategori",array('nama'=>$namaKategori));
 		if ($kategori->num_rows() == 1) {
-			$menu['active'] 	=	"home";
+			$menu['active'] 	=	"kategori";
 			$menu['selected_kategori'] 	=	$kategori->result();
 			$menu['kategori'] = $this->model->readS("kategori")->result();
 			$record['kategori'] = $menu['selected_kategori'];
