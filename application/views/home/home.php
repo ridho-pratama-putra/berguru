@@ -386,7 +386,7 @@
 									</select>
 								</div>
 								<?php if ($mahasiswa_poin_tertinggi != array() ) {
-									if ($this->session->userdata('loginSession') == array()) {
+									if ($this->session->userdata('loginSession') !== array()) {
 									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
 									
 								<div class="student-item">
