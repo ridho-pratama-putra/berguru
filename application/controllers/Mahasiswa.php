@@ -576,10 +576,13 @@ class Mahasiswa extends CI_Controller {
 		if ($this->input->post() != array()) {
 			$cariPertanyaan = $this->model->read("permasalahan",array('id'=>$this->input->post('id')));
 			if ($cariPertanyaan->num_rows() != 0) {
+				$cariPertanyaan 				= $cariPertanyaan->result();
 				$recordInsert['teks'] 			= $this->input->post('jawaban');
 				$recordInsert['tanggal'] 		= date('Y-m-d H:i:s');
 				$recordInsert['siapa'] 			= $this->session->userdata('loginSession')['id'];
 				$recordInsert['permasalahan'] 	= $this->input->post('id');
+				$recordInsert['kategori_permasalahan'] = $cariPertanyaan[0]->id;
+
 				$queryInsert = $this->model->create("komentar",$recordInsert);
 				$queryInsert = json_decode($queryInsert);
 				if ($queryInsert->status) {

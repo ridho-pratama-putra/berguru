@@ -487,7 +487,15 @@ class Admin extends CI_Controller {
 	function deletePermasalahan()
 	{
 		if ($this->input->post() !== NULL) {
+
+			// delete di tabel notifikasi
+			$this->model->rawQuery("DELETE FROM notif WHERE (konteks ='pertanyaan' OR konteks ='ratingKomentar' OR konteks ='komentar') AND id_konteks = ".$this->input->post('id'));
+
+			// delete di tabel riwayat_notifikasi
+			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));
+			
 			$this->model->delete('komentar',array('permasalahan'=>$this->input->post('id')));
+			
 			$deletePermasalaan = $this->model->delete('permasalahan',array('id'=>$this->input->post('id')));
 			if ($deletePermasalaan) {
 				alert('kelolaKontenPermasalahan','success','Berhasil!','Konten permasalahan telah dihapus');

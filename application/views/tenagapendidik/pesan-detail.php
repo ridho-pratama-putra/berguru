@@ -164,22 +164,15 @@
 													</div>
 												</div>
 											</div>
-											<div class="dchat dchat-masuk">
-													<div class="dchat-isi">
-															Great! Jawaban yang sangat memuaskan, sangat cocok! Metode ABCD telah sesuai. Terimakasih juga untuk link rujukan yg telah dicantumkan :)
-													</div>
-											</div>
-
-											
 										</div>
 									<?php }elseif($valueA->jenis_pesan == 'komentardm'){ ?>
-										<div class="detpes-chats"  style="padding-bottom: 0px">
+										<div class="detpes-chats">
 											<?php if ($valueA->dari == $komentator[0]->id) { ?>
 												<div class="dchat dchat-keluar">
 													<div class="dchat-isi">
 														<?=$valueA->teks?>
 													</div>
-													<?php if($value[$key_is_solved]->terpecahkan !== 'SOLVED' ){ ?>
+													<?php if($value[$key_is_solved]->terpecahkan !== 'SOLVED' AND isset($valueA->flag)){ ?>
 													<div class="dchat-footer">
 														<small class="text-muted">Permasalahan terpecahkan?</small>
 														<div class="row">
@@ -214,7 +207,7 @@
 													</div>
 													<div class="dchat-footer">
 														<div class="row">
-															<div class="col-md-3 text-right">
+															<div class="col-md-3 text-left">
 																<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
 																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
 															</div>
