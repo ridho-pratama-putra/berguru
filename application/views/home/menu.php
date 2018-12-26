@@ -71,7 +71,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <?php
                             if ($this->session->userdata('loginSession') == array()) { ?>
-                            <li><a href="<?=base_url()?>login"><span class="bgicon bgicon-lock"></span> Masuk</a></li>
+                            <li class="nav-button"><a href="<?=base_url()?>login"><span class="bgicon icon-lock"></span> Masuk</a></li>
                             <li class="nav-button"><a href="<?=base_url()?>register"><span class="bgicon icon-user-add"></span> Daftar</a></li>
                             <?php }else{ ?>
                                 <li><a href="<?=base_url()?>dashboard-<?=$this->session->userdata('loginSession')['aktor']?>">Dashboard</a></li>

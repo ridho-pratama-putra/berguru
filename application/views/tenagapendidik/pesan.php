@@ -4,6 +4,69 @@
 		$('#new_chat_id_komentator').val(id_komentator);
 		$('#formNewChat').submit();
 	}
+
+	function timeAgo() {
+		var templates = {
+			prefix: "",
+			suffix: "",
+			seconds: "rcntly",
+			minute: "1m",
+			minutes: "%dm",
+			hour: "1h",
+			hours: "%dh",
+			day: "1d",
+			days: "%dd",
+			month: "1m",
+			months: "%dm",
+			year: "1y",
+			years: "%dy"
+		};
+		var template = function(t, n) {
+			return templates[t] && templates[t].replace(/%d/i, Math.abs(Math.round(n)));
+		};
+
+		var timer = function(time) {
+			if (!time)
+				return;
+			time = time.replace(/\.\d+/, ""); // remove milliseconds
+			time = time.replace(/-/, "/").replace(/-/, "/");
+			time = time.replace(/T/, " ").replace(/Z/, " UTC");
+			time = time.replace(/([\+\-]\d\d)\:?(\d\d)/, " $1$2"); // -04:00 -> -0400
+			time = new Date(time * 1000 || time);
+
+			var now = new Date();
+			var seconds = ((now.getTime() - time) * .001) >> 0;
+			var minutes = seconds / 60;
+			var hours = minutes / 60;
+			var days = hours / 24;
+			var years = days / 365;
+
+			return templates.prefix + (
+				seconds < 45 && template('seconds', seconds) ||
+				seconds < 90 && template('minute', 1) ||
+				minutes < 45 && template('minutes', minutes) ||
+				minutes < 90 && template('hour', 1) ||
+				hours < 24 && template('hours', hours) ||
+				hours < 42 && template('day', 1) ||
+				days < 30 && template('days', days) ||
+				days < 45 && template('month', 1) ||
+				days < 365 && template('months', days / 30) ||
+				years < 1.5 && template('year', 1) ||
+				template('years', years)
+				) + templates.suffix;
+		};
+
+		var elements = document.getElementsByClassName('timeago');
+		for (var i in elements) {
+			var $this = elements[i];
+			if (typeof $this === 'object') {
+				$this.innerHTML = "<span class='bgicon bgicon-clock'></span> " + timer($this.getAttribute('title') || $this.getAttribute('datetime'));
+			}
+		}
+		// update time every minute
+		setTimeout(timeAgo, 60000);
+	};
+
 </script>
 <form method="POST" action="<?=base_url()?>pesan-pendidik" id="formNewChat">
 	<input type="hidden" name="id_komentator" value="" id="new_chat_id_komentator">
@@ -44,26 +107,22 @@
 					</div>
 					<div class="panel-body list-pesan scrollable" id="listPesan">
 						<?php foreach ($to as $key => $value) { ?>
-							
-						<div class="pesan-item" onclick="openNewChat(<?=$value->id?>)">
-							<!--  pi-read -->
-							<!--  pi-selected -->
+						<div class="pesan-item <?=($value->belum_dibaca == '0') ? 'pi-read' :''?>" onclick="openNewChat(<?=$value->id?>)">
 							<div class="pi-left">
 								<div class="user-photo">
 									<img src="<?=base_url().$value->foto?>" class="img-circle" alt="Photo">
 								</div>
 								<div class="user-nama">
-									<?=$value->nama?>
+									<?=$value->alias?>
 								</div>
 								<div class="last-pesan">
-									pesan
+									<?=$value->teks?>
 								</div>
 							</div>
 							<div class="pi-right">
-								<span class="time">
-									1h
+								<span class="time timeago" title="<?=$value->tanggal?>">
 								</span>
-								<span class="badge">1</span>
+								<?=($value->belum_dibaca !== '0') ? "<span class='badge'>".$value->belum_dibaca."</span>" : ''?>
 							</div>
 						</div>
 						<?php } ?>
@@ -79,12 +138,9 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
+</div>
 
-
-
-
-
-
-</div>	<!--/.main-->ss
+<script type="text/javascript">
+	timeAgo();
+</script>

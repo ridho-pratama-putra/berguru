@@ -123,15 +123,34 @@ class Auth extends CI_Controller {
 			redirect('register-pilih');
 		}else{
 			if ($this->input->post() != array()) {
-				$this->form_validation->set_rules('nama','Nama','trim|required|is_unique[pengguna.nama]');
+				$this->form_validation->set_rules('nama','Nama','trim|required|is_unique[pengguna.nama]|callback_fullname_check');
 				$this->form_validation->set_rules('email','Email','trim|required|valid_email|is_unique[pengguna.email]');
 				$this->form_validation->set_rules('password','Password','trim|required');
 				if ($this->form_validation->run()==TRUE) {
 					$email			= $this->input->post('email');
 					$nama			= ucwords($this->input->post('nama'));
+					$alias 			= '';
 					$password		= md5($this->input->post('password'));
+
+					/* START generate alias*/
+						$explode = explode(" ", $nama);
+						$temp_alias = '';
+						foreach ($explode as $key => $value) {
+							$temp_alias .= $value." ";
+							if (strlen($temp_alias) <= 20) {
+								$alias .= $value. " ";
+							}else{
+								break;
+							}
+						}
+						if (strlen($alias) < 20) {
+							$alias .= substr($explode[$key], 0,1);
+						}
+					/* END generate alias*/
+
 					$newdata = array(
 					        'nama'  					=> $nama,
+					        'alias'  					=> $alias,
 					        'email'     				=> $email,
 					        'password'     				=> $password,
 					        'masih_proses_registrasi' 	=> TRUE
@@ -218,6 +237,18 @@ class Auth extends CI_Controller {
 		$this->session->unset_userdata('registrasiSession');
 		$this->session->unset_userdata('loginSession');
 		redirect(base_url());
+	}
+
+	/*
+	* FUNCTION UNTUK FORM VALIDATION NAMA
+	*/
+	public function fullname_check($str) {
+	    if (! preg_match("/^([a-z ])+$/i", $str)) {
+	        $this->form_validation->set_message('fullname_check', 'The %s field can only be alphabetic');
+	        return FALSE;
+	    } else {
+	        return TRUE;
+	    }
 	}
 }
 // UNSET THINGS

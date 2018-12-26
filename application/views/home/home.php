@@ -87,7 +87,7 @@
 										"</div>"+
 										"<div class='media-body'>"+
 											"<h4 class='media-heading'>"+data.permasalahan[i].nama_pengguna+"</h4>"+
-											"<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'><span class='bgicon icon-clock'></span></p>"+
+											"<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'></p>"+
 										"</div>"+
 									"</div>"+
 								"</div>"+

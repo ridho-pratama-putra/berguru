@@ -11,9 +11,14 @@ class Pendidik extends CI_Controller {
 			redirect('login');
 		}
 		// set array koasong untuk simpan notif2
-		$this->menu['notif'] = array();
-		$this->menu['belum_dilihat'] = array();
-		$this->notifikasiMenu();
+		$this->menu['notif_non_dm'] = array();
+		$this->menu['notif_dm'] = array();
+		
+		$this->menu['belum_dilihat_non_dm'] = array();
+		$this->menu['belum_dilihat_dm'] = array();
+		
+		$this->notifikasiMenuNonDm();
+		$this->notifikasiMenuDm();
 
 	}
 
@@ -23,7 +28,9 @@ class Pendidik extends CI_Controller {
 	*/
 	function pesan()
 	{
-
+		// echo "<pre>";
+		// var_dump($this->input->post());
+		// die();
 		$header['title'] 		= 'Pendidik - Pesan';
 		$this->menu['breadcrumb'] 	= 'Pesan';
 		$this->menu['active'] 		= 'pesan';
@@ -33,7 +40,6 @@ class Pendidik extends CI_Controller {
 		
 		// delete dm yang terinit namun tidak terbalas (yang tidak jadi dm)
 		$this->deleteInitializedDm();
-
 		
 		/*
 			apakah bikin chat baru atau tidak. kalau ya, open new chat room dialog, kalau tidak, tampilkan 'tidak ada pesan yang dipilih'
@@ -42,6 +48,7 @@ class Pendidik extends CI_Controller {
 				- id_permasalahan
 				- id_komentar
 		*/
+
 		if ($this->input->post() !== array() OR $this->session->flashdata("id_komentator") !== NULL) {
 
 			// dibagian if adalah untuk redirect setelah submitReply, yang bagian else untuk yang dari klik sebuah chat dengan mahasiswa.  bagian if menggunakan flashdata karena kesulitan post sambil redirect
@@ -53,6 +60,7 @@ class Pendidik extends CI_Controller {
 			
 			// jika dari tombol kirim pesan pada halaman pertanyaan detail (inisialisasi dm / mau melakukan dm terkait komentar seorang mahasaiswa)
 			if ($this->input->post('id_permasalahan') !== NULL AND $this->input->post('id_komentar') !== NULL) {
+
 				// cek apakah direct message dgn tipe permasalahan sudah d inisialisasi. untuk mecegah double inisialisasi
 				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
 				
@@ -65,59 +73,54 @@ class Pendidik extends CI_Controller {
 
 					// insert ke dm sebuah komentar permasalahan
 					$this->model->create('direct_message',array('teks'=>$record['komentar'][0]->teks,'dari'=>$id_komentator,'untuk'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'komentarpermasalahan','rating'=>$record['komentar'][0]->rating,));
-					
 				}
 			}
-			
-			
 			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
 			
 			$record['chat'] = array();
-			
-				// $temp_flag untuk track posisi komentar mahasiswa yang terakhir
 
+			// $temp_flag untuk track posisi komentar mahasiswa yang terakhir
 			$temp_flag = 0;
+
 			// pemisahan chat setiap tanggal
 			foreach ($chat as $key => $value) {
 				
 				// $temp digunakan untuk membuat indeks pada array
 				$temp_indeks = substr($value->tanggal, 0, 10);
 
-
 				// lupa
 				if (!isset($record['chat'][$temp_indeks])) {
 					$record['chat'][$temp_indeks] = array();
 				}
 
-				// jika sebuah komentar dari mahasiswa, maka kasi tau flag nya disini. setiap "kasi tau", hapus flag pada komentar dengan indeks flag, lalu update flag  nya.. intinya ndetect the last komentar dari mahasiswa
-				if ($chat[$key]->dari !== $this->session->userdata('loginSession')['id']) {
-					if ($temp_flag !== 0) {
-						unset($chat[$temp_flag]->flag);
-					}
-					$chat[$key]->flag = TRUE;
-					$temp_flag = $key;
-				}
-
 				// push ke record untuk dikirim ke halaman pesan
 				array_push($record['chat'][$temp_indeks], $chat[$key]);
+
+				// set pesan yang belum dibaca ke sudah dibaca				
+				$this->model->rawQuery("UPDATE direct_message SET is_open = 'sudah' WHERE dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."'");
 				
 			}
-			// echo "<pre>";
-			// var_dump($chat);
-			// echo "<br>";
-			// echo "------------------------------------$temp_flag---------------------------------------------";
-			// echo "<br>";
-			// die();
-			
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
+			
+			// echo "<pre>";
+			// var_dump($record);
+			// var_dump($this->input->post());
+			// echo "</pre>";
+
+			// jika asalnya dari redirect setelah pertanyaan permaslaahan terpocahkan? maka set suah alert
+			if (isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 1) {
+				alert('alert','success','Barhasil!','Status permasalahan telah diubah menjadi SOLVED!');
+			}elseif(isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 0){
+				alert('alert','success','Terimakasih!','Feedback anda telah tersimpan');
+			}
 
 			$this->load->view('tenagapendidik/pesan-detail',$record);
 		}else{
-			
+
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
 
@@ -133,16 +136,35 @@ class Pendidik extends CI_Controller {
 	function getInitializedDm()
 	{
 		return $this->model->rawQuery("
-													SELECT DISTINCT
-														pengguna.id,
-														pengguna.nama,
-														pengguna.foto
-														-- ,direct_message.tanggal 
-													FROM 
-														direct_message
-													LEFT JOIN pengguna ON direct_message.dari = pengguna.id
-													WHERE untuk = '".$this->session->userdata('loginSession')['id']."'
-												")->result();
+										SELECT DISTINCT dari AS fr,
+											(
+												SELECT teks FROM direct_message
+												WHERE id = 
+													( 
+													SELECT MAX(id)
+													FROM direct_message 
+													WHERE 
+														(dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
+													)
+											) AS teks,
+											(
+												SELECT MAX(tanggal) FROM direct_message
+												WHERE dari = fr
+											) AS tanggal,
+											(
+												SELECT COUNT(id) FROM direct_message
+												WHERE is_open IS NULL 
+												AND ((dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id']."))
+											) AS belum_dibaca,
+											pengguna.id,
+											pengguna.alias,
+											pengguna.foto
+										FROM 
+											direct_message
+										LEFT JOIN pengguna ON direct_message.dari = pengguna.id
+										WHERE untuk = ".$this->session->userdata('loginSession')['id']."
+										ORDER BY tanggal DESC
+									")->result();
 	}
 
 
@@ -151,12 +173,13 @@ class Pendidik extends CI_Controller {
 	*/
 	function deleteInitializedDm()
 	{
-			return $this->model->rawQuery("
-											DELETE FROM direct_message 
-											WHERE 
-												(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
-												AND 
-												(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL");
+		return $this->model->rawQuery("
+										DELETE FROM direct_message 
+										WHERE 
+											(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
+											AND 
+											(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL"
+									);
 	}
 
 	/*
@@ -181,6 +204,7 @@ class Pendidik extends CI_Controller {
 			$this->model->rawQuery("UPDATE direct_message SET dibalas='sudah' WHERE (jenis_pesan = 'permasalahan' OR jenis_pesan = 'komentarpermasalahan') AND permasalahan = '$dataForm[permasalahan]' AND komentar = '$dataForm[komentar]'");
 			$queryInsert = json_decode($queryInsert);
 			if ($queryInsert->status) {
+
 				$data = array('id_komentator'=>$this->input->post('untuk'));
 				$this->session->set_flashdata('id_komentator',$data);
 
@@ -837,9 +861,9 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-	* funtion untuk menampilkan icon angka pada icon amplop
+	* funtion untuk menampilkan icon angka pada icon lonceng
 	*/
-	function notifikasiMenu()
+	function notifikasiMenuNonDm()
 	{
 		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
 		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
@@ -869,6 +893,8 @@ class Pendidik extends CI_Controller {
 					untuk = 'pendidik' 
 			OR 
 					untuk = '".$this->session->userdata('loginSession')['id']."'
+			AND
+					konteks != 'dm'
 			ORDER BY datetime DESC
 		");
 
@@ -889,7 +915,7 @@ class Pendidik extends CI_Controller {
 					$notif_[$key]->terlihat = 'sudah';
 				}else{
 					$notif_[$key]->terlihat = 'belum';
-					array_push($this->menu['belum_dilihat'], $value->id);
+					array_push($this->menu['belum_dilihat_non_dm'], $value->id);
 				}
 			}
 
@@ -901,7 +927,77 @@ class Pendidik extends CI_Controller {
 
 			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
 			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
-			$this->menu['notif'] = array_slice($notif_, 0, 7);
+			$this->menu['notif_non_dm'] = array_slice($notif_, 0, 7);
+		}
+	}
+
+	/*
+	* funtion untuk menampilkan icon angka pada icon lonceng
+	*/
+	function notifikasiMenuDm()
+	{
+		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
+		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
+
+		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
+		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
+		if ($notifBaruDanUntukSaya->num_rows() > 0) {
+
+		}*/
+
+
+		// baca notif untuk para mahasiswa dan dia seorang
+		$notif_pendidik = $this->model->rawQuery("
+			SELECT  
+				notif.id,
+				notif.konteks,
+				notif.id_konteks,
+				pengguna.id AS id_dari, 
+				pengguna.foto, 
+				pengguna.nama AS dari, 
+				notif.untuk,
+				notif.datetime,
+				(SELECT COUNT(notif.id) FROM notif WHERE konteks = 'dm' AND untuk = 18 AND dari = pengguna.id) AS jumlah
+			FROM notif 
+			LEFT JOIN pengguna ON pengguna.id = notif.dari
+			WHERE 
+				untuk = '".$this->session->userdata('loginSession')['id']."'
+			AND
+				konteks = 'dm'
+			GROUP BY dari
+			ORDER BY datetime DESC;
+		");
+
+
+		if ($notif_pendidik->num_rows() != 0) {
+			$notif_pendidik = $notif_pendidik->result();
+			
+			// baca notif yang untuk para mahasiswa yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para mahasiswa
+			$notif_pendidik_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_flag WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
+
+			// array matang untuk dikirim ke menu
+			$notif_ = array();
+
+			// berlaku untuk notif mahasiswa atau notif untuk saya
+			foreach ($notif_pendidik as $key => $value) {
+				$notif_[$key] = $value;
+				if ($this->in_array_r($value->id,$notif_pendidik_terlihat)) {
+					$notif_[$key]->terlihat = 'sudah';
+				}else{
+					$notif_[$key]->terlihat = 'belum';
+					array_push($this->menu['belum_dilihat_dm'], $value->id);
+				}
+			}
+
+			// insert max notif id per user
+			$runQuery = $this->model->rawQuery("UPDATE max_notif_id_per_user SET max_notif_id =".$notif_pendidik[0]->id." WHERE id_pengguna='".$this->session->userdata('loginSession')['id']."'");
+			// var_dump($runQuery);die();
+
+			unset($notif_pendidik);unset($notif_pendidik_terlihat);unset($notif_pendidik_terbaca);
+
+			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
+			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
+			$this->menu['notif_dm'] = array_slice($notif_, 0, 7);
 		}
 	}
 
@@ -941,4 +1037,57 @@ class Pendidik extends CI_Controller {
 		
 		force_download($materi[0]->nama.".zip", $data);
 	}
+
+	/*
+	* funtion untuk handle permasalahan solved atau unsolved
+	* paramter d adalah id di tabel dm
+	*/
+	function setStatusPertanyaanSolved($d)
+	{
+		// baca informasi detil sebuah koemtar permalashan untuk acuan update ke tabel yang berrelasi
+		$pertanyaan = $this->model->readCol('direct_message',array('id'=>$d),array('permasalahan','dari','komentar','rating'))->result();
+
+		// update permasalahan menjadi solve
+		$this->model->update('permasalahan',array('id'=>$pertanyaan[0]->id),array('status'=>'SOLVED'));
+
+		// update sebuah komentar menjadi solver dari sebuah permasalahan. satu permasalahan bisa punya banyak komentar solver
+		$this->model->update('komentar',array('id'=>$pertanyaan[0]->komentar),array('solver'=>$pertanyaan[0]->id));
+
+		// update solver di tabel pada dm where id=id. update kolom solver jadi id permaslaahan.
+		$this->model->update('direct_message',array('id'=>$d),array('solver'=>$pertanyaan[0]->id));
+
+		// kirim sebuah dm kalau permasalahan sudah terpecahkan
+
+		// redirect dengan set flashdata
+		$data = array('id_komentator'=>$pertanyaan[0]->dari,'permasalahan_terpecahkan'=>1);
+		$this->session->set_flashdata('id_komentator',$data);
+		redirect('pesan-pendidik');
+	}
+
+	function setStatusPertanyaanUnsolved($d)
+	{
+		/*set status solver sebuah komentar permasalahan jadi 'bukan'. untuk deteksi apakah perlu ditampilkan kolom pertanyaan permasalahan terpecahkana di dm*/
+		// baca informasi detil sebuah koemtar permalashan untuk acuan update ke tabel yang berrelasi
+		$pertanyaan = $this->model->readCol('direct_message',array('id'=>$d),array('permasalahan','dari','komentar','rating'))->result();
+
+		// update sebuah komentar menjadi bukan solver dari sebuah permasalahan. 
+		$this->model->update('komentar',array('id'=>$pertanyaan[0]->komentar),array('solver'=>'bukan'));
+
+		// update solver di tabel pada dm where id=id. update kolom solver jadi id permaslaahan.
+		$this->model->update('direct_message',array('id'=>$d),array('solver'=>'bukan'));
+
+		// kirim sebuah dm kalau permaslahan belum terpecahkan
+
+		// redirect dengan set flashdata
+		$data = array('id_komentator'=>$pertanyaan[0]->dari,'permasalahan_terpecahkan'=>0);
+		$this->session->set_flashdata('id_komentator',$data);
+		redirect('pesan-pendidik');
+	}
+
+	function playground()
+	{
+		$this->load->view('tenagapendidik/playground');
+	}
+
+
 }

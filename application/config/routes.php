@@ -171,7 +171,6 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['edit-profil-pendidik']					= 'Pendidik/editProfil';
 	$route['submit-edit-profil-pendidik']			= 'Pendidik/submitEditProfil';
 
-	/*view page*/
 	$route['pertanyaan-pendidik']					= 'Pendidik/pertanyaanSaya';
 	$route['buat-pertanyaan-pendidik']				= 'Pendidik/buatPertanyaan';
 	$route['detail-pertanyaan-pendidik/(:num)']		= 'Pendidik/detailPertanyaan/$1';
@@ -179,10 +178,7 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['edit-pertanyaan-pendidik/(:num)']		= 'Pendidik/editPertanyaan/$1';
 
 	$route['submit-reply-pendidik']					= 'Pendidik/submitReply';
-
-
 	$route['submit-rating-pendidik']				= 'Pendidik/submitRating';
-
 
 	$route['materi-pendidik']						= 'Pendidik/materi';
 	$route['materi-tambah-pendidik']				= 'Pendidik/tambahMateri';
@@ -197,40 +193,8 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['delete-pertanyaan']						= 'Pendidik/deletePertanyaan';
 	$route['submit-edit-pertanyaan']				= 'Pendidik/submitEditPertanyaan';
 
+	$route['download-materi-pendidik/(:num)']		= 'Pendidik/downloadMateri/$1';
 
-
-
-	// $route['pesan-pendidik/(:any)/(:num)/(:num)/(:num)']				= 'Pendidik/pesan/$1/$2/$3/$4';
-	$route['pesan-pendidik']				= 'Pendidik/pesan';
-	$route['download-materi-pendidik/(:num)']				= 'Pendidik/downloadMateri/$1';
+	$route['set-status-pertanyaan-solved/(:num)'] = 'Pendidik/setStatusPertanyaanSolved/$1';
+	$route['set-status-pertanyaan-unsolved/(:num)'] = 'Pendidik/setStatusPertanyaanUnsolved/$1';
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
