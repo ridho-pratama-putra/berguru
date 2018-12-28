@@ -15,7 +15,7 @@ class Pendidik extends CI_Controller {
 		$this->menu['notif_non_dm'] = array();
 		$this->menu['notif_dm'] = array();
 		$this->menu['belum_dilihat_non_dm'] = array();
-		$this->menu['belum_dilihat_dm'] = array();
+		$this->menu['belum_dilihat_dm'] = [];
 		$this->notifikasiMenuNonDm();
 		$this->notifikasiMenuDm();
 	}
@@ -97,9 +97,16 @@ class Pendidik extends CI_Controller {
 				// push ke record untuk dikirim ke halaman pesan
 				array_push($record['chat'][$temp_indeks], $chat[$key]);
 
-				// set pesan yang belum dibaca ke sudah dibaca				
-				$this->model->rawQuery("UPDATE direct_message SET is_open = 'sudah' WHERE dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."'");
-				
+				// set pesan yang belum dibaca ke sudah dibaca
+				$update = $this->model->rawQuery("
+					UPDATE 
+							direct_message 
+					SET is_open = 'sudah' 
+					WHERE 
+						(dari='".$this->session->userdata('loginSession')['id']."' AND untuk='".$id_komentator."') 
+					OR 
+						(untuk='".$this->session->userdata('loginSession')['id']."' AND dari='".$id_komentator."')"
+				);
 			}
 			$this->model->rawQuery("UPDATE notif SET terbaca = 'sudah' WHERE konteks ='dm' AND (dari='".$this->input->post('id_komentator')."' AND untuk='".$this->session->userdata('loginSession')['id']."')");
 
@@ -108,7 +115,7 @@ class Pendidik extends CI_Controller {
 			
 			// echo "<pre>";
 			// var_dump($record);
-			// var_dump($this->input->post());
+			// // var_dump($this->input->post());
 			// echo "</pre>";
 
 			// jika asalnya dari redirect setelah pertanyaan permaslaahan terpocahkan? maka set suah alert
@@ -961,13 +968,20 @@ class Pendidik extends CI_Controller {
 			$notif_ = array();
 
 			// berlaku untuk notif mahasiswa atau notif untuk saya
+			$belum_dilihat_dm = array();
 			foreach ($notif_pendidik as $key => $value) {
 				$notif_[$key] = $value;
-				if (!$this->in_array_r($value->id,$notif_pendidik_terlihat)) {
-					$value->jumlah = explode(",", $value->jumlah);
-					$this->menu['belum_dilihat_dm'] = $value->jumlah;
+				$value->jumlah = explode(",", $value->jumlah);
+				if ($this->in_array_r($value->id,$notif_pendidik_terlihat)) {
+
+				}else{
+					foreach ($value->jumlah as $keyA => $valueA) {
+						array_push($belum_dilihat_dm, $valueA);
+					}
+					// $this->menu['belum_dilihat_dm'] = $value->jumlah;
 				}
 			}
+			$this->menu['belum_dilihat_dm'] = $belum_dilihat_dm;
 
 			// insert max notif id per user
 			$runQuery = $this->model->rawQuery("UPDATE max_notif_id_per_user SET max_notif_id =".$notif_pendidik[0]->id." WHERE id_pengguna='".$this->session->userdata('loginSession')['id']."'");
@@ -988,17 +1002,12 @@ class Pendidik extends CI_Controller {
 	function setTerlihatNonDm()
 	{
 		if ($this->input->post() !== array()) {
-			if ($this->menu['belum_dilihat_non_dm'] !== array()) {
-				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
-				foreach ($this->menu['belum_dilihat_non_dm'] as $key => $value) {
-					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
-				}
-				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
-				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
-				echo "string";
-			}else{
-				echo "lllstring";
+			$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
+			foreach ($this->menu['belum_dilihat_non_dm'] as $key => $value) {
+				$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
 			}
+			$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
+			$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
 		}
 	}
 

@@ -130,7 +130,6 @@
 							<div class="pi-right">
 								<span class="time timeago" title="<?=$value->tanggal?>">
 								</span>
-								<span class="badge">9</span>
 								<?=($value->belum_dibaca !== '0') ? "<span class='badge'>".$value->belum_dibaca."</span>" : ''?>
 							</div>
 						</div>

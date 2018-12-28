@@ -72,35 +72,38 @@ class Auth extends CI_Controller {
 						return true;
 					}
 				}
-			}elseif($this->session->userdata('loginSession') != array()){
-				if ($cookie !== NULL) {
-					// cek adakah cookie ada yang sedang aktif
-					$recordCookieAktif = $this->model->read('pengguna',array('cookie'=>$cookie))->result();
-					if ($recordCookieAktif[0]->cookie == $cookie) {
-						if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
-							alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
-							redirect('pesan-mahasiswa');
-							return true;
-						}elseif($recordCookieAktif[0]->aktor == 'pendidik') {
-							alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
-							redirect('pesan-pendidik');
-							return true;
-						}elseif($recordCookieAktif[0]->aktor == 'admin') {
-							alert('login','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
-							redirect('kelola-daftar-message');
-							return true;
-						}
-					}
-				}else{
-					if ($this->session->userdata('loginSession')['aktor'] == "mahasiswa") {
+			}elseif($this->session->userdata('loginSession') != array()){				
+				if ($this->session->userdata('loginSession')['aktor'] == "mahasiswa") {
+					redirect('pesan-mahasiswa');
+				}elseif ($this->session->userdata('loginSession')['aktor'] == "pendidik") {
+					redirect('pesan-pendidik');
+				}elseif ($this->session->userdata('loginSession')['aktor'] == "admin") {
+					redirect('kelola-daftar-message');
+				}
+			}elseif ($this->session->userdata('loginSession') == array() AND $cookie != '') {
+				$recordCookieAktif = $this->model->read('pengguna',array('cookie'=>$cookie))->result();
+				if ($recordCookieAktif[0]->cookie == $cookie) {
+					$newdata = array(
+							        'id'     					=> $recordCookieAktif[0]->id,
+							        'nama'  					=> $recordCookieAktif[0]->nama,
+							        'email'     				=> $recordCookieAktif[0]->email,
+							        'no_hp'     				=> $recordCookieAktif[0]->no_hp,
+							        'aktor'     				=> $recordCookieAktif[0]->aktor,
+							        'institusi_or_universitas'  => $recordCookieAktif[0]->institusi_or_universitas,
+							        'nip_or_nim'  				=> $recordCookieAktif[0]->nip_or_nim,
+							        'status'  					=> $recordCookieAktif[0]->status,
+									'foto'						=> base_url().$recordCookieAktif[0]->foto
+							);
+					$this->session->set_userdata('loginSession',$newdata);
+					if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
+						alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('pesan-mahasiswa');
-						return true;
-					}elseif ($this->session->userdata('loginSession')['aktor'] == "pendidik") {
+					}elseif($recordCookieAktif[0]->aktor == 'pendidik') {
+						alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('pesan-pendidik');
-						return true;
-					}elseif ($this->session->userdata('loginSession')['aktor'] == "admin") {
+					}elseif($recordCookieAktif[0]->aktor == 'admin') {
+						alert('login','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('kelola-daftar-message');
-						return true;
 					}
 				}
 			}
