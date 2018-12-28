@@ -77,7 +77,7 @@
 						<form action="<?=base_url()?>login" method="POST">
 							<div class="form-group">
 							    <label for="email">Email</label>
-							    <input type="email" class="form-control" id="email" placeholder="Masukkan Email" name="email">
+							    <input type="email" class="form-control" id="email" placeholder="Masukkan Email" name="email" autofocus="">
 						  	</div>
 						  	<div class="form-group mb-10">
 							    <label for="password">Password</label>

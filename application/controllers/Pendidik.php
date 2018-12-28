@@ -10,16 +10,14 @@ class Pendidik extends CI_Controller {
 			alert('login','warning','Peringatan!',"Anda tidak memiliki hak akses sebagai pendidik. Atau mendaftar <a href='".base_url()."register'> disini</a> jika belum memiliki akun");
 			redirect('login');
 		}
+
 		// set array koasong untuk simpan notif2
 		$this->menu['notif_non_dm'] = array();
 		$this->menu['notif_dm'] = array();
-		
 		$this->menu['belum_dilihat_non_dm'] = array();
 		$this->menu['belum_dilihat_dm'] = array();
-		
 		$this->notifikasiMenuNonDm();
 		$this->notifikasiMenuDm();
-
 	}
 
 
@@ -103,6 +101,8 @@ class Pendidik extends CI_Controller {
 				$this->model->rawQuery("UPDATE direct_message SET is_open = 'sudah' WHERE dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."'");
 				
 			}
+			$this->model->rawQuery("UPDATE notif SET terbaca = 'sudah' WHERE konteks ='dm' AND (dari='".$this->input->post('id_komentator')."' AND untuk='".$this->session->userdata('loginSession')['id']."')");
+
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
 			
@@ -865,38 +865,28 @@ class Pendidik extends CI_Controller {
 	*/
 	function notifikasiMenuNonDm()
 	{
-		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
-		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
-
-		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
-		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
-		if ($notifBaruDanUntukSaya->num_rows() > 0) {
-
-		}*/
-
-
 		// baca notif untuk para mahasiswa dan dia seorang
-		$notif_pendidik = $this->model->rawQuery("
-			SELECT  
-					notif.id,
-					notif.konteks,
-					notif.id_konteks,
-					pengguna.nama AS dari, 
-					pengguna.foto, 
-					notif.untuk,
-					notif.datetime 
-			FROM notif 
-			LEFT JOIN pengguna ON pengguna.id = notif.dari
-			WHERE 
-					(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
-			OR 
-					untuk = 'pendidik' 
-			OR 
-					untuk = '".$this->session->userdata('loginSession')['id']."'
-			AND
-					konteks != 'dm'
-			ORDER BY datetime DESC
-		");
+			$notif_pendidik = $this->model->rawQuery("
+				SELECT  
+						notif.id,
+						notif.konteks,
+						notif.id_konteks,
+						pengguna.nama AS dari, 
+						pengguna.foto, 
+						notif.untuk,
+						notif.datetime 
+				FROM notif 
+				LEFT JOIN pengguna ON pengguna.id = notif.dari
+				WHERE 
+						(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
+				OR 
+						untuk = 'pendidik' 
+				OR 
+						untuk = '".$this->session->userdata('loginSession')['id']."'
+				AND
+						konteks != 'dm'
+				ORDER BY datetime DESC
+			");
 
 
 		if ($notif_pendidik->num_rows() != 0) {
@@ -936,37 +926,29 @@ class Pendidik extends CI_Controller {
 	*/
 	function notifikasiMenuDm()
 	{
-		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
-		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
-
-		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
-		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
-		if ($notifBaruDanUntukSaya->num_rows() > 0) {
-
-		}*/
-
-
 		// baca notif untuk para mahasiswa dan dia seorang
-		$notif_pendidik = $this->model->rawQuery("
-			SELECT  
-				notif.id,
-				notif.konteks,
-				notif.id_konteks,
-				pengguna.id AS id_dari, 
-				pengguna.foto, 
-				pengguna.nama AS dari, 
-				notif.untuk,
-				notif.datetime,
-				(SELECT COUNT(notif.id) FROM notif WHERE konteks = 'dm' AND untuk = 18 AND dari = pengguna.id) AS jumlah
-			FROM notif 
-			LEFT JOIN pengguna ON pengguna.id = notif.dari
-			WHERE 
-				untuk = '".$this->session->userdata('loginSession')['id']."'
-			AND
-				konteks = 'dm'
-			GROUP BY dari
-			ORDER BY datetime DESC;
-		");
+			$notif_pendidik = $this->model->rawQuery("
+				SELECT  
+					notif.id,
+					notif.konteks,
+					notif.id_konteks,
+					pengguna.id AS id_dari, 
+					pengguna.foto, 
+					pengguna.nama AS dari, 
+					notif.untuk,
+					MAX(notif.datetime)as datetime,
+					(SELECT GROUP_CONCAT(notif.id SEPARATOR ',') FROM notif WHERE konteks = 'dm' AND untuk = '".$this->session->userdata('loginSession')['id']."' AND dari = pengguna.id AND terbaca IS NULL) AS jumlah
+				FROM notif 
+				LEFT JOIN pengguna ON pengguna.id = notif.dari
+				WHERE 
+					untuk = '".$this->session->userdata('loginSession')['id']."'
+				AND
+					konteks = 'dm'
+				AND 
+					terbaca IS NULL
+				GROUP BY dari
+				ORDER BY datetime DESC;
+			");
 
 
 		if ($notif_pendidik->num_rows() != 0) {
@@ -981,11 +963,9 @@ class Pendidik extends CI_Controller {
 			// berlaku untuk notif mahasiswa atau notif untuk saya
 			foreach ($notif_pendidik as $key => $value) {
 				$notif_[$key] = $value;
-				if ($this->in_array_r($value->id,$notif_pendidik_terlihat)) {
-					$notif_[$key]->terlihat = 'sudah';
-				}else{
-					$notif_[$key]->terlihat = 'belum';
-					array_push($this->menu['belum_dilihat_dm'], $value->id);
+				if (!$this->in_array_r($value->id,$notif_pendidik_terlihat)) {
+					$value->jumlah = explode(",", $value->jumlah);
+					$this->menu['belum_dilihat_dm'] = $value->jumlah;
 				}
 			}
 
@@ -1002,18 +982,38 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-	* funtion untuk update notifikasi ke terlihat
+	* funtion untuk update notifikasi non DM ke terlihat
 	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
 	*/
-	function setTerlihat()
+	function setTerlihatNonDm()
 	{
 		if ($this->input->post() !== array()) {
-			if ($this->menu['belum_dilihat'] !== array()) {
+			if ($this->menu['belum_dilihat_non_dm'] !== array()) {
 				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
-				foreach ($this->menu['belum_dilihat'] as $key => $value) {
+				foreach ($this->menu['belum_dilihat_non_dm'] as $key => $value) {
 					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
 				}
-				$idToUpdate =  rtrim($idToUpdate,", ");				
+				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
+				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
+				echo "string";
+			}else{
+				echo "lllstring";
+			}
+		}
+	}
+
+	/*
+	* funtion untuk update notifikasi dm ke terlihat
+	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
+	*/
+	function setTerlihatDm()
+	{
+		if ($this->input->post() !== array()) {
+			if ($this->menu['belum_dilihat_dm'] !== array()) {
+				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
+				foreach ($this->menu['belum_dilihat_dm'] as $key => $value) {
+					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
+				}
 				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
 				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
 			}

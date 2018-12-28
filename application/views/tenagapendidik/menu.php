@@ -3,9 +3,15 @@
 	$( document ).ready(function() {
 		$("#<?=$active?>").attr("class","active");
 	});
-	function setToTerlihat() {
-		$.post( "<?=base_url()?>Pendidik/setTerlihat",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+	function setToTerlihatNonDm() {
+		$.post( "<?=base_url()?>Pendidik/setTerlihatNonDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
 			$('#jumlah_notif_non_dm').html('');
+		});
+	}
+
+	function setToTerlihatDm() {
+		$.post( "<?=base_url()?>Pendidik/setTerlihatDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif_dm').html('');
 		});
 	}
 	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
@@ -32,14 +38,14 @@
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
 								<li class="dropdown">
-									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatDm()">
 										<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
 									</a>
 									<ul class="dropdown-menu dropdown-alerts">
 										<?php foreach ($notif_dm as $key => $value) { ?>
 										<li>
 											<a href="#<?=$value->id_dari?>">
-												<div><em class="fa fa-envelope"></em> <?=$value->jumlah?> Pesan baru dari <?=$value->dari?>
+												<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
 													<span class="pull-right text-muted small"><?=time_elapsed_string($value->datetime)?></span>
 												</div>
 											</a>
@@ -51,7 +57,7 @@
 									</ul>
 								</li>
 								<li class="dropdown">
-									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihat()">
+									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatNonDm()">
 										<em class="fa fa-bell"></em><span class="label label-danger" id="jumlah_notif_non_dm"><?=(sizeof($belum_dilihat_non_dm) !== 0 ? sizeof($belum_dilihat_non_dm) : '')?></span>
 									</a>
 									<ul class="dropdown-menu dropdown-messages">

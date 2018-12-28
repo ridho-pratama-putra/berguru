@@ -302,7 +302,7 @@
 									<input type="hidden" class="form-control" name="permasalahan" value="<?=(isset($permasalahan[0]->id) ? $permasalahan[0]->id : '' )?>">
 									<input type="hidden" class="form-control" name="komentar" value="<?=(isset($komentar[0]->id) ? $komentar[0]->id : '' )?>">
 									<input type="hidden" class="form-control" name="untuk" value="<?=$komentator[0]->id?>">
-									<input type="text" class="form-control" name="message" placeholder="Tulis pesan...">
+									<input type="text"  autofocus="" class="form-control" name="message" placeholder="Tulis pesan...">
 									<div class="input-group-btn">
 										<button class="btn btn-green" type="submit">
 											<span class="hidden-xs hidden-sm">Kirim pesan</span>
