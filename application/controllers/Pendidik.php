@@ -69,8 +69,35 @@ class Pendidik extends CI_Controller {
 					// insert ke dm sebuah pertanyaan
 					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan','terpecahkan'=>$record['permasalahan'][0]->status));
 
-					// insert ke dm sebuah komentar permasalahan
-					$this->model->create('direct_message',array('teks'=>$record['komentar'][0]->teks,'dari'=>$id_komentator,'untuk'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'komentarpermasalahan','rating'=>$record['komentar'][0]->rating,));
+					// insert ke dm sebuah komentar permasalahan. jika permasalhan telah berstatus solved, maka hilangkan panel tanya permasalahan terpecahkan dengan mengisi kolom solver = bukan
+					if ($record['permasalahan'][0]->status == 'SOLVED') {
+						$this->model->create('direct_message',
+							array(
+								'teks'			=>$record['komentar'][0]->teks,
+								'dari'			=>$id_komentator,
+								'untuk'			=>$this->session->userdata('loginSession')['id'],
+								'permasalahan'	=>$this->input->post('id_permasalahan'),
+								'komentar'		=>$this->input->post('id_komentar'),
+								'tanggal'		=>date("Y-m-d H:i:s"),
+								'jenis_pesan'	=>'komentarpermasalahan',
+								'rating'		=>$record['komentar'][0]->rating,
+								'solver'		=>'bukan'
+							)
+						);
+					}elseif ($record['permasalahan'][0]->status == 'UNSOLVED') {
+						$this->model->create('direct_message',
+							array(
+								'teks'			=>$record['komentar'][0]->teks,
+								'dari'			=>$id_komentator,
+								'untuk'			=>$this->session->userdata('loginSession')['id'],
+								'permasalahan'	=>$this->input->post('id_permasalahan'),
+								'komentar'		=>$this->input->post('id_komentar'),
+								'tanggal'		=>date("Y-m-d H:i:s"),
+								'jenis_pesan'	=>'komentarpermasalahan',
+								'rating'		=>$record['komentar'][0]->rating
+							)
+						);
+					}
 				}
 			}
 			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
@@ -1072,6 +1099,9 @@ class Pendidik extends CI_Controller {
 		// update semua komentar di tabel komentar dan direct_message yang telah di set bahwa dia bukanlah solver. untuk menghilangkan panel tanya permsalahan terpecahkan atau tidak.
 		$this->model->update('komentar',array('permasalahan'=>$pertanyaan[0]->permasalahan),array('solver'=>'bukan'));
 		$this->model->update('direct_message',array('jenis_pesan'=>'komentarpermasalahan','permasalahan'=>$pertanyaan[0]->permasalahan,'id !='=>$d),array('solver'=>'bukan'));
+
+		// kalau nggk ngirim dm tapi langung ngirim solved
+		$this->model->rawQuery("UPDATE direct_message SET dibalas='sudah' WHERE (jenis_pesan = 'permasalahan' OR jenis_pesan = 'komentarpermasalahan') AND permasalahan = '".$pertanyaan[0]->permasalahan."' AND komentar = '".$pertanyaan[0]->komentar."'");
 
 		// kirim sebuah dm kalau permasalahan sudah terpecahkan
 		$this->model->create('direct_message',array(

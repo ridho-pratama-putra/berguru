@@ -279,6 +279,14 @@
 												</div>
 											<?php } ?>
 										</div>
+									<?php }elseif ($valueA->jenis_pesan == 'permasalahan_solved') { ?>
+										<span class="detpes-status">
+											Pertanyaan berstatus
+										</span>
+										<span class="btn btn-custom <?=($value[$key_is_solved]->terpecahkan == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?>">
+											<i class="fa fa-check-circle"></i>
+											<?=$value[$key_is_solved]->terpecahkan?>
+										</span>
 									<?php } ?>
 								<?php } ?>
 								<!-- STATUS PERTANYAAN GOES HERE -->

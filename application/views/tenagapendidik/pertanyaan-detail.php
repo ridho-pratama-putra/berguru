@@ -116,7 +116,9 @@
 												<div class="col-sm-6 col-md-4 col-lg-8 text-right">
 													<span class="text-muted">Review Jawaban</span>
 													<div class="rate-input" id="<?=$value->id?>" data-score="<?=$value->rating?>" onclick="submitRating(<?=$value->id?>,<?=$pertanyaan[0]->id?>)"></div>
-													<a href="#" class="btn btn-custom btn-plonk-green" onclick="openNewChat(<?=$value->id_komentator?>,<?=$pertanyaan[0]->id?>,<?=$value->id?>)">Kirim Pesan</a>
+													<?php if ($pertanyaan[0]->status == 'UNSOLVED') { ?>
+														<a href="#" class="btn btn-custom btn-plonk-green" onclick="openNewChat(<?=$value->id_komentator?>,<?=$pertanyaan[0]->id?>,<?=$value->id?>)">Kirim Pesan</a>
+													<?php } ?>
 												</div>
 											</div>
 										</div>
