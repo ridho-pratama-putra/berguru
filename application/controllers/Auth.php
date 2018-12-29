@@ -141,9 +141,10 @@ class Auth extends CI_Controller {
 						foreach ($explode as $key => $value) {
 							$temp_alias .= $value." ";
 							if (strlen($temp_alias) <= 20) {
-								$alias .= $value. " ";
-							}else{
-								break;
+								$alias .= $valueA;
+								if ($keyA !== (sizeof($explode)-1)) {
+									$alias .=" ";
+								}
 							}
 						}
 						if (strlen($alias) < 20) {

@@ -156,7 +156,7 @@ class Pendidik extends CI_Controller {
 											) AS teks,
 											(
 												SELECT MAX(tanggal) FROM direct_message
-												WHERE dari = fr
+												WHERE (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].") OR (dari=".$this->session->userdata('loginSession')['id']." AND untuk = fr)
 											) AS tanggal,
 											(
 												SELECT COUNT(id) FROM direct_message
@@ -1053,21 +1053,38 @@ class Pendidik extends CI_Controller {
 	*/
 	function setStatusPertanyaanSolved($d)
 	{
+
 		// baca informasi detil sebuah koemtar permalashan untuk acuan update ke tabel yang berrelasi
-		$pertanyaan = $this->model->readCol('direct_message',array('id'=>$d),array('permasalahan','dari','komentar','rating'))->result();
-
+		$pertanyaan = $this->model->read('direct_message',array('id'=>$d),array('id','permasalahan','dari','komentar','rating'))->result();
+		
 		// update permasalahan menjadi solve
-		$this->model->update('permasalahan',array('id'=>$pertanyaan[0]->id),array('status'=>'SOLVED'));
+		$this->model->update('permasalahan',array('id'=>$pertanyaan[0]->permasalahan),array('status'=>'SOLVED'));
+		
+		// update sebuah komentar menjadi solver dari sebuah permasalahan.
+		$this->model->update('komentar',array('id'=>$pertanyaan[0]->komentar),array('solver'=>$pertanyaan[0]->permasalahan));
+		
+		// update semua direct_message bertipe permasalahan dengan id tersebut. ubah field terpecahkan menjadi SOLVED
+		$this->model->update('direct_message',array('jenis_pesan'=>'permasalahan','permasalahan'=>$pertanyaan[0]->permasalahan),array('terpecahkan'=>'SOLVED'));
 
-		// update sebuah komentar menjadi solver dari sebuah permasalahan. satu permasalahan bisa punya banyak komentar solver
-		$this->model->update('komentar',array('id'=>$pertanyaan[0]->komentar),array('solver'=>$pertanyaan[0]->id));
+		// update solver di tabel direct_message where id=id. update kolom solver jadi id permasalahan.
+		$this->model->update('direct_message',array('id'=>$d),array('solver'=>$pertanyaan[0]->permasalahan));
 
-		// update solver di tabel pada dm where id=id. update kolom solver jadi id permaslaahan.
-		$this->model->update('direct_message',array('id'=>$d),array('solver'=>$pertanyaan[0]->id));
+		// update semua komentar di tabel komentar dan direct_message yang telah di set bahwa dia bukanlah solver. untuk menghilangkan panel tanya permsalahan terpecahkan atau tidak.
+		$this->model->update('komentar',array('permasalahan'=>$pertanyaan[0]->permasalahan),array('solver'=>'bukan'));
+		$this->model->update('direct_message',array('jenis_pesan'=>'komentarpermasalahan','permasalahan'=>$pertanyaan[0]->permasalahan,'id !='=>$d),array('solver'=>'bukan'));
 
 		// kirim sebuah dm kalau permasalahan sudah terpecahkan
+		$this->model->create('direct_message',array(
+													'jenis_pesan'	=>'permasalahan_solved',
+													'dari'			=>$this->session->userdata('loginSession')['id'],
+													'untuk'			=>$pertanyaan[0]->dari,
+													'permasalahan'	=>$pertanyaan[0]->permasalahan,
+													'komentar'		=>$pertanyaan[0]->komentar,
+													'tanggal'		=>date("Y-m-d")
+												)
+		);
 
-		// redirect dengan set flashdata
+		// redirect dengan set flashdata untuk buka halaman ber dm ria dengan seorang komentator
 		$data = array('id_komentator'=>$pertanyaan[0]->dari,'permasalahan_terpecahkan'=>1);
 		$this->session->set_flashdata('id_komentator',$data);
 		redirect('pesan-pendidik');

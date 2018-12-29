@@ -13,8 +13,6 @@ foreach ($pengguna as $key => $value) {
 			if ($keyA !== (sizeof($explode)-1)) {
 				$alias .=" ";
 			}
-		}else{
-			break;
 		}
 	}
 	if (strlen($nama) !== strlen($alias) AND strlen($alias) < 20) {

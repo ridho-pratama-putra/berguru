@@ -94,7 +94,7 @@
 								  <span class="check-icon"><i class="fa fa-check"></i></span>
 								</label> 
 							  	<br>
-					  			<button type="submit" class="form-control btn btn-login btn-regis">Simpan & Lanjut Pilih Profesi</button>
+					  			<button type="submit" class="form-control btn btn-login btn-regis">Simpan</button>
 							</div>
 						</form>
 					</div>

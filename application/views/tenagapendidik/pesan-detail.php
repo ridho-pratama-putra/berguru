@@ -16,7 +16,7 @@
 		var templates = {
 			prefix: "",
 			suffix: "",
-			seconds: "recently",
+			seconds: "rcntly",
 			minute: "1m",
 			minutes: "%dm",
 			hour: "1h",
@@ -230,7 +230,7 @@
 														</div>
 														<?php }?>
 													</div>
-													<?php if($valueA->solver !== 'bukan'){ ?>
+													<?php if($valueA->solver == NULL){ ?>
 													<small class="text-muted">Permasalahan terpecahkan?</small>
 													<div class="row">
 														<div class="col-md-8">

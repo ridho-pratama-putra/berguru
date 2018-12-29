@@ -78,7 +78,7 @@
 						<form action="<?=base_url()?>register" method="POST">
 							<div class="form-group">
 							    <label for="email">Email Utama</label>
-							    <input type="email" class="form-control" id="email" placeholder="Masukkan Email anda" name="email" value="<?php echo set_value('email'); ?>" required="">
+							    <input type="email" class="form-control" id="email" placeholder="Masukkan Email anda" name="email" value="<?php echo set_value('email'); ?>" required="" autofocus="">
 						  	</div>
 						  	<div class="form-group">
 							    <label for="nama">Nama Lengkap</label>
