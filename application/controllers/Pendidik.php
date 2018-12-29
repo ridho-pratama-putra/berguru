@@ -29,7 +29,7 @@ class Pendidik extends CI_Controller {
 		// echo "<pre>";
 		// var_dump($this->input->post());
 		// die();
-		$header['title'] 		= 'Pendidik - Pesan';
+		$header['title'] 			= 'Pendidik - Pesan';
 		$this->menu['breadcrumb'] 	= 'Pesan';
 		$this->menu['active'] 		= 'pesan';
 		$record = array();
@@ -46,7 +46,6 @@ class Pendidik extends CI_Controller {
 				- id_permasalahan
 				- id_komentar
 		*/
-
 		if ($this->input->post() !== array() OR $this->session->flashdata("id_komentator") !== NULL) {
 
 			// dibagian if adalah untuk redirect setelah submitReply, yang bagian else untuk yang dari klik sebuah chat dengan mahasiswa.  bagian if menggunakan flashdata karena kesulitan post sambil redirect
@@ -55,10 +54,8 @@ class Pendidik extends CI_Controller {
 			}else{
 				$id_komentator = $this->input->post('id_komentator');
 			}
-			
 			// jika dari tombol kirim pesan pada halaman pertanyaan detail (inisialisasi dm / mau melakukan dm terkait komentar seorang mahasaiswa)
 			if ($this->input->post('id_permasalahan') !== NULL AND $this->input->post('id_komentar') !== NULL) {
-
 				// cek apakah direct message dgn tipe permasalahan sudah d inisialisasi. untuk mecegah double inisialisasi
 				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
 				
@@ -100,6 +97,7 @@ class Pendidik extends CI_Controller {
 					}
 				}
 			}
+
 			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
@@ -128,11 +126,9 @@ class Pendidik extends CI_Controller {
 				$update = $this->model->rawQuery("
 					UPDATE 
 							direct_message 
-					SET is_open = 'sudah' 
+					SET is_open = 'sudah'
 					WHERE 
-						(dari='".$this->session->userdata('loginSession')['id']."' AND untuk='".$id_komentator."') 
-					OR 
-						(untuk='".$this->session->userdata('loginSession')['id']."' AND dari='".$id_komentator."')"
+						untuk='".$this->session->userdata('loginSession')['id']."' AND dari='".$id_komentator."'"
 				);
 			}
 			$this->model->rawQuery("UPDATE notif SET terbaca = 'sudah' WHERE konteks ='dm' AND (dari='".$this->input->post('id_komentator')."' AND untuk='".$this->session->userdata('loginSession')['id']."')");
@@ -140,11 +136,6 @@ class Pendidik extends CI_Controller {
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
 			
-			// echo "<pre>";
-			// var_dump($record);
-			// // var_dump($this->input->post());
-			// echo "</pre>";
-
 			// jika asalnya dari redirect setelah pertanyaan permaslaahan terpocahkan? maka set suah alert
 			if (isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 1) {
 				alert('alert','success','Barhasil!','Status permasalahan telah diubah menjadi SOLVED!');
@@ -975,7 +966,7 @@ class Pendidik extends CI_Controller {
 				FROM notif 
 				LEFT JOIN pengguna ON pengguna.id = notif.dari
 				WHERE 
-					untuk = '".$this->session->userdata('loginSession')['id']."'
+					(untuk = '".$this->session->userdata('loginSession')['id']."' OR untuk = 'pendidik')
 				AND
 					konteks = 'dm'
 				AND 
@@ -1097,7 +1088,7 @@ class Pendidik extends CI_Controller {
 		$this->model->update('direct_message',array('id'=>$d),array('solver'=>$pertanyaan[0]->permasalahan));
 
 		// update semua komentar di tabel komentar dan direct_message yang telah di set bahwa dia bukanlah solver. untuk menghilangkan panel tanya permsalahan terpecahkan atau tidak.
-		$this->model->update('komentar',array('permasalahan'=>$pertanyaan[0]->permasalahan),array('solver'=>'bukan'));
+		$this->model->update('komentar',array('permasalahan'=>$pertanyaan[0]->permasalahan,'id !='=>$pertanyaan[0]->komentar),array('solver'=>'bukan'));
 		$this->model->update('direct_message',array('jenis_pesan'=>'komentarpermasalahan','permasalahan'=>$pertanyaan[0]->permasalahan,'id !='=>$d),array('solver'=>'bukan'));
 
 		// kalau nggk ngirim dm tapi langung ngirim solved
@@ -1144,6 +1135,4 @@ class Pendidik extends CI_Controller {
 	{
 		$this->load->view('tenagapendidik/playground');
 	}
-
-
 }

@@ -195,8 +195,7 @@
 									<div class="dchat-htime"><?=($key == date('Y-m-d') ? 'Hari Ini': tgl_indo(substr($key, 0, 10))) ?></div>
 								</div>
 								<?php foreach ($value as $keyA => $valueA) { ?>
-									<?php 
-									if ($valueA->jenis_pesan == 'permasalahan') { 
+									<?php if ($valueA->jenis_pesan == 'permasalahan') { 
 
 										// variabel untuk menyimpan pada key berapa sebuah pertanyaan terletak. karena komentardm dan komentar permasalahan juga punya terpecahkan (karena 1 tabel, dibedakan pada jenis_pesan), sehingga harus get key nya biar tepat sasaran ke jenis_pesan permasalahannya bukan di komentardm atau komentarpermasalahan
 										$key_is_solved = $keyA;
@@ -208,8 +207,7 @@
 											<h4>Permasalahan Anda</h4>
 											<?=$valueA->teks?>
 										</div>
-									<?php 
-									}elseif ($valueA->jenis_pesan == 'komentarpermasalahan') { ?>
+									<?php }elseif ($valueA->jenis_pesan == 'komentarpermasalahan') { ?>
 										<div class="detpes-chats">
 											
 											<div class="dchat dchat-keluar">
@@ -246,8 +244,7 @@
 												</div>
 											</div>
 										</div>
-									<?php 
-									}elseif($valueA->jenis_pesan == 'komentardm'){ ?>
+									<?php }elseif($valueA->jenis_pesan == 'komentardm'){ ?>
 										<div class="detpes-chats">
 											<?php if ($valueA->dari == $komentator[0]->id) { ?>
 												<div class="dchat dchat-keluar">
@@ -289,18 +286,7 @@
 										</span>
 									<?php } ?>
 								<?php } ?>
-								<!-- STATUS PERTANYAAN GOES HERE -->
-								<!-- <span class="detpes-status">
-									Pertanyaan berstatus
-								</span>
-								<span class="btn btn-custom <?=($value[$key_is_solved]->terpecahkan == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?>">
-									<i class="fa fa-check-circle"></i>
-									<?=$value[$key_is_solved]->terpecahkan?>
-								</span> -->
 							<?php } ?>
-
-
-
 						</div>
 
 						<div class="detpes-write">

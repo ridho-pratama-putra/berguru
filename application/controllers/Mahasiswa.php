@@ -11,9 +11,12 @@ class Mahasiswa extends CI_Controller {
 			redirect('login');
 		}
 		// set array koasong untuk simpan notif2
-		$this->menu['notif'] = array();
-		$this->menu['belum_dilihat'] = array();
-		$this->notifikasiMenu();
+		$this->menu['notif_non_dm'] = array();
+		$this->menu['notif_dm'] = array();
+		$this->menu['belum_dilihat_non_dm'] = array();
+		$this->menu['belum_dilihat_dm'] = [];
+		$this->notifikasiMenuNonDm();
+		$this->notifikasiMenuDm();
 	}
 	
 	/*
@@ -108,7 +111,7 @@ class Mahasiswa extends CI_Controller {
 	function pesan()
 	{
 
-		$header['title'] 		= 'Mahasiswa - Pesan';
+		$header['title'] 			= 'Mahasiswa - Pesan';
 		$this->menu['breadcrumb'] 	= 'Pesan';
 		$this->menu['active'] 		= 'pesan';
 		$record = array();
@@ -137,37 +140,97 @@ class Mahasiswa extends CI_Controller {
 			
 			// jika dari tombol kirim pesan pada halaman pertanyaan detail (inisialisasi dm / mau melakukan dm terkait komentar seorang mahasaiswa)
 			if ($this->input->post('id_permasalahan') !== NULL AND $this->input->post('id_komentar') !== NULL) {
+
 				// cek apakah direct message dgn tipe permasalahan sudah d inisialisasi. untuk mecegah double inisialisasi
 				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
 				
-				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal'))->result();
-				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal'))->result();
+				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal','status'))->result();
+				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal','rating'))->result();
 				if ($bacaDirectMessage->num_rows() == 0) {
-										
-					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan'));
-
-					$this->model->create('direct_message',array('teks'=>$record['komentar'][0]->teks,'dari'=>$id_komentator,'untuk'=>$this->session->userdata('loginSession')['id'],'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'komentarpermasalahan'));
 					
+					// insert ke dm sebuah pertanyaan
+					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan','terpecahkan'=>$record['permasalahan'][0]->status));
+
+					// insert ke dm sebuah komentar permasalahan. jika permasalhan telah berstatus solved, maka hilangkan panel tanya permasalahan terpecahkan dengan mengisi kolom solver = bukan
+					if ($record['permasalahan'][0]->status == 'SOLVED') {
+						$this->model->create('direct_message',
+							array(
+								'teks'			=>$record['komentar'][0]->teks,
+								'dari'			=>$id_komentator,
+								'untuk'			=>$this->session->userdata('loginSession')['id'],
+								'permasalahan'	=>$this->input->post('id_permasalahan'),
+								'komentar'		=>$this->input->post('id_komentar'),
+								'tanggal'		=>date("Y-m-d H:i:s"),
+								'jenis_pesan'	=>'komentarpermasalahan',
+								'rating'		=>$record['komentar'][0]->rating,
+								'solver'		=>'bukan'
+							)
+						);
+					}elseif ($record['permasalahan'][0]->status == 'UNSOLVED') {
+						$this->model->create('direct_message',
+							array(
+								'teks'			=>$record['komentar'][0]->teks,
+								'dari'			=>$id_komentator,
+								'untuk'			=>$this->session->userdata('loginSession')['id'],
+								'permasalahan'	=>$this->input->post('id_permasalahan'),
+								'komentar'		=>$this->input->post('id_komentar'),
+								'tanggal'		=>date("Y-m-d H:i:s"),
+								'jenis_pesan'	=>'komentarpermasalahan',
+								'rating'		=>$record['komentar'][0]->rating
+							)
+						);
+					}
 				}
 			}
-			
-			
 			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
 			
 			$record['chat'] = array();
+
+			// $temp_flag untuk track posisi komentar mahasiswa yang terakhir
+			$temp_flag = 0;
+
+			// pemisahan chat setiap tanggal
 			foreach ($chat as $key => $value) {
-				$temp = substr($value->tanggal, 0, 10);
-				if (!isset($record['chat'][$temp])) {
-					$record['chat'][$temp] = array();
+				
+				// $temp digunakan untuk membuat indeks pada array
+				$temp_indeks = substr($value->tanggal, 0, 10);
+
+				// lupa
+				if (!isset($record['chat'][$temp_indeks])) {
+					$record['chat'][$temp_indeks] = array();
 				}
-				array_push($record['chat'][$temp], $chat[$key]);
+
+				// push ke record untuk dikirim ke halaman pesan
+				array_push($record['chat'][$temp_indeks], $chat[$key]);
+
+				// set pesan yang belum dibaca ke sudah dibaca
+				$update = $this->model->rawQuery("
+					UPDATE 
+							direct_message 
+					SET is_open = 'sudah' 
+					WHERE 
+						untuk='".$this->session->userdata('loginSession')['id']."' AND dari='".$id_komentator."'"
+				);
 			}
-			
+			$this->model->rawQuery("UPDATE notif SET terbaca = 'sudah' WHERE konteks ='dm' AND (dari='".$this->input->post('id_komentator')."' AND untuk='".$this->session->userdata('loginSession')['id']."')");
+
 			// get daftar mahasiswa yang telah dicahat
 			$record['to']	=  $this->getInitializedDm();
+			
+			// echo "<pre>";
+			// var_dump($record);
+			// // var_dump($this->input->post());
+			// echo "</pre>";
+
+			// jika asalnya dari redirect setelah pertanyaan permaslaahan terpocahkan? maka set suah alert
+			if (isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 1) {
+				alert('alert','success','Barhasil!','Status permasalahan telah diubah menjadi SOLVED!');
+			}elseif(isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 0){
+				alert('alert','success','Terimakasih!','Feedback anda telah tersimpan');
+			}
 
 			$this->load->view('mahasiswa/pesan-detail',$record);
 		}else{
@@ -187,16 +250,35 @@ class Mahasiswa extends CI_Controller {
 	function getInitializedDm()
 	{
 		return $this->model->rawQuery("
-													SELECT DISTINCT
-														pengguna.id,
-														pengguna.nama,
-														pengguna.foto
-														-- ,direct_message.tanggal 
-													FROM 
-														direct_message
-													LEFT JOIN pengguna ON direct_message.dari = pengguna.id
-													WHERE untuk = '".$this->session->userdata('loginSession')['id']."'
-												")->result();
+										SELECT DISTINCT dari AS fr,
+											(
+												SELECT teks FROM direct_message
+												WHERE id = 
+													( 
+													SELECT MAX(id)
+													FROM direct_message 
+													WHERE 
+														(dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
+													)
+											) AS teks,
+											(
+												SELECT MAX(tanggal) FROM direct_message
+												WHERE (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].") OR (dari=".$this->session->userdata('loginSession')['id']." AND untuk = fr)
+											) AS tanggal,
+											(
+												SELECT COUNT(id) FROM direct_message
+												WHERE is_open IS NULL 
+												AND ((dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id']."))
+											) AS belum_dibaca,
+											pengguna.id,
+											pengguna.alias,
+											pengguna.foto
+										FROM 
+											direct_message
+										LEFT JOIN pengguna ON direct_message.dari = pengguna.id
+										WHERE untuk = ".$this->session->userdata('loginSession')['id']."
+										ORDER BY tanggal DESC
+									")->result();
 	}
 
 
@@ -205,12 +287,13 @@ class Mahasiswa extends CI_Controller {
 	*/
 	function deleteInitializedDm()
 	{
-			return $this->model->rawQuery("
-											DELETE FROM direct_message 
-											WHERE 
-												(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
-												AND 
-												(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL");
+		return $this->model->rawQuery("
+										DELETE FROM direct_message 
+										WHERE 
+											(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
+											AND 
+											(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL"
+									);
 	}
 
 	/*
@@ -267,7 +350,6 @@ class Mahasiswa extends CI_Controller {
 		$this->load->view('mahasiswa/menu',$this->menu);
 		$this->load->view('mahasiswa/profil',$record);
 		$this->load->view('statis/footer');
-
 	}
 
 	/*
@@ -372,40 +454,32 @@ class Mahasiswa extends CI_Controller {
 
 
 	/*
-	* funtion untuk menampilkan icon angka pada icon amplop
+	* funtion untuk menampilkan icon angka pada icon lonceng
 	*/
-	function notifikasiMenu()
+	function notifikasiMenuNonDm()
 	{
-		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
-		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
-
-		// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
-		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
-		if ($notifBaruDanUntukSaya->num_rows() > 0) {
-
-		}*/
-
-
 		// baca notif untuk para mahasiswa dan dia seorang
-		$notif_mahasiswa = $this->model->rawQuery("
-			SELECT  
-					notif.id,
-					notif.konteks,
-					notif.id_konteks,
-					pengguna.nama AS dari, 
-					pengguna.foto , 
-					notif.untuk,
-					notif.datetime 
-			FROM notif 
-			LEFT JOIN pengguna ON pengguna.id = notif.dari
-			WHERE 
-					(untuk='semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
-			OR 
-					untuk='mahasiswa' 
-			OR 
-					untuk='".$this->session->userdata('loginSession')['id']."'
-			ORDER BY datetime DESC
-		");
+			$notif_mahasiswa = $this->model->rawQuery("
+				SELECT  
+						notif.id,
+						notif.konteks,
+						notif.id_konteks,
+						pengguna.nama AS dari, 
+						pengguna.foto, 
+						notif.untuk,
+						notif.datetime 
+				FROM notif 
+				LEFT JOIN pengguna ON pengguna.id = notif.dari
+				WHERE 
+						(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
+				OR 
+						untuk = 'mahasiswa' 
+				OR 
+						untuk = '".$this->session->userdata('loginSession')['id']."'
+				AND
+						konteks != 'dm'
+				ORDER BY datetime DESC
+			");
 
 
 		if ($notif_mahasiswa->num_rows() != 0) {
@@ -424,7 +498,7 @@ class Mahasiswa extends CI_Controller {
 					$notif_[$key]->terlihat = 'sudah';
 				}else{
 					$notif_[$key]->terlihat = 'belum';
-					array_push($this->menu['belum_dilihat'], $value->id);
+					array_push($this->menu['belum_dilihat_non_dm'], $value->id);
 				}
 			}
 
@@ -436,23 +510,105 @@ class Mahasiswa extends CI_Controller {
 
 			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
 			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
-			$this->menu['notif'] = array_slice($notif_, 0, 7);
+			$this->menu['notif_non_dm'] = array_slice($notif_, 0, 7);
 		}
 	}
 
 	/*
-	* funtion untuk update notifikasi ke terlihat
+	* funtion untuk menampilkan icon angka pada icon lonceng
+	*/
+	function notifikasiMenuDm()
+	{
+		// baca notif untuk para mahasiswa dan dia seorang
+			$notif_mahasiswa = $this->model->rawQuery("
+				SELECT  
+					notif.id,
+					notif.konteks,
+					notif.id_konteks,
+					pengguna.id AS id_dari, 
+					pengguna.foto, 
+					pengguna.nama AS dari, 
+					notif.untuk,
+					MAX(notif.datetime)as datetime,
+					(SELECT GROUP_CONCAT(notif.id SEPARATOR ',') FROM notif WHERE konteks = 'dm' AND untuk = '".$this->session->userdata('loginSession')['id']."' AND dari = pengguna.id AND terbaca IS NULL) AS jumlah
+				FROM notif 
+				LEFT JOIN pengguna ON pengguna.id = notif.dari
+				WHERE 
+					(untuk = '".$this->session->userdata('loginSession')['id']."' OR untuk = 'mahasiswa')
+				AND
+					konteks = 'dm'
+				AND 
+					terbaca IS NULL
+				GROUP BY dari
+				ORDER BY datetime DESC;
+			");
+
+
+		if ($notif_mahasiswa->num_rows() != 0) {
+			$notif_mahasiswa = $notif_mahasiswa->result();
+			
+			// baca notif yang untuk para mahasiswa yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para mahasiswa
+			$notif_mahasiswa_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_flag WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
+
+			// array matang untuk dikirim ke menu
+			$notif_ = array();
+
+			// berlaku untuk notif mahasiswa atau notif untuk saya
+			$belum_dilihat_dm = array();
+			foreach ($notif_mahasiswa as $key => $value) {
+				$notif_[$key] = $value;
+				$value->jumlah = explode(",", $value->jumlah);
+				if ($this->in_array_r($value->id,$notif_mahasiswa_terlihat)) {
+
+				}else{
+					foreach ($value->jumlah as $keyA => $valueA) {
+						array_push($belum_dilihat_dm, $valueA);
+					}
+					// $this->menu['belum_dilihat_dm'] = $value->jumlah;
+				}
+			}
+			$this->menu['belum_dilihat_dm'] = $belum_dilihat_dm;
+
+			// insert max notif id per user
+			$runQuery = $this->model->rawQuery("UPDATE max_notif_id_per_user SET max_notif_id =".$notif_mahasiswa[0]->id." WHERE id_pengguna='".$this->session->userdata('loginSession')['id']."'");
+			// var_dump($runQuery);die();
+
+			unset($notif_mahasiswa);unset($notif_mahasiswa_terlihat);unset($notif_mahasiswa_terbaca);
+
+			// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
+			// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
+			$this->menu['notif_dm'] = array_slice($notif_, 0, 7);
+		}
+	}
+
+	/*
+	* funtion untuk update notifikasi non DM ke terlihat
 	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
 	*/
-	function setTerlihat()
+	function setTerlihatNonDm()
 	{
 		if ($this->input->post() !== array()) {
-			if ($this->menu['belum_dilihat'] !== array()) {
+			$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
+			foreach ($this->menu['belum_dilihat_non_dm'] as $key => $value) {
+				$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
+			}
+			$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
+			$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
+		}
+	}
+
+	/*
+	* funtion untuk update notifikasi dm ke terlihat
+	* insert batch ke tabel notif_per_user untuk memasukkan bahwa specified user sudah lihat notif atau belum
+	*/
+	function setTerlihatDm()
+	{
+		if ($this->input->post() !== array()) {
+			if ($this->menu['belum_dilihat_dm'] !== array()) {
 				$updateToNotifMhsPerUser 	= "INSERT INTO notif_flag VALUES ";
-				foreach ($this->menu['belum_dilihat'] as $key => $value) {
+				foreach ($this->menu['belum_dilihat_dm'] as $key => $value) {
 					$updateToNotifMhsPerUser.= "(NULL,'".$this->session->userdata('loginSession')['id']."','".$value."','1','0'),";
 				}
-				$idToUpdate =  rtrim($idToUpdate,", ");				
 				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
 				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
 			}

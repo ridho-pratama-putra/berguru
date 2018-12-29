@@ -1,8 +1,10 @@
 <script type="text/javascript">
-	<!-- SCRIPT UNTUK ADD ACTIVE -->
+	/*SCRIPT UNTUK ADD ACTIVE*/
 	$( document ).ready(function() {
 		$("#<?=$active?>").attr("class","active");
 	});
+	/*END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU*/
+
 	function setToTerlihatNonDm() {
 		$.post( "<?=base_url()?>Pendidik/setTerlihatNonDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
 			$('#jumlah_notif_non_dm').html('');
@@ -14,7 +16,6 @@
 			$('#jumlah_notif_dm').html('');
 		});
 	}
-	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
 </script>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
@@ -42,7 +43,9 @@
 										<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
 									</a>
 									<ul class="dropdown-menu dropdown-alerts">
-										<?php foreach ($notif_dm as $key => $value) { ?>
+										<?php  
+										if ($notif_dm !== array()) {
+										foreach ($notif_dm as $key => $value) { ?>
 										<li>
 											<a href="#<?=$value->id_dari?>">
 												<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
@@ -50,9 +53,15 @@
 												</div>
 											</a>
 										</li>
-										<?php if ($key < sizeof($notif_dm)-1) { ?>
+											<?php if ($key < sizeof($notif_dm)-1) { ?>
 											<li class="divider"></li>
-										<?php }?>
+											<?php }?>
+										<?php } }else{ ?>
+											<li>
+												<div class="all-button"><a href="#">
+													<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+												</a></div>
+											</li>
 										<?php } ?>
 									</ul>
 								</li>
@@ -92,7 +101,7 @@
 											</a></div>
 										</li>
 										<?php }else{ ?>
-											<li>
+										<li>
 											<div class="all-button"><a href="#">
 												<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
 											</a></div>
@@ -154,10 +163,10 @@
 			<a href="index.html"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a>
 		</li>
 		<li class="" id="pertanyaanSaya">
-			<a href="<?=base_url()?>pertanyaan-pendidik" ><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>
+			<a href="<?=base_url()?>pertanyaan-pendidik"><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>
 		</li>
 		<li class="" id="pesan">
-			<a href="<?=base_url()?>pesan-pendidik" ><em class="fa fa-comments">&nbsp;</em> Pesan</a>
+			<a href="<?=base_url()?>pesan-pendidik"><em class="fa fa-comments">&nbsp;</em> Pesan</a>
 		</li>
 		<li class="" id="materi">
 			<a href="<?=base_url()?>materi-pendidik"><em class="fa fa-layer-group">&nbsp;</em> Materi</a>

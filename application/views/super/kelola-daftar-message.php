@@ -68,7 +68,9 @@
 				<li class="active">Kelola Daftar Message</li>
 			</ol>
 		</div><!--/.row-->
-
+		<div class="main-container mr-1">
+			<?=$this->session->flashdata('alert')?>
+		</div>
 		<div class="panel panel-plain main-container">
 			<div class="panel-heading">
 				<div class="row">

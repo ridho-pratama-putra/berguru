@@ -53,7 +53,7 @@ class Auth extends CI_Controller {
 								redirect('kelola-pengguna');
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "mahasiswa") {
-								alert('login','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
+								alert('alert','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
 								redirect('dashboard-mahasiswa');
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "pendidik") {
@@ -96,13 +96,13 @@ class Auth extends CI_Controller {
 							);
 					$this->session->set_userdata('loginSession',$newdata);
 					if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
-						alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+						alert('alert','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('pesan-mahasiswa');
 					}elseif($recordCookieAktif[0]->aktor == 'pendidik') {
-						alert('login','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+						alert('alert','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('pesan-pendidik');
 					}elseif($recordCookieAktif[0]->aktor == 'admin') {
-						alert('login','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
+						alert('alert','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('kelola-daftar-message');
 					}
 				}
