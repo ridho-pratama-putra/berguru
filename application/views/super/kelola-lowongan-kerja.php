@@ -1,8 +1,16 @@
 <script type="text/javascript">
+	$( document ).ready(function() {
+		var table = $('#tabel-lowongan').DataTable(); 
+		$('#cari-lowongan').on( 'keyup', function () {
+		    table.search( this.value ).draw();
+		} );
+	});
 
-	// function untuk validasi lowongan
-	// param1 id
-	// param2 state origin
+	/*
+	* function untuk validasi lowongan
+	* param1 id
+	* param2 state origin
+	*/
 	function valid(argument) {
 		$.post("<?=base_url()?>submit-validasi-lowongan",{id : argument},function (html) {			
 			$("#notif").html(html);
@@ -34,7 +42,7 @@
 					<form class="" action="index.html" method="post">
 						<div class="form-group">
 							<div class="input-group plain-group">
-								<input type="text" name="" value="" placeholder="Cari Pekerjaan" class="form-control dt-search">
+								<input type="text" name="" value="" placeholder="Cari Pekerjaan" class="form-control dt-search" id="cari-lowongan">
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
 								</span>
@@ -49,7 +57,7 @@
 		</div>
 		<div class="panel-body">
 			<div class="table-responsive">
-				<table class="table datatable">
+				<table class="table datatable" id="tabel-lowongan">
 					<thead>
 						<tr>
 							<th>Nama Lowongan</th>

@@ -80,6 +80,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 /*****************************************************BEGIN ADMIN*****************************************************/
 	$route['profil-admin']				= 'Admin/profilAdmin/';
+	$route['submit-edit-profil-admin']			= 'Admin/submitEditProfil';
 
 
 	$route['kelola-daftar-message']			= 'Admin/kelolaDaftarMessage/';

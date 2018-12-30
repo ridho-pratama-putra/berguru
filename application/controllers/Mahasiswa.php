@@ -389,7 +389,7 @@ class Mahasiswa extends CI_Controller {
 						return true;
 					}else{
 						// masukkan password baru ke array untuk bahan eksekusi
-						$queryUpdate['password'] = md5($this->input->post('password'));
+						$queryUpdate['password'] = md5($this->input->post('password_'));
 					}
 				}
 			}
@@ -425,6 +425,23 @@ class Mahasiswa extends CI_Controller {
 				$runUpdate = json_decode($runUpdate);
 
 				if ($runUpdate->status) {
+					if ($queryUpdate['password'] != array()) {
+						redirect('logout');
+					}
+					$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
+					$newdata = array(
+							        'id'     					=> $recordPengguna[0]->id,
+							        'nama'  					=> $recordPengguna[0]->nama,
+							        'email'     				=> $recordPengguna[0]->email,
+							        'no_hp'     				=> $recordPengguna[0]->no_hp,
+							        'aktor'     				=> $recordPengguna[0]->aktor,
+							        'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
+							        'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
+							        'status'  					=> $recordPengguna[0]->status,
+									'foto'						=> base_url().$recordPengguna[0]->foto
+					);
+					$this->session->set_userdata('loginSession',$newdata);
+
 					alert('editProfil','success','Barhasil!','Profil telah di perbarui di database. Saat ini data yang ditampilkan belum berubah, anda harus login kembali untuk melihat perubahan.');
 					redirect('edit-profil-mahasiswa');
 				}else{

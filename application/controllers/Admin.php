@@ -88,26 +88,44 @@ class Admin extends CI_Controller {
 		$this->menu['breadcrumb'] = 'Kelola Komentar';
 		$this->menu['active'] 	= 'komentar';
 		$record['kelola_komentar'] = $this->model->rawQuery('
-			SELECT 
-					komentar.id,
-					komentar.teks AS teks_komentar,
-					komentar.tanggal AS tanggal_komentar,
-					komentar.solver,
-					permasalahan.teks AS teks_permasalahan,
-					permasalahan.tanggal AS tanggal_permasalahan,
-					kategori.nama,
-					permasalahan.jumlah_komen,
-					permasalahan.jumlah_dilihat,
-					
-					A.nama AS siapa_komentar,
-					B.nama AS siapa_permasalahan
-			FROM permasalahan
-			LEFT JOIN komentar ON permasalahan.id = komentar.permasalahan
-			LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-			
-			LEFT JOIN pengguna A ON komentar.siapa = A.id
-			LEFT JOIN pengguna B ON permasalahan.siapa = B.id
+			SELECT DISTINCT 
+				permasalahan.id AS id_permasalahan,
+				permasalahan.teks AS teks_permasalahan,
+				permasalahan.tanggal AS tanggal_permasalahan,
+				permasalahan.jumlah_dilihat,
+				permasalahan.jumlah_dibaca,
+				permasalahan.jumlah_komen,
+				(
+					SELECT MAX(komentar.id) 
+					FROM komentar 
+					WHERE komentar.permasalahan = permasalahan.id
+				) AS max_id_komentar,
+				(
+					SELECT komentar.teks
+					FROM komentar 
+					WHERE komentar.id= MAX_ID_KOMENTAR
+				) AS teks_komentar,
+				(
+					SELECT komentar.tanggal
+					FROM komentar 
+					WHERE komentar.id= MAX_ID_KOMENTAR
+				) AS tanggal_komentar,
+				(
+					SELECT pengguna.nama
+					FROM pengguna
+					WHERE pengguna.id= (SELECT komentar.siapa
+					FROM komentar
+					WHERE komentar.id= MAX_ID_KOMENTAR)
+				) AS siapa_komentar,
+				(
+					SELECT pengguna.nama
+					FROM pengguna
+					WHERE pengguna.id= (SELECT permasalahan.siapa
+					FROM permasalahan
+					WHERE permasalahan.id= ID_PERMASALAHAN)
+				) AS siapa_permasalahan
 
+			FROM permasalahan
 			ORDER BY tanggal_komentar DESC
 			')->result();
 		$this->load->view('statis/header',$header);
@@ -731,6 +749,122 @@ class Admin extends CI_Controller {
 				$updateToNotifMhsPerUser =  rtrim($updateToNotifMhsPerUser,", ");
 				$runQuery = $this->model->rawQuery($updateToNotifMhsPerUser);
 			}
+		}
+	}
+
+	/*
+	* function untuk menampilkan profil admin, edit
+	*/
+	function profilAdmin()
+	{
+		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
+		$header['title'] 	= 'Admin - Edit Profil';
+		$this->menu['breadcrumb'] = 'Edit Profil';
+		$this->menu['active'] 	= 'editProfil';
+		$this->load->view('statis/header',$header);
+		$this->load->view('super/menu',$this->menu);
+		$this->load->view('super/profil',$record);
+		$this->load->view('statis/footer');
+	}
+
+	/*
+	* function untuk handling form edit profil
+	*/
+	function submitEditProfil()
+	{
+		if ($this->input->post() !== array()) {
+
+			// cek apakah ada pergantian password
+			$recordPengguna = ''; // variabel akan tidak kosong apabila ada perintah update password. untuk simpan record pengguna sebagai pencocokan
+			if ($this->input->post('password') !== '') {
+				$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
+				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
+					alert('alert','danger','Gagal!','Edit profil gagal. Password salah');
+					redirect('profil-admin');
+					return true;
+				}else{
+					// cek apakah password_ ada isinya
+					if ($this->input->post('password_') == '') {
+						alert('alert','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password hanya jika ingin mengganti password');
+						redirect('profil-admin');
+						return true;
+					}else{
+						// masukkan password baru ke array untuk bahan eksekusi
+						$queryUpdate['password'] = md5($this->input->post('password_'));
+					}
+				}
+			}
+			
+			// cek apakah ada perintah update foto
+			if ($_FILES['foto']['name'] !== '') {
+				$config['upload_path']	= FCPATH.'userprofiles/';
+				$config['allowed_types']= 'gif|jpg|png';
+				$config['file_name'] = $this->input->post('nama')." - profil";
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('foto'))
+				{
+					alert('alert','danger','Gagal!',$this->upload->display_errors());
+					redirect('profil-admin');
+					return false;
+				}
+				else
+				{
+					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
+				}
+			}
+
+			$this->form_validation->set_rules('nama','Nama','trim|required');
+			$this->form_validation->set_rules('email','Email','trim|required|valid_email');
+			$this->form_validation->set_rules('no_hp','Nomor telepon','trim');
+
+			if ($this->form_validation->run() !== FALSE) {
+				$queryUpdate['nama'] = ucwords($this->input->post('nama'));
+				$queryUpdate['email'] = $this->input->post('email');
+				$queryUpdate['no_hp'] = $this->input->post('no_hp');
+				$runUpdate = $this->model->update('pengguna',array('id'=>$this->input->post('id')),$queryUpdate);
+				$runUpdate = json_decode($runUpdate);
+
+				if ($runUpdate->status) {
+					if ($queryUpdate['password'] != array()) {
+						redirect('logout');
+					}
+					$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
+					$newdata = array(
+							        'id'     					=> $recordPengguna[0]->id,
+							        'nama'  					=> $recordPengguna[0]->nama,
+							        'email'     				=> $recordPengguna[0]->email,
+							        'no_hp'     				=> $recordPengguna[0]->no_hp,
+							        'aktor'     				=> $recordPengguna[0]->aktor,
+							        'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
+							        'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
+							        'status'  					=> $recordPengguna[0]->status,
+									'foto'						=> base_url().$recordPengguna[0]->foto
+					);
+					$this->session->set_userdata('loginSession',$newdata);
+
+					alert('alert','success','Barhasil!','Profil telah di perbarui di database.');
+					redirect('profil-admin');
+				}else{
+					if ($runUpdate->error_message->code == 1062) {
+						alert('alert','danger','Gagal!',$runUpdate->error_message->message);
+						redirect('profil-admin');
+					}else{
+						echo "<pre>";
+						var_dump($runUpdate);
+						die();
+					}
+				}
+			}else{
+				$register = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+				'</div>');
+				$this->session->set_flashdata('alert', $register);
+				redirect('profil-admin');
+			}
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Tidak ada data yang di POST</p>';
+			$this->load->view('errors/html/error_404',$error);
 		}
 	}
 }

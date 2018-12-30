@@ -10,20 +10,17 @@
 
 	<div class="main-container">
 		<div class="row">
-			<div class="col-sm-8 col-md-9">
+			<div class="col-sm-12 col-md-12">
 				<!-- <div class="main-container mr-1"> -->
 				<?=$this->session->flashdata("alert");?>
 				<!-- </div> -->
 				<div class="panel panel-plain">
-					<div class="panel-nav">
-						<a href="<?=base_url()?>profil-pendidik" class="panel-link"><i class="fa fa-chevron-left"></i> Kembali</a>
-					</div>
 					<div class="panel-heading">
 						<h1>Edit Profil</h1>
 						<p>mengubah data diri</p>
 					</div>
 					<div class="panel-body">
-						<form action="<?=base_url()?>submit-edit-profil-pendidik" method="POST" enctype="multipart/form-data" class="input-55">
+						<form action="<?=base_url()?>submit-edit-profil-admin" method="POST" enctype="multipart/form-data" class="input-55">
 							<input type="hidden" name="id" value="<?=$pengguna[0]->id?>">
 							<div class="row">
 								<div class="col-md-12">
@@ -89,12 +86,6 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="col-sm-4 col-md-3">
-				<a href="#"><img src="<?=base_url()?>assets/dashboard/assets/images/iklan.png" alt="Image" class="img-fw"></a>
-			</div>
-
-
 		</div>
 
 	</div>

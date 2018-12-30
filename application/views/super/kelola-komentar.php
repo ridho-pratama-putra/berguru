@@ -56,7 +56,7 @@
 						<?php foreach ($kelola_komentar as $key => $value) { ?>
 						<tr>
 							<td>
-								<?=$value->teks_komentar?>
+								<?=limit_text($value->teks_komentar,25) ?>
 								<?php if ($value->tanggal_komentar !== NULL) { ?>
 									<div class="td-meta">
 										<i class="fa fa-clock-o"></i><?=date('M, d Y',strtotime($value->tanggal_komentar))?>
