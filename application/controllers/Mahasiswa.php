@@ -374,9 +374,8 @@ class Mahasiswa extends CI_Controller {
 		if ($this->input->post() !== array()) {
 
 			// cek apakah ada pergantian password
-			$recordPengguna = ''; // variabel akan tidak kosong apabila ada perintah update password. untuk simpan record pengguna sebagai pencocokan
+			$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 			if ($this->input->post('password') !== '') {
-				$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
 					alert('editProfil','danger','Gagal!','Edit profil gagal. Password salah');
 					redirect('edit-profil-mahasiswa');
@@ -400,7 +399,6 @@ class Mahasiswa extends CI_Controller {
 				$config['allowed_types']= 'gif|jpg|png';
 				$config['file_name'] = $this->input->post('nama')." - profil";
 				$this->load->library('upload', $config);
-
 				if ( ! $this->upload->do_upload('foto'))
 				{
 					alert('editProfil','danger','Gagal!',$this->upload->display_errors());
@@ -409,6 +407,7 @@ class Mahasiswa extends CI_Controller {
 				}
 				else
 				{
+					unlink(FCPATH.$recordPengguna[0]->foto);
 					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
 				}
 			}
@@ -442,7 +441,7 @@ class Mahasiswa extends CI_Controller {
 					);
 					$this->session->set_userdata('loginSession',$newdata);
 
-					alert('editProfil','success','Barhasil!','Profil telah di perbarui di database. Saat ini data yang ditampilkan belum berubah, anda harus login kembali untuk melihat perubahan.');
+					alert('editProfil','success','Barhasil!','Profil telah di perbarui di database.');
 					redirect('edit-profil-mahasiswa');
 				}else{
 					if ($runUpdate->error_message->code == 1062) {

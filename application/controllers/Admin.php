@@ -775,9 +775,8 @@ class Admin extends CI_Controller {
 		if ($this->input->post() !== array()) {
 
 			// cek apakah ada pergantian password
-			$recordPengguna = ''; // variabel akan tidak kosong apabila ada perintah update password. untuk simpan record pengguna sebagai pencocokan
+			$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 			if ($this->input->post('password') !== '') {
-				$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
 					alert('alert','danger','Gagal!','Edit profil gagal. Password salah');
 					redirect('profil-admin');
@@ -810,6 +809,7 @@ class Admin extends CI_Controller {
 				}
 				else
 				{
+					unlink(FCPATH.$recordPengguna[0]->foto);
 					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
 				}
 			}
