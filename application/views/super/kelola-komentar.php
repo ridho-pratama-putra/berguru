@@ -17,7 +17,9 @@
 			<li class="active">Kelola Komentar</li>
 		</ol>
 	</div><!--/.row-->
-
+	<div class="main-container mr-1">
+		<?=$this->session->flashdata("alert");?>
+	</div>
 	<div class="panel panel-plain main-container">
 		<div class="panel-heading">
 			<div class="row">
@@ -93,7 +95,16 @@
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
 										<li><a href="#">Detail Diskusi</a></li>
 										<li role="separator" class="divider"></li>
-										<li><a href="#">Bekukan Diskusi</a></li>
+										<li>
+											<?php
+											if ($value->beku == 'ACTIVE') { ?>
+											<a href="<?=base_url().'Admin/setPermasalahanToBeku/'.$value->id_permasalahan?>">Bekukan Diskusi</a>
+											<?php }else{ ?>
+											<a href="<?=base_url().'Admin/setPermasalahanToAktiv/'.$value->id_permasalahan?>">Aktivkan Diskusi</a>
+											<?php
+											}
+											?>
+										</li>
 									</ul>
 								</div>
 							</td>

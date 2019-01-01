@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    <!-- SCRIPT UNTUK ADD ACTIVE -->
+    // SCRIPT UNTUK ADD ACTIVE
     $( document ).ready(function() {
         $("#<?=$active?>").attr("class","active");
         $("#filter").keyup(function() {
@@ -25,9 +25,17 @@
 
         });
     });
-    <!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
+    // END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU
 
 </script>
+<style type="text/css">
+    <?php
+    if ($selected_kategori[0]->background != '') { ?>
+        .pages{
+            background-image: url(<?=base_url($selected_kategori[0]->background)?>);
+        }
+    <?php } ?>
+</style>
         <div class="sidemenu-overlay hide animated"></div>
         <header class="pages">
             <nav class="navbar navbar-default nav-front">
@@ -69,7 +77,7 @@
                                 <ul class="nav navbar-nav navbar-right">
                                     <?php
                                     if ($this->session->userdata('loginSession') == array()) { ?>
-                                    <li><a href="<?=base_url()?>login"><span class="bgicon bgicon-lock"></span> Masuk</a></li>
+                                    <li class="nav-button"><a href="<?=base_url()?>login"><span class="bgicon icon-lock"></span> Masuk</a></li>
                                     <li class="nav-button"><a href="<?=base_url()?>register"><span class="bgicon icon-user-add"></span> Daftar</a></li>
                                     <?php }else{ ?>
                                         <li><a href="<?=base_url()?>dashboard-<?=$this->session->userdata('loginSession')['aktor']?>">Dashboard</a></li>

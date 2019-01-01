@@ -68,13 +68,13 @@
 				<table class="table datatable" id="tabel-pengguna">
 					<thead>
 						<tr>
-							<th>Nama</th>
-							<th>Email</th>
+							<th width="20%">Nama</th>
+							<th width="20%">Email</th>
 							<th>Universitas</th>
 							<th>NIM</th>
-							<th>Report</th>
-							<th>Status</th>
-							<th class="no-sort"></th>
+							<th width="5">Report</th>
+							<th width="5">Status</th>
+							<th class="no-sort" width="5"></th>
 						</tr>
 					</thead>
 					<tbody>

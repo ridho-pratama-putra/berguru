@@ -16,6 +16,11 @@ class Admin extends CI_Controller {
 		$this->notifikasiMenu();
 	}
 
+	function playground()
+	{
+		$this->load->view('tenagapendidik/playground');
+	}
+
 	/*
 	* function untuk menampilkan daftar kategori konten
 	*/
@@ -92,6 +97,7 @@ class Admin extends CI_Controller {
 				permasalahan.id AS id_permasalahan,
 				permasalahan.teks AS teks_permasalahan,
 				permasalahan.tanggal AS tanggal_permasalahan,
+				permasalahan.beku,
 				permasalahan.jumlah_dilihat,
 				permasalahan.jumlah_dibaca,
 				permasalahan.jumlah_komen,
@@ -146,6 +152,7 @@ class Admin extends CI_Controller {
 				SELECT 
 						permasalahan.id,
 						permasalahan.teks,
+						permasalahan.beku,
 						kategori.nama AS kategori,
 						permasalahan.status,
 						permasalahan.tanggal,
@@ -341,6 +348,23 @@ class Admin extends CI_Controller {
 			$cekDuplikasiKategori = $this->model->read('kategori',array('nama'=>$this->input->post('nama')));
 			if ($cekDuplikasiKategori->num_rows() == 0) {
 				
+				if ($_FILES['background']['name'] !== '') {
+					$config['upload_path']	= FCPATH.'bgkategori/';
+					$config['allowed_types']= 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';
+					$config['file_name'] = $this->input->post('nama');
+					$this->load->library('upload', $config);
+
+					if ( ! $this->upload->do_upload('background'))
+					{
+						alert('alert','danger','Gagal!',$this->upload->display_errors());
+						redirect('kelola-kategori-konten');
+						return false;
+					}
+					else
+					{
+						$background = "bgkategori/".$this->upload->data()['file_name'];
+					}
+				}
 				$createKategoriRecord = $this->model->create(
 																'kategori',
 																array(
@@ -351,7 +375,8 @@ class Admin extends CI_Controller {
 																		'jumlah_jawaban'		=> 0,
 																		'tanggal' 				=> date('Y-m-d'),
 																		'icon'					=> "icon-material-book",
-																		'nama_folder'			=> "materi/".ucwords($this->input->post('nama'))
+																		'nama_folder'			=> "materi/".ucwords($this->input->post('nama')),
+																		'background'			=> $background
 																	)
 															);
 				$createKategoriRecord = json_decode($createKategoriRecord);
@@ -509,7 +534,7 @@ class Admin extends CI_Controller {
 			// delete di tabel notifikasi
 			$this->model->rawQuery("DELETE FROM notif WHERE (konteks ='pertanyaan' OR konteks ='ratingKomentar' OR konteks ='komentar') AND id_konteks = ".$this->input->post('id'));
 
-			// delete di tabel riwayat_notifikasi
+			// delete di tabel
 			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));
 			
 			$this->model->delete('komentar',array('permasalahan'=>$this->input->post('id')));
@@ -867,4 +892,148 @@ class Admin extends CI_Controller {
 			$this->load->view('errors/html/error_404',$error);
 		}
 	}
+
+	/*
+	* function untuk handle cari penerima, return nama,id,dan email
+	*/
+	function cariNama()
+	{
+		echo json_encode('called');
+		die();
+		if ($this->input->get() != NULL) {
+			$dataForm = $this->input->get();
+			$dataReturn = $this->model->orLike('pengguna',array('nama'=>$dataForm['term']['term'],'email'=>$dataForm['term']['term']))->result();
+			$data = array();
+			foreach ($dataReturn as $key => $value) {
+				$data[$key]['id'] = $value->id;
+				$data[$key]['text'] = $value->nama;
+			}
+			echo json_encode($data);
+		}else{
+			// redirect('logout');
+		}
+	}
+
+	/*
+	* funtion untuk ubah permasalahan ke beku
+	*/
+	function setPermasalahanToBeku($id)
+	{
+		$permasalahan = $this->model->read('permasalahan',array('id'=>$id))->result();
+		$this->model->create('notif',
+									array(
+											'konteks'	=> 'permasalahanDibekukan',
+											'id_konteks'=> $permasalahan[0]->id,
+											'untuk'		=> $permasalahan[0]->siapa,
+											'dari'		=> $this->session->userdata('loginSession')['id'],
+											'datetime'	=> date('Y-m-d H:i:s')
+										)
+		);
+		$this->model->delete('notif',
+									array(
+											'konteks'	=> 'permasalahanDiaktivkan',
+											'id_konteks'=> $permasalahan[0]->id,
+											'untuk'		=> $permasalahan[0]->siapa,
+											'dari'		=> $this->session->userdata('loginSession')['id']
+									)
+		);
+
+		$update = json_decode($this->model->update('permasalahan',array('id'=>$id),array('beku'=>'INACTIVE')));
+
+		if ($update->status) {
+			alert('alert','success','Berhasil!','Permasalahan telah dibekukan');
+		}else{
+			alert('alert','danger','Gagal!','Kegagalan database : '.$update->error_message->message);
+		}
+		redirect('kelola-komentar');
+	}
+
+	/*
+	* funtion untuk ubah permasalahan ke aktiv
+	*/
+	function setPermasalahanToAktiv($id)
+	{
+		$permasalahan = $this->model->read('permasalahan',array('id'=>$id))->result();
+		$this->model->create('notif',
+									array(
+											'konteks'	=> 'permasalahanDiaktivkan',
+											'id_konteks'=> $permasalahan[0]->id,
+											'untuk'		=> $permasalahan[0]->siapa,
+											'dari'		=> $this->session->userdata('loginSession')['id'],
+											'datetime'	=> date('Y-m-d H:i:s')
+										)
+		);
+		$this->model->delete('notif',
+									array(
+											'konteks'	=> 'permasalahanDibekukan',
+											'id_konteks'=> $permasalahan[0]->id,
+											'untuk'		=> $permasalahan[0]->siapa,
+											'dari'		=> $this->session->userdata('loginSession')['id']
+									)
+		);
+
+		$update = json_decode($this->model->update('permasalahan',array('id'=>$id),array('beku'=>'ACTIVE')));
+
+		if ($update->status) {
+			alert('alert','success','Berhasil!','Permasalahan telah diaktivkan');
+		}else{
+			alert('alert','danger','Gagal!','Kegagalan database : '.$update->error_message->message);
+		}
+		redirect('kelola-komentar');
+	}
+
+	/*
+	* function untuk tampilkan halaman edit permasalahan
+	*/
+	function editKontenPermasalahan($id)
+	{
+		$record['pertanyaan'] = $this->model->read('permasalahan',array('id'=>$id))->result();
+		$record['kategori'] = $this->model->readS('kategori')->result();
+		$header['title'] 	= 'Admin - Edit Konten Permasalahan';
+		$this->menu['breadcrumb'] = 'Edit Konten Permasalahan';
+		$this->menu['active'] 	= 'kontenpermasalahan';
+		$this->load->view('statis/header',$header);
+		$this->load->view('super/menu',$this->menu);
+		$this->load->view('super/edit-konten-permasalahan',$record);
+		$this->load->view('statis/footer');
+	}
+
+	/*
+	* funtion untuk submit edit Kontenpermasalahan
+	*/
+	function submitEditKontenPermasalahan()
+	{
+		// update jumlah kategori jika ternyata yang diedit adalah kategorinya hanya dihandle oleh code dibawah ini. untuk add dan delete dihandle oleh trigger
+		$permasalahan = $this->model->read('permasalahan',array('id'=>$this->input->post('id')))->result();
+		if ($permasalahan[0]->kategori !== $this->input->post('kategori')) {
+			$jumlah_jawaban = $this->model->rawQuery("SELECT COUNT(id) AS jumlah_jawaban FROM komentar WHERE permasalahan = ".$permasalahan[0]->id)->result();
+			
+			$this->db->set('jumlah_jawaban', '`jumlah_jawaban` + '.$jumlah_jawaban[0]->jumlah_jawaban, FALSE);
+			$this->db->set('jumlah_pertanyaan', '`jumlah_pertanyaan`+ 1', FALSE);
+			$this->db->where('id', $this->input->post('kategori'));
+			$this->db->update('kategori');
+
+			$this->db->set('jumlah_jawaban', '`jumlah_jawaban`- '.$jumlah_jawaban[0]->jumlah_jawaban, FALSE);
+			$this->db->set('jumlah_pertanyaan', '`jumlah_pertanyaan`- 1', FALSE);
+			$this->db->where('id', $permasalahan[0]->kategori);
+			$this->db->update('kategori');
+
+		}
+		$update = json_decode($this->model->update('permasalahan',
+														array(
+															'id'=>$this->input->post('id')
+														),
+														array(
+															'teks'=>$this->input->post('pertanyaan'),
+															'kategori'=>$this->input->post('kategori')
+														)
+													));
+		if ($update->status) {
+			alert('alert','success','Berhasil!','Permasalahan telah diperbarui');
+		}else{
+			alert('alert','danger','Gagal!','Kegagalan database : '.$update->error_message->message);
+		}
+		redirect('edit-konten-permasalahan/'.$this->input->post('id'));
+	}
+
 }

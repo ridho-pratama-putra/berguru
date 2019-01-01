@@ -35,7 +35,9 @@
 			<li class="active">Kelola Kategori Konten</li>
 		</ol>
 	</div><!--/.row-->
-
+	<div class="main-container mr-1">
+		<?=$this->session->flashdata("alert");?>
+	</div>
 	<div class="row">
 		<div class="col-sm-9 col-md-9">
 			<div class="main-container mr-0">
@@ -106,7 +108,13 @@
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<form class="" action="<?=base_url()?>submit-tambah-kategori" method="POST">
+						<form class="" action="<?=base_url()?>submit-tambah-kategori" method="POST" enctype="multipart/form-data">
+							<div class="form-group">
+								<div class="input-group">
+									<input type="file" class="form-control" name="background"  accept="image/*">
+									<span class="input-group-addon"><i class="fa fa-image"></i></span>
+								</div>
+							</div>
 							<div class="form-group">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="Icon" name="icon" >

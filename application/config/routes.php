@@ -96,6 +96,8 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['kelola-komentar']			= 'Admin/kelolaKomentar';
 
 	$route['kelola-konten-permasalahan']= 'Admin/kelolaKontenPermasalahan';
+	$route['edit-konten-permasalahan/(:num)']= 'Admin/editKontenPermasalahan/$1';
+	$route['submit-edit-konten-permasalahan']= 'Admin/submitEditKontenPermasalahan';
 	$route['delete-permasalahan']		= 'Admin/deletePermasalahan';
 
 	$route['kelola-materi']				= 'Admin/kelolaMateri';
@@ -115,6 +117,7 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['lowongan-kerja']			= 'Admin/kelolaLowonganKerja';
 	$route['submit-validasi-lowongan']	= 'Admin/submitValidasiLowongan';
 	$route['submit-insert-lowongan']	= 'Admin/submitInsertLowongan';
+
 /*****************************************************END OF SUPER ADMIN*****************************************************/
 
 

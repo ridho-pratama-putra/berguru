@@ -1,4 +1,6 @@
 
+
+
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -58,15 +60,14 @@
 										</div>
 									</div>
 									<div class="media-body">
-										Stephen Johanson
+										Admin
 									</div>
 								</div>
 							</td>
 							<td>
 								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default">User Testing</span>
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
+									<span class="btn btn-pesan-label btn-default">Welcome Message</span>
+									Selamat datang di Berguru.com! Platform diskusi tenaga pendidik dan mahasiswa
 								</div>
 							</td>
 							<td class="td-right">
@@ -75,11 +76,11 @@
 									<i class="fa fa-ellipsis-v"></i>
 								</a>
 								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
+									<li><a href="#">Detail</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
+									<li><a href="#">Edit</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#">Hapus</a></li>
 								</ul>
 							</div>
 						</td>
@@ -97,15 +98,16 @@
 										</div>
 									</div>
 									<div class="media-body">
-										Mark Marques
+										Admin
 									</div>
 								</div>
 							</td>
 							<td>
 								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default btn-sm">Design</span>
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
+									<div class="td-pesan">
+									<span class="btn btn-pesan-label btn-default">Welcome Message</span>
+									Selamat datang di Berguru.com! Platform diskusi tenaga pendidik dan mahasiswa
+								</div>
 								</div>
 							</td>
 							<td class="td-right">
@@ -114,11 +116,11 @@
 									<i class="fa fa-ellipsis-v"></i>
 								</a>
 								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
+									<li><a href="#">Detail</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
+									<li><a href="#">Edit</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#">Hapus</a></li>
 								</ul>
 							</div>
 						</td>
@@ -136,15 +138,14 @@
 										</div>
 									</div>
 									<div class="media-body">
-										Mark Marques
+										Admin
 									</div>
 								</div>
 							</td>
 							<td>
 								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default btn-sm">Development</span>
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
+									<span class="btn btn-pesan-label btn-default">Welcome Message</span>
+									Selamat datang di Berguru.com! Platform diskusi tenaga pendidik dan mahasiswa
 								</div>
 							</td>
 							<td class="td-right">
@@ -153,11 +154,11 @@
 									<i class="fa fa-ellipsis-v"></i>
 								</a>
 								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
+									<li><a href="#">Detail</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
+									<li><a href="#">Edit</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#">Hapus</a></li>
 								</ul>
 							</div>
 						</td>
@@ -175,15 +176,14 @@
 										</div>
 									</div>
 									<div class="media-body">
-										Mark Marques
+										Admin
 									</div>
 								</div>
 							</td>
 							<td>
 								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default btn-sm">About Report</span>
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
+									<span class="btn btn-pesan-label btn-default btn-sm">Maintenance</span>
+									Selamat Siang, kami akan melakukan maintenance server pada tanggal 10 Oktober 2018 Pukul 21.00. Untuk itu sementara website belum bisa diakses hingga pukul 03.00. Terimakasih.
 								</div>
 							</td>
 							<td class="td-right">
@@ -192,89 +192,11 @@
 									<i class="fa fa-ellipsis-v"></i>
 								</a>
 								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
+									<li><a href="#">Detail</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
-						<tr>
-							<td>
-								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-5">
-								<label for="check-5"></label>
-							</td>
-							<td>
-								<div class="media mid-v">
-									<div class="media-left media-middle">
-										<div class="user-photo">
-											<img src="assets/images/reading.png" alt="Photo">
-										</div>
-									</div>
-									<div class="media-body">
-										Mark Marques
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default btn-sm">User Testing</span>
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-								</div>
-							</td>
-							<td class="td-right">
-								<div class="dropdown td-menu">
-								<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<i class="fa fa-ellipsis-v"></i>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
+									<li><a href="#">Edit</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
-						<tr>
-							<td>
-								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-6">
-								<label for="check-6"></label>
-							</td>
-							<td>
-								<div class="media mid-v">
-									<div class="media-left media-middle">
-										<div class="user-photo">
-											<img src="assets/images/reading.png" alt="Photo">
-										</div>
-									</div>
-									<div class="media-body">
-										Mark Marques
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default btn-sm">Development</span>
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-									Hi Zachary, we need to do user testing right here right now! Do you copy?
-								</div>
-							</td>
-							<td class="td-right">
-								<div class="dropdown td-menu">
-								<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<i class="fa fa-ellipsis-v"></i>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Separated link</a></li>
+									<li><a href="#">Hapus</a></li>
 								</ul>
 							</div>
 						</td>
@@ -294,6 +216,35 @@
 </div>	<!--/.main-->
 
 <!-- Modal -->
+
+<script type="text/javascript">
+$(document).ready(function() {	
+	$("#penerima").select2({
+		ajax: {
+			url: '<?=base_url()?>Admin/cariNama/',
+			dataType: 'json',
+			delay: 1000,
+			data: function (term, page) {
+				return {
+					term: term, // search term
+					page: 10
+				};
+			},
+			processResults: function (data, page) {
+				// console.log(data);
+				return {
+					results: data
+				};
+			},
+			cache: true
+		},
+		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		minimumInputLength: 1
+	});
+    $('.js-example-basic-single').select2();
+});
+</script>
+
 <div class="modal fade" id="modal-addpesan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -308,7 +259,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="">Nama / Email Penerima</label>
-								<input type="text" class="form-control" placeholder="Penerima">
+								<select class="penerima" id="penerima"></select>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -324,6 +275,11 @@
 							</div>
 						</div>
 					</div>
+					<select class="js-example-basic-single" name="state">
+  <option value="AL">Alabama</option>
+    ...
+  <option value="WY">Wyoming</option>
+</select>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>

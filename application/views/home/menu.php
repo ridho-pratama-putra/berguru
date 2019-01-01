@@ -1,9 +1,9 @@
 <script type="text/javascript">
-    <!-- SCRIPT UNTUK ADD ACTIVE -->
+    
+    // SCRIPT UNTUK ADD ACTIVE
     $( document ).ready(function() {
         $("#<?=$active?>").attr("class","active");
     });
-    <!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
 
     $("#filter").keyup(function() {
 

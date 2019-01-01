@@ -41,6 +41,7 @@
 	<!-- berguru css -->
 	<link href="<?=base_url()?>assets/dashboard/assets/css/berguru-stylesheet.css" rel="stylesheet">
 	
+	<!-- <script src="<?=base_url()?>assets/assets/libs/jquery3.3.1/jquery-3.3.1.js"></script> -->
 	<script src="<?=base_url()?>assets/dashboard/assets/js/jquery-1.11.1.min.js"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/datatables/datatables.min.js" charset="utf-8"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/malihu-scroll/jquery.mCustomScrollbar.js"></script>
@@ -49,5 +50,12 @@
 	<!-- list -->
 	<script src="<?=base_url()?>assets/assets/libs/list/list.min.js" charset="utf-8"></script>
 
+	<link href="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/css/select2.min.css" rel="stylesheet">
+	<script src="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/js/select2.min.js" charset="utf-8"></script>
+	<script type="text/javascript">
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
 </head>
 <body>

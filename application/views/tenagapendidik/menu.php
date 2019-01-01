@@ -88,6 +88,10 @@
 													<a href="<?=base_url('karir-pendidik')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
 												<?php }elseif($value->konteks == 'dm'){?>
 													<a href="#"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
+												<?php }elseif($value->konteks == 'permasalahanDibekukan'){?>
+													<a href="#"><strong><?=$value->dari?></strong> Permasalahan anda telah diubah menjadi dibekukan oleh <?=$value->dari?></a>
+												<?php }elseif($value->konteks == 'permasalahanDiaktivkan'){?>
+													<a href="#"><strong><?=$value->dari?></strong> Permasalahan anda telah diubah menjadi aktiv oleh <?=$value->dari?></a>
 												<?php } ?>
 												<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 											</div>

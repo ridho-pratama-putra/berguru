@@ -86,10 +86,15 @@
 								<?=$value->kategori?>
 							</td>
 							<td>
-								<span class="btn btn-custom <?=($value->status == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?> "><i class="fa <?=($value->status == 'ACTIVE') ? 'fa-check-circle' : 'fa-times-circle'?> "></i><?=$value->status?></span>
+								<span class="btn btn-custom <?=($value->status == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?> ">
+									<i class="fa <?=($value->status == 'ACTIVE') ? 'fa-check-circle' : 'fa-times-circle'?> "></i><?=$value->status?>
+								</span>
+								<span class="text-center" data-toggle="tooltip" data-placement="top" title="Ubah status Aktiv/Beku via halaman kelola komentar">
+									<p><?=$value->beku?></p>
+								</span>
 							</td>
 							<td>
-								<span class="btn btn-custom btn-plonk-blue">Edit</span>
+								<a href="<?=base_url()?>edit-konten-permasalahan/<?=$value->id?>"><span class="btn btn-custom btn-plonk-blue">Edit</span></a> 
 								<span class="btn btn-custom btn-plonk-red" onclick="hapus(<?=$value->id?>)">Hapus</span>
 							</td>
 						</tr>

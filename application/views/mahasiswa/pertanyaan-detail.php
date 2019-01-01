@@ -21,7 +21,13 @@
 									<a href="<?=base_url()?>dashboard-mahasiswa" class="panel-link"><i class="fa fa-chevron-left"></i> Dashboard</a>
 								</div>
 								<div class="col-sm-6 text-right">
-									<a href="<?=base_url()?>pertanyaan-jawab-mahasiswa/<?=$pertanyaan[0]->id?>" class="btn btn-normal btn-success">Bantu Jawab</a>
+									<?php
+									if ($pertanyaan[0]->beku == 'ACTIVE') { ?>
+										<a href="<?=base_url()?>pertanyaan-jawab-mahasiswa/<?=$pertanyaan[0]->id?>" class="btn btn-normal btn-success">Bantu Jawab</a>
+									<?php }else{?>
+										<a class="btn btn-normal btn-success" disabled="" data-toggle="tooltip" data-placement="top" title="Permasalahan dibekukan oleh admin.">Bantu Jawab</a>
+									<?php }
+									?>
 								</div>
 							</div>
 						</div>
