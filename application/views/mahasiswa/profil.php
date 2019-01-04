@@ -27,10 +27,26 @@
 							<div class="profile-achievement">
 								<div class="profile-point"><span>P</span> <?=$pengguna[0]->poin?></div>
 								<br/>
-								<div class="achie achie-orange" title="Pencapaian"><i class="fa fa-star"></i></div>
-								<div class="achie achie-green" title="Pencapaian"><i class="fa fa-trophy"></i></div>
-								<div class="achie achie-blue" title="Pencapaian"><i class="far fa-gem"></i></div>
-								<div class="achie achie-black" title="Pencapaian"><i class="fa fa-bicycle"></i></div>
+								<?php 
+								if(intval($pengguna[0]->poin) !== 0 ){
+									if (intval($pengguna[0]->poin) < 40 ) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+									<?php }elseif (intval($pengguna[0]->poin) < 100) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+										<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+									<?php }elseif (intval($pengguna[0]->poin) < 180) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+										<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+										<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+									<?php }elseif (intval($pengguna[0]->poin) < 300) { ?>
+										<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+										<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+										<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+										<div class="achie achie-black" title="Professional"><i class="fa fa-bicycle"></i></div>
+								<?php 
+									}
+								} 
+								?>
 							</div>
 						</div>
 					</div>
@@ -62,79 +78,44 @@
 	<div class="col-md-9">
 		<div class="panel panel-plain">
 			<div class="panel-heading">
-				<h1>Pertanyaan yang mendapat respon</h1>
+				<h1>Komentar yang anda kirimkan</h1>
 			</div>
 			<div class="panel-body">
-				<div class="profil-pertanyaan">
-					<div class="p-pertanyaan">
-						Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih
-					</div>
-					<div class="p-jawaban">
-						<div class="media">
-							<div class="media-left media-middle">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Daniel Webber
-									<br/>
-									14 Sep 2018
-								</div>
+				<?php 
+				if ($komentar !== array()) { 
+					foreach ($komentar as $key => $value) { ?>
+						<div class="profil-pertanyaan">
+							<div class="p-pertanyaan">
+								<?=($value->teks_permasalahan !== NULL ? $value->teks_permasalahan : 'Permasalahan telah dihapus')?>
 							</div>
-							<div class="media-body">
-								<div class="small">Jawaban Terbaru</div>
-								Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
+							<div class="p-jawaban">
+								<div class="media">
+									<div class="media-left media-middle">
+										<div class="user-photo">
+											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+										</div>
+										<div class="user-nama">
+											<?=$value->nama?>
+											<br/>
+											<?=date("d M Y",strtotime($value->tanggal))?>
+										</div>
+									</div>
+									<div class="media-body">
+										<div class="small">Jawaban Anda</div>
+										<?=$value->teks_komentar?>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="profil-pertanyaan">
-					<div class="p-pertanyaan">
-						Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih
-					</div>
-					<div class="p-jawaban">
-						<div class="media">
-							<div class="media-left media-middle">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Daniel Webber
-									<br/>
-									14 Sep 2018
-								</div>
-							</div>
-							<div class="media-body">
-								<div class="small">Jawaban Terbaru</div>
-								Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-							</div>
+						
+					<?php } ?>
+				<?php }else{ ?>
+					<div class="profil-pertanyaan">
+						<div class="p-pertanyaan">
+							Anda belum memiliki kontribusi. Coba lihat dan berikan komentar anda pada beberapa pertanyaan yang ada di beranda.
 						</div>
 					</div>
-				</div>
-				<div class="profil-pertanyaan">
-					<div class="p-pertanyaan">
-						Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih
-					</div>
-					<div class="p-jawaban">
-						<div class="media">
-							<div class="media-left media-middle">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Daniel Webber
-									<br/>
-									14 Sep 2018
-								</div>
-							</div>
-							<div class="media-body">
-								<div class="small">Jawaban Terbaru</div>
-								Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-							</div>
-						</div>
-					</div>
-				</div>
-
+				<?php } ?>
 			</div>
 		</div>
 	</div>

@@ -154,7 +154,6 @@ class Pendidik extends CI_Controller {
 		$this->load->view('statis/footer');
 	}
 
-
 	/*
 	* untuk ambil siapa saja yang sudah dichat
 	*/
@@ -179,7 +178,7 @@ class Pendidik extends CI_Controller {
 											(
 												SELECT COUNT(id) FROM direct_message
 												WHERE is_open IS NULL 
-												AND ((dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id']."))
+												AND (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
 											) AS belum_dibaca,
 											pengguna.id,
 											pengguna.alias,
@@ -191,7 +190,6 @@ class Pendidik extends CI_Controller {
 										ORDER BY tanggal DESC
 									")->result();
 	}
-
 
 	/*
 	* function untuk menangai post request di halaman pesan detail saat seorang user akan berpindah halaman
@@ -252,15 +250,38 @@ class Pendidik extends CI_Controller {
 	/*
 	* function untuk menampilkan profil
 	*/
-	function profil(){
+	function profil()
+	{
 		$header['title'] = 'Pendidik - Profil';
 		$this->menu['breadcrumb'] 	= 'Profil';
 		$this->menu['active'] 		= '';
+
+		$record['pertanyaan'] = $this->model->rawQuery("
+			SELECT 
+				DISTINCT 
+					permasalahan.id,
+					permasalahan.teks AS pertanyaan,
+					(
+						SELECT MAX(komentar.id) FROM komentar
+						WHERE komentar.permasalahan = permasalahan.id
+					) AS max_komentar,
+					(
+						SELECT komentar.teks FROM komentar WHERE komentar.id = max_komentar
+					) AS komentar,
+					(
+						SELECT pengguna.nama FROM pengguna WHERE pengguna.id = (SELECT komentar.siapa FROM komentar WHERE komentar.id = max_komentar)
+					) AS nama_komentator,
+					(
+						SELECT komentar.tanggal FROM komentar WHERE komentar.id = max_komentar
+					) AS tanggal
+
+					
+			FROM permasalahan 
+			LEFT JOIN komentar ON permasalahan.id = komentar.permasalahan WHERE permasalahan.siapa  = '".$this->session->userdata('loginSession')['id']."' ORDER BY id DESC")->result();
 		$this->load->view('statis/header',$header);
 		$this->load->view('tenagapendidik/menu',$this->menu);
-		$this->load->view('tenagapendidik/profil');
+		$this->load->view('tenagapendidik/profil',$record);
 		$this->load->view('statis/footer');
-
 	}
 
 	/*
@@ -366,7 +387,8 @@ class Pendidik extends CI_Controller {
 	/*
 	* function untk menghapus pertanyaan via js post
 	*/
-	function deletePertanyaan(){
+	function deletePertanyaan()
+	{
 		if ($this->input->post() !== array()) {
 			
 			// delete di tabel master, yakni permasalahan
@@ -610,6 +632,108 @@ class Pendidik extends CI_Controller {
 		}
 	}
 
+		/*
+	* function untuk handle ajax request untuk onclick pilih kategori. function ini dipanggil di halaman dashboard.
+	*/
+	function getPermasalahanByKategoriAndStatus()
+	{
+		if ($this->input->get() !== '') {
+			if ($this->input->get('kategori') == "all" && $this->input->get('status') == "Semua Pertanyaan") {
+				$record['permasalahan'] = $this->model->rawQuery("
+				SELECT
+						permasalahan.id,
+						permasalahan.teks,
+						permasalahan.tanggal,
+						pengguna.nama AS nama_pengguna,
+						permasalahan.jumlah_komen,
+						permasalahan.jumlah_dilihat,
+						permasalahan.kategori,
+						kategori.nama AS nama_kategori,
+						permasalahan.status,
+						permasalahan.beku,
+						pengguna.foto
+				FROM permasalahan
+				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
+				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
+				ORDER BY permasalahan.tanggal
+				")->result();
+				
+			}elseif ($this->input->get('status') == "Semua Pertanyaan"){
+
+				$record['permasalahan'] = $this->model->rawQuery("
+				SELECT
+						permasalahan.id,
+						permasalahan.teks,
+						permasalahan.tanggal,
+						pengguna.nama AS nama_pengguna,
+						permasalahan.jumlah_komen,
+						permasalahan.jumlah_dilihat,
+						permasalahan.kategori,
+						kategori.nama AS nama_kategori,
+						permasalahan.status,
+						permasalahan.beku,
+						pengguna.foto
+				FROM permasalahan
+				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
+				LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
+				WHERE permasalahan.kategori = '".$this->input->get('kategori')."'
+				ORDER BY permasalahan.tanggal
+				")->result();
+			}else{
+				if ($this->input->get('kategori') == 'all') {
+					$record['permasalahan'] = $this->model->rawQuery("
+					SELECT
+							permasalahan.id,
+							permasalahan.teks,
+							permasalahan.tanggal,
+							pengguna.nama AS nama_pengguna,
+							permasalahan.jumlah_komen,
+							permasalahan.jumlah_dilihat,
+							permasalahan.kategori,
+							kategori.nama AS nama_kategori,
+							permasalahan.status,
+							permasalahan.beku,
+							pengguna.foto
+					FROM permasalahan
+					LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
+					LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
+					WHERE permasalahan.status = '".$this->input->get('status')."'
+					ORDER BY permasalahan.tanggal
+					")->result();
+				}else{
+					$record['permasalahan'] = $this->model->rawQuery("
+					SELECT
+							permasalahan.id,
+							permasalahan.teks,
+							permasalahan.tanggal,
+							pengguna.nama AS nama_pengguna,
+							permasalahan.jumlah_komen,
+							permasalahan.jumlah_dilihat,
+							permasalahan.kategori,
+							kategori.nama AS nama_kategori,
+							permasalahan.status,
+							permasalahan.beku,
+							pengguna.foto
+					FROM permasalahan
+					LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
+					LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
+					WHERE permasalahan.kategori = '".$this->input->get('kategori')."' AND permasalahan.status = '".$this->input->get('status')."'
+					ORDER BY permasalahan.tanggal
+					")->result();
+					
+				}
+			}
+
+			foreach ($record['permasalahan'] as $key => $value) {
+				$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];
+				$record['permasalahan'][$key]->remaining_penjawab = $this->getPenjawab($value->id)['remaining_penjawab'];
+			}
+			$record['data'] = $this->input->get();
+			echo json_encode($record);
+		}
+	}
+
+
 	/*
 	* function untuk handle submit form pada halaman edit pertanyaan 
 	*/
@@ -638,13 +762,29 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-	* function unutk menamplkan halaman dashboard
+	* function untuk menampilkan halaman dashboard
 	*/
 	function dashboard()
 	{
-		$this->load->view("statis/header");
-		$this->load->view("pendidik/menu");
-		$this->load->view("pendidik/dashboard");
+		$header['title'] = "Mahasiswa - Dashboard";
+		$this->menu['breadcrumb'] = "Dashboard";
+		$this->menu['active'] = "dashboard";
+		
+		$record['kategori'] = $this->model->readS('kategori')->result();
+		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();
+		$record['materi'] = $this->model->rawQuery('
+														SELECT
+																materi.nama AS nama_materi,
+																materi.jumlah_diunduh,
+																pengguna.nama AS nama_pengguna
+														FROM materi
+														LEFT JOIN pengguna ON materi.siapa_terakhir_edit = pengguna.id
+		')->result();
+		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("mahasiswa/menu",$this->menu);
+		$this->load->view("mahasiswa/dashboard",$record);
 		$this->load->view("statis/footer");
 	}
 
@@ -656,26 +796,7 @@ class Pendidik extends CI_Controller {
 		$header['title'] = "Pendidik - Materi";
 		$this->menu['breadcrumb'] = "Materi";
 		$this->menu['active'] = "materi";
-		
-		$record['kategori'] = $this->model->readS("kategori")->result();
-		$record['materi'] 	= $this->model->rawQuery("
-														SELECT 
-																materi.id,
-																materi.nama,
-																materi.waktu_terakhir_edit,
-																materi.jumlah_diunduh,
-																materi.jumlah_dilihat,
-																materi.ikon_logo,
-																materi.ikon_warna,
-																materi.deskripsi,
-																kategori.nama AS kategori,
-																(SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags
-														
-														FROM materi
-														LEFT JOIN kategori ON kategori.id = materi.kategori
-													")->result();
-		
-
+		$record['kategori'] = $this->model->readSCol("kategori",array('id','nama'))->result();
 		$this->load->view("statis/header",$header);
 		$this->load->view("tenagapendidik/menu",$this->menu);
 		$this->load->view("tenagapendidik/materi",$record);
@@ -892,7 +1013,8 @@ class Pendidik extends CI_Controller {
 	/*
 	* function untuk search sesuatu pada array, bisa multidimensi
 	*/
-	function in_array_r($needle, $haystack, $strict = false) {
+	function in_array_r($needle, $haystack, $strict = false)
+	{
 		foreach ($haystack as $item) {
 			if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
 				return true;
@@ -1067,7 +1189,8 @@ class Pendidik extends CI_Controller {
 	* funtion untuk handle download
 	* id adalah idnya materi
 	*/
-	function downloadMateri($id){
+	function downloadMateri($id)
+	{
 		$this->load->helper('download');
 		
 		$materi = $this->model->read('materi',array('id'=>$id))->result();
@@ -1145,6 +1268,61 @@ class Pendidik extends CI_Controller {
 		$data = array('id_komentator'=>$pertanyaan[0]->dari,'permasalahan_terpecahkan'=>0);
 		$this->session->set_flashdata('id_komentator',$data);
 		redirect('pesan-pendidik');
+	}
+
+	function getKategori()
+	{
+		$record = $this->model->readSCol("kategori",array('id','nama'))->result();
+		echo json_encode($record);
+	}
+	/*
+	* function untuk handle ajax request untuk onclick pilih kategori. function ini dipanggil di halaman dashboard.
+	*/
+	function getMateriByKategori()
+	{
+		if ($this->input->get() !== '') {
+			$string = "SELECT materi.id,materi.nama,materi.waktu_terakhir_edit,materi.jumlah_diunduh,materi.jumlah_dilihat,materi.ikon_logo,materi.ikon_warna,materi.deskripsi,kategori.nama AS kategori,(SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags FROM materi LEFT JOIN kategori ON kategori.id = materi.kategori ";
+
+			if ($this->input->get('kategori_materi') !== 0 || $this->input->get('harian_bulanan') !== NULL || $this->input->get('popular_all') !== NULL) {
+				$string .= " WHERE ";
+			}
+			
+			$next = false;
+			if ($this->input->get('kategori_materi') !== '0') {
+				$string .= " materi.kategori = '".$this->input->get('kategori_materi')."' ";
+				$next = true;
+			}
+
+			$date = new DateTime(date("Y-m-d"));
+			if ($this->input->get('harian_bulanan') == 'harian') {
+				if ($next) {
+					$string .= "AND";
+				}
+				$string .= " DAY(materi.waktu_terakhir_edit) = '".$date->format("d")."' AND MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}elseif ($this->input->get('harian_bulanan') == 'mingguan') {
+				if ($next) {
+					$string .= "AND";
+				}
+				$string .= " WEEK(materi.waktu_terakhir_edit) = '".$date->format("Y-m-d")."' AND MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}elseif ($this->input->get('harian_bulanan') == 'bulanan') {
+				if ($next) {
+					$string .= "AND";
+				}
+				$string .= " MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}elseif ($this->input->get('harian_bulanan') == 'tahunan') {
+				if ($next) {
+					$string .= "AND";
+				}
+				$string .= " YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}
+
+			if ($this->input->get('popular_all') == 'all') {
+				$string .= " ORDER BY materi.waktu_terakhir_edit DESC";
+			}else{
+				$string .= " ORDER BY materi.jumlah_diunduh DESC";
+			}
+			echo json_encode(array('materi'=>$this->model->rawQuery($string)->result()));
+		}
 	}
 
 	function playground()

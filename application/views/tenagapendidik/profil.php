@@ -56,76 +56,32 @@
 				<h1>Pertanyaan yang mendapat respon</h1>
 			</div>
 			<div class="panel-body">
-				<div class="profil-pertanyaan">
-					<div class="p-pertanyaan">
-						Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih
-					</div>
-					<div class="p-jawaban">
-						<div class="media">
-							<div class="media-left media-middle">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Daniel Webber
-									<br/>
-									14 Sep 2018
-								</div>
+				<?php
+					foreach ($pertanyaan as $key => $value) { ?>
+						<div class="profil-pertanyaan">
+							<div class="p-pertanyaan">
+								<?=$value->pertanyaan?>
 							</div>
-							<div class="media-body">
-								<div class="small">Jawaban Terbaru</div>
-								Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
+							<div class="p-jawaban">
+								<div class="media">
+									<div class="media-left media-middle">
+										<div class="user-photo">
+											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+										</div>
+										<div class="user-nama">
+											<?=$value->nama_komentator?>
+											<br/>
+											<?=tgl_indo(substr($value->tanggal, 0, 10),TRUE)?>
+										</div>
+									</div>
+									<div class="media-body">
+										<div class="small">Jawaban Terbaru</div>
+										Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="profil-pertanyaan">
-					<div class="p-pertanyaan">
-						Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih
-					</div>
-					<div class="p-jawaban">
-						<div class="media">
-							<div class="media-left media-middle">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Daniel Webber
-									<br/>
-									14 Sep 2018
-								</div>
-							</div>
-							<div class="media-body">
-								<div class="small">Jawaban Terbaru</div>
-								Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="profil-pertanyaan">
-					<div class="p-pertanyaan">
-						Saya mengalami kesulitan dalam menyampaikan mata pelajaran biologi karena murid saya kurang antusias. Kira2 apa yg harus saya lakukan supaya motivasi murid saya ini meningkat? terimakasih
-					</div>
-					<div class="p-jawaban">
-						<div class="media">
-							<div class="media-left media-middle">
-								<div class="user-photo">
-									<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
-								</div>
-								<div class="user-nama">
-									Daniel Webber
-									<br/>
-									14 Sep 2018
-								</div>
-							</div>
-							<div class="media-body">
-								<div class="small">Jawaban Terbaru</div>
-								Pada dasarnya murid memiliki behavior berbeda per individu, jadi kita bisa membuat analisa untuk individu yang kurang termotivasi. Bisa menggunakan metode ABCD untuk itu. Link detail http://Url.googl.co/eihbvq4
-							</div>
-						</div>
-					</div>
-				</div>
-
+				<?php } ?>
 			</div>
 		</div>
 	</div>

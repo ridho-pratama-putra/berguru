@@ -137,7 +137,7 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['update-to-terlihat']					= 'Mahasiswa/setTerlihat';
 
 	// ajax untuk lihat permasalahan by kategori
-	$route['get-permasalahan-by-kategori']			= 'Mahasiswa/getPermasalahanByKategori';
+	$route['get-permasalahan-by-kategori-mahasiswa']			= 'Mahasiswa/getPermasalahanByKategoriAndStatus';
 
 
 	$route['pertanyaan-detail-mahasiswa/(:num)']	=	'Mahasiswa/pertanyaanDetail/$1';
@@ -148,6 +148,7 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['materi-mahasiswa']						=	'Mahasiswa/materi';
 	$route['materi-tambah-mahasiswa']				=	'Mahasiswa/tambahMateri';
 	$route['submit-tambah-materi-mahasiswa']		=	'Mahasiswa/insertMateri';
+	$route['get-materi-by-kategori-mahasiswa']		= 'Mahasiswa/getMateriByKategori';
 
 
 	$route['karir-mahasiswa']='Mahasiswa/karir';
@@ -180,6 +181,10 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['detail-pertanyaan-pendidik/(:num)']		= 'Pendidik/detailPertanyaan/$1';
 	$route['delete-initialized-dm']					= 'Pendidik/deleteInitializedDm';
 	$route['edit-pertanyaan-pendidik/(:num)']		= 'Pendidik/editPertanyaan/$1';
+	$route['get-materi-by-kategori-pendidik']		= 'Pendidik/getMateriByKategori';
+
+	// ajax untuk lihat permasalahan by kategori
+	$route['get-permasalahan-by-kategori-pendidik']			= 'Pendidik/getPermasalahanByKategoriAndStatus';
 
 	$route['submit-reply-pendidik']					= 'Pendidik/submitReply';
 	$route['submit-rating-pendidik']				= 'Pendidik/submitRating';
@@ -201,4 +206,5 @@ $route['translate_uri_dashes'] = FALSE;
 
 	$route['set-status-pertanyaan-solved/(:num)'] = 'Pendidik/setStatusPertanyaanSolved/$1';
 	$route['set-status-pertanyaan-unsolved/(:num)'] = 'Pendidik/setStatusPertanyaanUnsolved/$1';
+
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/

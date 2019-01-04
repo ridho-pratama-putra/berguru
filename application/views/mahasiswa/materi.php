@@ -1,3 +1,8 @@
+<style type="text/css">
+	.none{
+		display: none !important
+	}
+</style>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -16,10 +21,10 @@
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown">Semua Materi <i class="fa fa-chevron-down"></i></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Materi yang A</a></li>
-						<li><a href="#">Materi yang B</a></li>
+					<a href="#" data-toggle="dropdown"><span id="selected-drowpdown-popular-all"> </span>  <i class="fa fa-chevron-down"></i></a>
+					<ul class="dropdown-menu" id="dropdown-popular-all">
+						<li><a href="#" class="per-populer" onclick="popularAll('populer')" id="dropdown-populer" data-property="populer">Populer</a></li>
+						<li><a href="#" class="per-populer" onclick="popularAll('all')" id="dropdown-semua-materi" data-property="all">Semua Materi</a></li>
 					</ul>
 				</div>
 			</div>
@@ -30,10 +35,10 @@
 				<div class="content-filter-search">
 					<div class="row">
 						<div class="col-sm-12 col-lg-8">
-							<form action="#" class="input-55">
+							<form>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-search"></i></span>
-									<input type="text" class="form-control" placeholder="Ketik lalu tekan enter untuk mencari materi">
+									<input type="text" class="form-control" placeholder="Ketik lalu tekan enter untuk mencari materi" id="search-bar-materi">
 								</div>
 							</form>
 						</div>
@@ -50,83 +55,275 @@
 						</div>
 						<div class="col-xs-7 text-right">
 							<div class="dropdown">
-								<a href="#" data-toggle="dropdown">Harian <i class="fa fa-chevron-down"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li><a href="#">Mingguan</a></li>
-									<li><a href="#">Bulanan</a></li>
+								<a href="#" data-toggle="dropdown"><span id="selected-drowpdown-harian-bulanan"> </span> <i class="fa fa-chevron-down"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right" id="dropdown-harian-bulanan">
+									<li><a href="#" class="per-jangka" onclick="harianBulanan('harian')" id="dropdown-harian" data-property="harian">Harian</a></li>
+									<li><a href="#" class="per-jangka" onclick="harianBulanan('mingguan')" id="dropdown-mingguan" data-property="mingguan">Mingguan</a></li>
+									<li><a href="#" class="per-jangka" onclick="harianBulanan('bulanan')" id="dropdown-bulanan" data-property="bulanan">Bulanan</a></li>
+									<li><a href="#" class="per-jangka" onclick="harianBulanan('tahunan')" id="dropdown-tahunan" data-property="tahunan">Tahunan</a></li>
 								</ul>
 							</div>
 							<div class="dropdown">
-								<a href="#" data-toggle="dropdown">Kategori <i class="fa fa-chevron-down"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<?php foreach ($kategori as $key => $value) { ?>
-										<li><a href="#"><?=$value->nama?></a></li>
-									<?php } ?>
+								<a href="#" data-toggle="dropdown"><span id="selected-drowpdown-kategori"> </span> <i class="fa fa-chevron-down"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right" id="drowpdown-kategori">
+									<li><a href="#" class="per-kategori" onclick="kategori('all')" id="dropdown-0" data-property="0">Semua Kategori</a></li>
+									<?php
+									foreach ($kategori as $key => $value) { ?>
+										<li><a href="#" class="per-kategori" onclick="kategori('<?=$value->id?>')" id="dropdown-<?=$value->id?>" data-property="<?=$value->id?>"><?=$value->nama?></a></li>
+									<?php }
+									?>
 								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="content-list">
-					<?php if ($materi !== array()) { ?>
-					<?php foreach ($materi as $key => $value) { ?>
-						<div class="panel panel-plain content-item">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
-										<div class="materi-ikon <?=$value->ikon_warna?>"><i class="fa <?=$value->ikon_logo?>"></i></div>
-									</div>
-									<div class="col-xs-9 col-sm-10 col-md-7">
-										<h3 class="ci-title"><?=$value->nama?></h3>
-										<div class="td-meta">
-											<i class="far fa-clock"></i>  <?=date('M, d Y',strtotime($value->waktu_terakhir_edit))?>
-											<i class="fa fa-circle"></i>
-											<i class="far fa-comment"></i> <?=$value->jumlah_diunduh?>
-											<i class="fa fa-circle"></i>
-											<i class="far fa-eye"></i> <?=$value->jumlah_dilihat?>
-										</div>
-										<div class="btn btn-custom btn-status-blue"><?=$value->kategori?></div>
-									</div>
-									<div class="col-xs-12 col-md-3 col-lg-4 ci-right">
-										<a href="<?=base_url('download-materi-mahasiswa/').$value->id?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>
-										<div class="content-tag">
-											<span class="text-muted">Tags</span>
-											<?php $variable = $value->tags; $variable = explode(",", $variable);
-											foreach ($variable as $keyA => $valueA) { ?>
-												<a href="#">#<?=$valueA?></a>
-											<?php } ?>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php } ?>
-					<?php }else{ ?>
-						<div class="panel panel-plain content-item">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col">
-										<h3 class="ci-title text-center">Data materi masih kosong</h3>
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php } ?>
+				<div class="content-list"  id="materiByKategori">
+					
 				</div>
 			</div>
-
 			<div class="col-sm-4 col-md-3">
 				<a href="#"><img src="<?=base_url()?>assets/dashboard/assets/images/iklan.png" alt="Image" class="img-fw"></a>
 			</div>
-
-
 		</div>
-
 	</div>
-
-
-
-
-
-
 </div>	<!--/.main-->
+
+<script type="text/javascript">
+
+	$( document ).ready(function() {
+		$("#search-bar-materi").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$(".content-item").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		});
+		popularAll('all')
+		harianBulanan('tahunan')
+		kategori('all')
+		getDataMateri()
+		// alert('docred')
+	});
+	
+	function timeAgo() {
+		var templates = {
+			prefix: "",
+			suffix: " yang lalu",
+			seconds: "beberapa detik",
+			minute: "1 menit",
+			minutes: "%d menit",
+			hour: "1 jam",
+			hours: "%d jam",
+			day: "1 hari",
+			days: "%d hari",
+			month: "1 bulan",
+			months: "%d bulan",
+			year: "1 tahun",
+			years: "%d tahun"
+		};
+		var template = function(t, n) {
+			return templates[t] && templates[t].replace(/%d/i, Math.abs(Math.round(n)));
+		};
+
+		var timer = function(time) {
+			if (!time)
+				return;
+			time = time.replace(/\.\d+/, ""); // remove milliseconds
+			time = time.replace(/-/, "/").replace(/-/, "/");
+			time = time.replace(/T/, " ").replace(/Z/, " UTC");
+			time = time.replace(/([\+\-]\d\d)\:?(\d\d)/, " $1$2"); // -04:00 -> -0400
+			time = new Date(time * 1000 || time);
+
+			var now = new Date();
+			var seconds = ((now.getTime() - time) * .001) >> 0;
+			var minutes = seconds / 60;
+			var hours = minutes / 60;
+			var days = hours / 24;
+			var years = days / 365;
+
+			return templates.prefix + (
+				seconds < 45 && template('seconds', seconds) ||
+				seconds < 90 && template('minute', 1) ||
+				minutes < 45 && template('minutes', minutes) ||
+				minutes < 90 && template('hour', 1) ||
+				hours < 24 && template('hours', hours) ||
+				hours < 42 && template('day', 1) ||
+				days < 30 && template('days', days) ||
+				days < 45 && template('month', 1) ||
+				days < 365 && template('months', days / 30) ||
+				years < 1.5 && template('year', 1) ||
+				template('years', years)
+				) + templates.suffix;
+		};
+
+		var elements = document.getElementsByClassName('timeago');
+		for (var i in elements) {
+			var $this = elements[i];
+			if (typeof $this === 'object') {
+				$this.innerHTML = "<span class='bgicon bgicon-clock'></span> " + timer($this.getAttribute('title') || $this.getAttribute('datetime'));
+			}
+		}
+		// update time every minute
+		setTimeout(timeAgo, 60000);
+	};
+
+	function popularAll(argument) {
+		var before = $("#selected-drowpdown-popular-all").html()
+		if (before == 'Semua Materi') {
+			$("#dropdown-semua-materi").removeClass("none")
+		}else if (before == 'Populer') {
+			$("#dropdown-populer").removeClass("none")
+		}
+		
+		$(".per-jangka").removeClass('none')
+		$(".per-jangka").removeClass('selected')
+
+		if (argument == 'all') {
+			$("#selected-drowpdown-popular-all").html("Semua Materi");
+			$("#dropdown-semua-materi").addClass("none")
+			$("#dropdown-semua-materi").addClass("selected")
+		}else if (argument == 'populer') {
+			$("#selected-drowpdown-popular-all").html("Populer");
+			$("#dropdown-populer").addClass("none")
+			$("#dropdown-populer").addClass("selected")
+		}
+		if (before !== " ") {
+			
+			getDataMateri()
+		}
+	}
+
+	function harianBulanan (argument) {
+		var before = $("#selected-drowpdown-harian-bulanan").html()
+		if (before == 'Harian') {
+			$("#dropdown-harian").removeClass("none")
+			$("#dropdown-harian").removeClass("selected")
+		}else if (before == 'Bulanan') {
+			$("#dropdown-bulanan").removeClass("none")
+			$("#dropdown-bulanan").removeClass("selected")
+		}else if (before == 'Mingguan') {
+			$("#dropdown-mingguan").removeClass("none")
+			$("#dropdown-mingguan").removeClass("selected")
+		}else if (before == 'Tahunan') {
+			$("#dropdown-tahunan").removeClass("none")
+			$("#dropdown-tahunan").removeClass("selected")
+		}
+
+		$(".per-jangka").removeClass('none')
+		$(".per-jangka").removeClass('selected')
+		
+		if (argument == 'harian') {
+			$("#selected-drowpdown-harian-bulanan").html("Harian");
+			$("#dropdown-harian").addClass("none")
+			$("#dropdown-harian").addClass("selected")
+		}else if (argument == 'bulanan') {
+			$("#selected-drowpdown-harian-bulanan").html("Bulanan");
+			$("#dropdown-bulanan").addClass("none")
+			$("#dropdown-bulanan").addClass("selected")
+		}else if (argument == 'mingguan') {
+			$("#selected-drowpdown-harian-bulanan").html("Mingguan");
+			$("#dropdown-mingguan").addClass("none")
+			$("#dropdown-mingguan").addClass("selected")
+		}else if (argument == 'tahunan') {
+			$("#selected-drowpdown-harian-bulanan").html("Tahunan");
+			$("#dropdown-tahunan").addClass("none")
+			$("#dropdown-tahunan").addClass("selected")
+		}
+		if (before !== " ") {
+			
+			getDataMateri()
+		}
+	}
+	
+	function kategori (argument) {
+		// alert('kateg')
+		var before = $("#selected-drowpdown-kategori").html()
+		
+		$(".per-kategori").removeClass('none')
+		$(".per-kategori").removeClass('selected')
+		
+		if (argument == 'all') {
+			$("#selected-drowpdown-kategori").empty()
+			$("#selected-drowpdown-kategori").html("Semua Kategori");
+			
+			$("#dropdown-0").addClass('none')
+			$("#dropdown-0").addClass('selected')
+		}else {
+			$("#selected-drowpdown-kategori").empty()
+			$("#selected-drowpdown-kategori").html( $("#dropdown-"+argument+"").html() );
+
+			// add kelas untuk anak nya yang diselect dibedakan berdasar id
+			$("#dropdown-"+argument).addClass('none')
+			$("#dropdown-"+argument).addClass('selected')
+		}
+
+		if (before !== " ") {
+			
+			getDataMateri()
+		}
+	}
+
+	function getDataMateri() {
+		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+		  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+		];
+
+		
+		$.get("<?=base_url()?>get-materi-by-kategori-mahasiswa",{kategori_materi:$(".per-kategori.selected").data('property'),harian_bulanan:$(".per-jangka.selected").data('property'),popular_all: $(".per-populer.selected").data('property')},function(data){
+			data = JSON.parse(data)
+			var elementToRender = '';
+			if (data.materi.length > 0 ) {
+				for( var i in data.materi){
+					const d = new Date(data.materi[i].waktu_terakhir_edit);
+					elementToRender += 
+					'<div class="panel panel-plain content-item">'+
+						'<div class="panel-body">'+
+							'<div class="row">'+
+								'<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">'+
+									'<div class="materi-ikon '+data.materi[i].ikon_warna+'"><i class="fa '+data.materi[i].ikon_logo+'"></i></div>'+
+								'</div>'+
+								'<div class="col-xs-9 col-sm-10 col-md-7">'+
+									'<h3 class="ci-title nama">'+data.materi[i].nama+'</h3>'+
+									'<div class="td-meta">'+
+										'<i class="far fa-clock"></i> '+monthNames[d.getMonth()]+', '+d.getDate()+' '+d.getFullYear()+
+										'<i class="fa fa-circle"></i> '+
+										'<i class="fa fa-cloud-download-alt"></i> '+data.materi[i].jumlah_diunduh+
+										'<i class="fa fa-circle"></i>'+
+										'<i class="far fa-eye"></i>'+data.materi[i].jumlah_dilihat+
+									'</div>'+
+									'<div class="btn btn-custom btn-status-blue">'+data.materi[i].kategori+'</div>'+
+								'</div>'+
+								'<div class="col-xs-12 col-md-3 col-lg-4 ci-right"> '+
+									'<a href="<?=base_url('download-materi-pendidik/')."'+data.materi[i].id+'"?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>'+
+									'<div class="content-tag">'+
+										'<span class="text-muted">Tags</span>'
+										var tags = data.materi[i].tags.split(',')
+										for(var j in tags){
+											elementToRender += '<a href="#">#'+tags[j]+'</a>'
+										}
+									elementToRender +=
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+					'</div>'
+				}
+			}else{
+				elementToRender += 
+					'<div class="panel panel-plain content-item">'+
+						'<div class="panel-body">'+
+							'<div class="row">'+
+								'<div class="col">'+
+									'<h3 class="ci-title text-center">Data materi masih kosong</h3>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+			}
+			// console.log(JSON.stringify(data.materi))
+
+			$("#materiByKategori").empty()
+			$("#materiByKategori").html(elementToRender);
+			timeAgo();
+		});
+	}
+</script>

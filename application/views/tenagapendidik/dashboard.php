@@ -125,7 +125,7 @@
 	function getDataPertanyaan() {
 		var status_pertanyaan = $("#selected-drowpdown-pertanyaan").html()
 		var kategori_pertanyaan = $(".cfc-item.active").attr('id')
-		$.get("<?=base_url()?>get-permasalahan-by-kategori-mahasiswa",{kategori:kategori_pertanyaan,status:status_pertanyaan},function(data){
+		$.get("<?=base_url()?>get-permasalahan-by-kategori-pendidik",{kategori:kategori_pertanyaan,status:status_pertanyaan},function(data){
 			data = JSON.parse(data);
 			// console.log(data)
 			var elementToRender = '';

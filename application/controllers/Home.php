@@ -85,6 +85,7 @@ class Home extends CI_Controller {
 		}
 
 		$record['permasalahan'] = $this->model->rawQuery($query)->result();
+		$record['data_login'] = $this->session->userdata('loginSession')['id'];
 
 		foreach ($record['permasalahan'] as $key => $value) {
 			$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];

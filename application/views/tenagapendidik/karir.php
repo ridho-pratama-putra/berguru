@@ -1,3 +1,13 @@
+<script type="text/javascript">
+	$( document ).ready(function() {
+		$("#search-bar-karir").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$(".content-item").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		})
+	})
+</script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -29,10 +39,10 @@
 				<div class="content-filter-search">
 					<div class="row">
 						<div class="col-sm-12 col-lg-8">
-							<form action="#" class="input-55">
+							<form>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-map-marker-alt"></i></span>
-									<input type="text" class="form-control" placeholder="Pilih lokasi">
+									<input type="text" class="form-control" placeholder="Pilih lokasi" id="search-bar-karir">
 								</div>
 							</form>
 						</div>

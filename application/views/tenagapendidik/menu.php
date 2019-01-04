@@ -164,7 +164,7 @@
 	</form> -->
 	<ul class="nav menu">
 		<li class="" id="home">
-			<a href="index.html"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a>
+			<a href="<?=base_url()?>dashboard-pendidik"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a>
 		</li>
 		<li class="" id="pertanyaanSaya">
 			<a href="<?=base_url()?>pertanyaan-pendidik"><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>

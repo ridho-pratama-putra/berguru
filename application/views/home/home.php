@@ -136,11 +136,15 @@
 										}
 										elementToRender +=
 									"</ul>"+
-								"</div>"+
-								"<div class='col-md-6 ask-action'>"+
-									"<p>Anda Mahasiswa?</p>"+
-									"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
-								"</div>"+
+								"</div>"
+								if (data.data_login == null) {
+									elementToRender +=
+									"<div class='col-md-6 ask-action'>"+
+										"<p>Anda Mahasiswa?</p>"+
+										"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
+									"</div>"
+								}
+							elementToRender +=
 							"</div>"+
 						"</div>"+
 					"</div>";
