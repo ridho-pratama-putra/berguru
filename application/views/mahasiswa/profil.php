@@ -59,12 +59,12 @@
 				<div class="profile-dm-number">
 					<table>
 						<tr>
-							<th>121</th>
+							<th><?=$dm['dm'][0]['jumlah']?></th>
 							<td>DM</td>
 							<td></td>
 						</tr>
 						<tr>
-							<th>13</th>
+							<th><?=$dm['dm_solved'][0]['jumlah']?></th>
 							<td>DM Solved</td>
 							<td><span class="circle circle-green"><i class="fa fa-check"></i></span></td>
 						</tr>
@@ -92,7 +92,7 @@
 								<div class="media">
 									<div class="media-left media-middle">
 										<div class="user-photo">
-											<img src="<?=base_url()?>assets/dashboard/assets/images/reading.png" alt="Photo">
+											<img src="<?=base_url().$value->foto?>" alt="Photo">
 										</div>
 										<div class="user-nama">
 											<?=$value->nama?>

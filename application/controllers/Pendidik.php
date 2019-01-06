@@ -272,12 +272,19 @@ class Pendidik extends CI_Controller {
 						SELECT pengguna.nama FROM pengguna WHERE pengguna.id = (SELECT komentar.siapa FROM komentar WHERE komentar.id = max_komentar)
 					) AS nama_komentator,
 					(
+						SELECT pengguna.foto FROM pengguna WHERE pengguna.id = (SELECT komentar.siapa FROM komentar WHERE komentar.id = max_komentar)
+					) AS foto_komentator,
+					(
 						SELECT komentar.tanggal FROM komentar WHERE komentar.id = max_komentar
 					) AS tanggal
 
 					
 			FROM permasalahan 
 			LEFT JOIN komentar ON permasalahan.id = komentar.permasalahan WHERE permasalahan.siapa  = '".$this->session->userdata('loginSession')['id']."' ORDER BY id DESC")->result();
+		$record['dm'] = array(
+								'dm_solved' => $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE jenis_pesan = 'permasalahan_solved' AND dari = '".$this->session->userdata('loginSession')['id']."' ")->result_array(),
+								'dm'		=> $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE dari = '".$this->session->userdata('loginSession')['id']."'")->result_array()
+							);
 		$this->load->view('statis/header',$header);
 		$this->load->view('tenagapendidik/menu',$this->menu);
 		$this->load->view('tenagapendidik/profil',$record);

@@ -333,13 +333,17 @@ class Mahasiswa extends CI_Controller {
 																komentar.teks AS teks_komentar,
 																komentar.tanggal,
 																permasalahan.teks AS teks_permasalahan,
-																pengguna.nama
+																pengguna.nama,
+																pengguna.foto
 														FROM komentar
 														LEFT JOIN permasalahan ON komentar.permasalahan = permasalahan.id
 														LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
 														WHERE komentar.siapa = "'.$this->session->userdata('loginSession')['id'].'"
 		')->result();
-
+		$record['dm'] = array(
+								'dm_solved' => $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE jenis_pesan = 'permasalahan_solved' AND untuk = '".$this->session->userdata('loginSession')['id']."' ")->result_array(),
+								'dm'		=> $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE dari = '".$this->session->userdata('loginSession')['id']."'")->result_array()
+							);
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
 		$this->load->view('mahasiswa/profil',$record);
