@@ -171,10 +171,11 @@
 
 	// function untuk get rangking mahasiswa besertai poin dan permasalhan
 	function rangking_mahasiswa() {
-		$.get("<?=base_url()?>get-rangking-mahasiswa",{limit : 7},function( res ) {
+		$.get("<?=base_url()?>get-rangking-mahasiswa",{limit : 7,jangka_waktu:$("#select-rangking-mahasiswa").val()},function( res ) {
 			res =JSON.parse(res)
+			console.log(res)
 			elementToRender = ''
-			if (res.data !== null) {
+			if (res.data.length !== 0) {
 				if (res.dm_available !== null) {
 					for (var i = 0; i < res.data.length; i++) {
 						elementToRender +=
@@ -216,7 +217,7 @@
 				elementToRender += '<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
 			}else{
 				elementToRender += 
-							'<h6 class="title text-center"> Data lowongan masih kosong</h6>'+
+							'<h6 class="title text-center"> Data mahasiswa poin tertinggi untuk kategori yang anda pilih belum tersedia</h6>'+
 								'</div>'
 			}
 			$("#rangking-mahasiswa").html(elementToRender);
@@ -472,10 +473,10 @@
 							<div class="panel-body">
 								<div class="sidebar-title student-title">
 									<h3 class="title">Mahasiswa Poin Tertinggi</h3>
-									<select class="sidebar-filter" >
-										<option value='hari'>Harian</option>
-										<option value='bulan' selected="">Bulan</option>
-										<option value='bulan_lalu'>Bulan Lalu</option>
+									<select class="sidebar-filter" onchange="rangking_mahasiswa()" id="select-rangking-mahasiswa">
+										<option value='harian'>Harian</option>
+										<option value='bulan'>Bulan</option>
+										<option value='bulan_lalu' selected="">Bulan Lalu</option>
 									</select>
 								</div>
 								<div id="rangking-mahasiswa"></div>

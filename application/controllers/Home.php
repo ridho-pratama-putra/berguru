@@ -56,15 +56,21 @@ class Home extends CI_Controller {
 	* funtion untuk menamplkan rangking mahasiswa berdsaarkan poin yang didapat. untuk melayani request dari ajax
 	*/
 	function getMahasiswaPoinTertinggi(){
-		$record['data'] = $this->model->rawQuery("
-																	SELECT
-																		DISTINCT pengguna.nama,pengguna.poin,pengguna.foto,
-																		(SELECT count(komentar.siapa) FROM komentar WHERE komentar.siapa = pengguna.id ) AS jumlah_komentar
-																	FROM pengguna
-																	RIGHT JOIN komentar ON pengguna.id = komentar.siapa
-																	WHERE pengguna.aktor = 'mahasiswa'
-																	ORDER BY pengguna.poin 
-																	DESC Limit ". $this->input->get('limit'))->result();
+		$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id ";
+		$date = new DateTime(date("Y-m-d"));
+		if ($this->input->get('jangka_waktu') == 'harian') {
+			$string .= "WHERE DATE(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
+		}elseif ($this->input->get('jangka_waktu') == 'bulan') {
+			$string .= "WHERE MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
+		}elseif ($this->input->get('jangka_waktu') == 'bulan_lalu') {
+			if (($date->format("m") - 1) == 0) {
+				$string .= "WHERE MONTH(tanggal) = '12' AND YEAR(tanggal) = '".($date->format("Y")-1)."' ";
+			}else{
+				$string .= "WHERE MONTH(tanggal) = '".($date->format("m") - 1)."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
+			}
+		}
+		$string.= "ORDER by poin DESC LIMIT ".$this->input->get('limit');
+		$record['data'] = $this->model->rawQuery($string)->result();
 		$record['dm_available'] = $this->session->userdata('loginSession');
 		echo json_encode($record);
 	}
@@ -74,26 +80,18 @@ class Home extends CI_Controller {
 	*/
 	function getMateri()
 	{
-		$string = 	"SELECT 
-						materi.deskripsi,
-						materi.waktu_terakhir_edit,
-						materi.nama,
-						materi.jumlah_diunduh,
-						materi.jumlah_dilihat,
-						materi.ikon_cat,
-						materi.ikon_logo,
-						materi.ikon_warna,
-						pengguna.nama AS siapa_terakhir_edit
-						
-					FROM materi 
-					INNER JOIN pengguna ON pengguna.id = materi.siapa_terakhir_edit ";
+		$string = 	"SELECT materi.deskripsi,materi.waktu_terakhir_edit,materi.nama,materi.jumlah_diunduh,materi.jumlah_dilihat,materi.ikon_cat,materi.ikon_logo,materi.ikon_warna,pengguna.nama AS siapa_terakhir_edit FROM materi INNER JOIN pengguna ON pengguna.id = materi.siapa_terakhir_edit ";
 		$date = new DateTime(date("Y-m-d"));
 		if ($this->input->get('jangka_waktu') == "hari") {
 			$string .= "WHERE DAY(materi.waktu_terakhir_edit) = '".$date->format("d")."' AND MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
 		}elseif ($this->input->get('jangka_waktu') == "bulan") {
 			$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
 		}elseif ($this->input->get('jangka_waktu') == "bulan_lalu") {
-			$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '".($date->format("m")-1)."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			if (($date->format("m") - 1) == 0) {
+				$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '12' AND YEAR(materi.waktu_terakhir_edit) = '".($date->format("Y")-1)."'";
+			}else{
+				$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '".($date->format("m")-1)."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}
 		}
 		$string .= " ORDER BY materi.waktu_terakhir_edit LIMIT ".$this->input->get('limit');
 
