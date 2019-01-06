@@ -194,10 +194,14 @@
 											}
 											
 											elementToRender +=
-										"</div>"+
-										"<div class='col-xs-12 col-md-4 col-lg-3'>"+
-											"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-block btn-normal btn-plonk-green'> Bantu Jawab</a>"+
-										"</div>"+
+										"</div>"
+										if ( data.permasalahan[i].status == "UNSOLVED") {
+											elementToRender +=
+											"<div class='col-xs-12 col-md-4 col-lg-3'>"+
+												"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-block btn-normal btn-plonk-green'> Bantu Jawab</a>"+
+											"</div>"
+										}
+										elementToRender +=
 									"</div>"+
 								"</div>"+
 							"</div>"+

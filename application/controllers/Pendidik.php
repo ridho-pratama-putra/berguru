@@ -632,98 +632,27 @@ class Pendidik extends CI_Controller {
 		}
 	}
 
-		/*
+	/*
 	* function untuk handle ajax request untuk onclick pilih kategori. function ini dipanggil di halaman dashboard.
 	*/
 	function getPermasalahanByKategoriAndStatus()
 	{
 		if ($this->input->get() !== '') {
+			$string = "SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.jumlah_komen, permasalahan.jumlah_dilihat, permasalahan.kategori, kategori.nama AS nama_kategori, permasalahan.status, permasalahan.beku, pengguna.foto FROM permasalahan LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id LEFT JOIN kategori ON permasalahan.kategori = kategori.id ";
 			if ($this->input->get('kategori') == "all" && $this->input->get('status') == "Semua Pertanyaan") {
-				$record['permasalahan'] = $this->model->rawQuery("
-				SELECT
-						permasalahan.id,
-						permasalahan.teks,
-						permasalahan.tanggal,
-						pengguna.nama AS nama_pengguna,
-						permasalahan.jumlah_komen,
-						permasalahan.jumlah_dilihat,
-						permasalahan.kategori,
-						kategori.nama AS nama_kategori,
-						permasalahan.status,
-						permasalahan.beku,
-						pengguna.foto
-				FROM permasalahan
-				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-				LEFT JOIN kategori ON permasalahan.kategori = kategori.id
-				ORDER BY permasalahan.tanggal
-				")->result();
-				
+				$string.= '';				
 			}elseif ($this->input->get('status') == "Semua Pertanyaan"){
-
-				$record['permasalahan'] = $this->model->rawQuery("
-				SELECT
-						permasalahan.id,
-						permasalahan.teks,
-						permasalahan.tanggal,
-						pengguna.nama AS nama_pengguna,
-						permasalahan.jumlah_komen,
-						permasalahan.jumlah_dilihat,
-						permasalahan.kategori,
-						kategori.nama AS nama_kategori,
-						permasalahan.status,
-						permasalahan.beku,
-						pengguna.foto
-				FROM permasalahan
-				LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
-				LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
-				WHERE permasalahan.kategori = '".$this->input->get('kategori')."'
-				ORDER BY permasalahan.tanggal
-				")->result();
+				$string .= " WHERE permasalahan.kategori = '".$this->input->get('kategori')."' ";
 			}else{
 				if ($this->input->get('kategori') == 'all') {
-					$record['permasalahan'] = $this->model->rawQuery("
-					SELECT
-							permasalahan.id,
-							permasalahan.teks,
-							permasalahan.tanggal,
-							pengguna.nama AS nama_pengguna,
-							permasalahan.jumlah_komen,
-							permasalahan.jumlah_dilihat,
-							permasalahan.kategori,
-							kategori.nama AS nama_kategori,
-							permasalahan.status,
-							permasalahan.beku,
-							pengguna.foto
-					FROM permasalahan
-					LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
-					LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
-					WHERE permasalahan.status = '".$this->input->get('status')."'
-					ORDER BY permasalahan.tanggal
-					")->result();
+					$string .= " WHERE permasalahan.status = '".$this->input->get('status')."' ";
 				}else{
-					$record['permasalahan'] = $this->model->rawQuery("
-					SELECT
-							permasalahan.id,
-							permasalahan.teks,
-							permasalahan.tanggal,
-							pengguna.nama AS nama_pengguna,
-							permasalahan.jumlah_komen,
-							permasalahan.jumlah_dilihat,
-							permasalahan.kategori,
-							kategori.nama AS nama_kategori,
-							permasalahan.status,
-							permasalahan.beku,
-							pengguna.foto
-					FROM permasalahan
-					LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id 
-					LEFT JOIN kategori ON permasalahan.kategori = kategori.id 
-					WHERE permasalahan.kategori = '".$this->input->get('kategori')."' AND permasalahan.status = '".$this->input->get('status')."'
-					ORDER BY permasalahan.tanggal
-					")->result();
+					$string .= " WHERE permasalahan.kategori = '".$this->input->get('kategori')."' AND permasalahan.status = '".$this->input->get('status')."' ";
 					
 				}
 			}
-
+			$string .= "ORDER BY permasalahan.tanggal ";
+			$record['permasalahan'] = $this->model->rawQuery($string)->result();
 			foreach ($record['permasalahan'] as $key => $value) {
 				$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];
 				$record['permasalahan'][$key]->remaining_penjawab = $this->getPenjawab($value->id)['remaining_penjawab'];

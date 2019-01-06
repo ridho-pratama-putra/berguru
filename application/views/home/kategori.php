@@ -68,7 +68,7 @@
     function pertanyaan(argument) {
         $.get("<?=base_url()?>kategori-status",{tipe : argument, kategori : <?=$kategori[0]->id?>},function( data ) {
             data = JSON.parse(data);
-            // console.log(data);
+            console.log(data.data_login.aktor);
             $("#pertanyaanDitemukan").html(data.jumlah+" pertanyaan ditemukan");
             if (data.permasalahan.length != 0) {
                 var elementToRender = '';
@@ -99,11 +99,11 @@
                                     "<div class='col-sm-6 ask-data-list'>"+
                                         "<div class='ask-data'>"+
                                             "<p class='data-value'>"+data.permasalahan[i].jumlah_dilihat+"</p>"+
-                                            "<p class='data-label'>Dilihat</p>"+
+                                            "<p class='data-label'>Dilihat </p> "+
                                         "</div>"+
                                         "<div class='ask-data'>"+
                                             "<p class='data-value'>"+data.permasalahan[i].jumlah_komen+"</p>"+
-                                            "<p class='data-label'>Jawaban</p>"+
+                                            "<p class='data-label'> Jawaban</p>"+
                                         "</div>"+
                                     "</div>"+
                                 "</div>"+
@@ -141,11 +141,20 @@
                                             }
                                             elementToRender +=
                                         "</ul>"+
-                                    "</div>"+
-                                    "<div class='col-md-6 ask-action'>"+
-                                        "<p>Anda Mahasiswa?</p>"+
-                                        "<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
-                                    "</div>"+
+                                    "</div>"
+                                    if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null) && data.permasalahan[i].status == "UNSOLVED") {
+                                        elementToRender +=
+                                        "<div class='col-md-6 ask-action'>"+
+                                            "<p>Anda Mahasiswa? </p> "+
+                                            "<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
+                                        "</div>"
+                                    }else{
+                                        elementToRender +=
+                                        "<div class='col-md-6 ask-action'>"+
+                                            "<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
+                                        "</div>"
+                                    }
+                                elementToRender +=
                                 "</div>"+
                             "</div>"+
                         "</div>"+

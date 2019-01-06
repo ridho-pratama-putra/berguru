@@ -68,6 +68,8 @@ class Home extends CI_Controller {
 			}else{
 				$string .= "WHERE MONTH(tanggal) = '".($date->format("m") - 1)."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
 			}
+		}elseif ($this->input->get('jangka_waktu') == 'semua') {
+			$string .= '';
 		}
 		$string.= "ORDER by poin DESC LIMIT ".$this->input->get('limit');
 		$record['data'] = $this->model->rawQuery($string)->result();
@@ -92,10 +94,13 @@ class Home extends CI_Controller {
 			}else{
 				$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '".($date->format("m")-1)."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
 			}
+		}elseif ($this->input->get('jangka_waktu') == 'semua') {
+			$string .= '';
 		}
 		$string .= " ORDER BY materi.waktu_terakhir_edit LIMIT ".$this->input->get('limit');
 
 		$record['data'] = $this->model->rawQuery($string)->result();
+		$record['jangka_waktu'] = $this->input->get('jangka_waktu');
 		echo json_encode($record);
 	}
 
@@ -140,7 +145,7 @@ class Home extends CI_Controller {
 		}
 
 		$record['permasalahan'] = $this->model->rawQuery($query)->result();
-		$record['data_login'] = $this->session->userdata('loginSession')['id'];
+		$record['data_login'] = array('id'=>$this->session->userdata('loginSession')['id'],'aktor'=>$this->session->userdata('loginSession')['aktor']);
 
 		foreach ($record['permasalahan'] as $key => $value) {
 			$record['permasalahan'][$key]->komentator = $this->getPenjawab($value->id)['foto_nama'];
@@ -196,6 +201,7 @@ class Home extends CI_Controller {
 	{
 		$namaKategori = $this->input->get('q');
 		$kategori = $this->model->read("kategori",array('nama'=>$namaKategori));
+
 		if ($kategori->num_rows() == 1) {
 			$menu['active'] 	=	"kategori";
 			$menu['selected_kategori'] 	=	$kategori->result();
