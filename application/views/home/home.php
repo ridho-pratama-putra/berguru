@@ -2,6 +2,9 @@
 	
 	// untuk perhitungan waktu yang lalu
 	window.onload = pertanyaan('all');
+	rangking_mahasiswa()
+	materi()
+	
 	function timeAgo() {
 		var templates = {
 			prefix: "",
@@ -163,6 +166,94 @@
 			}else{
 				$("#"+argument).html("<p><h4 class='text-center'>Data belum ada</h4></p>");
 			}
+		});
+	}
+
+	// function untuk get rangking mahasiswa besertai poin dan permasalhan
+	function rangking_mahasiswa() {
+		$.get("<?=base_url()?>get-rangking-mahasiswa",{limit : 7},function( res ) {
+			res =JSON.parse(res)
+			elementToRender = ''
+			if (res.data !== null) {
+				if (res.dm_available !== null) {
+					for (var i = 0; i < res.data.length; i++) {
+						elementToRender +=
+							'<div class="student-item">'+
+								'<div class="media">'+
+									'<div class="media-left media-middle">'+
+										'<a href="#" class="student-photo">'+
+											'<img src="<?=base_url()?>'+res.data[i].foto+'" width="" height="" class="img-circle" alt="Image" class="media-object">'+
+										'</a>'+
+									'</div>'+
+									'<div class="media-body">'+
+										'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
+										'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
+										'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
+										'<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>'+
+									'</div>'+
+								'</div>'+
+							'</div>'
+					}
+				}else{
+					for (i in res.data){
+						elementToRender +=
+							'<div class="student-item">'+
+								'<div class="media">'+
+									'<div class="media-left media-middle">'+
+										'<a href="#" class="student-photo">'+
+											'<img src="<?=base_url()?>'+res.data[i].foto+'" width="" height="" class="img-circle" alt="Image" class="media-object">'+
+										'</a>'+
+									'</div>'+
+									'<div class="media-body">'+
+										'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
+										'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
+										'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
+									'</div>'+
+								'</div>'+
+							'</div>'
+					}
+				}
+				elementToRender += '<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
+			}else{
+				elementToRender += 
+							'<h6 class="title text-center"> Data lowongan masih kosong</h6>'+
+								'</div>'
+			}
+			$("#rangking-mahasiswa").html(elementToRender);
+		});
+	}
+
+	// function untuk menmapilkan materi disertai sorting per hari dan perbulan
+	function materi() {
+		argument = $("#select-materi-menarik").val();
+		$.get("<?=base_url()?>get-materi",{limit : 7, jangka_waktu:argument},function( res ) {
+			res = JSON.parse(res)
+			elementToRender = ''
+			$('#materi').html(elementToRender);
+			if (res.data.length === 0) {
+				elementToRender += 
+					'<h6 class="title text-center"> Data materi masih kosong untuk kategori yang anda pilih</h6>'
+			}else{
+				for (var i = 0; i < res.data.length; i++) {
+					elementToRender += 
+						'<div class="material-item">'+
+							'<div class="media '+res.data[i].ikon_cat+'">'+
+								'<div class="media-left media-middle">'+
+									'<div class="media-object">'+
+										'<span class="bgicon '+res.data[i].ikon_logo+'"></span>'+
+									'</div>'+
+								'</div>'+
+								'<div class="media-body">'+
+									'<h4 class="media-heading"><a href="#">'+res.data[i].nama+'</a></h4>'+
+									'<p>Post oleh <cite>'+res.data[i].siapa_terakhir_edit+'</cite> <span class="count"><i class="bgicon icon-download"></i> '+res.data[i].jumlah_diunduh+'</span></p>'+
+								'</div>'+
+							'</div>'+
+						'</div>'
+				}
+				elementToRender += 
+					'<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
+			}
+			$('#materi-menarik').html(elementToRender);
 		});
 	}
 
@@ -381,53 +472,13 @@
 							<div class="panel-body">
 								<div class="sidebar-title student-title">
 									<h3 class="title">Mahasiswa Poin Tertinggi</h3>
-									<select class="sidebar-filter">
-										<option>Harian</option>
-										<option>Bulan</option>
-										<option>Bulan Lalu</option>
+									<select class="sidebar-filter" >
+										<option value='hari'>Harian</option>
+										<option value='bulan' selected="">Bulan</option>
+										<option value='bulan_lalu'>Bulan Lalu</option>
 									</select>
 								</div>
-								<?php if ($mahasiswa_poin_tertinggi != array() ) {
-									if ($this->session->userdata('loginSession') !== null) {
-									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
-									
-								<div class="student-item">
-									<div class="media">
-										<div class="media-left media-middle">
-											<a href="#" class="student-photo">
-												<img src="<?=base_url().$value->foto?>" width="" height="" class="img-circle" alt="Image" class="media-object">
-											</a>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><?=$value->nama?></h4>
-											<p class="student-solution">31 Solusi</p>
-											<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span> <?=$value->poin?></a>
-											<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>
-										</div>
-									</div>
-								</div>
-								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-								<?php }
-								}else{ 
-									foreach ($mahasiswa_poin_tertinggi as $key => $value) { ?>
-								<div class="student-item">
-									<div class="media">
-										<div class="media-left media-middle">
-											<a href="#" class="student-photo">
-												<img src="<?=base_url().$value->foto?>" width="" height="" class="img-circle" alt="Image" class="media-object">
-											</a>
-										</div>
-										<div class="media-body">
-											<h4 class="media-heading"><?=$value->nama?></h4>
-											<p class="student-solution">31 Solusi</p>
-											<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span> <?=$value->poin?></a>
-										</div>
-									</div>
-								</div>
-								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-								<?php }}}else{ ?>
-								<h6 class="title text-center"> Data mahasiswa masih kosong</h6>
-								<?php } ?>
+								<div id="rangking-mahasiswa"></div>
 							</div>
 						</div>
 						
@@ -459,32 +510,14 @@
 							<div class="panel-body">
 								<div class="sidebar-title material-title">
 									<h3 class="title">Materi Menarik</h3>
-									<select class="sidebar-filter">
-										<option>Harian</option>
-										<option>Bulan</option>
-										<option>Bulan Lalu</option>
+									<select class="sidebar-filter" onchange="materi()" id="select-materi-menarik">
+										<option value='hari'>Harian</option>
+										<option value='bulan' selected="">Bulan</option>
+										<option value='bulan_lalu'>Bulan Lalu</option>
 									</select>
 								</div>
-								<?php if ($materi !== array()) { ?>
-								<?php foreach ($materi as $key => $value) { ?>
-									<div class="material-item">
-										<div class="media <?=$value->ikon_cat?>">
-											<div class="media-left media-middle">
-												<div class="media-object">
-													<span class="bgicon <?=$value->ikon_logo?>"></span>
-												</div>
-											</div>
-											<div class="media-body">
-												<h4 class="media-heading"><a href="#"><?=$value->nama?></a></h4>
-												<p>Post oleh <cite><?=$value->siapa_terakhir_edit?></cite> <span class="count"><i class="bgicon icon-download"></i> <?=$value->jumlah_diunduh?></span></p>
-											</div>
-										</div>
-									</div>
-								<?php } ?>
-									<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-								<?php }else{ ?>
-									<h6 class="title text-center"> Data materi masih kosong</h6>
-								<?php } ?>
+								<div id="materi-menarik"></div>
+								
 							</div>
 						</div>
 					</div>

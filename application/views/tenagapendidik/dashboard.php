@@ -210,7 +210,7 @@
 						'<div class="panel-body">'+
 							'<div class="row">'+
 								'<div class="col">'+
-									'<h3 class="ci-title text-center">Tidak ada pertanyaan di kategori yang anda tentukan</h3>'+
+									'<h3 class="ci-title text-center">Belum ada pertanyaan di kategori yang anda tentukan</h3>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -298,33 +298,7 @@
 
 			<div class="col-sm-4 col-md-3">
 				<div class="rightbar">
-					<div class="panel panel-plain">
-						<div class="panel-body">
-							<h3>Poin & Badge</h3>
-							<div class="profile-achievement">
-								<div class="profile-point"><span>P</span> <?=$pengguna[0]->poin?></div>
-								<?php
-									if(intval($pengguna[0]->poin) !== 0 ){
-										if (intval($pengguna[0]->poin) < 40 ) { ?>
-											<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-										<?php }elseif (intval($pengguna[0]->poin) < 100) { ?>
-											<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-											<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
-										<?php }elseif (intval($pengguna[0]->poin) < 180) { ?>
-											<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-											<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
-											<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
-										<?php }elseif (intval($pengguna[0]->poin) < 300) { ?>
-											<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-											<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
-											<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
-											<div class="achie achie-black" title="Professional"><i class="fa fa-bicycle"></i></div>
-								<?php 
-										}
-									} ?>
-							</div>
-						</div>
-					</div>
+					
 					<div class="panel panel-plain panel-loker">
 						<div class="panel-heading">
 							Lowongan Pekerjaan

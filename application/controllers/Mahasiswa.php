@@ -26,7 +26,7 @@ class Mahasiswa extends CI_Controller {
 	{
 		$header['title'] = "Mahasiswa - Dashboard";
 		$this->menu['breadcrumb'] = "Dashboard";
-		$this->menu['active'] = "dashboard";
+		$this->menu['active'] = "home";
 		
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();

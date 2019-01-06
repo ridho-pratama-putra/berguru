@@ -1,3 +1,8 @@
+<style type="text/css">
+	.permasalahan-solved{
+		margin-bottom: 20px
+	}
+</style>
 <script type="text/javascript">
 	// funtion untuk set form pembukaan chat baru
 	function openNewChat(id_komentator,id_permasalahan,id_komentar) {
@@ -277,13 +282,15 @@
 											<?php } ?>
 										</div>
 									<?php }elseif ($valueA->jenis_pesan == 'permasalahan_solved') { ?>
+									<div class="permasalahan-solved">
 										<span class="detpes-status">
 											Pertanyaan berstatus
 										</span>
-										<span class="btn btn-custom <?=($value[$key_is_solved]->terpecahkan == 'SOLVED') ? 'btn-status-green' : 'btn-status-red'?>">
+										<span class="btn btn-custom btn-status-green">
 											<i class="fa fa-check-circle"></i>
-											<?=$value[$key_is_solved]->terpecahkan?>
+											SOLVED
 										</span>
+									</div>
 									<?php } ?>
 								<?php } ?>
 							<?php } ?>

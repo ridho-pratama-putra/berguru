@@ -127,7 +127,7 @@
 	</div>
 
 <script src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.min.js"></script>
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
 	  $(".owl-carousel").owlCarousel({
 			navigation : true, // показывать кнопки next и prev 

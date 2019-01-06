@@ -54,9 +54,11 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 /*******************************************************Home****************************************************************/
-	$route['home']						= 'Home/home';
-	$route['kategori-status']			= 'Home/getPertanyaan';
-	$route['kategori-mapel']			= 'Home/mapel';
+	$route['home'] 						= 'Home/home';
+	$route['kategori-status'] 			= 'Home/getPertanyaan';
+	$route['kategori-mapel'] 			= 'Home/mapel';
+	$route['get-rangking-mahasiswa']	= 'Home/getMahasiswaPoinTertinggi';
+	$route['get-materi'] 				= 'Home/getMateri';
 /*******************************************************END AUTH****************************************************************/
 
 
@@ -206,5 +208,6 @@ $route['translate_uri_dashes'] = FALSE;
 
 	$route['set-status-pertanyaan-solved/(:num)'] = 'Pendidik/setStatusPertanyaanSolved/$1';
 	$route['set-status-pertanyaan-unsolved/(:num)'] = 'Pendidik/setStatusPertanyaanUnsolved/$1';
+
 
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/

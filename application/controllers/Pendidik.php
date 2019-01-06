@@ -766,9 +766,9 @@ class Pendidik extends CI_Controller {
 	*/
 	function dashboard()
 	{
-		$header['title'] = "Mahasiswa - Dashboard";
+		$header['title'] = "Pendidik - Dashboard";
 		$this->menu['breadcrumb'] = "Dashboard";
-		$this->menu['active'] = "dashboard";
+		$this->menu['active'] = "home";
 		
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();
@@ -783,8 +783,8 @@ class Pendidik extends CI_Controller {
 		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 
 		$this->load->view("statis/header",$header);
-		$this->load->view("mahasiswa/menu",$this->menu);
-		$this->load->view("mahasiswa/dashboard",$record);
+		$this->load->view("tenagapendidik/menu",$this->menu);
+		$this->load->view("tenagapendidik/dashboard",$record);
 		$this->load->view("statis/footer");
 	}
 

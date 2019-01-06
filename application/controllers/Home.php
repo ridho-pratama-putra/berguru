@@ -32,16 +32,73 @@ class Home extends CI_Controller {
 													ORDER BY materi.waktu_terakhir_edit 
 													LIMIT 5')->result();
 
-		$record['mahasiswa_poin_tertinggi'] = $this->model->rawQuery("SELECT * FROM pengguna WHERE aktor != 'admin' AND aktor != 'pendidik' ORDER BY poin DESC Limit 5")->result();
 		$record['pertanyaan_solved'] = $this->model->rawQuery("SELECT COUNT(id) AS id FROM permasalahan WHERE status = 'SOLVED'")->result();
 
-		
+		// ranking mahasiswa dipindah ke ajax request
+		// $record['mahasiswa_poin_tertinggi'] = $this->model->rawQuery("
+		// 															SELECT
+		// 																DISTINCT pengguna.nama,pengguna.poin,pengguna.foto,
+		// 																(SELECT count(komentar.siapa) FROM komentar WHERE komentar.siapa = pengguna.id ) AS jumlah_komentar
+		// 															FROM pengguna
+		// 															RIGHT JOIN komentar ON pengguna.id = komentar.siapa
+		// 															WHERE pengguna.aktor = 'mahasiswa'
+		// 															ORDER BY pengguna.poin 
+		// 															DESC Limit 5")->result();
 		$menu['active'] =	"home";
 		$menu['kategori'] =	$record['kategori'];
 		$this->load->view("home/header");
 		$this->load->view("home/menu",$menu);
 		$this->load->view("home/home",$record);
 		$this->load->view("home/footer");
+	}
+
+	/*
+	* funtion untuk menamplkan rangking mahasiswa berdsaarkan poin yang didapat. untuk melayani request dari ajax
+	*/
+	function getMahasiswaPoinTertinggi(){
+		$record['data'] = $this->model->rawQuery("
+																	SELECT
+																		DISTINCT pengguna.nama,pengguna.poin,pengguna.foto,
+																		(SELECT count(komentar.siapa) FROM komentar WHERE komentar.siapa = pengguna.id ) AS jumlah_komentar
+																	FROM pengguna
+																	RIGHT JOIN komentar ON pengguna.id = komentar.siapa
+																	WHERE pengguna.aktor = 'mahasiswa'
+																	ORDER BY pengguna.poin 
+																	DESC Limit ". $this->input->get('limit'))->result();
+		$record['dm_available'] = $this->session->userdata('loginSession');
+		echo json_encode($record);
+	}
+
+	/*
+	* funtuin untuk menangani ajax request daftar materi berdsarkan jangka waktu perbulan perhari
+	*/
+	function getMateri()
+	{
+		$string = 	"SELECT 
+						materi.deskripsi,
+						materi.waktu_terakhir_edit,
+						materi.nama,
+						materi.jumlah_diunduh,
+						materi.jumlah_dilihat,
+						materi.ikon_cat,
+						materi.ikon_logo,
+						materi.ikon_warna,
+						pengguna.nama AS siapa_terakhir_edit
+						
+					FROM materi 
+					INNER JOIN pengguna ON pengguna.id = materi.siapa_terakhir_edit ";
+		$date = new DateTime(date("Y-m-d"));
+		if ($this->input->get('jangka_waktu') == "hari") {
+			$string .= "WHERE DAY(materi.waktu_terakhir_edit) = '".$date->format("d")."' AND MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+		}elseif ($this->input->get('jangka_waktu') == "bulan") {
+			$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '".$date->format("m")."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+		}elseif ($this->input->get('jangka_waktu') == "bulan_lalu") {
+			$string .= "WHERE MONTH(materi.waktu_terakhir_edit) = '".($date->format("m")-1)."' AND YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+		}
+		$string .= " ORDER BY materi.waktu_terakhir_edit LIMIT ".$this->input->get('limit');
+
+		$record['data'] = $this->model->rawQuery($string)->result();
+		echo json_encode($record);
 	}
 
 	/*

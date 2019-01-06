@@ -210,7 +210,7 @@
 						'<div class="panel-body">'+
 							'<div class="row">'+
 								'<div class="col">'+
-									'<h3 class="ci-title text-center">Tidak ada pertanyaan di kategori yang anda tentukan</h3>'+
+									'<h3 class="ci-title text-center">Belum ada pertanyaan di kategori yang anda tentukan</h3>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
