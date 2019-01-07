@@ -20,10 +20,24 @@
 // 	}
 // 	$this->model->update('pengguna',array('id'=>$value->id),array('alias'=>$alias));
 // }
+echo "<pre>";
+$record = $this->model->rawQuery("SELECT
+provinces.`name` AS province,
+regencies.`name` AS regency,
+districts.`name` AS district,
+villages.`name` AS 
+FROM
+provinces
+INNER JOIN regencies ON regencies.province_id = provinces.id
+INNER JOIN districts ON districts.regency_id = regencies.id
+INNER JOIN villages ON villages.district_id = districts.id")->result();
 
+foreach ($record as $key => $value) {
+	echo $value->;
+}
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title></title>
@@ -67,4 +81,4 @@ $(document).ready(function() {
 </select>
 
 </body>
-</html>
+</html> -->

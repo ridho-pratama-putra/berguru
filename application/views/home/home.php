@@ -504,7 +504,7 @@
 		$.get("<?=base_url()?>get-materi",{limit : 7, jangka_waktu:argument},function( res ) {
 			res = JSON.parse(res)
 			elementToRender = ''
-			$('#materi').html(elementToRender);
+			$('#materi-menarik').html(elementToRender);
 			if (res.data.length === 0) {
 				elementToRender += 
 					'<h6 class="title text-center"> Data materi masih kosong untuk kategori yang anda pilih</h6>'

@@ -58,7 +58,7 @@ class Auth extends CI_Controller {
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "pendidik") {
 								alert('alert','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
-								redirect('pesan-pendidik');
+								redirect('dashboard-pendidik');
 								return true;
 							}
 						}else{
@@ -97,10 +97,10 @@ class Auth extends CI_Controller {
 					$this->session->set_userdata('loginSession',$newdata);
 					if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
 						alert('alert','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
-						redirect('pesan-mahasiswa');
+						redirect('dashboard-mahasiswa');
 					}elseif($recordCookieAktif[0]->aktor == 'pendidik') {
 						alert('alert','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
-						redirect('pesan-pendidik');
+						redirect('dashboard-pendidik');
 					}elseif($recordCookieAktif[0]->aktor == 'admin') {
 						alert('alert','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('kelola-daftar-message');

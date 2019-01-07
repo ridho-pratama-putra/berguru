@@ -1,7 +1,7 @@
 	<div class="login-layout">
 		<div class="left-side-wrap">
 			<div class="logo-header">
-				<a href=""><img src="<?=base_url()?>assets/assets/images/icons/group-9.png" alt=""></a>
+				<a href="<?=base_url()?>"><img src="<?=base_url()?>assets/assets/images/group-9.png" alt=""></a>
 			</div>
 			<div class="login-bg">
 				<img src="<?=base_url()?>assets/assets/images/thumbnails/testimoni.png" alt="" style="width: 90%;">
@@ -22,10 +22,10 @@
 					     		“Berguru.com sangat membantu saya dalam mengembangkan penelitian studi di Sekolah Dasar, Volunteer Mahasiswa dengan sabar membantu saya dan selalu konsisten!”
 					     	</p>
 					     	<h6 class="author">
-					     		Jean Morgan
+					     		Farida
 					     	</h6>
 					     	<p class="author-pos">
-					     		Pakar Analis di Network Council
+					     		Guru SDN Dinoyo 2 Malang
 					     	</p>
 					    </div>
 
@@ -34,10 +34,10 @@
 					     		“Berguru.com sangat membantu saya dalam mengembangkan penelitian studi di Sekolah Dasar, Volunteer Mahasiswa dengan sabar membantu saya dan selalu konsisten!”
 					     	</p>
 					     	<h6 class="author">
-					     		Jean Morgan
+					     		Farida
 					     	</h6>
 					     	<p class="author-pos">
-					     		Pakar Analis di Network Council
+					     		Guru SDN Dinoyo 2 Malang
 					     	</p>
 					    </div>
 
@@ -46,10 +46,10 @@
 					     		“Berguru.com sangat membantu saya dalam mengembangkan penelitian studi di Sekolah Dasar, Volunteer Mahasiswa dengan sabar membantu saya dan selalu konsisten!”
 					     	</p>
 					     	<h6 class="author">
-					     		Jean Morgan
+					     		Farida
 					     	</h6>
 					     	<p class="author-pos">
-					     		Pakar Analis di Network Council
+					     		Guru SDN Dinoyo 2 Malang
 					     	</p>
 					    </div>
 					  </div>

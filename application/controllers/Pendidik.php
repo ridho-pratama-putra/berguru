@@ -708,14 +708,14 @@ class Pendidik extends CI_Controller {
 		
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();
-		$record['materi'] = $this->model->rawQuery('
-														SELECT
-																materi.nama AS nama_materi,
-																materi.jumlah_diunduh,
-																pengguna.nama AS nama_pengguna
-														FROM materi
-														LEFT JOIN pengguna ON materi.siapa_terakhir_edit = pengguna.id
-		')->result();
+		// $record['materi'] = $this->model->rawQuery('
+		// 												SELECT
+		// 														materi.nama AS nama_materi,
+		// 														materi.jumlah_diunduh,
+		// 														pengguna.nama AS nama_pengguna
+		// 												FROM materi
+		// 												LEFT JOIN pengguna ON materi.siapa_terakhir_edit = pengguna.id
+		// ')->result();
 		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 
 		$this->load->view("statis/header",$header);
