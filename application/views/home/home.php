@@ -92,7 +92,7 @@
 									<div role="tabpanel" class="tab-pane" id="populer"></div>
 									<div role="tabpanel" class="tab-pane" id="solved"></div>
 									<div role="tabpanel" class="tab-pane" id="unsolved"></div>
-									<?php if ($this->session->userdata('loginSession') == array()) { ?>
+									<?php var_dump($this->session->userdata('loginSession')); if ($this->session->userdata('loginSession') == array()) { ?>
 										
 									<div>
 										<div class="row">
