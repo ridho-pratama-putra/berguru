@@ -1,22 +1,3 @@
-	<script type="text/javascript">
-		/*SCRIPT UNTUK ADD ACTIVE PADA SUB MENU KELOLA DAN ACTIVE COLLAPSE MENU KELOLA JIKA MASUK LIST SUBMENU KELOLA*/
-		$( document ).ready(function() {
-			$("#<?=$active?>").attr("class","active");
-		});
-		/*END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU*/
-
-		function setToTerlihatNonDm() {
-		$.post( "<?=base_url()?>Mahasiswa/setTerlihatNonDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
-			$('#jumlah_notif_non_dm').html('');
-		});
-	}
-
-	function setToTerlihatDm() {
-		$.post( "<?=base_url()?>Mahasiswa/setTerlihatDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
-			$('#jumlah_notif_dm').html('');
-		});
-	}
-	</script>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -46,13 +27,13 @@
 										<?php  
 											if ($notif_dm !== array()) {
 												foreach ($notif_dm as $key => $value) { ?>
-											<li>
-												<a href="#<?=$value->id_dari?>">
-													<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
-														<span class="pull-right text-muted small"><?=time_elapsed_string($value->datetime)?></span>
-													</div>
-												</a>
-											</li>
+												<li>
+													<a href="#<?=$value->id_dari?>">
+														<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
+															<span class="pull-right text-muted small"><?=time_elapsed_string($value->datetime)?></span>
+														</div>
+													</a>
+												</li>
 												<?php if ($key < sizeof($notif_dm)-1) { ?>
 												<li class="divider"></li>
 												<?php }?>
@@ -87,15 +68,15 @@
 													<?php }elseif($value->konteks == 'ratingKomentar'){?>
 													<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>"><strong><?=$value->dari?></strong> memberikan rating untuk jawaban anda.</a>
 													<?php }elseif($value->konteks == 'lowonganValid'){?>
-														<a href="#"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
+														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
 													<?php }elseif($value->konteks == 'lowonganNotValid'){?>
-														<a href="#"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
+														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
 													<?php }elseif($value->konteks == 'dm'){?>
-														<a href="#"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
+														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
 													<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'lowonganAvailable'){?>
 														<a href="<?=base_url('karir-mahasiswa')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
 													<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){?>
-														<a href="#"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
+														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
 													<?php } ?>
 													<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small>
 												</div>
@@ -175,3 +156,25 @@
 		<p>&copy; Berguru.com</p>
 	</div>
 </div><!--/.sidebar-->
+<script type="text/javascript">
+	/*SCRIPT UNTUK ADD ACTIVE PADA SUB MENU KELOLA DAN ACTIVE COLLAPSE MENU KELOLA JIKA MASUK LIST SUBMENU KELOLA*/
+	$( document ).ready(function() {
+		$("#<?=$active?>").attr("class","active");
+		$(".link-disabled").click(function(e) {
+			e.preventDefault();
+		});
+	});
+	/*END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU*/
+
+	function setToTerlihatNonDm() {
+		$.post( "<?=base_url()?>Mahasiswa/setTerlihatNonDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif_non_dm').html('');
+		});
+	}
+
+	function setToTerlihatDm() {
+		$.post( "<?=base_url()?>Mahasiswa/setTerlihatDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif_dm').html('');
+		});
+	}
+</script>

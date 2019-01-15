@@ -49,7 +49,7 @@ class Auth extends CI_Controller {
 							$this->session->set_userdata('loginSession',$newdata);
 
 							if ($recordPengguna[0]->aktor == "admin") {
-								alert('kelolaPengguna','success','Hai Admin '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
+								alert('alert','success','Hai Admin '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
 								redirect('kelola-pengguna');
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "mahasiswa") {
@@ -62,12 +62,12 @@ class Auth extends CI_Controller {
 								return true;
 							}
 						}else{
-							alert("login","danger","Gagal!","Akun anda dalam status dibekukan, mohon hubungi admin. Terimakasih.");
+							alert("alert","danger","Gagal!","Akun anda dalam status dibekukan, mohon hubungi admin. Terimakasih.");
 							redirect("login");
 							return true;
 						}
 					}else{
-						alert("login","danger","Gagal!","Akun tidak terdaftar. Daftar <a href='".base_url()."register'>disini</a>");
+						alert("alert","danger","Gagal!","Akun tidak terdaftar. Daftar <a href='".base_url()."register'>disini</a>");
 						redirect("login");
 						return true;
 					}
@@ -122,7 +122,7 @@ class Auth extends CI_Controller {
 	{
 		$this->session->unset_userdata('loginSession');
 		if ($this->session->userdata('registrasiSession') != array()) {
-			alert('registerPilih','warning','Perhatian!','Mohon Lanjutkan Pendaftaran');
+			alert('alert','warning','Perhatian!','Mohon Lanjutkan Pendaftaran');
 			redirect('register-pilih');
 		}else{
 			if ($this->input->post() != array()) {
@@ -181,7 +181,7 @@ class Auth extends CI_Controller {
 	function registerPilih()
 	{
 		if ($this->session->userdata('registrasiSession') == array()) {
-			alert('register','warning','Perhatian!','Mohon memulai sesi pendaftaran');
+			alert('alert','warning','Perhatian!','Mohon memulai sesi pendaftaran');
 			redirect('register');
 		}else{
 			$header['title'] = "Daftar";
@@ -220,9 +220,9 @@ class Auth extends CI_Controller {
 			
 			if ($queryPengguna->status) {
 				$this->session->unset_userdata('registrasiSession');
-				alert("login","success","Berhasil!","Anda berhasil registrasi, mohon hubungi admin untuk mengaktifkan akun. Terimakasih.");
+				alert("alert","success","Berhasil!","Anda berhasil registrasi, mohon hubungi admin untuk mengaktifkan akun. Terimakasih.");
 			}else{
-				alert('register','danger','Gagal!','Kegagalan database. Data tidak dapat masuk');
+				alert('alert','danger','Gagal!','Kegagalan database. Data tidak dapat masuk');
 			}
 
 			// create alert untuk admin kalau ada pengguna yang harus diaktifkan

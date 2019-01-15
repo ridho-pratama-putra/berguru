@@ -10,6 +10,9 @@
 			$('#sub-item-kelola').removeClass('in');
 			$('#chevron').removeClass('fa-chevron-up').addClass('fa-chevron-down');
 		}
+		$(".link-disabled").click(function(e) {
+			e.preventDefault();
+		});
 	});
 	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
 
@@ -42,7 +45,7 @@
 							</div>
 							<ul class="nav navbar-top-links navbar-right">
 								<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihat()">
-									<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
+									<em class="fa fa-bell"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
 								</a>
 								<ul class="dropdown-menu dropdown-messages">
 									<?php foreach ($notif as $key => $value) { ?>
@@ -80,50 +83,34 @@
 									<?php } ?>
 								</ul>
 							</li>
-							<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-								<em class="fa fa-bell"></em><span class="label label-info">53</span>
-							</a>
-							<ul class="dropdown-menu dropdown-alerts">
-								<li><a href="#">
-									<div><em class="fa fa-envelope"></em> 1 New Message
-										<span class="pull-right text-muted small">3 mins ago</span></div>
-									</a></li>
-									<li class="divider"></li>
-									<li><a href="#">
-										<div><em class="fa fa-heart"></em> 12 New Likes
-											<span class="pull-right text-muted small">4 mins ago</span></div>
-										</a></li>
-										<li class="divider"></li>
-										<li><a href="#">
-											<div><em class="fa fa-user"></em> 5 New Followers
-												<span class="pull-right text-muted small">4 mins ago</span></div>
-											</a></li>
-										</ul>
-									</li>
-									<li class="dropdown user-menu"><a class="dropdown-toggle" data-toggle="dropdown" href="#">
-										<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?></div>
-										<div class="user-photo">
-											<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="img-circle" alt="Photo">
-										</div>
-									</a>
-									<ul class="dropdown-menu">
-										<li><a href="<?=base_url()?>profil-admin">
+							<li class="dropdown user-menu">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?></div>
+									<div class="user-photo">
+										<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="img-circle" alt="Photo">
+									</div>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="<?=base_url()?>profil-admin">
 											<div><em class="fa fa-user"></em> Profile</div>
-										</a></li>
-										<li class="divider"></li>
-										<li><a href="<?=base_url()?>logout">
+										</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="<?=base_url()?>logout">
 											<div><em class="fa fa-power-off"></em> Log Out</div>
-										</a></li>
-									</ul>
-								</li>
+										</a>
+									</li>
+								</ul>
+							</li>
 							</ul>
-
 						</div>
 					</div>
 				</div>
 			</div><!-- /.container-fluid -->
 		</nav>
-		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar scrollable">
 			<div class="profile-sidebar">
 				<div class="profile-userpic">
 					<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
@@ -142,7 +129,7 @@
 		</div>
 	</form> -->
 	<ul class="nav menu">
-		<li class=""><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+		<li class=""><a href="#"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
 		<li class="parent" id="kelola">
 			<a data-toggle="collapse" href="#sub-item-kelola" class="collapsed">
 				<span class="fa fa-th">&nbsp;</span> Kelola <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em id="chevron" class="fa fa-chevron-down"></em></span>

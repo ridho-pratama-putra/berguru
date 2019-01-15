@@ -165,7 +165,7 @@ class Mahasiswa extends CI_Controller {
 					}
 				}
 			}
-			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
+			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin','aktor'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
@@ -255,6 +255,7 @@ class Mahasiswa extends CI_Controller {
 											) AS belum_dibaca,
 											pengguna.id,
 											pengguna.alias,
+											pengguna.aktor,
 											pengguna.foto
 										FROM 
 											direct_message
@@ -304,7 +305,7 @@ class Mahasiswa extends CI_Controller {
 				$data = array('id_komentator'=>$this->input->post('untuk'));
 				$this->session->set_flashdata('id_komentator',$data);
 
-				// create notification kalau ada dm baru untuk seorang pengguna. idkonteks di skip karena hanya perlu mengarah ke halaman pesan dengan pengguna bukan spesifik ke pesannya.
+				// create notification kalau ada dm baru untuk seorang pengguna
 				$this->model->create('notif',array('konteks'=>'dm','id_konteks'=>$queryInsert->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$this->input->post('untuk'),'datetime'=>date('Y-m-d H:i:s')));
 
 				alert('alert','success','Barhasil!','Direct message berhasil dikirim');
@@ -332,6 +333,7 @@ class Mahasiswa extends CI_Controller {
 														SELECT
 																komentar.teks AS teks_komentar,
 																komentar.tanggal,
+																komentar.rating,
 																permasalahan.teks AS teks_permasalahan,
 																pengguna.nama,
 																pengguna.foto
@@ -550,7 +552,7 @@ class Mahasiswa extends CI_Controller {
 				WHERE 
 					(untuk = '".$this->session->userdata('loginSession')['id']."' OR untuk = 'mahasiswa')
 				AND
-					konteks = 'dm'
+					(konteks = 'dm' OR konteks = 'pesaninfo')
 				AND 
 					terbaca IS NULL
 				GROUP BY dari
@@ -1026,6 +1028,11 @@ class Mahasiswa extends CI_Controller {
 					$string .= "AND";
 				}
 				$string .= " YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}elseif ($this->input->get('harian_bulanan') == 'all') {
+				if ($next) {
+					$string .= "AND";
+				}
+				$string .= " materi.waktu_terakhir_edit IS NOT NULL";
 			}
 
 			if ($this->input->get('popular_all') == 'all') {

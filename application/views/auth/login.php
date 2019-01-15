@@ -70,7 +70,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="login-box">
-						<?=$this->session->flashdata("login")?>
+						<?=$this->session->flashdata("alert")?>
 
 						<h2>Selamat Datang</h2>
 						<p class="mb-30">Masuk dan mulai terhubung dengan tenaga terbaik</p>

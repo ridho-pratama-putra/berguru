@@ -103,6 +103,8 @@
 									<div class="media-body">
 										<div class="small">Jawaban Anda</div>
 										<?=$value->teks_komentar?>
+										<div class="small">Rating jawaban</div>
+										<div class="rate-result" data-score="<?=$value->rating?>"></div> <div class="rate-terbilang"><?=$value->rating?> Poin</div>
 									</div>
 								</div>
 							</div>

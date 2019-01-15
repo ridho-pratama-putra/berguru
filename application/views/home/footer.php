@@ -89,9 +89,9 @@
         </script>
         <script type="text/javascript">
 
-            var overlay = $('.sidemenu-overlay');
-            var sidemenu = $('.navbar-collapse');
-            var toggle = $('.navbar-toggle');
+            var overlay = $(".sidemenu-overlay");
+            var sidemenu = $(".navbar-collapse");
+            var toggle = $(".navbar-toggle");
 
             overlay.on("click", function(){
                 sidemenu.addClass('slideOutLeft');
@@ -106,6 +106,10 @@
                 sidemenu.removeClass('slideOutLeft');
                 overlay.removeClass('hide');
                 overlay.removeClass('fadeOut');
+            });
+
+            $(".link-disabled").click(function(e) {
+                e.preventDefault();
             });
 
         </script>

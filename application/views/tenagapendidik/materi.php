@@ -58,6 +58,7 @@
 							<div class="dropdown">
 								<a href="#" data-toggle="dropdown"><span id="selected-drowpdown-harian-bulanan"> </span> <i class="fa fa-chevron-down"></i></a>
 								<ul class="dropdown-menu dropdown-menu-right" id="dropdown-harian-bulanan">
+									<li><a href="#" class="per-jangka" onclick="harianBulanan('all')" id="dropdown-all" data-property="all">Semua waktu</a></li>
 									<li><a href="#" class="per-jangka" onclick="harianBulanan('harian')" id="dropdown-harian" data-property="harian">Harian</a></li>
 									<li><a href="#" class="per-jangka" onclick="harianBulanan('mingguan')" id="dropdown-mingguan" data-property="mingguan">Mingguan</a></li>
 									<li><a href="#" class="per-jangka" onclick="harianBulanan('bulanan')" id="dropdown-bulanan" data-property="bulanan">Bulanan</a></li>
@@ -98,7 +99,7 @@
 			});
 		});
 		popularAll('all')
-		harianBulanan('tahunan')
+		harianBulanan('all')
 		kategori('all')
 		getDataMateri()
 		// alert('docred')
@@ -206,6 +207,9 @@
 		}else if (before == 'Tahunan') {
 			$("#dropdown-tahunan").removeClass("none")
 			$("#dropdown-tahunan").removeClass("selected")
+		}else if (before == 'Semua waktu') {
+			$("#dropdown-all").removeClass("none")
+			$("#dropdown-all").removeClass("selected")
 		}
 
 		$(".per-jangka").removeClass('none')
@@ -227,6 +231,10 @@
 			$("#selected-drowpdown-harian-bulanan").html("Tahunan");
 			$("#dropdown-tahunan").addClass("none")
 			$("#dropdown-tahunan").addClass("selected")
+		}else if (argument == 'all') {
+			$("#selected-drowpdown-harian-bulanan").html("Semua waktu");
+			$("#dropdown-all").addClass("none")
+			$("#dropdown-all").addClass("selected")
 		}
 		if (before !== " ") {
 			
@@ -287,8 +295,6 @@
 										'<i class="far fa-clock"></i> '+monthNames[d.getMonth()]+', '+d.getDate()+' '+d.getFullYear()+
 										'<i class="fa fa-circle"></i> '+
 										'<i class="fa fa-cloud-download-alt"></i> '+data.materi[i].jumlah_diunduh+
-										'<i class="fa fa-circle"></i>'+
-										'<i class="far fa-eye"></i>'+data.materi[i].jumlah_dilihat+
 									'</div>'+
 									'<div class="btn btn-custom btn-status-blue">'+data.materi[i].kategori+'</div>'+
 								'</div>'+
@@ -298,7 +304,7 @@
 										'<span class="text-muted">Tags</span>'
 										var tags = data.materi[i].tags.split(',')
 										for(var j in tags){
-											elementToRender += '<a href="#">#'+tags[j]+'</a>'
+											elementToRender += '<a href="#" class="link-disabled">#'+tags[j]+'</a>'
 										}
 									elementToRender +=
 									'</div>'+
@@ -324,6 +330,10 @@
 			$("#materiByKategori").empty()
 			$("#materiByKategori").html(elementToRender);
 			timeAgo();
+			$(".link-disabled").click(function(e) {
+				e.preventDefault();
+			});
+
 		});
 	}
 </script>

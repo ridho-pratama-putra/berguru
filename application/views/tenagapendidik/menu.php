@@ -1,22 +1,4 @@
-<script type="text/javascript">
-	/*SCRIPT UNTUK ADD ACTIVE*/
-	$( document ).ready(function() {
-		$("#<?=$active?>").attr("class","active");
-	});
-	/*END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU*/
 
-	function setToTerlihatNonDm() {
-		$.post( "<?=base_url()?>Pendidik/setTerlihatNonDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
-			$('#jumlah_notif_non_dm').html('');
-		});
-	}
-
-	function setToTerlihatDm() {
-		$.post( "<?=base_url()?>Pendidik/setTerlihatDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
-			$('#jumlah_notif_dm').html('');
-		});
-	}
-</script>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -79,19 +61,21 @@
 												<?php if ($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'komentar') { ?>
 												<a href="<?=base_url()?>detail-pertanyaan-pendidik/<?=$value->id_konteks?>" title='klik untuk melihat komentar'><strong><?=$value->dari?></strong> mengomentari pertanyaan anda</a>
 												<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){?>
-													<a href="#"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
+													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
 												<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganValid'){?>
-													<a href="<?=base_url()?>"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
+													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
 												<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganNotValid'){?>
 													<a href="<?=base_url()?>"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
 												<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'lowonganAvailable'){?>
-													<a href="<?=base_url('karir-pendidik')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
+													<a href="#" class="link-disabled">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
 												<?php }elseif($value->konteks == 'dm'){?>
-													<a href="#"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
+													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
 												<?php }elseif($value->konteks == 'permasalahanDibekukan'){?>
-													<a href="#"><strong><?=$value->dari?></strong> Permasalahan anda telah diubah menjadi dibekukan oleh <?=$value->dari?></a>
+													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> Permasalahan anda telah diubah menjadi dibekukan oleh <?=$value->dari?></a>
 												<?php }elseif($value->konteks == 'permasalahanDiaktivkan'){?>
-													<a href="#"><strong><?=$value->dari?></strong> Permasalahan anda telah diubah menjadi aktiv oleh <?=$value->dari?></a>
+													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> Permasalahan anda telah diubah menjadi aktiv oleh <?=$value->dari?></a>
+												<?php }elseif($value->konteks == 'pesaninfo'){?>
+													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
 												<?php } ?>
 												<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 											</div>
@@ -186,3 +170,25 @@
 		<p>&copy; Berguru.com</p>
 	</div>
 </div><!--/.sidebar-->
+<script type="text/javascript">
+	/*SCRIPT UNTUK ADD ACTIVE*/
+	$( document ).ready(function() {
+		$("#<?=$active?>").attr("class","active");
+		$(".link-disabled").click(function(e) {
+			e.preventDefault();
+		});
+	});
+	/*END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU*/
+
+	function setToTerlihatNonDm() {
+		$.post( "<?=base_url()?>Pendidik/setTerlihatNonDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif_non_dm').html('');
+		});
+	}
+
+	function setToTerlihatDm() {
+		$.post( "<?=base_url()?>Pendidik/setTerlihatDm",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif_dm').html('');
+		});
+	}
+</script>

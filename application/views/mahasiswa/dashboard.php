@@ -175,8 +175,11 @@
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			});
 		});
-		$('.child-select-materi').click(function(e) {
+		$(".child-select-materi").click(function(e) {
 		    e.preventDefault();
+		});
+		$(".link-disabled").click(function(e) {
+			e.preventDefault();
 		});
 	});
 	

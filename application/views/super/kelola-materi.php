@@ -83,7 +83,6 @@
 							<th>Kategori</th>
 							<th>Terakhir Diedit</th>
 							<th><i class="fa fa-cloud-download"></i></th>
-							<th><i class="fa fa-eye"></i></th>
 							<th class="no-sort"></th>
 						</tr>
 					</thead>
@@ -102,7 +101,6 @@
 									</span>
 								</td>
 								<td><?=$value->jumlah_diunduh?></td>
-								<td><?=$value->jumlah_dilihat?></td>
 								<td class="td-right">
 									<div class="dropdown td-menu">
 									<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

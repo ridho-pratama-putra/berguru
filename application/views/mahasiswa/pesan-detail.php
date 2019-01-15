@@ -129,7 +129,14 @@
 									<?=$value->alias?>
 								</div>
 								<div class="last-pesan">
-									<?=$value->teks?>
+									<?php
+									if ($value->aktor == 'admin') {
+										$subyek = explode("|", $value->teks);
+										echo $subyek[0];
+									}else{
+										echo $value->teks;
+									}
+									?>
 								</div>
 							</div>
 							<div class="pi-right">
@@ -147,25 +154,27 @@
 							<div class="detpes-header" style="margin-bottom: 10px">
 								<div class="row">
 									<div class="col-md-6 text-right col-md-push-6">
-										<span class="text-muted">Badge</span>
-										<div class="profile-achievement">
 											<?php
-											if ($komentator[0]->poin < 40 ) { ?>
-												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-											<?php }elseif ($komentator[0]->poin < 100) { ?>
-												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-												<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
-											<?php }elseif ($komentator[0]->poin < 180) { ?>
-												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-												<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
-												<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
-											<?php }elseif ($komentator[0]->poin < 300) { ?>
-												<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
-												<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
-												<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
-												<div class="achie achie-black" title="Professional"><i class="fa fa-bicycle"></i></div>
+											if ($komentator[0]->aktor !== 'admin' AND $komentator[0]->aktor !== 'pendidik') { ?>
+												<span class="text-muted">Badge</span>
+												<div class="profile-achievement">
+												<?php if ($komentator[0]->poin < 40 ) { ?>
+													<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+												<?php }elseif ($komentator[0]->poin < 100) { ?>
+													<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+													<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+												<?php }elseif ($komentator[0]->poin < 180) { ?>
+													<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+													<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+													<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+												<?php }elseif ($komentator[0]->poin < 300) { ?>
+													<div class="achie achie-orange" title="Beginner"><i class="fa fa-star"></i></div>
+													<div class="achie achie-green" title="Rookie"><i class="fa fa-trophy"></i></div>
+													<div class="achie achie-blue" title="Regular"><i class="far fa-gem"></i></div>
+													<div class="achie achie-black" title="Professional"><i class="fa fa-bicycle"></i></div>
+												<?php } ?>
+												</div>
 											<?php } ?>
-										</div>
 										<div class="dropdown detpes-menu">
 												<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 													<i class="fa fa-ellipsis-v"></i>
@@ -259,10 +268,7 @@
 														</div>
 														<div class="dchat-footer">
 															<div class="row">
-																<div class="col-md-8">
-																		
-																</div>
-																<div class="col-md-4 text-right">
+																<div class="col-md-3 text-left">
 																	<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
 																<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
 																</div>
@@ -273,7 +279,7 @@
 											<?php } ?>
 										</div>
 									<?php }elseif ($valueA->jenis_pesan == 'permasalahan_solved') { ?>
-									<div class="permasalahan-solved">
+										<div class="permasalahan-solved">
 										<span class="detpes-status">
 											Pertanyaan berstatus
 										</span>
@@ -281,21 +287,45 @@
 											<i class="fa fa-check-circle"></i>
 											SOLVED
 										</span>
-									</div>
+										</div>
+									<?php }elseif ($valueA->jenis_pesan == 'pesaninfo') { ?>
+										<div class="detpes-chats">
+											<div class="dchat dchat-keluar">
+												<div class="dchat-isi">
+													<?php
+														$subyek = explode("|", $valueA->teks);
+														echo "Subyek : ".$subyek[0];
+														echo "<br>";
+														echo "Pesan : ".$subyek[1];
+													?>
+												</div>
+												<div class="dchat-footer">
+													<div class="row">
+														<div class="col-xs-8">
+																
+														</div>
+														<div class="col-xs-4 text-right">
+															<span class="dchat-time"><?=date('h:i A', strtotime($valueA->tanggal));?></span>
+															<a class="dchat-flag" href="#"><i class="fa fa-flag"></i></a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									<?php } ?>
 								<?php } ?>
 							<?php } ?>
 						</div>
 
 						<div class="detpes-write">
-							<form action="<?=base_url('submit-reply-mahasiswa')?>" method="POST">
+							<form action="<?=($komentator[0]->aktor !== 'admin') ? base_url('submit-reply-mahasiswa') : '#'?>" method="POST">
 								<div class="input-group">
-									<input type="hidden" class="form-control" name="permasalahan" value="<?=(isset($permasalahan[0]->id) ? $permasalahan[0]->id : '' )?>">
-									<input type="hidden" class="form-control" name="komentar" value="<?=(isset($komentar[0]->id) ? $komentar[0]->id : '' )?>">
-									<input type="hidden" class="form-control" name="untuk" value="<?=$komentator[0]->id?>">
-									<input type="text" autofocus="" class="form-control" name="message" placeholder="Tulis pesan...">
+									<input type="hidden" class="form-control" name="permasalahan" value="<?=(isset($permasalahan[0]->id) ? $permasalahan[0]->id : '' )?>" <?=($komentator[0]->aktor == 'admin') ? 'disabled' : ''?>>
+									<input type="hidden" class="form-control" name="komentar" value="<?=(isset($komentar[0]->id) ? $komentar[0]->id : '' )?>" <?=($komentator[0]->aktor == 'admin') ? 'disabled' : ''?>>
+									<input type="hidden" class="form-control" name="untuk" value="<?=$komentator[0]->id?>" <?=($komentator[0]->aktor == 'admin') ? 'disabled' : ''?>>
+									<input type="text" autofocus="" class="form-control" name="message" placeholder="Tulis pesan..." <?=($komentator[0]->aktor == 'admin') ? 'disabled' : ''?>>
 									<div class="input-group-btn">
-										<button class="btn btn-green" type="submit">
+										<button class="btn btn-green" type="submit" <?=($komentator[0]->aktor == 'admin') ? 'disabled' : ''?>>
 											<span class="hidden-xs hidden-sm">Kirim pesan</span>
 											<span class="hidden-md hidden-lg"><i class="fa fa-paper-plane"></i></span>
 										</button>

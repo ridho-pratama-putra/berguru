@@ -10,7 +10,9 @@
 			<li class="active">Kelola Pesan Info</li>
 		</ol>
 	</div><!--/.row-->
-
+	<div class="main-container mr-1">
+		<?=$this->session->flashdata("alert");?>
+	</div>
 	<div class="panel panel-plain main-container">
 		<div class="panel-heading">
 			<div class="row">
@@ -47,6 +49,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<?php 
+								foreach ($pesan_info as $key => $value) { 
+									$subyek_teks = explode("|", $value->teks);
+						?>
+
 						<tr>
 							<td>
 								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-1">
@@ -56,18 +63,18 @@
 								<div class="media mid-v">
 									<div class="media-left media-middle">
 										<div class="user-photo">
-											<img src="assets/images/reading.png" alt="Photo">
+											<img src="<?=base_url().$value->foto?>" alt="Photo">
 										</div>
 									</div>
 									<div class="media-body">
-										Admin
+										<?=$value->nama?>
 									</div>
 								</div>
 							</td>
 							<td>
 								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default">Welcome Message</span>
-									Selamat datang di Berguru.com! Platform diskusi tenaga pendidik dan mahasiswa
+									<span class="btn btn-pesan-label btn-default"><?=$subyek_teks[0]?></span>
+									<?=$subyek_teks[1]?>
 								</div>
 							</td>
 							<td class="td-right">
@@ -82,126 +89,10 @@
 									<li role="separator" class="divider"></li>
 									<li><a href="#">Hapus</a></li>
 								</ul>
-							</div>
-						</td>
-					</tr>
-						<tr>
-							<td>
-								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-2">
-								<label for="check-2"></label>
-							</td>
-							<td>
-								<div class="media mid-v">
-									<div class="media-left media-middle">
-										<div class="user-photo">
-											<img src="assets/images/reading.png" alt="Photo">
-										</div>
-									</div>
-									<div class="media-body">
-										Admin
-									</div>
 								</div>
 							</td>
-							<td>
-								<div class="td-pesan">
-									<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default">Welcome Message</span>
-									Selamat datang di Berguru.com! Platform diskusi tenaga pendidik dan mahasiswa
-								</div>
-								</div>
-							</td>
-							<td class="td-right">
-								<div class="dropdown td-menu">
-								<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<i class="fa fa-ellipsis-v"></i>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Detail</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Edit</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Hapus</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
-						<tr>
-							<td>
-								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-3">
-								<label for="check-3"></label>
-							</td>
-							<td>
-								<div class="media mid-v">
-									<div class="media-left media-middle">
-										<div class="user-photo">
-											<img src="assets/images/reading.png" alt="Photo">
-										</div>
-									</div>
-									<div class="media-body">
-										Admin
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default">Welcome Message</span>
-									Selamat datang di Berguru.com! Platform diskusi tenaga pendidik dan mahasiswa
-								</div>
-							</td>
-							<td class="td-right">
-								<div class="dropdown td-menu">
-								<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<i class="fa fa-ellipsis-v"></i>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Detail</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Edit</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Hapus</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
-						<tr class="pesan-read">
-							<td>
-								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-4">
-								<label for="check-4"></label>
-							</td>
-							<td>
-								<div class="media mid-v">
-									<div class="media-left media-middle">
-										<div class="user-photo">
-											<img src="assets/images/reading.png" alt="Photo">
-										</div>
-									</div>
-									<div class="media-body">
-										Admin
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default btn-sm">Maintenance</span>
-									Selamat Siang, kami akan melakukan maintenance server pada tanggal 10 Oktober 2018 Pukul 21.00. Untuk itu sementara website belum bisa diakses hingga pukul 03.00. Terimakasih.
-								</div>
-							</td>
-							<td class="td-right">
-								<div class="dropdown td-menu">
-								<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<i class="fa fa-ellipsis-v"></i>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Detail</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Edit</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Hapus</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
-
+						</tr>
+						<?php } ?>
 					</tbody>
 				</table>
 			</div>
@@ -216,6 +107,49 @@
 </div>	<!--/.main-->
 
 <!-- Modal -->
+<div class="modal fade" id="modal-addpesan" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+    	<div class="modal-content">
+      		<form class="input-55" action="<?=base_url()?>submit-kirim-pesan-admin" method="post">
+				<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h4 class="modal-title" id="myModalLabel">Buat Pesan Baru</h4>
+	        		<h5 class="modal-subtitle">Kirim sebuah pesan kepadanya</h5>
+	      		</div>
+	      		<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="">Nama / Email Penerima</label>
+								<!-- <select class="penerima" id="penerima"></select> -->
+								<select class="js-example-basic-single form-control" id="penerima" name="penerima[]" style="width: 100%;" multiple="multiple"></select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="">Subyek Pesan</label>
+								<input type="text" class="form-control" placeholder="Subyek" name="subyek">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="">Isi Pesan</label>
+								<textarea class="form-control" placeholder="Tulis Pesan Anda" name="isi_pesan"></textarea>
+							</div>
+						</div>
+					</div>
+	      		</div>
+	      		<div class="modal-footer">
+	        		<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
+	        		<div class="pull-right">
+	        			<button type="button" class="btn btn-ikon btn-plonk-green"><i class="fa fa-paperclip"></i></button>
+	        			<button type="submit" class="btn btn-normal btn-success">Kirim Pesan</button>
+	        		</div>
+	      		</div>
+      		</form>
+    	</div>
+  	</div>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function() {	
@@ -241,54 +175,6 @@ $(document).ready(function() {
 		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
 		minimumInputLength: 1
 	});
-    $('.js-example-basic-single').select2();
+    // $('.js-example-basic-single').select2();
 });
 </script>
-
-<div class="modal fade" id="modal-addpesan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <form class="input-55" action="index.html" method="post">
-				<div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Buat Pesan Baru</h4>
-	        <h5 class="modal-subtitle">Kirim sebuah pesan kepadanya</h5>
-	      </div>
-	      <div class="modal-body">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">Nama / Email Penerima</label>
-								<select class="penerima" id="penerima"></select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">Subyek Pesan</label>
-								<input type="text" class="form-control" placeholder="Subyek">
-							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="">Isi Pesan</label>
-								<textarea class="form-control" placeholder="Tulis Pesan Anda"></textarea>
-							</div>
-						</div>
-					</div>
-					<select class="js-example-basic-single" name="state">
-  <option value="AL">Alabama</option>
-    ...
-  <option value="WY">Wyoming</option>
-</select>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
-	        <div class="pull-right">
-	        	<button type="button" class="btn btn-ikon btn-plonk-green"><i class="fa fa-paperclip"></i></button>
-	        	<button type="submit" class="btn btn-normal btn-success">Kirim Pesan</button>
-	        </div>
-	      </div>
-      </form>
-    </div>
-  </div>
-</div>

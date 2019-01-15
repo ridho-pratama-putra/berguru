@@ -6,6 +6,5 @@
 <script src="<?=base_url()?>assets/dashboard/assets/js/bootstrap-datepicker.js"></script>
 
 <script src="<?=base_url()?>assets/dashboard/assets/js/custom.js"></script>
-
 </body>
 </html>

@@ -115,7 +115,14 @@
 									<?=$value->alias?>
 								</div>
 								<div class="last-pesan">
-									<?=$value->teks?>
+									<?php
+									if ($value->aktor == 'admin') {
+										$subyek = explode("|", $value->teks);
+										echo $subyek[0];
+									}else{
+										echo $value->teks;
+									}
+									?>
 								</div>
 							</div>
 							<div class="pi-right">

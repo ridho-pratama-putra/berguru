@@ -217,10 +217,21 @@ class Admin extends CI_Controller {
 	{
 		$header['title'] 	= 'Kelola Pesan Info';
 		$this->menu['breadcrumb'] = 'Kelola Pesan Info';
-		$this->menu['active'] 	= 'pesaninfo';
+		$this->menu['active'] = 'pesaninfo';
+		$record['pesan_info'] = $this->model->rawQuery("
+														SELECT
+																pengguna.foto,
+																direct_message.teks,
+																pengguna.nama
+
+														FROM direct_message
+														LEFT JOIN pengguna ON direct_message.untuk = pengguna.id
+														WHERE direct_message.jenis_pesan = 'pesaninfo'
+														")->result();
+
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$this->menu);
-		$this->load->view('super/kelola-pesan-info');
+		$this->load->view('super/kelola-pesan-info',$record);
 		$this->load->view('statis/footer');
 	}
 
@@ -341,7 +352,7 @@ class Admin extends CI_Controller {
 	/*
 	* function untuk menangani submit form penambahan kategori pada halaman kelolakategori konten
 	*/
-	function tambahKategoriKonten()
+	function submitTambahKategoriKonten()
 	{
 		if ($this->input->post() != null) {
 			// cek  duplikasi kategori berdsarkan nama kategori
@@ -396,11 +407,67 @@ class Admin extends CI_Controller {
 	}
 
 	/*
-	* function untuk menangani edit kategori pada halaman kelolakategorikonten
+	* function untuk menangani edit kategori pada halaman kelolakategorikonten. function ini dipanggil oleh jquery get di halaman kelola kategori konten untuk mengisi form edit
 	*/
-	function editKategoriKonten()
+	function getKategoriKonten()
 	{
-		redirect('kelola-kategori-konten');
+		// redirect('kelola-kategori-konten');
+		$record = $this->model->read("kategori",array('id'=>$this->input->get('id')))->result();
+		echo json_encode($record);
+	}
+
+	/*
+	* function untuk  handle submit form edit kategori konten
+	*/
+	function submitEditKategoriKonten()
+	{
+		if ($this->input->post() !== array()) {
+			$kategori = $this->model->read('kategori',array('id' => $this->input->post('id_kategori')))->result();
+			$queryUpdate = array(
+									'icon' => $this->input->post('icon'),
+									'status' => $this->input->post('status'),
+									'tanggal' => date("y-m-d")
+								);
+
+			// cek apakah ada perintah update foto
+			// echo "<pre>";
+			// var_dump($_FILES['background']);
+			// die();
+			if ($_FILES['background']['name'] !== '') {
+				$config['upload_path']	= FCPATH.'bgkategori/';
+				$config['allowed_types']= 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';
+				$config['file_name'] = $this->input->post('nama')."";
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('background'))
+				{
+					alert('alert','danger','Gagal!',$this->upload->display_errors());
+					redirect('kelola-kategori-konten');
+					return false;
+				}
+				else
+				{
+					// echo "<pre>";
+					// var_dump($this->upload->data());
+					unlink(FCPATH.$kategori[0]->background);
+					$queryUpdate['background'] = "bgkategori/".$this->upload->data()['file_name'];
+					// echo $this->upload->data()['file_name'];
+					// var_dump($queryUpdate['background']);
+					// die();
+				}
+			}
+			$query = json_decode($this->model->update("kategori",array('id'=>$this->input->post('id_kategori')),$queryUpdate));
+			if ($query->status) {
+				alert('alert','success','Berhasil!','Kategori telah diperbarui');
+			}else{
+				alert('alert','danger','Gagal!','Kategori gagal diperbarui');
+			}
+			redirect('kelola-kategori-konten');
+		}else{
+			$error['heading'] = '404 Page Not Found';
+			$error['message'] = '<p>Tidak ada data yang di POST</p>';
+			$this->load->view('errors/html/error_404',$error);
+		}
 	}
 
 
@@ -433,11 +500,11 @@ class Admin extends CI_Controller {
 		if ($this->input->post() !== NULL) {
 			$deletePengguna = $this->model->delete('pengguna',array('id'=>$this->input->post('id')));
 			if ($deletePengguna) {
-				alert('kelolaPengguna','success','Berhasil!','Pengguna telah dihapus');
+				alert('alert','success','Berhasil!','Pengguna telah dihapus');
 				$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
 				$this->model->delete('permasalahan',array('siapa'=>$this->input->post('id')));
 			}else{
-				alert('kelolaPengguna','danger','Gagal!','Pengguna tidak dapat dihapus');
+				alert('alert','danger','Gagal!','Pengguna tidak dapat dihapus');
 			}
 		}else{
 			$error['heading'] = '404 Page Not Found';
@@ -456,16 +523,16 @@ class Admin extends CI_Controller {
 			$ubahStatus = json_decode($ubahStatus);
 			if ($this->input->post('status') == 'ACTIVE') {
 				if ($ubahStatus->status) {
-					alert('kelolaPengguna','success','Berhasil!','Status Pengguna telah diaktifkan');
+					alert('alert','success','Berhasil!','Status Pengguna telah diaktifkan');
 					$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
 				}else{
-					alert('kelolaPengguna','danger','Gagal!','Status Pengguna tidak dapat diaktifkan');
+					alert('alert','danger','Gagal!','Status Pengguna tidak dapat diaktifkan');
 				}
 			}else{
 				if ($ubahStatus->status) {
-					alert('kelolaPengguna','success','Berhasil!','Status Pengguna telah dibekukan');
+					alert('alert','success','Berhasil!','Status Pengguna telah dibekukan');
 				}else{
-					alert('kelolaPengguna','danger','Gagal!','Status Pengguna tidak dapat dibekukan');
+					alert('alert','danger','Gagal!','Status Pengguna tidak dapat dibekukan');
 				}
 			}
 		}else{
@@ -812,7 +879,7 @@ class Admin extends CI_Controller {
 						alert('alert','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password hanya jika ingin mengganti password');
 						redirect('profil-admin');
 						return true;
-					}else{
+					// }else{
 						// masukkan password baru ke array untuk bahan eksekusi
 						$queryUpdate['password'] = md5($this->input->post('password_'));
 					}
@@ -822,23 +889,20 @@ class Admin extends CI_Controller {
 			// cek apakah ada perintah update foto
 			if ($_FILES['foto']['name'] !== '') {
 				$config['upload_path']	= FCPATH.'userprofiles/';
-				$config['allowed_types']= 'gif|jpg|png';
+				$config['allowed_types']= 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';
 				$config['file_name'] = $this->input->post('nama')." - profil";
 				$this->load->library('upload', $config);
 
-				if ( ! $this->upload->do_upload('foto'))
-				{
+				if ( ! $this->upload->do_upload('foto')){
 					alert('alert','danger','Gagal!',$this->upload->display_errors());
 					redirect('profil-admin');
 					return false;
-				}
-				else
-				{
+				}else{
 					unlink(FCPATH.$recordPengguna[0]->foto);
 					$queryUpdate['foto'] = "userprofiles/".$this->upload->data()['file_name'];
 				}
 			}
-
+				
 			$this->form_validation->set_rules('nama','Nama','trim|required');
 			$this->form_validation->set_rules('email','Email','trim|required|valid_email');
 			$this->form_validation->set_rules('no_hp','Nomor telepon','trim');
@@ -898,8 +962,6 @@ class Admin extends CI_Controller {
 	*/
 	function cariNama()
 	{
-		echo json_encode('called');
-		die();
 		if ($this->input->get() != NULL) {
 			$dataForm = $this->input->get();
 			$dataReturn = $this->model->orLike('pengguna',array('nama'=>$dataForm['term']['term'],'email'=>$dataForm['term']['term']))->result();
@@ -1034,6 +1096,41 @@ class Admin extends CI_Controller {
 			alert('alert','danger','Gagal!','Kegagalan database : '.$update->error_message->message);
 		}
 		redirect('edit-konten-permasalahan/'.$this->input->post('id'));
+	}
+
+	/*
+	* function untuk handle submitkirimpesanp admin 
+	*/
+	function submitkirimPesan()
+	{
+		$penerimaS = $this->input->post('penerima[]');
+		$subyek = strtoupper($this->input->post('subyek'));
+		$teks = $this->input->post('isi_pesan');
+
+		// $stringinsertNotif = "INSERT INTO notif ('id','konteks','dari,'untuk','datetime') VALUES ";
+		foreach ($penerimaS as $key => $value) {
+
+			$queryInsertDm = $this->model->create_id('direct_message',array('teks'=>$subyek."|".$teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$value,'tanggal'=>date("Y-m-d"),'jenis_pesan'=>'pesaninfo'));
+
+			$queryInsertDm = json_decode($queryInsertDm);
+
+			$this->model->create('notif',array(
+												'konteks' => 'pesaninfo',
+												'id_konteks' => $queryInsertDm->message,
+												'dari' => $this->session->userdata('loginSession')['id'],
+												'untuk' => $value,
+												'datetime' => date('Y-m-d H:i:s')
+												));
+		}
+		
+
+		if ($this->model->rawQuery($stringInsertPesan)) {
+			alert('alert','success','Berhasil!','Pesan info telah terkirim');
+			$this->model->rawQuery($stringinsertNotif);
+		}else{
+			alert('alert','danger','Gagal!','Pesan info gagal dikirim');
+		}
+		redirect('kelola-pesan-info');
 	}
 
 }

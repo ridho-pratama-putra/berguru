@@ -98,7 +98,7 @@ class Pendidik extends CI_Controller {
 				}
 			}
 
-			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin'))->result();
+			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin','aktor'))->result();
 			
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
 			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
@@ -182,6 +182,7 @@ class Pendidik extends CI_Controller {
 											) AS belum_dibaca,
 											pengguna.id,
 											pengguna.alias,
+											pengguna.aktor,
 											pengguna.foto
 										FROM 
 											direct_message
@@ -1042,7 +1043,7 @@ class Pendidik extends CI_Controller {
 				WHERE 
 					(untuk = '".$this->session->userdata('loginSession')['id']."' OR untuk = 'pendidik')
 				AND
-					konteks = 'dm'
+					(konteks = 'dm' OR konteks = 'pesaninfo')
 				AND 
 					terbaca IS NULL
 				GROUP BY dari
@@ -1250,6 +1251,11 @@ class Pendidik extends CI_Controller {
 					$string .= "AND";
 				}
 				$string .= " YEAR(materi.waktu_terakhir_edit) = '".$date->format("Y")."'";
+			}elseif ($this->input->get('harian_bulanan') == 'all') {
+				if ($next) {
+					$string .= "AND";
+				}
+				$string .= " materi.waktu_terakhir_edit IS NOT NULL";
 			}
 
 			if ($this->input->get('popular_all') == 'all') {

@@ -70,7 +70,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="login-box register-box">
-						<?=$this->session->flashdata("register");?>
+						<?=$this->session->flashdata("alert");?>
 
 						<h2>Daftar <span>Berguru.com</span> <br>
 							Berdiskusi Menjadi Mudah</h2>

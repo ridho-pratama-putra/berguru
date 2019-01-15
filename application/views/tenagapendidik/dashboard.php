@@ -88,7 +88,7 @@
 								if ($lowongan !== array()) {
 									foreach ($lowongan as $key => $value) { ?>
 									<li>
-										<a href="#">
+										<a href="#" class="link-disabled">
 											<div class="title"><?=$value->nama?></div>
 										</a>
 										<div class="meta">
@@ -140,6 +140,7 @@
 	</div>
 </div>
 <script type="text/javascript">
+	
 	$(document).ready(function(){
 		pertanyaan('all')
 		kategori('all')
@@ -149,11 +150,10 @@
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			});
 		});
-		$('.child-select-materi').click(function(e) {
+		$(".child-select-materi").click(function(e) {
 		    e.preventDefault();
 		});
 	});
-	
 	/*
 	* function untuk menampilkan dan update waktu (9 menit yang lalu) kiriman dari server
 	*/
@@ -379,7 +379,7 @@
 						'<li>'+
 							'<div class="materi-ikon materi-blue hidden-sm"><i class="fa fa-flask"></i></div>'+
 							'<div class="materi-data">'+
-								'<a href="#">'+
+								'<a href="#" class="link-disabled">'+
 									'<div class="title">'+res.data[i].nama+'</div>'+
 								'</a>'+
 								'<div class="meta">'+
@@ -395,8 +395,12 @@
 					'</div>'
 			}
 			$('#materi-menarik').html(elementToRender);
+			$(".link-disabled").click(function(e) {
+				e.preventDefault();
+			});
 		});
 
 	}
+
 	materi('semua')
 </script>

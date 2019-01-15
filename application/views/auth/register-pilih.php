@@ -70,7 +70,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="login-box register-box">
-						<?=$this->session->flashdata("registerPilih");?>
+						<?=$this->session->flashdata("alert");?>
 						<h2>Bagus!<br>Sekarang Pilih Profesi Anda</h2>
 						<p class="mb-30">pilih profesi sesuai dengan kemampuan anda</p>
 
