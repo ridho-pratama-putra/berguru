@@ -276,7 +276,6 @@ foreach ($kategori as $key => $value) { ?>
 	* funtion untuk kirim request pertanyaan biar jadi penl-panel kecil, termasuk komponennya
 	*/
 	function kategori(argument) {
-		alert(argument);
 		$(".cfc-item").removeClass("active")
 		$("#"+argument).addClass("active")
 		getDataPertanyaan()
