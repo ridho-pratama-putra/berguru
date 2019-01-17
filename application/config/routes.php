@@ -59,6 +59,8 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['kategori-mapel'] 			= 'Home/mapel';
 	$route['get-rangking-mahasiswa']	= 'Home/getMahasiswaPoinTertinggi';
 	$route['get-materi'] 				= 'Home/getMateri';
+	$route['materi-detil']				= 'Home/materi';
+
 /*******************************************************END AUTH****************************************************************/
 
 

@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?=$title?> - Berguru.com</title>
 	<link href="<?=base_url()?>assets/dashboard/assets/css/bootstrap.min.css" rel="stylesheet">
-	
+	<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/icon-doc/css/fontello.css">
 	<!-- Icon -->
     <link rel="shortcut icon" href="<?=base_url()?>assets/assets/images/title-logo.ico">
     <link rel="icon" sizes="128x128" href="<?=base_url()?>assets/assets/images/title-logo.ico">
@@ -48,10 +48,14 @@
 	<!-- list -->
 	<script src="<?=base_url()?>assets/assets/libs/list/list.min.js" charset="utf-8"></script>
 
-	<!-- <link href="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/css/select2.min.css" rel="stylesheet">
-	<script src="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/js/select2.min.js" charset="utf-8"></script> -->
+	<!-- <link href="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/css/select2.min.css" rel="stylesheet"> -->
+	<!-- <script src="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/js/select2.min.js" charset="utf-8"></script> -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+	<!-- owlcarousel -->
+	<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/assets/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/assets/owl.theme.default.css">
 	
 	<script type="text/javascript">
 		$(function () {

@@ -1,40 +1,39 @@
-<script type="text/javascript">
-    // SCRIPT UNTUK ADD ACTIVE
-    $( document ).ready(function() {
-        $("#<?=$active?>").attr("class","active");
-        $("#filter").keyup(function() {
-            // Retrieve the input field text and reset the count to zero
-            var filter = $(this).val(),
-            count = 0;
+        <script type="text/javascript">
+            // SCRIPT UNTUK ADD ACTIVE
+            $( document ).ready(function() {
+                $("#<?=$active?>").attr("class","active");
+                $("#filter").keyup(function() {
+                    // Retrieve the input field text and reset the count to zero
+                    var filter = $(this).val(),
+                    count = 0;
 
-            // Loop through the comment list
-            $('#results div').each(function() {
+                    // Loop through the comment list
+                    $('#results div').each(function() {
 
-                // If the list item does not contain the text phrase fade it out
-                if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                    $(this).hide();
+                        // If the list item does not contain the text phrase fade it out
+                        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                            $(this).hide();
 
-                // Show the list item if the phrase matches and increase the count by 1
-                } else {
-                    $(this).show();
-                    count++;
-                }
+                        // Show the list item if the phrase matches and increase the count by 1
+                        } else {
+                            $(this).show();
+                            count++;
+                        }
 
+                    });
+
+                });
             });
-
-        });
-    });
-    // END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU
-
-</script>
-<style type="text/css">
-    <?php
-    if ($selected_kategori[0]->background != '') { ?>
-        .pages{
-            background-image: url(<?=base_url($selected_kategori[0]->background)?>);
-        }
-    <?php } ?>
-</style>
+            // END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU
+        </script>
+        <style type="text/css">
+            <?php
+            if ($selected_kategori[0]->background != '') { ?>
+                .pages{
+                    background-image: url(<?=base_url($selected_kategori[0]->background)?>);
+                }
+            <?php } ?>
+        </style>
         <div class="sidemenu-overlay hide animated"></div>
         <header class="pages">
             <nav class="navbar navbar-default nav-front">
@@ -93,15 +92,15 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="header-content header-pages">
-                            <h1 class="title"><?=$selected_kategori[0]->nama?></h1>
-                            <p class="caption">Daftar Konten Permasalahan Mata Pelajaran <?=$selected_kategori[0]->nama?></p>
+                            <h1 class="title">Materi</h1>
+                            <p class="caption">Temukan materi yang anda butuhkan disini</p>
                             <form class="form-inline header-search">
                                 <div class="form-group">
                                     <div class="input-group search-field">
                                         <span class="input-group-addon"><i class="bgicon icon-search"></i></span>
-                                        <input type="text" id="filter" class="form-control" placeholder="Apa pertanyaan anda?">
+                                        <input type="text" class="form-control" placeholder="Ketik untuk mencari materi">
                                     </div>
-                                    <input type="submit" name="searchheader" class="btn btn-green" value="Cari Sekarang">
+                                    <input type="submit" name="searchheader" class="btn btn-green" value="Cari Materi">
                                 </div>
                             </form>
                         </div>

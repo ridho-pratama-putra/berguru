@@ -218,4 +218,17 @@ class Home extends CI_Controller {
 			$this->load->view('errors/html/error_404',$error);
 		}
 	}
+
+	/*
+	function untuk menampilkan halaman materi
+	*/
+	function materi()
+	{
+		$menu['active'] 	=	"materi";
+		$menu['kategori'] = $this->model->readS("kategori")->result();
+		$this->load->view('home/header');
+		$this->load->view("home/menu_materi",$menu);
+		$this->load->view('home/materi');
+		$this->load->view('home/footer');
+	}
 }

@@ -26,7 +26,7 @@ class Mahasiswa extends CI_Controller {
 	{
 		$header['title'] = "Mahasiswa - Dashboard";
 		$this->menu['breadcrumb'] = "Dashboard";
-		$this->menu['active'] = "home";
+		$this->menu['active'] = "dashboard";
 		
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();
@@ -984,7 +984,8 @@ class Mahasiswa extends CI_Controller {
 		force_download($materi[0]->nama.".zip", $data);
 	}
 
-		function getKategori()
+	
+	function getKategori()
 	{
 		$record = $this->model->readSCol("kategori",array('id','nama'))->result();
 		echo json_encode($record);

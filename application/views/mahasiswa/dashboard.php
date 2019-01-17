@@ -46,26 +46,26 @@
 			</div>
 		</div>
 		<div class="content-filter-cat scrollablex" data-mcs-axis="x">
-			<div class="cfc-list">
-				<div class="cfc-item" id="all" onclick="kategori(this.id)">
+			<div class="cfc-list owl-carousel category-carousel">
+				<div class="cfc-item item" id="all" onclick="kategori(this.id)">
 					<div class="panel panel-plain">
 						<div class="panel-body">
-							<div class="fa fa-list"></div>
+							<div class="bgicon icon-lists"></div>
 							<h3>Semua</h3>
 						</div>
 					</div>
 				</div>
-				<?php
-				foreach ($kategori as $key => $value) { ?>
-				<div class="cfc-item" id="<?=$value->id?>" onclick="kategori(this.id)">
+<?php
+foreach ($kategori as $key => $value) { ?>
+				<div class="cfc-item item" id="<?=$value->id?>" onclick="kategori(this.id)">
 					<div class="panel panel-plain">
 						<div class="panel-body">
-							<div class="fa fa-book"></div>
+							<div class="bgicon <?=$value->icon?>"></div>
 							<h3><?=$value->nama?></h3>
 						</div>
 					</div>
 				</div>
-				<?php } ?>
+<?php } ?>
 			</div>
 		</div>
 		<div class="row">
@@ -181,6 +181,28 @@
 		$(".link-disabled").click(function(e) {
 			e.preventDefault();
 		});
+		$('.category-carousel').owlCarousel({
+		    // items: 3,
+		    loop: true,
+		    margin: 30,
+		    nav: true,
+		    dots: false,
+		    navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
+		    responsive:{
+		            0:{
+		                items:3
+		            },
+		            630:{
+		                items:4
+		            },
+		            995:{
+		                items:5
+		            },
+		            1200:{
+		                items:7
+		            }
+		    }
+		 });
 	});
 	
 	/*

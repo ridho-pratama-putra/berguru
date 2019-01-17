@@ -1187,6 +1187,9 @@ class Pendidik extends CI_Controller {
 		redirect('pesan-pendidik');
 	}
 
+	/*
+
+	*/
 	function setStatusPertanyaanUnsolved($d)
 	{
 		/*set status solver sebuah komentar permasalahan jadi 'bukan'. untuk deteksi apakah perlu ditampilkan kolom pertanyaan permasalahan terpecahkana di dm*/
@@ -1207,9 +1210,12 @@ class Pendidik extends CI_Controller {
 		redirect('pesan-pendidik');
 	}
 
+	/*
+
+	*/
 	function getKategori()
 	{
-		$record = $this->model->readSCol("kategori",array('id','nama'))->result();
+		$record = $this->model->readSCol("kategori",array('id','nama','icon'))->result();
 		echo json_encode($record);
 	}
 	/*
