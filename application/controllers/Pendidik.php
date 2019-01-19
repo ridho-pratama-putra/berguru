@@ -1131,12 +1131,12 @@ class Pendidik extends CI_Controller {
 		$this->load->helper('download');
 		
 		$materi = $this->model->read('materi',array('id'=>$id))->result();
+		// update harus diatas force. karena force langsung die melalui return (sepertinya). 
+		$this->model->rawQuery("UPDATE materi SET jumlah_diunduh = jumlah_diunduh + 1 WHERE id = ".$id);
 		$attachment = $this->model->read('attachment',array('id_materi'=>$id))->result();
 		
 		$data = file_get_contents(FCPATH.$attachment[0]->url_attachment);
 		
-		// update harus diatas force. karena force langsung die melalui return (sepertinya). 
-		$this->model->rawQuery("UPDATE materi SET jumlah_diunduh = jumlah_diunduh + 1 WHERE id = ".$id);
 		
 		force_download($materi[0]->nama.".zip", $data);
 	}

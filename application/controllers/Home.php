@@ -5,6 +5,7 @@ class Home extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('pagination');
 		date_default_timezone_set("Asia/Jakarta");
 	}
 
@@ -13,6 +14,7 @@ class Home extends CI_Controller {
 	*/
 	function home()
 	{
+		// ranking mahasiswa dipindah ke ajax request
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->rawQuery('SELECT * FROM lowongan WHERE valid=1 ORDER BY tanggal LIMIT 3 ')->result();
 		$record['materi'] = $this->model->rawQuery('
@@ -34,16 +36,7 @@ class Home extends CI_Controller {
 
 		$record['pertanyaan_solved'] = $this->model->rawQuery("SELECT COUNT(id) AS id FROM permasalahan WHERE status = 'SOLVED'")->result();
 
-		// ranking mahasiswa dipindah ke ajax request
-		// $record['mahasiswa_poin_tertinggi'] = $this->model->rawQuery("
-		// 															SELECT
-		// 																DISTINCT pengguna.nama,pengguna.poin,pengguna.foto,
-		// 																(SELECT count(komentar.siapa) FROM komentar WHERE komentar.siapa = pengguna.id ) AS jumlah_komentar
-		// 															FROM pengguna
-		// 															RIGHT JOIN komentar ON pengguna.id = komentar.siapa
-		// 															WHERE pengguna.aktor = 'mahasiswa'
-		// 															ORDER BY pengguna.poin 
-		// 															DESC Limit 5")->result();
+		
 		$menu['active'] =	"home";
 		$menu['kategori'] =	$record['kategori'];
 		$this->load->view("home/header");
@@ -78,7 +71,7 @@ class Home extends CI_Controller {
 	}
 
 	/*
-	* funtuin untuk menangani ajax request daftar materi berdsarkan jangka waktu perbulan perhari
+	* funtuin untuk menangani ajax request dihalaman home bagian daftar materi berdsarkan jangka waktu perbulan perhari
 	*/
 	function getMateri()
 	{
@@ -230,5 +223,47 @@ class Home extends CI_Controller {
 		$this->load->view("home/menu_materi",$menu);
 		$this->load->view('home/materi');
 		$this->load->view('home/footer');
+	}
+
+	/*
+	* funtion untuk melayani fitur "muat lebih banyak"
+	*/
+	function loadRecordMateri($rowno=0)
+	{
+
+		// Row per page
+		$rowperpage = 5;
+
+		// Row position
+		if($rowno != 0){
+			$rowno = ($rowno-1) * $rowperpage;
+		}
+
+		// All records count
+		$allcount = $this->model->readSCol("materi","id")->num_rows();
+
+		// Get records sudah diilimit
+			$this->db->select("materi.nama AS nama_materi, kategori.nama AS nama_kategori, attachment.url_attachment, pengguna.nama AS nama_pengguna, materi.waktu_terakhir_edit, materi.ikon_logo,materi.ikon_warna, materi.jumlah_diunduh, (SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags ");
+			$this->db->from("materi");
+			$this->db->join("kategori","materi.kategori = kategori.id","left");
+			$this->db->join("pengguna","materi.siapa_terakhir_edit = pengguna.id","left");
+			$this->db->join("attachment","materi.id = attachment.id_materi");
+			$this->db->limit($rowperpage, $rowno);
+		$materis_record = $this->db->get()->result();		
+
+		// Pagination Configuration
+		$config['base_url'] = "#";
+		$config['use_page_numbers'] = TRUE;
+		$config['total_rows'] = $allcount;
+		$config['per_page'] = $rowperpage;
+
+		// Initialize
+		$this->pagination->initialize($config);
+
+		// Initialize $data Array
+		$data['pagination'] = $this->pagination->create_links();
+		$data['result'] = $materis_record;
+		$data['row'] = $rowno;
+		echo json_encode($data,JSON_PRETTY_PRINT);
 	}
 }

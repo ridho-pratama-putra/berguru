@@ -212,10 +212,10 @@
 								<div class="sidebar-title student-title">
 									<h3 class="title">Mahasiswa Poin Tertinggi</h3>
 									<select class="sidebar-filter" onchange="rangking_mahasiswa()" id="select-rangking-mahasiswa">
+										<option value='semua'>Semua</option>
 										<option value='bulan_lalu'>Bulan Lalu</option>
 										<option value='bulan'>Bulan</option>
 										<option value='harian'>Harian</option>
-										<option value='semua'>Semua</option>
 									</select>
 								</div>
 								<div id="rangking-mahasiswa"></div>
@@ -251,10 +251,10 @@
 								<div class="sidebar-title material-title">
 									<h3 class="title">Materi Menarik</h3>
 									<select class="sidebar-filter" onchange="materi()" id="select-materi-menarik">
+										<option value='semua'>Semua</option>
 										<option value='bulan_lalu'>Bulan Lalu</option>
 										<option value='bulan'>Bulan</option>
 										<option value='hari'>Harian</option>
-										<option value='semua'>Semua</option>
 									</select>
 								</div>
 								<div id="materi-menarik"></div>
@@ -526,7 +526,7 @@
 						'</div>'
 				}
 				elementToRender += 
-					'<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
+					'<a href="<?=base_url()?>materi-detil" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
 			}
 			$('#materi-menarik').html(elementToRender);
 		});

@@ -135,7 +135,9 @@ class BerguruModel extends CI_Model {
 		}
 	}
 
-	/*update from table set$dataupdate where $datacondition*/
+	/*
+	* update from table set$dataupdate where $datacondition
+	*/
 	public function update($table,$dataCondition,$dataUpdate){
 		$this->db->where($dataCondition);
 		$result = $this->db->update($table,$dataUpdate);
