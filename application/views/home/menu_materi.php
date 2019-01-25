@@ -26,14 +26,6 @@
             });
             // END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU
         </script>
-        <style type="text/css">
-            <?php
-            if ($selected_kategori[0]->background != '') { ?>
-                .pages{
-                    background-image: url(<?=base_url($selected_kategori[0]->background)?>);
-                }
-            <?php } ?>
-        </style>
         <div class="sidemenu-overlay hide animated"></div>
         <header class="pages">
             <nav class="navbar navbar-default nav-front">

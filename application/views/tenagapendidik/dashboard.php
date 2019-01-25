@@ -55,8 +55,8 @@
 						</div>
 					</div>
 				</div>
-<?php
-foreach ($kategori as $key => $value) { ?>
+				<?php
+				foreach ($kategori as $key => $value) { ?>
 				<div class="cfc-item item" id="<?=$value->id?>" onclick="kategori(this.id)">
 					<div class="panel panel-plain">
 						<div class="panel-body">
@@ -65,7 +65,7 @@ foreach ($kategori as $key => $value) { ?>
 						</div>
 					</div>
 				</div>
-<?php } ?>
+				<?php } ?>
 			</div>
 		</div>
 		<div class="row">

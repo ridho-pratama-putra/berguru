@@ -228,11 +228,10 @@ class Home extends CI_Controller {
 	/*
 	* funtion untuk melayani fitur "muat lebih banyak"
 	*/
-	function loadRecordMateri($rowno=0)
+	function loadRecordMateri($rowno=0,$jangka_waktu,$kategori)
 	{
-
 		// Row per page
-		$rowperpage = 5;
+		$rowperpage = 1;
 
 		// Row position
 		if($rowno != 0){
@@ -248,6 +247,23 @@ class Home extends CI_Controller {
 			$this->db->join("kategori","materi.kategori = kategori.id","left");
 			$this->db->join("pengguna","materi.siapa_terakhir_edit = pengguna.id","left");
 			$this->db->join("attachment","materi.id = attachment.id_materi");
+
+			// pemilihan kategori waktu dan katefori materi jika ada
+			if ($jangka_waktu == "tahunan") {
+				$this->db->where("YEAR(materi.waktu_terakhir_edit)",date("Y"));
+			}elseif ($jangka_waktu == "bulanan") {
+				$this->db->where("YEAR(materi.waktu_terakhir_edit)",date("Y"));
+				$this->db->where("MONTH(materi.waktu_terakhir_edit)",date("m"));
+			}elseif ($jangka_waktu == "harian") {
+				$this->db->where("YEAR(materi.waktu_terakhir_edit)",date("Y"));
+				$this->db->where("MONTH(materi.waktu_terakhir_edit)",date("m"));
+				$this->db->where("DAY(materi.waktu_terakhir_edit)",date("d"));
+			}
+
+			if ($kategori !== 'all') {
+				$this->db->where("materi.kategori",$kategori);
+			}
+
 			$this->db->limit($rowperpage, $rowno);
 		$materis_record = $this->db->get()->result();		
 
@@ -263,6 +279,7 @@ class Home extends CI_Controller {
 		// Initialize $data Array
 		$data['pagination'] = $this->pagination->create_links();
 		$data['result'] = $materis_record;
+		$data['kategori'] = $kategori;
 		$data['row'] = $rowno;
 		echo json_encode($data,JSON_PRETTY_PRINT);
 	}

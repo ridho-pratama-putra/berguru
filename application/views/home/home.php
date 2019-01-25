@@ -14,19 +14,19 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
-						<ul class="list-inline learn-list">
-								<li>
-									<a href="#">
-										<div class="panel panel-default">
-											<div class="panel-body">
-												<span class="bgicon icon-lists"></span>
-												<p>Semua</p>
-											</div>
+						<div class="owl-carousel category-carousel learn-list">
+                            <div class="item">
+                                <a href="#">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<span class="bgicon icon-lists"></span>
+											<p>Semua</p>
 										</div>
-									</a>
-								</li>
+									</div>
+								</a>
+                            </div>
 							<?php foreach ($kategori as $key => $value) { ?>
-							<li>
+                            <div class="item">
 								<a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>">
 									<div class="panel panel-default">
 										<div class="panel-body">
@@ -35,12 +35,9 @@
 										</div>
 									</div>
 								</a>
-							</li>
+                            </div>                                
 							<?php } ?>
-							<li class="learn-load visible-xs">
-                                <p><a href="#">Muat lebih banyak</a></p>
-                            </li>
-						</ul>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -215,7 +212,7 @@
 										<option value='semua'>Semua</option>
 										<option value='bulan_lalu'>Bulan Lalu</option>
 										<option value='bulan'>Bulan</option>
-										<option value='harian'>Harian</option>
+										<option value='harian'>Hari ini</option>
 									</select>
 								</div>
 								<div id="rangking-mahasiswa"></div>
@@ -227,22 +224,22 @@
 							<div class="sidebar-title panel-header">
 								<h3 class="title">Lowongan Pekerjaan</h3>
 							</div>
-								<div class="panel-body">
-								<?php 
-								if ($lowongan !== array()) {
-									foreach ($lowongan as $key => $value) { ?>
-										<div class="vacancy-item">
-											<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
-											<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon icon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
-											<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
-										</div>
-								</div>
-								<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-								<?php }
-								}else{ ?>
-									<h6 class="title text-center"> Data lowongan masih kosong</h6>
-								</div>
-								<?php }	?>
+							<div class="panel-body">
+							<?php 
+							if ($lowongan !== array()) {
+								foreach ($lowongan as $key => $value) { ?>
+									<div class="vacancy-item">
+										<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
+										<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon icon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
+										<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
+									</div>
+							</div>
+							<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+							<?php }
+							}else{ ?>
+								<h6 class="title text-center"> Data lowongan masih kosong</h6>
+							</div>
+							<?php }	?>
 						</div>
 						
 						<!-- Daftar Materi -->
@@ -254,15 +251,13 @@
 										<option value='semua'>Semua</option>
 										<option value='bulan_lalu'>Bulan Lalu</option>
 										<option value='bulan'>Bulan</option>
-										<option value='hari'>Harian</option>
+										<option value='hari'>Hari ini</option>
 									</select>
 								</div>
 								<div id="materi-menarik"></div>
-								
 							</div>
 						</div>
 					</div>
-					
 				</div>
 			</div>
 		</section>
@@ -345,7 +340,6 @@
 			if (data.permasalahan.length != 0) {				
 				var elementToRender = '';
 				for (var i in data.permasalahan) {
-				// for (var i = data.permasalahan.length - 1; i >= 0; i--) {
 					elementToRender += 
 					"<div class='panel panel-default panel-ask'>"+
 						"<div class='panel-body'>"+
@@ -533,3 +527,50 @@
 	}
 
 </script>
+
+<script type="text/javascript" src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.js"></script>
+        <script type="text/javascript">
+            $('.testi-carousel').owlCarousel({
+            // items: 3,
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: false,
+            navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
+            responsive:{
+                    0:{
+                        items:1
+                    },
+                    640:{
+                        items:2
+                    }
+                }
+            });
+        </script>
+        <script type="text/javascript">
+            $('.category-carousel').owlCarousel({
+            // items: 3,
+            loop: true,
+            margin: 25,
+            nav: true,
+            dots: false,
+            navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
+            responsive:{
+                    0:{
+                        items:2
+                    },
+                    500:{
+                        items:3
+                    },
+                    630:{
+                        items:4
+                    },
+                    995:{
+                        items: 5
+                    },
+                    1200:{
+                        items:7
+                    }
+                }
+            });
+        </script>

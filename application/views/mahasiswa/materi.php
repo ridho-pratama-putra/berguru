@@ -286,7 +286,7 @@
 						'<div class="panel-body">'+
 							'<div class="row">'+
 								'<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">'+
-									'<div class="materi-ikon '+data.materi[i].ikon_warna+'"><i class="fa '+data.materi[i].ikon_logo+'"></i></div>'+
+									'<div class="materi-ikon materi-'+data.materi[i].ikon_warna+'"><span class="bgicon '+data.materi[i].ikon_logo+'"></span></div>'+
 								'</div>'+
 								'<div class="col-xs-9 col-sm-10 col-md-7">'+
 									'<h3 class="ci-title nama">'+data.materi[i].nama+'</h3>'+
@@ -298,7 +298,7 @@
 									'<div class="btn btn-custom btn-status-blue">'+data.materi[i].kategori+'</div>'+
 								'</div>'+
 								'<div class="col-xs-12 col-md-3 col-lg-4 ci-right"> '+
-									'<a href="<?=base_url('download-materi-pendidik/')."'+data.materi[i].id+'"?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>'+
+									'<a href="<?=base_url('download-materi-mahasiswa/')."'+data.materi[i].id+'"?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>'+
 									'<div class="content-tag">'+
 										'<span class="text-muted">Tags</span>'
 										var tags = data.materi[i].tags.split(',')

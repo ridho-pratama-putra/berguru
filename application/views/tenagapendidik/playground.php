@@ -20,21 +20,33 @@
 // 	}
 // 	$this->model->update('pengguna',array('id'=>$value->id),array('alias'=>$alias));
 // }
-echo "<pre>";
-$record = $this->model->rawQuery("SELECT
-provinces.`name` AS province,
-regencies.`name` AS regency,
-districts.`name` AS district,
-villages.`name` AS 
+	$record = $this->model->rawQuery("SELECT
+CONCAT(villages.name,', ',districts.name,', ',regencies.name,', ',provinces.name) AS record
 FROM
 provinces
 INNER JOIN regencies ON regencies.province_id = provinces.id
 INNER JOIN districts ON districts.regency_id = regencies.id
-INNER JOIN villages ON villages.district_id = districts.id")->result();
+INNER JOIN villages ON villages.district_id = districts.id
 
-foreach ($record as $key => $value) {
-	echo $value->;
+WHERE provinces.name = 'JAWA TIMUR' OR provinces.name = 'JAWA TENGAH' OR provinces.name = 'JAWA BARAT'
+")->result();
+
+$string = "INSERT INTO lokasi VALUES ";
+for ($i=20001; $i < 22000; $i++) { 
+	$string .= '(NULL,"'.$record[$i]->record.'"),';
 }
+$string = rtrim($string, ", ");
+$this->db->close();
+$conn = new mysqli("localhost", "root", "", "berguru");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$conn->query($string);
+var_dump($conn->error);
+// echo "INSERT INTO lokasi VALUES $string";
+
+$conn->close();
 ?>
 
 <!-- <!DOCTYPE html>

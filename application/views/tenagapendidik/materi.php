@@ -79,7 +79,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="content-list list" id="materiByKategori">	
+				<div class="content-list list" id="materiByKategori">
 				</div>
 			</div>
 			<div class="col-sm-4 col-md-3">
@@ -287,7 +287,7 @@
 						'<div class="panel-body">'+
 							'<div class="row">'+
 								'<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">'+
-									'<div class="materi-ikon '+data.materi[i].ikon_warna+'"><i class="fa '+data.materi[i].ikon_logo+'"></i></div>'+
+									'<div class="materi-ikon materi-'+data.materi[i].ikon_warna+'"><span class="bgicon '+data.materi[i].ikon_logo+'"></span></div>'+
 								'</div>'+
 								'<div class="col-xs-9 col-sm-10 col-md-7">'+
 									'<h3 class="ci-title nama">'+data.materi[i].nama+'</h3>'+
