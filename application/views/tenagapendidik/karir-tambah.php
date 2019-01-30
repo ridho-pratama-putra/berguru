@@ -1,3 +1,15 @@
+<style type="text/css">
+	.select2-container .select2-selection--single {
+    	height: 55px;
+	}
+	.select2-container--default .select2-selection--single .select2-selection__arrow {
+	    top: 25%;
+	}
+	.select2-container .select2-selection--single .select2-selection__rendered {
+	    padding-top: 13px;
+	}
+</style>
+<link href="<?=base_url()?>assets/css/styles.css" rel="stylesheet">
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -7,10 +19,8 @@
 			<li class="active">Karir</li>
 		</ol>
 	</div><!--/.row-->
-
 	<div class="main-container">
 		<?=$this->session->flashdata("karir")?>
-
 		<div class="row">
 			<div class="col-sm-8 col-md-9">
 				<div class="panel panel-plain">
@@ -30,22 +40,29 @@
 										<input type="text" class="form-control" placeholder="Contoh: Guru SD ulet, bisa ms. Word nilai plus" name="teks">
 									</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-12">
 									<div class="form-group">
 										<label for="">Instansi / Perusahaan</label>
 										<input type="text" class="form-control" placeholder="Nama Instansi" name="instansi">
 									</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-6 col-sm-12">
 									<div class="form-group">
-										<label for="">Lokasi Lowongan</label>
-										<input type="text" class="form-control" placeholder="Lokasi" name="lokasi">
+										<label for="">Kota / Kabupaten</label>
+										<select name="lokasi" class="form-control" data-placeholder="- Pilih Kota / Kabupaten -" id="kotakabupaten" >
+										</select>
 									</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-6 col-sm-12">
 									<div class="form-group">
 										<label for="">Kontak Person</label>
 										<input type="text" class="form-control" placeholder="No. Telepon / HP" name="kontak">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="alamat">Alamat Instansi</label>
+										<textarea name="alamat" class="form-control" id="alamat" placeholder="Jl. Bunga Mawar no 22 RT 03 RW 04 Kelurahan Kedungkandang Kecamatan Sukun, Malang"></textarea>
 									</div>
 								</div>
 							</div>
@@ -55,27 +72,39 @@
 									<label for="">&nbsp;</label>
 									<button class="btn btn-55 btn-success btn-block" type="submit">Publish <span class="hidden-sm">Lowongan</span></button>
 								</div>
-
 							</div>
-
 						</form>
 					</div>
 				</div>
 			</div>
-
 			<div class="col-sm-4 col-md-3">
 				<a href="#"><img src="<?=base_url()?>assets/dashboard/assets/images/iklan.png" alt="Image" class="img-fw"></a>
-				
 			</div>
-
-
 		</div>
-
 	</div>
-
-
-
-
-
-
-</div>	<!--/.main-->
+</div>
+<script type="text/javascript">
+	$('select').select2();
+	$("#kotakabupaten").select2({
+		ajax: {
+			url: '<?=base_url()?>Pendidik/cariKotaOrKabupaten/',
+			dataType: 'json',
+			delay: 1000,
+			data: function (term, page) {
+				return {
+					term: term, // search term
+					page: 10
+				};
+			},
+			processResults: function (data, page) {
+				// console.log(data);
+				return {
+					results: data
+				};
+			},
+			cache: true
+		},
+		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		minimumInputLength: 1
+	});
+</script>

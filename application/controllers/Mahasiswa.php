@@ -903,7 +903,7 @@ class Mahasiswa extends CI_Controller {
 		$header['title'] = "Mahasiswa - Karir";
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
-		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>1))->result();
+		$record['lowongan'] = $this->model->rawQuery("SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id ORDER BY tanggal DESC")->result();
 
 		$this->load->view("statis/header",$header);
 		$this->load->view("mahasiswa/menu",$this->menu);
@@ -912,7 +912,7 @@ class Mahasiswa extends CI_Controller {
 	}
 
 	/*
-	* function untuk menampilkan halaman karir
+	* function untuk menampilkan halaman tambah karir
 	*/
 	function tambahKarir()
 	{
@@ -1043,5 +1043,26 @@ class Mahasiswa extends CI_Controller {
 			}
 			echo json_encode(array('materi'=>$this->model->rawQuery($string)->result()));
 		}
+	}
+
+	/*
+	* funtion untuk menangani ajax request cari kota kapbupaten
+	*/
+	function cariKotaOrKabupaten()
+	{
+		if ($this->input->get() != NULL) {
+			$dataForm = $this->input->get();
+			
+			$dataReturn = $this->db->query("SELECT * FROM lokasi WHERE lokasi LIKE '%".$dataForm['term']['term']."%' ESCAPE '!' ")->result();			
+
+			$data = array();
+			foreach ($dataReturn as $key => $value) {
+				$data[$key]['id'] = $value->id;
+				$data[$key]['text'] = $value->lokasi;
+			}
+			echo json_encode($data);
+		}else{
+			redirect();
+		}		
 	}
 }

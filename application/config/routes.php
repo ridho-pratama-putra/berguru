@@ -60,9 +60,11 @@ $route['translate_uri_dashes'] = FALSE;
 	$route['get-rangking-mahasiswa']	= 'Home/getMahasiswaPoinTertinggi';
 	$route['get-materi'] 				= 'Home/getMateri';
 	$route['materi-detil']				= 'Home/materi';
+	$route['add-subscriber']			= 'Home/addSubscriber';
+	$route['download-materi/(:num)']			= 'Home/downloadMateri/$1';
 	$route['load-materi/(:num)/(:any)/(:any)']		= 'Home/loadRecordMateri/$1/$2/$3';
 
-/*******************************************************END AUTH****************************************************************/
+/*******************************************************home****************************************************************/
 
 
 

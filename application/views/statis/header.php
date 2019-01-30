@@ -45,9 +45,6 @@
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/malihu-scroll/jquery.mCustomScrollbar.js"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/raty/jquery.raty.js" charset="utf-8"></script>
 
-	<!-- list -->
-	<script src="<?=base_url()?>assets/assets/libs/list/list.min.js" charset="utf-8"></script>
-
 	<!-- <link href="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/css/select2.min.css" rel="stylesheet"> -->
 	<!-- <script src="<?=base_url()?>assets/assets/libs/Select2-4.0.6-rc.1/js/select2.min.js" charset="utf-8"></script> -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />

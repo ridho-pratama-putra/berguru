@@ -125,7 +125,7 @@ foreach ($kategori as $key => $value) { ?>
 								<?php } ?>
 							</ul>
 							<div class="list-more">
-								<button class="btn btn-more btn-normal btn-plonk-blue">Muat Lebih <span class="hidden-md hidden-sm">Banyak</span></button>
+								<a href="<?=base_url()?>karir-mahasiswa" class="btn btn-more btn-normal btn-plonk-blue">Muat Lebih <span class="hidden-md hidden-sm">Banyak</span></a>
 							</div>
 						</div>
 								<?php }else{ ?>
@@ -145,10 +145,10 @@ foreach ($kategori as $key => $value) { ?>
 									<div class="dropdown">
 										<a href="#" data-toggle="dropdown" id="select-materi-menarik" data-selected=""></a>
 										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="#" id="materi-bulan_lalu" class="child-select-materi" onclick="materi('bulan_lalu',this)">Bulan Lalu</a></li>
-											<li><a href="#" id="materi-bulan" class="child-select-materi" onclick="materi('bulan',this)">Bulan</a></li>
-											<li><a href="#" id="materi-hari" class="child-select-materi" onclick="materi('hari',this)">Harian</a></li>
 											<li><a href="#" id="materi-semua" class="child-select-materi" onclick="materi('semua',this)">Semua</a></li>
+											<li><a href="#" id="materi-bulan_lalu" class="child-select-materi" onclick="materi('bulan_lalu',this)">Bulan Lalu</a></li>
+											<li><a href="#" id="materi-bulan" class="child-select-materi" onclick="materi('bulan',this)">Bulan ini</a></li>
+											<li><a href="#" id="materi-hari" class="child-select-materi" onclick="materi('hari',this)">Hari ini</a></li>
 										</ul>
 									</div>
 								</div>
@@ -445,7 +445,7 @@ foreach ($kategori as $key => $value) { ?>
 				}
 				elementToRender += 
 					'<div class="list-more">'+
-						'<button class="btn btn-more btn-normal btn-plonk-blue">Muat Lebih <span class="hidden-md hidden-sm">Banyak</span></button>'+
+						'<a href="<?=base_url()?>materi-pendidik" class="btn btn-more btn-normal btn-plonk-blue">Muat Lebih <span class="hidden-md hidden-sm">Banyak</span></a>'+
 					'</div>'
 			}
 			$('#materi-menarik').html(elementToRender);

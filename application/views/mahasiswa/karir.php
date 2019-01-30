@@ -24,7 +24,7 @@
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown">Semua Lowongan <i class="fa fa-chevron-down"></i></a>
+					<a href="#" data-toggle="dropdown">Semua Lowongan <i class="bgicon icon-arrow-down"></i></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Lowongan yang A</a></li>
 						<li><a href="#">Lowongan yang B</a></li>

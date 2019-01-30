@@ -231,7 +231,7 @@ class Home extends CI_Controller {
 	function loadRecordMateri($rowno=0,$jangka_waktu,$kategori)
 	{
 		// Row per page
-		$rowperpage = 1;
+		$rowperpage = 5;
 
 		// Row position
 		if($rowno != 0){
@@ -242,7 +242,7 @@ class Home extends CI_Controller {
 		$allcount = $this->model->readSCol("materi","id")->num_rows();
 
 		// Get records sudah diilimit
-			$this->db->select("materi.nama AS nama_materi, kategori.nama AS nama_kategori, attachment.url_attachment, pengguna.nama AS nama_pengguna, materi.waktu_terakhir_edit, materi.ikon_logo,materi.ikon_warna, materi.jumlah_diunduh, (SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags ");
+			$this->db->select("materi.id, materi.nama AS nama_materi, kategori.nama AS nama_kategori, attachment.url_attachment, pengguna.nama AS nama_pengguna, materi.waktu_terakhir_edit, materi.ikon_logo,materi.ikon_warna, materi.jumlah_diunduh, (SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags ");
 			$this->db->from("materi");
 			$this->db->join("kategori","materi.kategori = kategori.id","left");
 			$this->db->join("pengguna","materi.siapa_terakhir_edit = pengguna.id","left");
@@ -282,5 +282,32 @@ class Home extends CI_Controller {
 		$data['kategori'] = $kategori;
 		$data['row'] = $rowno;
 		echo json_encode($data,JSON_PRETTY_PRINT);
+	}
+
+	/*
+	* function untuk form add subscriber
+	*/
+	function addSubscriber()
+	{
+		$this->model->create("subscriber",array("email"=>$this->input->post("email")));
+		redirect();
+	}
+
+		/*
+	* funtion untuk handle download
+	* id adalah idnya materi
+	*/
+	function downloadMateri($id)
+	{
+		$this->load->helper('download');
+		
+		$materi = $this->model->read('materi',array('id'=>$id))->result();
+		// update harus diatas force. karena force langsung die melalui return (sepertinya). 
+		$this->model->rawQuery("UPDATE materi SET jumlah_diunduh = jumlah_diunduh + 1 WHERE id = ".$id);
+		$attachment = $this->model->read('attachment',array('id_materi'=>$id))->result();
+		
+		$data = file_get_contents(FCPATH.$attachment[0]->url_attachment);
+			
+		force_download($materi[0]->nama.".zip", $data);
 	}
 }

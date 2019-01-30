@@ -121,7 +121,7 @@
 													"</div>"+
 												"</div>"+
 												"<div class='col-sm-6 ask-data-list'>"+
-													"<a href='#' class='btn btn-transparent-green btn-download'><i class='bgicon icon-download'></i>Unduh</a>"+
+													"<a href='<?=base_url()?>download-materi/"+response.result[i].id+"' class='btn btn-transparent-green btn-download'><i class='bgicon icon-download'></i>Unduh</a>"+
 													"<p class='tag-list'>Tags "
 													var tags = response.result[i].tags.split(',')
 													for(var j in tags){

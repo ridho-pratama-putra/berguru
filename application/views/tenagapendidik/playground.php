@@ -32,10 +32,12 @@ WHERE provinces.name = 'JAWA TIMUR' OR provinces.name = 'JAWA TENGAH' OR provinc
 ")->result();
 
 $string = "INSERT INTO lokasi VALUES ";
-for ($i=20001; $i < 22000; $i++) { 
-	$string .= '(NULL,"'.$record[$i]->record.'"),';
+for ($i=20001; $i < 21696; $i++) { 
+	$record[$i]->record = strtolower($record[$i]->record);
+	$string .= '(NULL,"'.ucwords($record[$i]->record).'"),';
 }
 $string = rtrim($string, ", ");
+
 $this->db->close();
 $conn = new mysqli("localhost", "root", "", "berguru");
 if ($conn->connect_error) {

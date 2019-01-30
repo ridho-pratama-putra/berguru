@@ -16,8 +16,8 @@ class Pendidik extends CI_Controller {
 		$this->menu['notif_dm'] = array();
 		$this->menu['belum_dilihat_non_dm'] = array();
 		$this->menu['belum_dilihat_dm'] = [];
-		$this->notifikasiMenuNonDm();
-		$this->notifikasiMenuDm();
+		// $this->notifikasiMenuNonDm();
+		// $this->notifikasiMenuDm();
 	}
 
 
@@ -849,7 +849,7 @@ class Pendidik extends CI_Controller {
 		$header['title'] = "Pendidik - Karir";
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
-		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>1))->result();
+		$record['lowongan'] = $this->model->rawQuery("SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id ORDER BY tanggal DESC")->result();
 
 		$this->load->view("statis/header",$header);
 		$this->load->view("tenagapendidik/menu",$this->menu);
@@ -1188,7 +1188,7 @@ class Pendidik extends CI_Controller {
 	}
 
 	/*
-
+	* 
 	*/
 	function setStatusPertanyaanUnsolved($d)
 	{
@@ -1271,6 +1271,27 @@ class Pendidik extends CI_Controller {
 			}
 			echo json_encode(array('materi'=>$this->model->rawQuery($string)->result()));
 		}
+	}
+
+	/*
+	* funtion untuk menangani ajax request cari kota kapbupaten
+	*/
+	function cariKotaOrKabupaten()
+	{
+		if ($this->input->get() != NULL) {
+			$dataForm = $this->input->get();
+			
+			$dataReturn = $this->db->query("SELECT * FROM lokasi WHERE lokasi LIKE '%".$dataForm['term']['term']."%' ESCAPE '!' ")->result();			
+
+			$data = array();
+			foreach ($dataReturn as $key => $value) {
+				$data[$key]['id'] = $value->id;
+				$data[$key]['text'] = $value->lokasi;
+			}
+			echo json_encode($data);
+		}else{
+			redirect();
+		}		
 	}
 
 	function playground()

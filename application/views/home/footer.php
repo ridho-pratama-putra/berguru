@@ -38,12 +38,14 @@
                         <p class="newsletter-caption">
                             Langganan berita dari <a href="#">Berguru.com</a> dan kita akan memberikan kabar tentang promo
                         </p>
-                        <div class="input-group newsletter-form">
-                            <input type="text" class="form-control" placeholder="Email anda..." aria-describedby="basic-addon2">
-                            <span class="input-group-addon" id="basic-addon2">
-                                <input type="submit" name="submitrss" class="btn btn-green" value="Langganan">
-                            </span>
-                        </div>
+                        <form method="POST" action="<?=base_url()?>add-subscriber">
+                            <div class="input-group newsletter-form">
+                                <input type="text" class="form-control" placeholder="Email anda..." aria-describedby="basic-addon2">
+                                <span class="input-group-addon" id="basic-addon2">
+                                    <input type="submit" name="submitrss" class="btn btn-green" value="Langganan">
+                                </span>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="row footer-copyright">

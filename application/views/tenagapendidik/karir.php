@@ -25,7 +25,7 @@
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown">Semua Lowongan <i class="fa fa-chevron-down"></i></a>
+					<a href="#" data-toggle="dropdown">Semua Lowongan <i class="bgicon icon-arrow-down"></i></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Lowongan yang A</a></li>
 						<li><a href="#">Lowongan yang B</a></li>
@@ -39,9 +39,9 @@
 				<div class="content-filter-search">
 					<div class="row">
 						<div class="col-sm-12 col-lg-8">
-							<form>
+							<form class="input-55">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-map-marker-alt"></i></span>
+									<span class="input-group-addon"><i class="bgicon icon-map-marker"></i></span>
 									<input type="text" class="form-control" placeholder="Pilih lokasi" id="search-bar-karir">
 								</div>
 							</form>
