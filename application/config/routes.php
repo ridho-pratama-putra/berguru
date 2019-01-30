@@ -54,16 +54,15 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 /*******************************************************Home****************************************************************/
-	$route['home'] 						= 'Home/home';
-	$route['kategori-status'] 			= 'Home/getPertanyaan';
-	$route['kategori-mapel'] 			= 'Home/mapel';
-	$route['get-rangking-mahasiswa']	= 'Home/getMahasiswaPoinTertinggi';
-	$route['get-materi'] 				= 'Home/getMateri';
-	$route['materi-detil']				= 'Home/materi';
-	$route['add-subscriber']			= 'Home/addSubscriber';
-	$route['download-materi/(:num)']			= 'Home/downloadMateri/$1';
-	$route['load-materi/(:num)/(:any)/(:any)']		= 'Home/loadRecordMateri/$1/$2/$3';
-
+$route['home'] 						= 'Home/home';
+$route['kategori-status'] 			= 'Home/getPertanyaan';
+$route['kategori-mapel'] 			= 'Home/mapel';
+$route['get-rangking-mahasiswa']	= 'Home/getMahasiswaPoinTertinggi';
+$route['get-materi'] 				= 'Home/getMateri';
+$route['materi-detil']				= 'Home/materi';
+$route['add-subscriber']			= 'Home/addSubscriber';
+$route['download-materi/(:num)']			= 'Home/downloadMateri/$1';
+$route['load-materi/(:num)/(:any)/(:any)']		= 'Home/loadRecordMateri/$1/$2/$3';
 /*******************************************************home****************************************************************/
 
 
@@ -71,12 +70,12 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 /*******************************************************AUTH****************************************************************/
-	$route['login']						= 'Auth/login/';
-	$route['logout']					= 'Auth/logout/';
-	$route['register']					= 'Auth/register/';
-	$route['register-proses']			= 'Auth/registerProses/';
-	$route['register-pilih']			= 'Auth/registerPilih/';
-	$route['register-pilih-proses']		= 'Auth/registerPilihProses/';
+$route['login']						= 'Auth/login/';
+$route['logout']					= 'Auth/logout/';
+$route['register']					= 'Auth/register/';
+$route['register-proses']			= 'Auth/registerProses/';
+$route['register-pilih']			= 'Auth/registerPilih/';
+$route['register-pilih-proses']		= 'Auth/registerPilihProses/';
 /*******************************************************END AUTH****************************************************************/
 
 
@@ -86,48 +85,48 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 /*****************************************************BEGIN ADMIN*****************************************************/
-	$route['profil-admin']						= 'Admin/profilAdmin/';
-	$route['submit-edit-profil-admin']			= 'Admin/submitEditProfil';
-	$route['submit-kirim-pesan-admin']			= 'Admin/submitKirimPesan';
+$route['dashboard-admin']					= 'Admin/dashboard/';
+$route['profil-admin']						= 'Admin/profilAdmin/';
+$route['submit-edit-profil-admin']			= 'Admin/submitEditProfil';
+$route['submit-kirim-pesan-admin']			= 'Admin/submitKirimPesan';
 
 
-	$route['kelola-daftar-message']				= 'Admin/kelolaDaftarMessage/';
-	$route['kelola-daftar-message-all']			= 'Admin/getDaftarMessage/all';
-	$route['kelola-daftar-message-solved']		= 'Admin/getDaftarMessage/solved';
-	$route['kelola-daftar-message-unsolved']	= 'Admin/getDaftarMessage/unsolved';
+$route['kelola-daftar-message']				= 'Admin/kelolaDaftarMessage/';
+$route['kelola-daftar-message-all']			= 'Admin/getDaftarMessage/all';
+$route['kelola-daftar-message-solved']		= 'Admin/getDaftarMessage/solved';
+$route['kelola-daftar-message-unsolved']	= 'Admin/getDaftarMessage/unsolved';
 
-	$route['kelola-kategori-konten'] 			= 'Admin/kelolaKategoriKonten';
-	$route['get-kategori-konten'] 				= 'Admin/getKategoriKonten';
-	$route['submit-tambah-kategori'] 			= 'Admin/submitTambahKategoriKonten';
-	$route['edit-kategori'] 					= 'Admin/editKategoriKonten';
-	$route['submit-edit-kategori'] 				= 'Admin/submiteditKategoriKonten';
-	$route['delete-kategori'] 					= 'Admin/deleteKategoriKonten';
+$route['kelola-kategori-konten'] 			= 'Admin/kelolaKategoriKonten';
+$route['get-kategori-konten'] 				= 'Admin/getKategoriKonten';
+$route['submit-tambah-kategori'] 			= 'Admin/submitTambahKategoriKonten';
+$route['edit-kategori'] 					= 'Admin/editKategoriKonten';
+$route['submit-edit-kategori'] 				= 'Admin/submiteditKategoriKonten';
+$route['delete-kategori'] 					= 'Admin/deleteKategoriKonten';
 
-	$route['kelola-komentar']					= 'Admin/kelolaKomentar';
+$route['kelola-komentar']					= 'Admin/kelolaKomentar';
 
-	$route['kelola-konten-permasalahan']		= 'Admin/kelolaKontenPermasalahan';
-	$route['edit-konten-permasalahan/(:num)']	= 'Admin/editKontenPermasalahan/$1';
-	$route['submit-edit-konten-permasalahan']	= 'Admin/submitEditKontenPermasalahan';
-	$route['delete-permasalahan']				= 'Admin/deletePermasalahan';
+$route['kelola-konten-permasalahan']		= 'Admin/kelolaKontenPermasalahan';
+$route['edit-konten-permasalahan/(:num)']	= 'Admin/editKontenPermasalahan/$1';
+$route['submit-edit-konten-permasalahan']	= 'Admin/submitEditKontenPermasalahan';
+$route['delete-permasalahan']				= 'Admin/deletePermasalahan';
 
-	$route['kelola-materi']						= 'Admin/kelolaMateri';
-	$route['tambah-materi']						= 'Admin/tambahMateri';
-	$route['delete-materi/(:num)']				= 'Admin/deleteMateri/$1';
+$route['kelola-materi']						= 'Admin/kelolaMateri';
+$route['tambah-materi']						= 'Admin/tambahMateri';
+$route['delete-materi/(:num)']				= 'Admin/deleteMateri/$1';
 
-	$route['kelola-pengguna']					= 'Admin/kelolaPengguna';
-	$route['delete-pengguna']					= 'Admin/deletePengguna';
-	$route['ubah-status-pengguna']				= 'Admin/ubahStatusPengguna';
+$route['kelola-pengguna']					= 'Admin/kelolaPengguna';
+$route['delete-pengguna']					= 'Admin/deletePengguna';
+$route['ubah-status-pengguna']				= 'Admin/ubahStatusPengguna';
 
-	$route['kelola-pesan-info']					= 'Admin/kelolaPesanInfo';
+$route['kelola-pesan-info']					= 'Admin/kelolaPesanInfo';
 
-	$route['kelola-tenaga-pendidik']			= 'Admin/kelolaTenagaPendidik';
-	$route['delete-tenaga-pendidik']			= 'Admin/deleteTenagaPendidik';
-	$route['ubah-status-tenaga-pendidik']		= 'Admin/ubahStatusTenagaPendidik';
+$route['kelola-tenaga-pendidik']			= 'Admin/kelolaTenagaPendidik';
+$route['delete-tenaga-pendidik']			= 'Admin/deleteTenagaPendidik';
+$route['ubah-status-tenaga-pendidik']		= 'Admin/ubahStatusTenagaPendidik';
 
-	$route['lowongan-kerja']					= 'Admin/kelolaLowonganKerja';
-	$route['submit-validasi-lowongan']			= 'Admin/submitValidasiLowongan';
-	$route['submit-insert-lowongan']			= 'Admin/submitInsertLowongan';
-
+$route['lowongan-kerja']					= 'Admin/kelolaLowonganKerja';
+$route['submit-validasi-lowongan']			= 'Admin/submitValidasiLowongan';
+$route['submit-insert-lowongan']			= 'Admin/submitInsertLowongan';
 /*****************************************************END OF SUPER ADMIN*****************************************************/
 
 
@@ -138,49 +137,47 @@ $route['translate_uri_dashes'] = FALSE;
 
 /*****************************************************BEGIN MAHASISWA********************************************************/
 
-	$route['dashboard-mahasiswa']					= 'Mahasiswa/dashboard';
-	$route['profil-mahasiswa']						= 'Mahasiswa/profil';
-	$route['edit-profil-mahasiswa']					= 'Mahasiswa/editProfil';
-	$route['submit-edit-profil-mahasiswa']			= 'Mahasiswa/submitEditProfil';
+$route['dashboard-mahasiswa']					= 'Mahasiswa/dashboard';
+$route['profil-mahasiswa']						= 'Mahasiswa/profil';
+$route['edit-profil-mahasiswa']					= 'Mahasiswa/editProfil';
+$route['submit-edit-profil-mahasiswa']			= 'Mahasiswa/submitEditProfil';
 
 	// set komen yang sudah dilihat untuk tampilan notifikasi
-	$route['update-to-terlihat']					= 'Mahasiswa/setTerlihat';
+$route['update-to-terlihat']					= 'Mahasiswa/setTerlihat';
 
 	// ajax untuk lihat permasalahan by kategori
-	$route['get-permasalahan-by-kategori-mahasiswa']= 'Mahasiswa/getPermasalahanByKategoriAndStatus';
+$route['get-permasalahan-by-kategori-mahasiswa']= 'Mahasiswa/getPermasalahanByKategoriAndStatus';
 
 
-	$route['pertanyaan-detail-mahasiswa/(:num)']	= 'Mahasiswa/pertanyaanDetail/$1';
-	$route['pertanyaan-jawab-mahasiswa/(:num)']		= 'Mahasiswa/pertanyaanJawab/$1';
-	$route['pertanyaan-jawab-proses']				= 'Mahasiswa/insertJawaban';
+$route['pertanyaan-detail-mahasiswa/(:num)']	= 'Mahasiswa/pertanyaanDetail/$1';
+$route['pertanyaan-jawab-mahasiswa/(:num)']		= 'Mahasiswa/pertanyaanJawab/$1';
+$route['pertanyaan-jawab-proses']				= 'Mahasiswa/insertJawaban';
 
 
-	$route['materi-mahasiswa']						= 'Mahasiswa/materi';
-	$route['materi-tambah-mahasiswa']				= 'Mahasiswa/tambahMateri';
-	$route['submit-tambah-materi-mahasiswa']		= 'Mahasiswa/insertMateri';
-	$route['get-materi-by-kategori-mahasiswa']		= 'Mahasiswa/getMateriByKategori';
+$route['materi-mahasiswa']						= 'Mahasiswa/materi';
+$route['materi-tambah-mahasiswa']				= 'Mahasiswa/tambahMateri';
+$route['submit-tambah-materi-mahasiswa']		= 'Mahasiswa/insertMateri';
+$route['get-materi-by-kategori-mahasiswa']		= 'Mahasiswa/getMateriByKategori';
 
 
-	$route['karir-mahasiswa']						= 'Mahasiswa/karir';
-	$route['karir-tambah-mahasiswa']				= 'Mahasiswa/tambahKarir';
-	$route['insert-karir-mahasiswa']				= 'Mahasiswa/insertKarir';
+$route['karir-mahasiswa']						= 'Mahasiswa/karir';
+$route['karir-tambah-mahasiswa']				= 'Mahasiswa/tambahKarir';
+$route['insert-karir-mahasiswa']				= 'Mahasiswa/insertKarir';
 
-	$route['pesan-mahasiswa']						= 'Mahasiswa/pesan';
-	$route['delete-initialized-dm']					= 'mahasiswa/deleteInitializedDm';
-	$route['submit-reply-mahasiswa']				= 'mahasiswa/submitReply';
+$route['pesan-mahasiswa']						= 'Mahasiswa/pesan';
+$route['delete-initialized-dm']					= 'mahasiswa/deleteInitializedDm';
+$route['submit-reply-mahasiswa']				= 'mahasiswa/submitReply';
 
-	$route['download-materi-mahasiswa/(:num)']				= 'Mahasiswa/downloadMateri/$1';
+$route['download-materi-mahasiswa/(:num)']				= 'Mahasiswa/downloadMateri/$1';
 /*****************************************************END OF MAHASISWA********************************************************/
-
-
 
 
 
 
 /*****************************************************BEGIN TENAGA PENDIDIK********************************************************/
 
-	$route['dashboard-pendidik']					= 'Pendidik/dashboard';
-	$route['pesan-pendidik']						= 'Pendidik/pesan';
+$route['dashboard-pendidik']					= 'Pendidik/dashboard';
+$route['pesan-pendidik']						= 'Pendidik/pesan';
 	$route['get-pesan-pendidik']					= 'Pendidik/getPesan'; // untuk membaca semua pesan pendidik. action pada saat halaman pesan-pendidik diload
 	$route['profil-pendidik']						= 'Pendidik/profil';
 	$route['edit-profil-pendidik']					= 'Pendidik/editProfil';
@@ -216,6 +213,4 @@ $route['translate_uri_dashes'] = FALSE;
 
 	$route['set-status-pertanyaan-solved/(:num)'] 	= 'Pendidik/setStatusPertanyaanSolved/$1';
 	$route['set-status-pertanyaan-unsolved/(:num)'] = 'Pendidik/setStatusPertanyaanUnsolved/$1';
-
-
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/

@@ -15,8 +15,8 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="owl-carousel category-carousel learn-list">
-                            <div class="item">
-                                <a href="#">
+							<div class="item">
+								<a href="#">
 									<div class="panel panel-default">
 										<div class="panel-body">
 											<span class="bgicon icon-lists"></span>
@@ -24,20 +24,20 @@
 										</div>
 									</div>
 								</a>
-                            </div>
+							</div>
 							<?php foreach ($kategori as $key => $value) { ?>
-                            <div class="item">
-								<a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<span class="bgicon <?=$value->icon?>"></span>
-											<p><?=$value->nama?></p>
+								<div class="item">
+									<a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>">
+										<div class="panel panel-default">
+											<div class="panel-body">
+												<span class="bgicon <?=$value->icon?>"></span>
+												<p><?=$value->nama?></p>
+											</div>
 										</div>
-									</div>
-								</a>
-                            </div>                                
+									</a>
+								</div>                                
 							<?php } ?>
-                        </div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -91,21 +91,21 @@
 									<div role="tabpanel" class="tab-pane" id="unsolved"></div>
 									<?php if ($this->session->userdata('loginSession') == NULL) { ?>
 										
-									<div>
-										<div class="row">
-											<div class="col-xs-12">
-												<div class="ask-cta">
-													<div class="ask-cta-left">
-														<p>Tertarik untuk ikut memberi pertanyaan atau solusi?</p>
-													</div>
-													<div class="ask-cta-right">
-														<a href="<?=base_url()?>register" class="btn btn-transparent-white">Daftar Sekarang</a>
+										<div>
+											<div class="row">
+												<div class="col-xs-12">
+													<div class="ask-cta">
+														<div class="ask-cta-left">
+															<p>Tertarik untuk ikut memberi pertanyaan atau solusi?</p>
+														</div>
+														<div class="ask-cta-right">
+															<a href="<?=base_url()?>register" class="btn btn-transparent-white">Daftar Sekarang</a>
+														</div>
 													</div>
 												</div>
 											</div>
+
 										</div>
-										
-									</div>
 									<?php } ?>
 								</div>
 							</div>
@@ -173,7 +173,7 @@
 					
 					<!-- Sidebar -->
 					<div class="col-md-4">
-					   
+
 						<!-- Konten Iklan -->
 						<div class="adv-content">
 							<div class="panel panel-default">
@@ -225,43 +225,43 @@
 								<h3 class="title">Lowongan Pekerjaan</h3>
 							</div>
 							<div class="panel-body">
-							<?php 
-							if ($lowongan !== array()) {
-								foreach ($lowongan as $key => $value) { ?>
-									<div class="vacancy-item">
-										<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
-										<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon icon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
-										<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
+								<?php 
+								if ($lowongan !== array()) {
+									foreach ($lowongan as $key => $value) { ?>
+										<div class="vacancy-item">
+											<h4 class="vacancy-title"><a href="#"><?=$value->nama?></a></h4>
+											<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon icon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
+											<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
+										</div>
 									</div>
-							</div>
-							<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
-							<?php }
+									<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+								<?php }
 							}else{ ?>
 								<h6 class="title text-center"> Data lowongan masih kosong</h6>
 							</div>
-							<?php }	?>
-						</div>
-						
-						<!-- Daftar Materi -->
-						<div class="panel panel-default material-list right-list">
-							<div class="panel-body">
-								<div class="sidebar-title material-title">
-									<h3 class="title">Materi Menarik</h3>
-									<select class="sidebar-filter" onchange="materi()" id="select-materi-menarik">
-										<option value='semua'>Semua</option>
-										<option value='bulan_lalu'>Bulan Lalu</option>
-										<option value='bulan'>Bulan</option>
-										<option value='hari'>Hari ini</option>
-									</select>
-								</div>
-								<div id="materi-menarik"></div>
+						<?php }	?>
+					</div>
+
+					<!-- Daftar Materi -->
+					<div class="panel panel-default material-list right-list">
+						<div class="panel-body">
+							<div class="sidebar-title material-title">
+								<h3 class="title">Materi Menarik</h3>
+								<select class="sidebar-filter" onchange="materi()" id="select-materi-menarik">
+									<option value='semua'>Semua</option>
+									<option value='bulan_lalu'>Bulan Lalu</option>
+									<option value='bulan'>Bulan</option>
+									<option value='hari'>Hari ini</option>
+								</select>
 							</div>
+							<div id="materi-menarik"></div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
+</div>
 <script type="text/javascript">
 	
 	// untuk perhitungan waktu yang lalu
@@ -342,93 +342,93 @@
 				for (var i in data.permasalahan) {
 					elementToRender += 
 					"<div class='panel panel-default panel-ask'>"+
-						"<div class='panel-body'>"+
-							"<div class='row panel-ask-account'>"+
-								"<div class='col-sm-6'>"+
-									"<div class='media'>"+
-										"<div class='media-left media-middle'>"+
-											"<a href='#' class='ask-photo'>"+
-												"<img class='media-object' src='<?=base_url()?>"+data.permasalahan[i].foto+"' width='275' height='261' alt='Photo'>"+
-											"</a>"+
-										"</div>"+
-										"<div class='media-body'>"+
-											"<h4 class='media-heading'>"+data.permasalahan[i].nama_pengguna+"</h4>"+
-											"<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'></p>"+
-										"</div>"+
-									"</div>"+
-								"</div>"+
-								"<div class='col-sm-6 ask-data-list'>"+
-									"<div class='ask-data'>"+
-										"<p class='data-value'>"+data.permasalahan[i].jumlah_dilihat+"</p>"+
-										"<p class='data-label'>Dilihat</p>"+
-									"</div>"+
-									"<div class='ask-data'>"+
-										"<p class='data-value'>"+data.permasalahan[i].jumlah_komen+"</p>"+
-										"<p class='data-label'>Jawaban</p>"+
-									"</div>"+
-								"</div>"+
-							"</div>"+
-							"<div class='row panel-ask-content'>"+
-								"<div class='col-md-12'>"+
-									"<p>"+
-										data.permasalahan[i].teks+
-									"</p>"+
-								"</div>"+
-							"</div>"+
-							"<div class='row panel-ask-answer'>"+
-								"<div class='col-md-6 ask-commentator'>"+
-									"<ul class='list-inline list-commentator'>";
-										if (data.permasalahan[i].komentator.length > 0 ) {
-										elementToRender +=	
-										"<li class='commentator-caption'>"+
-											"<p>Penjawab</p>"+
-										"</li>";
-										}
-										
-										for(var j in data.permasalahan[i].komentator){
-										elementToRender += 
-										"<li>"+
-											"<a href='#' class='img-circle'>"+
-												"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
-											"</a>"+
-										"</li>";
-											
-										}
-										if(data.permasalahan[i].remaining_penjawab !== 0){
-											elementToRender +=
-											"<li class='commentator-count'>"+
-												"<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
-											"</li>";
-										}
-										elementToRender +=
-									"</ul>"+
-								"</div>"
-								if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null) && data.permasalahan[i].status == "UNSOLVED") {
-									elementToRender +=
-									"<div class='col-md-6 ask-action'>"+
-										"<p>Anda Mahasiswa? </p> "+
-										"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
-									"</div>"
-								}else{
-									elementToRender +=
-									"<div class='col-md-6 ask-action'>"+
-										"<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
-									"</div>"
-								}
-							elementToRender +=
-							"</div>"+
-						"</div>"+
+					"<div class='panel-body'>"+
+					"<div class='row panel-ask-account'>"+
+					"<div class='col-sm-6'>"+
+					"<div class='media'>"+
+					"<div class='media-left media-middle'>"+
+					"<a href='#' class='ask-photo'>"+
+					"<img class='media-object' src='<?=base_url()?>"+data.permasalahan[i].foto+"' width='275' height='261' alt='Photo'>"+
+					"</a>"+
+					"</div>"+
+					"<div class='media-body'>"+
+					"<h4 class='media-heading'>"+data.permasalahan[i].nama_pengguna+"</h4>"+
+					"<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'></p>"+
+					"</div>"+
+					"</div>"+
+					"</div>"+
+					"<div class='col-sm-6 ask-data-list'>"+
+					"<div class='ask-data'>"+
+					"<p class='data-value'>"+data.permasalahan[i].jumlah_dilihat+"</p>"+
+					"<p class='data-label'>Dilihat</p>"+
+					"</div>"+
+					"<div class='ask-data'>"+
+					"<p class='data-value'>"+data.permasalahan[i].jumlah_komen+"</p>"+
+					"<p class='data-label'>Jawaban</p>"+
+					"</div>"+
+					"</div>"+
+					"</div>"+
+					"<div class='row panel-ask-content'>"+
+					"<div class='col-md-12'>"+
+					"<p>"+
+					data.permasalahan[i].teks+
+					"</p>"+
+					"</div>"+
+					"</div>"+
+					"<div class='row panel-ask-answer'>"+
+					"<div class='col-md-6 ask-commentator'>"+
+					"<ul class='list-inline list-commentator'>";
+					if (data.permasalahan[i].komentator.length > 0 ) {
+						elementToRender +=	
+						"<li class='commentator-caption'>"+
+						"<p>Penjawab</p>"+
+						"</li>";
+					}
+
+					for(var j in data.permasalahan[i].komentator){
+						elementToRender += 
+						"<li>"+
+						"<a href='#' class='img-circle'>"+
+						"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
+						"</a>"+
+						"</li>";
+
+					}
+					if(data.permasalahan[i].remaining_penjawab !== 0){
+						elementToRender +=
+						"<li class='commentator-count'>"+
+						"<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
+						"</li>";
+					}
+					elementToRender +=
+					"</ul>"+
+					"</div>"
+					if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null) && data.permasalahan[i].status == "UNSOLVED") {
+						elementToRender +=
+						"<div class='col-md-6 ask-action'>"+
+						"<p>Anda Mahasiswa? </p> "+
+						"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
+						"</div>"
+					}else{
+						elementToRender +=
+						"<div class='col-md-6 ask-action'>"+
+						"<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
+						"</div>"
+					}
+					elementToRender +=
+					"</div>"+
+					"</div>"+
 					"</div>";
 				}
 				elementToRender += 
-									"<div>"+
-										"<div class='load-more'>"+
-											"<div class='load-line'></div>"+
-											"<div class='load-btn'>"+
-												"<a href='' class='btn btn-transparent-blue'>Muat Lebih Banyak </a> "+
-											"</div>"+
-										"</div>"+
-									"</div>"
+				"<div>"+
+				"<div class='load-more'>"+
+				"<div class='load-line'></div>"+
+				"<div class='load-btn'>"+
+				"<a href='' class='btn btn-transparent-blue'>Muat Lebih Banyak </a> "+
+				"</div>"+
+				"</div>"+
+				"</div>"
 				$("#"+argument).html(elementToRender);
 				timeAgo();
 			}else{
@@ -447,46 +447,46 @@
 				if (res.dm_available !== null) {
 					for (var i = 0; i < res.data.length; i++) {
 						elementToRender +=
-							'<div class="student-item">'+
-								'<div class="media">'+
-									'<div class="media-left media-middle">'+
-										'<a href="#" class="student-photo">'+
-											'<img src="<?=base_url()?>'+res.data[i].foto+'" width="" height="" class="img-circle" alt="Image" class="media-object">'+
-										'</a>'+
-									'</div>'+
-									'<div class="media-body">'+
-										'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
-										'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
-										'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
-										'<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>'+
-									'</div>'+
-								'</div>'+
-							'</div>'
+						'<div class="student-item">'+
+						'<div class="media">'+
+						'<div class="media-left media-middle">'+
+						'<a href="#" class="student-photo">'+
+						'<img src="<?=base_url()?>'+res.data[i].foto+'" width="" height="" class="img-circle" alt="Image" class="media-object">'+
+						'</a>'+
+						'</div>'+
+						'<div class="media-body">'+
+						'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
+						'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
+						'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
+						'<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>'+
+						'</div>'+
+						'</div>'+
+						'</div>'
 					}
 				}else{
 					for (i in res.data){
 						elementToRender +=
-							'<div class="student-item">'+
-								'<div class="media">'+
-									'<div class="media-left media-middle">'+
-										'<a href="#" class="student-photo">'+
-											'<img src="<?=base_url()?>'+res.data[i].foto+'" width="" height="" class="img-circle" alt="Image" class="media-object">'+
-										'</a>'+
-									'</div>'+
-									'<div class="media-body">'+
-										'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
-										'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
-										'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
-									'</div>'+
-								'</div>'+
-							'</div>'
+						'<div class="student-item">'+
+						'<div class="media">'+
+						'<div class="media-left media-middle">'+
+						'<a href="#" class="student-photo">'+
+						'<img src="<?=base_url()?>'+res.data[i].foto+'" width="" height="" class="img-circle" alt="Image" class="media-object">'+
+						'</a>'+
+						'</div>'+
+						'<div class="media-body">'+
+						'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
+						'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
+						'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
+						'</div>'+
+						'</div>'+
+						'</div>'
 					}
 				}
 				elementToRender += '<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
 			}else{
 				elementToRender += 
-							'<h6 class="title text-center"> Data mahasiswa poin tertinggi untuk kategori yang anda pilih belum tersedia</h6>'+
-								'</div>'
+				'<h6 class="title text-center"> Data mahasiswa poin tertinggi untuk kategori yang anda pilih belum tersedia</h6>'+
+				'</div>'
 			}
 			$("#rangking-mahasiswa").html(elementToRender);
 		});
@@ -501,26 +501,26 @@
 			$('#materi-menarik').html(elementToRender);
 			if (res.data.length === 0) {
 				elementToRender += 
-					'<h6 class="title text-center"> Data materi masih kosong untuk kategori yang anda pilih</h6>'
+				'<h6 class="title text-center"> Data materi masih kosong untuk kategori yang anda pilih</h6>'
 			}else{
 				for (var i = 0; i < res.data.length; i++) {
 					elementToRender += 
-						'<div class="material-item">'+
-							'<div class="media '+res.data[i].ikon_cat+'">'+
-								'<div class="media-left media-middle">'+
-									'<div class="media-object">'+
-										'<span class="bgicon '+res.data[i].ikon_logo+'"></span>'+
-									'</div>'+
-								'</div>'+
-								'<div class="media-body">'+
-									'<h4 class="media-heading"><a href="#">'+res.data[i].nama+'</a></h4>'+
-									'<p>Post oleh <cite>'+res.data[i].siapa_terakhir_edit+'</cite> <span class="count"><i class="bgicon icon-download"></i> '+res.data[i].jumlah_diunduh+'</span></p>'+
-								'</div>'+
-							'</div>'+
-						'</div>'
+					'<div class="material-item">'+
+					'<div class="media '+res.data[i].ikon_cat+'">'+
+					'<div class="media-left media-middle">'+
+					'<div class="media-object">'+
+					'<span class="bgicon '+res.data[i].ikon_logo+'"></span>'+
+					'</div>'+
+					'</div>'+
+					'<div class="media-body">'+
+					'<h4 class="media-heading"><a href="#">'+res.data[i].nama+'</a></h4>'+
+					'<p>Post oleh <cite>'+res.data[i].siapa_terakhir_edit+'</cite> <span class="count"><i class="bgicon icon-download"></i> '+res.data[i].jumlah_diunduh+'</span></p>'+
+					'</div>'+
+					'</div>'+
+					'</div>'
 				}
 				elementToRender += 
-					'<a href="<?=base_url()?>materi-detil" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
+				'<a href="<?=base_url()?>materi-detil" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
 			}
 			$('#materi-menarik').html(elementToRender);
 		});
@@ -529,8 +529,8 @@
 </script>
 
 <script type="text/javascript" src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.js"></script>
-        <script type="text/javascript">
-            $('.testi-carousel').owlCarousel({
+<script type="text/javascript">
+	$('.testi-carousel').owlCarousel({
             // items: 3,
             loop: true,
             margin: 10,
@@ -538,17 +538,17 @@
             dots: false,
             navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
             responsive:{
-                    0:{
-                        items:1
-                    },
-                    640:{
-                        items:2
-                    }
-                }
-            });
-        </script>
-        <script type="text/javascript">
-            $('.category-carousel').owlCarousel({
+            	0:{
+            		items:1
+            	},
+            	640:{
+            		items:2
+            	}
+            }
+        });
+    </script>
+    <script type="text/javascript">
+    	$('.category-carousel').owlCarousel({
             // items: 3,
             loop: true,
             margin: 25,
@@ -556,21 +556,21 @@
             dots: false,
             navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
             responsive:{
-                    0:{
-                        items:2
-                    },
-                    500:{
-                        items:3
-                    },
-                    630:{
-                        items:4
-                    },
-                    995:{
-                        items: 5
-                    },
-                    1200:{
-                        items:7
-                    }
-                }
-            });
-        </script>
+            	0:{
+            		items:2
+            	},
+            	500:{
+            		items:3
+            	},
+            	630:{
+            		items:4
+            	},
+            	995:{
+            		items: 5
+            	},
+            	1200:{
+            		items:7
+            	}
+            }
+        });
+    </script>

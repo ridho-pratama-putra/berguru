@@ -35,22 +35,22 @@ class Auth extends CI_Controller {
 							}
 							
 							$newdata = array(
-							        'id'     					=> $recordPengguna[0]->id,
-							        'nama'  					=> $recordPengguna[0]->nama,
-							        'email'     				=> $recordPengguna[0]->email,
-							        'no_hp'     				=> $recordPengguna[0]->no_hp,
-							        'aktor'     				=> $recordPengguna[0]->aktor,
-							        'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
-							        'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
-							        'status'  					=> $recordPengguna[0]->status,
-									'foto'						=> base_url().$recordPengguna[0]->foto
+								'id'     					=> $recordPengguna[0]->id,
+								'nama'  					=> $recordPengguna[0]->nama,
+								'email'     				=> $recordPengguna[0]->email,
+								'no_hp'     				=> $recordPengguna[0]->no_hp,
+								'aktor'     				=> $recordPengguna[0]->aktor,
+								'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
+								'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
+								'status'  					=> $recordPengguna[0]->status,
+								'foto'						=> base_url().$recordPengguna[0]->foto
 							);
 
 							$this->session->set_userdata('loginSession',$newdata);
 
 							if ($recordPengguna[0]->aktor == "admin") {
 								alert('alert','success','Hai Admin '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
-								redirect('kelola-pengguna');
+								redirect('dashboard-admin');
 								return true;
 							}elseif ($recordPengguna[0]->aktor == "mahasiswa") {
 								alert('alert','success','Hai '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
@@ -84,16 +84,16 @@ class Auth extends CI_Controller {
 				$recordCookieAktif = $this->model->read('pengguna',array('cookie'=>$cookie))->result();
 				if ($recordCookieAktif[0]->cookie == $cookie) {
 					$newdata = array(
-							        'id'     					=> $recordCookieAktif[0]->id,
-							        'nama'  					=> $recordCookieAktif[0]->nama,
-							        'email'     				=> $recordCookieAktif[0]->email,
-							        'no_hp'     				=> $recordCookieAktif[0]->no_hp,
-							        'aktor'     				=> $recordCookieAktif[0]->aktor,
-							        'institusi_or_universitas'  => $recordCookieAktif[0]->institusi_or_universitas,
-							        'nip_or_nim'  				=> $recordCookieAktif[0]->nip_or_nim,
-							        'status'  					=> $recordCookieAktif[0]->status,
-									'foto'						=> base_url().$recordCookieAktif[0]->foto
-							);
+						'id'     					=> $recordCookieAktif[0]->id,
+						'nama'  					=> $recordCookieAktif[0]->nama,
+						'email'     				=> $recordCookieAktif[0]->email,
+						'no_hp'     				=> $recordCookieAktif[0]->no_hp,
+						'aktor'     				=> $recordCookieAktif[0]->aktor,
+						'institusi_or_universitas'  => $recordCookieAktif[0]->institusi_or_universitas,
+						'nip_or_nim'  				=> $recordCookieAktif[0]->nip_or_nim,
+						'status'  					=> $recordCookieAktif[0]->status,
+						'foto'						=> base_url().$recordCookieAktif[0]->foto
+					);
 					$this->session->set_userdata('loginSession',$newdata);
 					if ($recordCookieAktif[0]->aktor == 'mahasiswa') {
 						alert('alert','success','Hai '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
@@ -136,36 +136,36 @@ class Auth extends CI_Controller {
 					$password		= md5($this->input->post('password'));
 
 					/* START generate alias*/
-						$explode = explode(" ", $nama);
-						$temp_alias = '';
-						foreach ($explode as $key => $value) {
-							$temp_alias .= $value." ";
-							if (strlen($temp_alias) <= 20) {
-								$alias .= $valueA;
-								if ($keyA !== (sizeof($explode)-1)) {
-									$alias .=" ";
-								}
+					$explode = explode(" ", $nama);
+					$temp_alias = '';
+					foreach ($explode as $key => $value) {
+						$temp_alias .= $value." ";
+						if (strlen($temp_alias) <= 20) {
+							$alias .= $valueA;
+							if ($keyA !== (sizeof($explode)-1)) {
+								$alias .=" ";
 							}
 						}
-						if (strlen($alias) < 20) {
-							$alias .= substr($explode[$key], 0,1);
-						}
+					}
+					if (strlen($alias) < 20) {
+						$alias .= substr($explode[$key], 0,1);
+					}
 					/* END generate alias*/
 
 					$newdata = array(
-					        'nama'  					=> $nama,
-					        'alias'  					=> $alias,
-					        'email'     				=> $email,
-					        'password'     				=> $password,
-					        'masih_proses_registrasi' 	=> TRUE
+						'nama'  					=> $nama,
+						'alias'  					=> $alias,
+						'email'     				=> $email,
+						'password'     				=> $password,
+						'masih_proses_registrasi' 	=> TRUE
 					);
 
 					$sesi = $this->session->set_userdata('registrasiSession',$newdata);
 					redirect('register-pilih');
 				}else{
 					$register = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
-		            	'</div>');
-		            $this->session->set_flashdata('register', $register);
+						'</div>');
+					$this->session->set_flashdata('register', $register);
 				}
 			}
 			$header['title'] = "Daftar";
@@ -217,6 +217,7 @@ class Auth extends CI_Controller {
 			// var_dump($queryPengguna);die();
 			// insert ke tabel max_notif_id_per_user
 			$this->model->create_id('max_notif_id_per_user',array('id_pengguna'=>$queryPengguna->message,'max_notif_id'=>0));
+			$this->model->create('subscriber',array('email'=>$recordPengguna['email']));
 			
 			if ($queryPengguna->status) {
 				$this->session->unset_userdata('registrasiSession');
@@ -247,12 +248,12 @@ class Auth extends CI_Controller {
 	* FUNCTION UNTUK FORM VALIDATION NAMA
 	*/
 	public function fullname_check($str) {
-	    if (! preg_match("/^([a-z ])+$/i", $str)) {
-	        $this->form_validation->set_message('fullname_check', 'The %s field can only be alphabetic');
-	        return FALSE;
-	    } else {
-	        return TRUE;
-	    }
+		if (! preg_match("/^([a-z ])+$/i", $str)) {
+			$this->form_validation->set_message('fullname_check', 'The %s field can only be alphabetic');
+			return FALSE;
+		} else {
+			return TRUE;
+		}
 	}
 }
 // UNSET THINGS

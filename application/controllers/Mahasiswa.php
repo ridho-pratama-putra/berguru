@@ -31,13 +31,13 @@ class Mahasiswa extends CI_Controller {
 		$record['kategori'] = $this->model->readS('kategori')->result();
 		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();
 		$record['materi'] = $this->model->rawQuery('
-														SELECT
-																materi.nama AS nama_materi,
-																materi.jumlah_diunduh,
-																pengguna.nama AS nama_pengguna
-														FROM materi
-														LEFT JOIN pengguna ON materi.siapa_terakhir_edit = pengguna.id
-		')->result();
+			SELECT
+			materi.nama AS nama_materi,
+			materi.jumlah_diunduh,
+			pengguna.nama AS nama_pengguna
+			FROM materi
+			LEFT JOIN pengguna ON materi.siapa_terakhir_edit = pengguna.id
+			')->result();
 		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 
 		$this->load->view("statis/header",$header);
@@ -112,119 +112,119 @@ class Mahasiswa extends CI_Controller {
 			id_permasalahan
 			id_komentar
 		*/
-		if ($this->input->post() !== array() OR $this->session->flashdata("id_komentator") !== NULL) {
+			if ($this->input->post() !== array() OR $this->session->flashdata("id_komentator") !== NULL) {
 
 			// dibagian if adalah untuk redirect setelah submitReply, yang bagian else untuk yang dari klik sebuah chat dengan mahasiswa.  bagian if menggunakan flashdata karena kesulitan post sambil redirect
-			if ($this->input->post('id_komentator') == array()) {
-				$id_komentator = $this->session->flashdata("id_komentator")['id_komentator'];
-			}else{
-				$id_komentator = $this->input->post('id_komentator');
-			}
-			
+				if ($this->input->post('id_komentator') == array()) {
+					$id_komentator = $this->session->flashdata("id_komentator")['id_komentator'];
+				}else{
+					$id_komentator = $this->input->post('id_komentator');
+				}
+				
 			// jika dari tombol kirim pesan pada halaman pertanyaan detail (inisialisasi dm / mau melakukan dm terkait komentar seorang mahasaiswa)
-			if ($this->input->post('id_permasalahan') !== NULL AND $this->input->post('id_komentar') !== NULL) {
+				if ($this->input->post('id_permasalahan') !== NULL AND $this->input->post('id_komentar') !== NULL) {
 
 				// cek apakah direct message dgn tipe permasalahan sudah d inisialisasi. untuk mecegah double inisialisasi
-				$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
-				
-				$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal','status'))->result();
-				$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal','rating'))->result();
-				if ($bacaDirectMessage->num_rows() == 0) {
+					$bacaDirectMessage = $this->model->read('direct_message',array('dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'jenis_pesan'=>'permasalahan'));
 					
+					$record['permasalahan'] 	= $this->model->readCol("permasalahan",array('id'=>$this->input->post('id_permasalahan')),array('id','teks','tanggal','status'))->result();
+					$record['komentar'] 		= $this->model->readCol("komentar",array('id'=>$this->input->post('id_komentar')),array('id','teks','tanggal','rating'))->result();
+					if ($bacaDirectMessage->num_rows() == 0) {
+						
 					// insert ke dm sebuah pertanyaan
-					$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan','terpecahkan'=>$record['permasalahan'][0]->status));
+						$this->model->create('direct_message',array('teks'=>$record['permasalahan'][0]->teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$id_komentator,'permasalahan'=>$this->input->post('id_permasalahan'),'komentar'=>$this->input->post('id_komentar'),'tanggal'=>date("Y-m-d H:i:s"),'jenis_pesan'=>'permasalahan','terpecahkan'=>$record['permasalahan'][0]->status));
 
 					// insert ke dm sebuah komentar permasalahan. jika permasalhan telah berstatus solved, maka hilangkan panel tanya permasalahan terpecahkan dengan mengisi kolom solver = bukan
-					if ($record['permasalahan'][0]->status == 'SOLVED') {
-						$this->model->create('direct_message',
-							array(
-								'teks'			=>$record['komentar'][0]->teks,
-								'dari'			=>$id_komentator,
-								'untuk'			=>$this->session->userdata('loginSession')['id'],
-								'permasalahan'	=>$this->input->post('id_permasalahan'),
-								'komentar'		=>$this->input->post('id_komentar'),
-								'tanggal'		=>date("Y-m-d H:i:s"),
-								'jenis_pesan'	=>'komentarpermasalahan',
-								'rating'		=>$record['komentar'][0]->rating,
-								'solver'		=>'bukan'
-							)
-						);
-					}elseif ($record['permasalahan'][0]->status == 'UNSOLVED') {
-						$this->model->create('direct_message',
-							array(
-								'teks'			=>$record['komentar'][0]->teks,
-								'dari'			=>$id_komentator,
-								'untuk'			=>$this->session->userdata('loginSession')['id'],
-								'permasalahan'	=>$this->input->post('id_permasalahan'),
-								'komentar'		=>$this->input->post('id_komentar'),
-								'tanggal'		=>date("Y-m-d H:i:s"),
-								'jenis_pesan'	=>'komentarpermasalahan',
-								'rating'		=>$record['komentar'][0]->rating
-							)
-						);
+						if ($record['permasalahan'][0]->status == 'SOLVED') {
+							$this->model->create('direct_message',
+								array(
+									'teks'			=>$record['komentar'][0]->teks,
+									'dari'			=>$id_komentator,
+									'untuk'			=>$this->session->userdata('loginSession')['id'],
+									'permasalahan'	=>$this->input->post('id_permasalahan'),
+									'komentar'		=>$this->input->post('id_komentar'),
+									'tanggal'		=>date("Y-m-d H:i:s"),
+									'jenis_pesan'	=>'komentarpermasalahan',
+									'rating'		=>$record['komentar'][0]->rating,
+									'solver'		=>'bukan'
+								)
+							);
+						}elseif ($record['permasalahan'][0]->status == 'UNSOLVED') {
+							$this->model->create('direct_message',
+								array(
+									'teks'			=>$record['komentar'][0]->teks,
+									'dari'			=>$id_komentator,
+									'untuk'			=>$this->session->userdata('loginSession')['id'],
+									'permasalahan'	=>$this->input->post('id_permasalahan'),
+									'komentar'		=>$this->input->post('id_komentar'),
+									'tanggal'		=>date("Y-m-d H:i:s"),
+									'jenis_pesan'	=>'komentarpermasalahan',
+									'rating'		=>$record['komentar'][0]->rating
+								)
+							);
+						}
 					}
 				}
-			}
-			$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin','aktor'))->result();
-			
+				$record['komentator'] 	= $this->model->readCol('pengguna',array('id'=>$id_komentator),array('id','nama','email','foto','poin','aktor'))->result();
+				
 			// data chat mentah yang belum diolah. (di group berdsarkan tanggal)
-			$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
-			
-			$record['chat'] = array();
+				$chat = $this->model->rawQuery("SELECT * FROM direct_message WHERE (dari = '".$this->session->userdata('loginSession')['id']."' OR untuk = '".$this->session->userdata('loginSession')['id']."') AND (dari = '".$id_komentator."' OR untuk = '".$id_komentator."')")->result();
+				
+				$record['chat'] = array();
 
 			// $temp_flag untuk track posisi komentar mahasiswa yang terakhir
-			$temp_flag = 0;
+				$temp_flag = 0;
 
 			// pemisahan chat setiap tanggal
-			foreach ($chat as $key => $value) {
-				
+				foreach ($chat as $key => $value) {
+					
 				// $temp digunakan untuk membuat indeks pada array
-				$temp_indeks = substr($value->tanggal, 0, 10);
+					$temp_indeks = substr($value->tanggal, 0, 10);
 
 				// lupa
-				if (!isset($record['chat'][$temp_indeks])) {
-					$record['chat'][$temp_indeks] = array();
-				}
+					if (!isset($record['chat'][$temp_indeks])) {
+						$record['chat'][$temp_indeks] = array();
+					}
 
 				// push ke record untuk dikirim ke halaman pesan
-				array_push($record['chat'][$temp_indeks], $chat[$key]);
+					array_push($record['chat'][$temp_indeks], $chat[$key]);
 
 				// set pesan yang belum dibaca ke sudah dibaca
-				$update = $this->model->rawQuery("
-					UPDATE 
-							direct_message 
-					SET is_open = 'sudah' 
-					WHERE 
+					$update = $this->model->rawQuery("
+						UPDATE 
+						direct_message 
+						SET is_open = 'sudah' 
+						WHERE 
 						untuk='".$this->session->userdata('loginSession')['id']."' AND dari='".$id_komentator."'"
-				);
-			}
-			$this->model->rawQuery("UPDATE notif SET terbaca = 'sudah' WHERE konteks ='dm' AND (dari='".$this->input->post('id_komentator')."' AND untuk='".$this->session->userdata('loginSession')['id']."')");
+					);
+				}
+				$this->model->rawQuery("UPDATE notif SET terbaca = 'sudah' WHERE konteks ='dm' AND (dari='".$this->input->post('id_komentator')."' AND untuk='".$this->session->userdata('loginSession')['id']."')");
 
 			// get daftar mahasiswa yang telah dicahat
-			$record['to']	=  $this->getInitializedDm();
-			
+				$record['to']	=  $this->getInitializedDm();
+				
 			// echo "<pre>";
 			// var_dump($record);
 			// // var_dump($this->input->post());
 			// echo "</pre>";
 
 			// jika asalnya dari redirect setelah pertanyaan permaslaahan terpocahkan? maka set suah alert
-			if (isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 1) {
-				alert('alert','success','Barhasil!','Status permasalahan telah diubah menjadi SOLVED!');
-			}elseif(isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 0){
-				alert('alert','success','Terimakasih!','Feedback anda telah tersimpan');
-			}
+				if (isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 1) {
+					alert('alert','success','Barhasil!','Status permasalahan telah diubah menjadi SOLVED!');
+				}elseif(isset($this->session->flashdata("id_komentator")['permasalahan_terpecahkan']) AND $this->session->flashdata("id_komentator")['permasalahan_terpecahkan'] == 0){
+					alert('alert','success','Terimakasih!','Feedback anda telah tersimpan');
+				}
 
-			$this->load->view('mahasiswa/pesan-detail',$record);
-		}else{
-			
+				$this->load->view('mahasiswa/pesan-detail',$record);
+			}else{
+				
 			// get daftar mahasiswa yang telah dicahat
-			$record['to']	=  $this->getInitializedDm();
+				$record['to']	=  $this->getInitializedDm();
 
-			$this->load->view('mahasiswa/pesan',$record);
+				$this->load->view('mahasiswa/pesan',$record);
+			}
+			$this->load->view('statis/footer');
 		}
-		$this->load->view('statis/footer');
-	}
 
 
 	/*
@@ -233,36 +233,36 @@ class Mahasiswa extends CI_Controller {
 	function getInitializedDm()
 	{
 		return $this->model->rawQuery("
-										SELECT DISTINCT dari AS fr,
-											(
-												SELECT teks FROM direct_message
-												WHERE id = 
-													( 
-													SELECT MAX(id)
-													FROM direct_message 
-													WHERE 
-														(dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
-													)
-											) AS teks,
-											(
-												SELECT MAX(tanggal) FROM direct_message
-												WHERE (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].") OR (dari=".$this->session->userdata('loginSession')['id']." AND untuk = fr)
-											) AS tanggal,
-											(
-												SELECT COUNT(id) FROM direct_message
-												WHERE is_open IS NULL 
-												AND (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
-											) AS belum_dibaca,
-											pengguna.id,
-											pengguna.alias,
-											pengguna.aktor,
-											pengguna.foto
-										FROM 
-											direct_message
-										LEFT JOIN pengguna ON direct_message.dari = pengguna.id
-										WHERE untuk = ".$this->session->userdata('loginSession')['id']."
-										ORDER BY tanggal DESC
-									")->result();
+			SELECT DISTINCT dari AS fr,
+			(
+			SELECT teks FROM direct_message
+			WHERE id = 
+			( 
+			SELECT MAX(id)
+			FROM direct_message 
+			WHERE 
+			(dari = ".$this->session->userdata('loginSession')['id']." AND untuk = fr) OR (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
+			)
+			) AS teks,
+			(
+			SELECT MAX(tanggal) FROM direct_message
+			WHERE (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].") OR (dari=".$this->session->userdata('loginSession')['id']." AND untuk = fr)
+			) AS tanggal,
+			(
+			SELECT COUNT(id) FROM direct_message
+			WHERE is_open IS NULL 
+			AND (dari = fr AND untuk = ".$this->session->userdata('loginSession')['id'].")
+			) AS belum_dibaca,
+			pengguna.id,
+			pengguna.alias,
+			pengguna.aktor,
+			pengguna.foto
+			FROM 
+			direct_message
+			LEFT JOIN pengguna ON direct_message.dari = pengguna.id
+			WHERE untuk = ".$this->session->userdata('loginSession')['id']."
+			ORDER BY tanggal DESC
+			")->result();
 	}
 
 
@@ -272,12 +272,12 @@ class Mahasiswa extends CI_Controller {
 	function deleteInitializedDm()
 	{
 		return $this->model->rawQuery("
-										DELETE FROM direct_message 
-										WHERE 
-											(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
-											AND 
-											(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL"
-									);
+			DELETE FROM direct_message 
+			WHERE 
+			(jenis_pesan='permasalahan' OR jenis_pesan='komentarpermasalahan') 
+			AND 
+			(dari='".$this->session->userdata('loginSession')['id']."' OR untuk='".$this->session->userdata('loginSession')['id']."') AND dibalas IS NULL"
+		);
 	}
 
 	/*
@@ -330,22 +330,22 @@ class Mahasiswa extends CI_Controller {
 		$this->menu['active'] = "";
 		$record['pengguna'] = $this->model->read('pengguna',array('id'=>$this->session->userdata('loginSession')['id']))->result();
 		$record['komentar'] = $this->model->rawQuery('
-														SELECT
-																komentar.teks AS teks_komentar,
-																komentar.tanggal,
-																komentar.rating,
-																permasalahan.teks AS teks_permasalahan,
-																pengguna.nama,
-																pengguna.foto
-														FROM komentar
-														LEFT JOIN permasalahan ON komentar.permasalahan = permasalahan.id
-														LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
-														WHERE komentar.siapa = "'.$this->session->userdata('loginSession')['id'].'"
-		')->result();
+			SELECT
+			komentar.teks AS teks_komentar,
+			komentar.tanggal,
+			komentar.rating,
+			permasalahan.teks AS teks_permasalahan,
+			pengguna.nama,
+			pengguna.foto
+			FROM komentar
+			LEFT JOIN permasalahan ON komentar.permasalahan = permasalahan.id
+			LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
+			WHERE komentar.siapa = "'.$this->session->userdata('loginSession')['id'].'"
+			')->result();
 		$record['dm'] = array(
-								'dm_solved' => $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE jenis_pesan = 'permasalahan_solved' AND untuk = '".$this->session->userdata('loginSession')['id']."' ")->result_array(),
-								'dm'		=> $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE dari = '".$this->session->userdata('loginSession')['id']."'")->result_array()
-							);
+			'dm_solved' => $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE jenis_pesan = 'permasalahan_solved' AND untuk = '".$this->session->userdata('loginSession')['id']."' ")->result_array(),
+			'dm'		=> $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM direct_message WHERE dari = '".$this->session->userdata('loginSession')['id']."'")->result_array()
+		);
 		$this->load->view('statis/header',$header);
 		$this->load->view('mahasiswa/menu',$this->menu);
 		$this->load->view('mahasiswa/profil',$record);
@@ -429,15 +429,15 @@ class Mahasiswa extends CI_Controller {
 					}
 					$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 					$newdata = array(
-							        'id'     					=> $recordPengguna[0]->id,
-							        'nama'  					=> $recordPengguna[0]->nama,
-							        'email'     				=> $recordPengguna[0]->email,
-							        'no_hp'     				=> $recordPengguna[0]->no_hp,
-							        'aktor'     				=> $recordPengguna[0]->aktor,
-							        'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
-							        'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
-							        'status'  					=> $recordPengguna[0]->status,
-									'foto'						=> base_url().$recordPengguna[0]->foto
+						'id'     					=> $recordPengguna[0]->id,
+						'nama'  					=> $recordPengguna[0]->nama,
+						'email'     				=> $recordPengguna[0]->email,
+						'no_hp'     				=> $recordPengguna[0]->no_hp,
+						'aktor'     				=> $recordPengguna[0]->aktor,
+						'institusi_or_universitas'  => $recordPengguna[0]->institusi_or_universitas,
+						'nip_or_nim'  				=> $recordPengguna[0]->nip_or_nim,
+						'status'  					=> $recordPengguna[0]->status,
+						'foto'						=> base_url().$recordPengguna[0]->foto
 					);
 					$this->session->set_userdata('loginSession',$newdata);
 
@@ -455,7 +455,7 @@ class Mahasiswa extends CI_Controller {
 				}
 			}else{
 				$register = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
-				'</div>');
+					'</div>');
 				$this->session->set_flashdata('editProfil', $register);
 				redirect('edit-profil-mahasiswa');
 			}
@@ -475,26 +475,26 @@ class Mahasiswa extends CI_Controller {
 	function notifikasiMenuNonDm()
 	{
 		// baca notif untuk para mahasiswa dan dia seorang
-			$notif_mahasiswa = $this->model->rawQuery("
-				SELECT  
-						notif.id,
-						notif.konteks,
-						notif.id_konteks,
-						pengguna.nama AS dari, 
-						pengguna.foto, 
-						notif.untuk,
-						notif.datetime 
-				FROM notif 
-				LEFT JOIN pengguna ON pengguna.id = notif.dari
-				WHERE 
-						(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
-				OR 
-						untuk = 'mahasiswa' 
-				OR 
-						untuk = '".$this->session->userdata('loginSession')['id']."'
-				AND
-						konteks != 'dm'
-				ORDER BY datetime DESC
+		$notif_mahasiswa = $this->model->rawQuery("
+			SELECT  
+			notif.id,
+			notif.konteks,
+			notif.id_konteks,
+			pengguna.nama AS dari, 
+			pengguna.foto, 
+			notif.untuk,
+			notif.datetime 
+			FROM notif 
+			LEFT JOIN pengguna ON pengguna.id = notif.dari
+			WHERE 
+			(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
+			OR 
+			untuk = 'mahasiswa' 
+			OR 
+			untuk = '".$this->session->userdata('loginSession')['id']."'
+			AND
+			konteks != 'dm'
+			ORDER BY datetime DESC
 			");
 
 
@@ -536,27 +536,27 @@ class Mahasiswa extends CI_Controller {
 	function notifikasiMenuDm()
 	{
 		// baca notif untuk para mahasiswa dan dia seorang
-			$notif_mahasiswa = $this->model->rawQuery("
-				SELECT  
-					notif.id,
-					notif.konteks,
-					notif.id_konteks,
-					pengguna.id AS id_dari, 
-					pengguna.foto, 
-					pengguna.nama AS dari, 
-					notif.untuk,
-					MAX(notif.datetime)as datetime,
-					(SELECT GROUP_CONCAT(notif.id SEPARATOR ',') FROM notif WHERE konteks = 'dm' AND untuk = '".$this->session->userdata('loginSession')['id']."' AND dari = pengguna.id AND terbaca IS NULL) AS jumlah
-				FROM notif 
-				LEFT JOIN pengguna ON pengguna.id = notif.dari
-				WHERE 
-					(untuk = '".$this->session->userdata('loginSession')['id']."' OR untuk = 'mahasiswa')
-				AND
-					(konteks = 'dm' OR konteks = 'pesaninfo')
-				AND 
-					terbaca IS NULL
-				GROUP BY dari
-				ORDER BY datetime DESC;
+		$notif_mahasiswa = $this->model->rawQuery("
+			SELECT  
+			notif.id,
+			notif.konteks,
+			notif.id_konteks,
+			pengguna.id AS id_dari, 
+			pengguna.foto, 
+			pengguna.nama AS dari, 
+			notif.untuk,
+			MAX(notif.datetime)as datetime,
+			(SELECT GROUP_CONCAT(notif.id SEPARATOR ',') FROM notif WHERE konteks = 'dm' AND untuk = '".$this->session->userdata('loginSession')['id']."' AND dari = pengguna.id AND terbaca IS NULL) AS jumlah
+			FROM notif 
+			LEFT JOIN pengguna ON pengguna.id = notif.dari
+			WHERE 
+			(untuk = '".$this->session->userdata('loginSession')['id']."' OR untuk = 'mahasiswa')
+			AND
+			(konteks = 'dm' OR konteks = 'pesaninfo')
+			AND 
+			terbaca IS NULL
+			GROUP BY dari
+			ORDER BY datetime DESC;
 			");
 
 
@@ -650,11 +650,11 @@ class Mahasiswa extends CI_Controller {
 			$record['pertanyaan'] 	= $cariPertanyaan->result();
 			$record['jawaban']		= $this->model->rawQuery("
 				SELECT
-						komentar.teks,
-						komentar.rating,
-						komentar.tanggal,
-						pengguna.nama AS siapa,
-						pengguna.foto
+				komentar.teks,
+				komentar.rating,
+				komentar.tanggal,
+				pengguna.nama AS siapa,
+				pengguna.foto
 				FROM komentar
 				LEFT JOIN pengguna ON komentar.siapa = pengguna.id
 				WHERE komentar.permasalahan ='".$id."'
@@ -689,9 +689,9 @@ class Mahasiswa extends CI_Controller {
 		}else{
 			$foto_nama = $this->model->rawQuery("
 				SELECT 
-						DISTINCT
-						pengguna.nama,
-						pengguna.foto
+				DISTINCT
+				pengguna.nama,
+				pengguna.foto
 				FROM komentar
 				LEFT JOIN pengguna ON komentar.siapa = pengguna.id
 				WHERE permasalahan = '".$pertanyaan."'
@@ -701,7 +701,7 @@ class Mahasiswa extends CI_Controller {
 
 			$remaining_penjawab = $this->model->rawQuery("
 				SELECT 
-					COUNT(DISTINCT siapa) AS semua
+				COUNT(DISTINCT siapa) AS semua
 				FROM komentar 
 				WHERE permasalahan=".$pertanyaan
 			)->result();
@@ -852,7 +852,7 @@ class Mahasiswa extends CI_Controller {
 					$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
 					$_FILES['file']['error']     = $_FILES['files']['error'][$i];
 					$_FILES['file']['size']     = $_FILES['files']['size'][$i];
-									
+					
 					if( ! $this->upload->do_upload('file')){
 						echo $this->upload->display_errors();
 						echo "string";
@@ -939,13 +939,13 @@ class Mahasiswa extends CI_Controller {
 			if ($this->form_validation->run()==TRUE) {
 				
 				$newdata = array(
-				        'nama'  					=> $this->input->post('teks'),
-				        'kontak'     				=> $this->input->post('kontak'),
-				        'instansi'     				=> $this->input->post('instansi'),
-				        'lokasi'     				=> $this->input->post('lokasi'),
-				        'dari'     					=> $this->session->userdata('loginSession')['id'],
-				        'valid'     				=> 0,
-				        'tanggal'     				=> date('Y-m-d H:i:s')
+					'nama'  					=> $this->input->post('teks'),
+					'kontak'     				=> $this->input->post('kontak'),
+					'instansi'     				=> $this->input->post('instansi'),
+					'lokasi'     				=> $this->input->post('lokasi'),
+					'dari'     					=> $this->session->userdata('loginSession')['id'],
+					'valid'     				=> 0,
+					'tanggal'     				=> date('Y-m-d H:i:s')
 				);
 				$queryInsert = $this->model->create_id('lowongan',$newdata);
 				$queryInsert = json_decode($queryInsert);
@@ -959,8 +959,8 @@ class Mahasiswa extends CI_Controller {
 				}
 			}else{
 				$karir = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
-	            	'</div>');
-	            $this->session->set_flashdata('karir', $karir);
+					'</div>');
+				$this->session->set_flashdata('karir', $karir);
 				redirect('karir-tambah-mahasiswa');
 			}
 		}

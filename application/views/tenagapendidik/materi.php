@@ -21,7 +21,7 @@
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown"><span id="selected-drowpdown-popular-all"> </span>  <i class="fa fa-chevron-down"></i></a>
+					<a href="#" data-toggle="dropdown"><span id="selected-dropdown-popular-all"> </span>  <i class="fa fa-chevron-down"></i></a>
 					<ul class="dropdown-menu" id="dropdown-popular-all">
 						<li><a href="#" class="per-populer" onclick="popularAll('populer')" id="dropdown-populer" data-property="populer">Populer</a></li>
 						<li><a href="#" class="per-populer" onclick="popularAll('all')" id="dropdown-semua-materi" data-property="all">Semua Materi</a></li>
@@ -168,7 +168,7 @@
 	};
 
 	function popularAll(argument) {
-		var before = $("#selected-drowpdown-popular-all").html()
+		var before = $("#selected-dropdown-popular-all").html()
 		if (before == 'Semua Materi') {
 			$("#dropdown-semua-materi").removeClass("none")
 		}else if (before == 'Populer') {
@@ -179,11 +179,11 @@
 		$(".per-jangka").removeClass('selected')
 
 		if (argument == 'all') {
-			$("#selected-drowpdown-popular-all").html("Semua Materi");
+			$("#selected-dropdown-popular-all").html("Semua Materi");
 			$("#dropdown-semua-materi").addClass("none")
 			$("#dropdown-semua-materi").addClass("selected")
 		}else if (argument == 'populer') {
-			$("#selected-drowpdown-popular-all").html("Populer");
+			$("#selected-dropdown-popular-all").html("Populer");
 			$("#dropdown-populer").addClass("none")
 			$("#dropdown-populer").addClass("selected")
 		}

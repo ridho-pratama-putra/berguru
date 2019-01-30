@@ -11,14 +11,14 @@
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
-			<li><a href="#">
-				Home
-			</a></li>
+			<li>
+				<a href="#">
+					Home
+				</a>
+			</li>
 			<li class="active">Karir</li>
 		</ol>
-	</div><!--/.row-->
-
-
+	</div>
 	<div class="main-container">
 		<?=$this->session->flashdata("karir")?>
 		<div class="content-filter-top">
@@ -94,16 +94,16 @@
 									</div>
 								</div>
 							</div>
-				<?php }
-				}else{ ?>
-					<div class="panel panel-plain content-item">
-						<div class="panel-body">
-							<div class="row">
-								<h3>Belum ada data lowongan</h3>
+						<?php }
+					}else{ ?>
+						<div class="panel panel-plain content-item">
+							<div class="panel-body">
+								<div class="row">
+									<h3>Belum ada data lowongan</h3>
+								</div>
 							</div>
 						</div>
-					</div>
-				<?php } ?>
+					<?php } ?>
 
 				</div>
 			</div>
