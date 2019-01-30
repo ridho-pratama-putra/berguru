@@ -9,7 +9,7 @@
 				<div class="col-sm-6 col-md-6 materi-dropdown">
 					<ul class="list-inline">
 						<li>
-							<select class="form-control dropdown-item pd-0" id="jangka-waktu">
+							<select class="form-control dropdown-item pd-0" id="jangka-waktu" onchange="pertanyaan()">
 								<option value="semua_waktu">Semua waktu</option>
 								<option value="hari">Hari ini</option>
 								<option value="bulan">Bulan ini</option>
@@ -17,7 +17,7 @@
 							</select>
 						</li>
 						<li>
-							<select class="form-control dropdown-item pd-0" id="kategori-pencarian">
+							<select class="form-control dropdown-item pd-0" id="kategori-pencarian" onchange="pertanyaan()">
 								<option value="semua_kategori" selected="">Semua Kategori</option>
 								<?php foreach ($kategori as $key => $value) { ?>
 									<option value="<?=$value->id?>" 
@@ -54,12 +54,14 @@
 <script type="text/javascript">
 
 	$( document ).ready(function() {
+		pertanyaan()
+		// untuk get pertanyaan berdsasrkan kategoir
+	});
+	function pertanyaan() {
 		var keyword_yang_di_cari 		= $("#search_keyword").val()
 		var kategori_solved_unsolved 	= $("#kategori-pertanyaan").val()
 		var jangka_waktu				= $("#jangka-waktu").val()
 		var kategori_mapel				= $("#kategori-pencarian").val()
-
-		// untuk get pertanyaan berdsasrkan kategoir
 		$.get(
 			"<?=base_url()?>proses-cari-pertanyaan",
 			{
@@ -155,15 +157,14 @@
 						"</div>"+
 						"</div>";
 					}
-					
+
 					$("#pertanyaanDitemukan").html(elementToRender);
 					timeAgo();
 				}else{
 					$("#pertanyaanDitemukan").html("<p><h4 class='text-center'>Data belum ada</h4></p>");
 				}
 			});
-
-	});
+	}
 
 	function timeAgo() {
 		var templates = {

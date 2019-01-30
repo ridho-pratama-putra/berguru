@@ -25,30 +25,30 @@
 									</a>
 									<ul class="dropdown-menu dropdown-messages">
 										<?php  
-											if ($notif_dm !== array()) {
-												foreach ($notif_dm as $key => $value) { ?>
+										if ($notif_dm !== array()) {
+											foreach ($notif_dm as $key => $value) { ?>
 												<li>
 													<a href="#<?=$value->id_dari?>">
 														<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
-															<span class="pull-right text-muted small"><?=time_elapsed_string($value->datetime)?></span>
-														</div>
-													</a>
-												</li>
-												<?php if ($key < sizeof($notif_dm)-1) { ?>
+														<span class="pull-right text-muted small"><?=time_elapsed_string($value->datetime)?></span>
+													</div>
+												</a>
+											</li>
+											<?php if ($key < sizeof($notif_dm)-1) { ?>
 												<li class="divider"></li>
-												<?php }?>
-												<li>
-													<div class="all-button"><a href="#">
-														<em class="fa fa-inbox"></em> <strong>All Messages</strong>
-													</a></div>
-												</li>
-											<?php }}else{ ?>
-												<li>
-													<div class="all-button"><a href="#">
-														<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
-													</a></div>
-												</li>
-											<?php } ?>
+											<?php }?>
+											<li>
+												<div class="all-button"><a href="#">
+													<em class="fa fa-inbox"></em> <strong>All Messages</strong>
+												</a></div>
+											</li>
+										<?php }}else{ ?>
+											<li>
+												<div class="all-button"><a href="#">
+													<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+												</a></div>
+											</li>
+										<?php } ?>
 									</ul>
 								</li>
 								<li class="dropdown">
@@ -57,45 +57,45 @@
 									</a>
 									<ul class="dropdown-menu dropdown-messages">
 										<?php foreach ($notif_non_dm as $key => $value) { ?>
-										<li>
-											<div class="dropdown-messages-box">
-												<a href="#" class="pull-left">
-													<img alt="image" class="img-circle" src="<?=base_url().$value->foto?>">
-												</a>
-												<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
-													<?php if ($value->untuk == 'mahasiswa' AND $value->konteks == 'pertanyaan') { ?>
-													<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>">Pertanyaan baru dari <strong><?=$value->dari?></strong>.</a>
-													<?php }elseif($value->konteks == 'ratingKomentar'){?>
-													<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>"><strong><?=$value->dari?></strong> memberikan rating untuk jawaban anda.</a>
-													<?php }elseif($value->konteks == 'lowonganValid'){?>
-														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
-													<?php }elseif($value->konteks == 'lowonganNotValid'){?>
-														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
-													<?php }elseif($value->konteks == 'dm'){?>
-														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
-													<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'lowonganAvailable'){?>
-														<a href="<?=base_url('karir-mahasiswa')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
-													<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){?>
-														<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
-													<?php } ?>
-													<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small>
+											<li>
+												<div class="dropdown-messages-box">
+													<a href="#" class="pull-left">
+														<img alt="image" class="img-circle" src="<?=base_url().$value->foto?>">
+													</a>
+													<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
+														<?php if ($value->untuk == 'mahasiswa' AND $value->konteks == 'pertanyaan') { ?>
+															<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>">Pertanyaan baru dari <strong><?=$value->dari?></strong>.</a>
+														<?php }elseif($value->konteks == 'ratingKomentar'){?>
+															<a href="<?=base_url()?>pertanyaan-detail-mahasiswa/<?=$value->id_konteks?>"><strong><?=$value->dari?></strong> memberikan rating untuk jawaban anda.</a>
+														<?php }elseif($value->konteks == 'lowonganValid'){?>
+															<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> lowongan anda telah di validasi oleh admin</a>
+														<?php }elseif($value->konteks == 'lowonganNotValid'){?>
+															<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> memutuskan untuk tidak melakukan validasi pada lowongan anda</a>
+														<?php }elseif($value->konteks == 'dm'){?>
+															<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> mengirimkan pesan kepada anda</a>
+														<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'lowonganAvailable'){?>
+															<a href="<?=base_url('karir-mahasiswa')?>">Kabar baik. Ada lowongan baru tersedia untuk anda.</a>
+														<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){?>
+															<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
+														<?php } ?>
+														<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small>
+													</div>
 												</div>
-											</div>
-										</li>
-										<li class="divider"></li>
+											</li>
+											<li class="divider"></li>
 										<?php } ?>
 										<?php if ($notif_non_dm !== array()) { ?>
-										<li>
-											<div class="all-button"><a href="#">
-												<em class="fa fa-inbox"></em> <strong>All Messages</strong>
-											</a></div>
-										</li>
+											<li>
+												<div class="all-button"><a href="#">
+													<em class="fa fa-inbox"></em> <strong>All Messages</strong>
+												</a></div>
+											</li>
 										<?php }else{ ?>
-										<li>
-											<div class="all-button"><a href="#">
-												<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
-											</a></div>
-										</li>
+											<li>
+												<div class="all-button"><a href="#">
+													<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+												</a></div>
+											</li>
 										<?php } ?>
 									</ul>
 								</li>
@@ -150,6 +150,9 @@
 		<li class="" id="pesan"><a href="<?=base_url()?>pesan-mahasiswa"><em class="fa fa-comments">&nbsp;</em> Pesan</a></li>
 		<li class="" id="materi"><a href="<?=base_url()?>materi-mahasiswa"><em class="fa fa-layer-group">&nbsp;</em> Materi</a></li>
 		<li class="" id="karir"><a href="<?=base_url()?>karir-mahasiswa"><em class="fa fa-briefcase">&nbsp;</em> Karir</a></li>
+		<li class="" id="testimonial">
+			<a href="<?=base_url()?>testimonial-mahasiswa"><em class="bgicon icon-comment-type">&nbsp;</em> Testimonial</a>
+		</li>
 		<li><a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a></li>
 	</ul>
 	<div class="side-credit">

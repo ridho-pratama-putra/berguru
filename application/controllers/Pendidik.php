@@ -16,8 +16,8 @@ class Pendidik extends CI_Controller {
 		$this->menu['notif_dm'] = array();
 		$this->menu['belum_dilihat_non_dm'] = array();
 		$this->menu['belum_dilihat_dm'] = [];
-		// $this->notifikasiMenuNonDm();
-		// $this->notifikasiMenuDm();
+		$this->notifikasiMenuNonDm();
+		$this->notifikasiMenuDm();
 	}
 
 
@@ -1171,15 +1171,17 @@ class Pendidik extends CI_Controller {
 		$this->model->rawQuery("UPDATE direct_message SET dibalas='sudah' WHERE (jenis_pesan = 'permasalahan' OR jenis_pesan = 'komentarpermasalahan') AND permasalahan = '".$pertanyaan[0]->permasalahan."' AND komentar = '".$pertanyaan[0]->komentar."'");
 
 		// kirim sebuah dm kalau permasalahan sudah terpecahkan
-		$this->model->create('direct_message',array(
-			'jenis_pesan'	=>'permasalahan_solved',
-			'dari'			=>$this->session->userdata('loginSession')['id'],
-			'untuk'			=>$pertanyaan[0]->dari,
-			'permasalahan'	=>$pertanyaan[0]->permasalahan,
-			'komentar'		=>$pertanyaan[0]->komentar,
-			'tanggal'		=>date("Y-m-d")
-		)
-	);
+		$this->model->create(
+			'direct_message',
+			array(
+				'jenis_pesan'	=>'permasalahan_solved',
+				'dari'			=>$this->session->userdata('loginSession')['id'],
+				'untuk'			=>$pertanyaan[0]->dari,
+				'permasalahan'	=>$pertanyaan[0]->permasalahan,
+				'komentar'		=>$pertanyaan[0]->komentar,
+				'tanggal'		=>date("Y-m-d")
+			)
+		);
 
 		// redirect dengan set flashdata untuk buka halaman ber dm ria dengan seorang komentator
 		$data = array('id_komentator'=>$pertanyaan[0]->dari,'permasalahan_terpecahkan'=>1);
@@ -1218,6 +1220,7 @@ class Pendidik extends CI_Controller {
 		$record = $this->model->readSCol("kategori",array('id','nama','icon'))->result();
 		echo json_encode($record);
 	}
+
 	/*
 	* function untuk handle ajax request untuk onclick pilih kategori. function ini dipanggil di halaman dashboard.
 	*/
@@ -1292,6 +1295,122 @@ class Pendidik extends CI_Controller {
 		}else{
 			redirect();
 		}		
+	}
+
+	/*
+	* fuction untuk view halaman testimoni pendidik
+	*/
+	function testimonial()
+	{
+		$header['title'] 			= "Pendidik - Testimoni";
+		$this->menu['breadcrumb'] 	= "Testimonial";
+		$this->menu['active'] 		= "testimonial";
+
+		$record 					= array(
+			"testimonial" => $this->model->read("testimonial",array("dari"=>$this->session->userdata('loginSession')['id']))->result()
+		);
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("tenagapendidik/menu",$this->menu);
+		$this->load->view("tenagapendidik/testimonial",$record);
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* funtion untukview form tambah testimoni pendidik
+	*/
+	function tambahTestimonial()
+	{
+		$header['title'] 			= "Pendidik - Tambah Testimoni";
+		$this->menu['breadcrumb'] 	= "Tambah Testimonial";
+		$this->menu['active'] 		= "testimonial";
+
+		$this->load->view("statis/header",$header);
+		$this->load->view("tenagapendidik/menu",$this->menu);
+		$this->load->view("tenagapendidik/testimonial-tambah");
+		$this->load->view("statis/footer");
+	}
+
+	/*
+	* funtion untukview form tambah testimoni pendidik
+	*/
+	function insertTestimonial()
+	{
+		$queryInsert = $this->model->create_id("testimonial",array("teks"=>$this->input->post("teks"),"dari"=>$this->session->userdata('loginSession')['id'],"tanggal"=>date("Y-m-d")));
+		$queryInsert =json_decode($queryInsert);
+		if ($queryInsert->status) {
+			// beritahu admin kalau ada testimonialbaru yang masuk
+			$this->model->create('notif',array('konteks'=>'testimonial','id_konteks'=>$queryInsert->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s')));
+
+			alert('alert','success','Berhasil!',"Testimonial berhasil dibuat");
+			redirect('testimonial-pendidik');
+		}else{
+			alert('alert','danger','Gagal!',"Testimonial gagal dibuat. Eror : ".$queryInsert->error_message->message);
+			redirect('testimonial-tambah-pendidik');
+		}
+	}
+
+	/*
+	* funtion hapus testimoni seorang pendidik
+	*/
+	function hapusTestimonial($id)
+	{
+		$queryDelete = $this->model->delete("testimonial",array("id"=>$id,"dari"=>$this->session->userdata('loginSession')['id']));
+		if ($queryDelete == TRUE) {
+
+			// beritahu admin kalau ada testimonial dihapus
+			$this->model->delete('notif',array('konteks'=>'testimonialEdited','id_konteks'=>$id,'dari'=>$this->session->userdata('loginSession')['id']));
+			$this->model->delete('notif',array('konteks'=>'testimonial','id_konteks'=>$id,'dari'=>$this->session->userdata('loginSession')['id']));
+			
+			alert('alert','success','Berhasil!',"Testimonial berhasil dihapus");
+			redirect('testimonial-pendidik');
+		}else{
+			alert('alert','danger','Gagal!',"Testimonial gagal dihapus. Eror : ".$queryDelete);
+			redirect('testimonial-pendidik');
+		}
+	}
+
+	/*
+	* funtion untukview form tambah testimoni pendidik
+	*/
+	function editTestimonial($id)
+	{
+		$header['title'] 			= "Pendidik - Edit Testimoni";
+		$this->menu['breadcrumb'] 	= "Edit Testimonial";
+		$this->menu['active'] 		= "testimonial";
+
+		$testimonial = $this->model->read("testimonial",array("id"=>$id,"dari"=>$this->session->userdata('loginSession')['id']));
+
+		if ($testimonial->num_rows() == 1) {
+			$record 					= array(
+				"testimonial" => $testimonial->result()
+			);
+			$this->load->view("statis/header",$header);
+			$this->load->view("tenagapendidik/menu",$this->menu);
+			$this->load->view("tenagapendidik/testimonial-edit",$record);
+			$this->load->view("statis/footer");
+		}else{
+			$error['heading'] = 'Data id ';
+			$error['message'] = '<p>Data tidak ditemukan</p>';
+			$this->load->view('errors/html/error_404',$error);
+		}
+	}
+
+	function submitEditTestimonial()
+	{
+		$runUpdate = $this->model->update('testimonial',array('id'=>$this->input->post('id')),array("teks"=>$this->input->post("teks"),"tanggal"=>date("Y-m-d"),"dari"=>$this->session->userdata('loginSession')['id']));
+		$runUpdate = json_decode($runUpdate);
+
+		if ($runUpdate->status) {
+			// beritahu admin kalau ada testimonial diedit
+			$this->model->create('notif',array('konteks'=>'testimonialEdited','id_konteks'=>$queryInsert->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s')));
+
+			alert('alert','success','Berhasil!',"Testimonial berhasil diubah");
+			redirect('testimonial-pendidik');
+		}else{
+			alert('alert','danger','Gagal!',"Testimonial gagal diubah. Eror : ".$queryDelete);
+			redirect('testimonial-pendidik');
+		}
 	}
 
 	function playground()

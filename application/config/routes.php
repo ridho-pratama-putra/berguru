@@ -178,6 +178,13 @@ $route['delete-initialized-dm']					= 'mahasiswa/deleteInitializedDm';
 $route['submit-reply-mahasiswa']				= 'mahasiswa/submitReply';
 
 $route['download-materi-mahasiswa/(:num)']				= 'Mahasiswa/downloadMateri/$1';
+
+$route['testimonial-mahasiswa']					= 'Mahasiswa/testimonial';
+$route['testimonial-tambah-mahasiswa']			= 'Mahasiswa/tambahTestimonial';
+$route['insert-testimonial-mahasiswa']			= 'Mahasiswa/insertTestimonial';
+$route['hapus-testimonial-mahasiswa/(:num)']	= 'Mahasiswa/hapusTestimonial/$1';
+$route['edit-testimonial-mahasiswa/(:num)']		= 'Mahasiswa/editTestimonial/$1';
+$route['submit-edit-testimonial-mahasiswa']		= 'Mahasiswa/submitEditTestimonial';
 /*****************************************************END OF MAHASISWA********************************************************/
 
 
@@ -222,4 +229,12 @@ $route['pesan-pendidik']						= 'Pendidik/pesan';
 
 	$route['set-status-pertanyaan-solved/(:num)'] 	= 'Pendidik/setStatusPertanyaanSolved/$1';
 	$route['set-status-pertanyaan-unsolved/(:num)'] = 'Pendidik/setStatusPertanyaanUnsolved/$1';
+
+	$route['testimonial-pendidik']					= 'Pendidik/testimonial';
+	$route['testimonial-tambah-pendidik']			= 'Pendidik/tambahTestimonial';
+	$route['insert-testimonial-pendidik']			= 'Pendidik/insertTestimonial';
+	$route['hapus-testimonial-pendidik/(:num)']		= 'Pendidik/hapusTestimonial/$1';
+	$route['edit-testimonial-pendidik/(:num)']		= 'Pendidik/editTestimonial/$1';
+	$route['submit-edit-testimonial-pendidik']		= 'Pendidik/submitEditTestimonial';
+
 /*****************************************************END OF TENAGA PENDIDIK********************************************************/

@@ -57,7 +57,7 @@ if ($selected_kategori[0]->background != '') { ?>
                         <ul class="nav navbar-nav navbar-right">
                             <?php
                             if ($this->session->userdata('loginSession') == array()) { ?>
-                                <li class="nav-button"><a href="<?=base_url()?>login"><span class="bgicon icon-lock"></span> Masuk</a></li>
+                                <li class=""><a href="<?=base_url()?>login"><span class="bgicon icon-lock"></span> Masuk</a></li>
                                 <li class="nav-button"><a href="<?=base_url()?>register"><span class="bgicon icon-user-add"></span> Daftar</a></li>
                             <?php }else{ if ($this->session->userdata('loginSession')['aktor'] !== 'admin'){
                                 ?>

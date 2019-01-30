@@ -1,65 +1,65 @@
 
-	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span></button>
-					<div class="row">
-						<div class="col-xs-12 col-sm-3 col-lg-2 left-header">
-							<a class="navbar-brand" href="<?=base_url()?>">Berguru.com</a>
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span></button>
+				<div class="row">
+					<div class="col-xs-12 col-sm-3 col-lg-2 left-header">
+						<a class="navbar-brand" href="<?=base_url()?>">Berguru.com</a>
+					</div>
+					<div class="col-xs-12 col-sm-9 col-lg-10 right-header">
+						<div class="nav-breadcrumb hidden-xs">
+							<ol class="breadcrumb">
+								<li><a href="#">
+									Home
+								</a></li>
+								<li class="active"><?=$breadcrumb?></li>
+							</ol>
 						</div>
-						<div class="col-xs-12 col-sm-9 col-lg-10 right-header">
-							<div class="nav-breadcrumb hidden-xs">
-								<ol class="breadcrumb">
-									<li><a href="#">
-										Home
-									</a></li>
-									<li class="active"><?=$breadcrumb?></li>
-								</ol>
-							</div>
-							<ul class="nav navbar-top-links navbar-right">
-								<li class="dropdown">
-									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatDm()">
-										<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
-									</a>
-									<ul class="dropdown-menu dropdown-alerts">
-										<?php  
-										if ($notif_dm !== array()) {
+						<ul class="nav navbar-top-links navbar-right">
+							<li class="dropdown">
+								<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatDm()">
+									<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
+								</a>
+								<ul class="dropdown-menu dropdown-alerts">
+									<?php  
+									if ($notif_dm !== array()) {
 										foreach ($notif_dm as $key => $value) { ?>
-										<li>
-											<a href="#<?=$value->id_dari?>">
-												<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
+											<li>
+												<a href="#<?=$value->id_dari?>">
+													<div><em class="fa fa-envelope"></em> <?=sizeof($value->jumlah) ?> Pesan baru dari <?=$value->dari?>
 													<span class="pull-right text-muted small"><?=time_elapsed_string($value->datetime)?></span>
 												</div>
 											</a>
 										</li>
-											<?php if ($key < sizeof($notif_dm)-1) { ?>
+										<?php if ($key < sizeof($notif_dm)-1) { ?>
 											<li class="divider"></li>
-											<?php }?>
-										<?php } }else{ ?>
-											<li>
-												<div class="all-button"><a href="#">
-													<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
-												</a></div>
-											</li>
-										<?php } ?>
-									</ul>
-								</li>
-								<li class="dropdown">
-									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatNonDm()">
-										<em class="fa fa-bell"></em><span class="label label-danger" id="jumlah_notif_non_dm"><?=(sizeof($belum_dilihat_non_dm) !== 0 ? sizeof($belum_dilihat_non_dm) : '')?></span>
-									</a>
-									<ul class="dropdown-menu dropdown-messages">
-										<?php foreach ($notif_non_dm as $key => $value) { ?>
+										<?php }?>
+									<?php } }else{ ?>
+										<li>
+											<div class="all-button"><a href="#">
+												<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
+											</a></div>
+										</li>
+									<?php } ?>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatNonDm()">
+									<em class="fa fa-bell"></em><span class="label label-danger" id="jumlah_notif_non_dm"><?=(sizeof($belum_dilihat_non_dm) !== 0 ? sizeof($belum_dilihat_non_dm) : '')?></span>
+								</a>
+								<ul class="dropdown-menu dropdown-messages">
+									<?php foreach ($notif_non_dm as $key => $value) { ?>
 										<li>
 											<div class="dropdown-messages-box"><a href="#" class="pull-left">
 												<img alt="image" class="img-circle" src="<?=base_url().$value->foto?>">
 											</a>
 											<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
 												<?php if ($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'komentar') { ?>
-												<a href="<?=base_url()?>detail-pertanyaan-pendidik/<?=$value->id_konteks?>" title='klik untuk melihat komentar'><strong><?=$value->dari?></strong> mengomentari pertanyaan anda</a>
+													<a href="<?=base_url()?>detail-pertanyaan-pendidik/<?=$value->id_konteks?>" title='klik untuk melihat komentar'><strong><?=$value->dari?></strong> mengomentari pertanyaan anda</a>
 												<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){?>
 													<a href="#" class="link-disabled"><strong><?=$value->dari?></strong> telah menerbitkan materi baru</a>
 												<?php }elseif($value->untuk == $this->session->userdata('loginSession')['id'] AND $value->konteks == 'lowonganValid'){?>
@@ -81,66 +81,66 @@
 											</div>
 										</li>
 										<li class="divider"></li>
-										<?php } ?>
-										<?php if ($notif_non_dm !== array()) { ?>
+									<?php } ?>
+									<?php if ($notif_non_dm !== array()) { ?>
 										<li>
 											<div class="all-button"><a href="#">
 												<em class="fa fa-inbox"></em> <strong>All Messages</strong>
 											</a></div>
 										</li>
-										<?php }else{ ?>
+									<?php }else{ ?>
 										<li>
 											<div class="all-button"><a href="#">
 												<em class="fa fa-inbox"></em> <strong>No Messages for you</strong>
 											</a></div>
 										</li>
-										<?php } ?>
-									</ul>
-								</li>
-								
-								<li class="dropdown user-menu">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-										<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?>
-											
-										</div>
-										<div class="user-photo">
-											<img src="<?=$this->session->userdata('loginSession')['foto']?>"  class="img-circle" alt="Photo">
-										</div>
+									<?php } ?>
+								</ul>
+							</li>
+
+							<li class="dropdown user-menu">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?>
+
+								</div>
+								<div class="user-photo">
+									<img src="<?=$this->session->userdata('loginSession')['foto']?>"  class="img-circle" alt="Photo">
+								</div>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="<?=base_url()?>profil-pendidik">
+										<div><em class="fa fa-user"></em> Profile</div>
 									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="<?=base_url()?>profil-pendidik">
-												<div><em class="fa fa-user"></em> Profile</div>
-											</a>
-										</li>
-										<li class="divider"></li>
-										<li>
-											<a href="<?=base_url()?>logout">
-												<div><em class="fa fa-power-off"></em> Log Out</div>
-											</a>
-										</li>
-									</ul>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="<?=base_url()?>logout">
+										<div><em class="fa fa-power-off"></em> Log Out</div>
+									</a>
 								</li>
 							</ul>
-						</div>
-					</div>
+						</li>
+					</ul>
 				</div>
-			</div><!-- /.container-fluid -->
-		</nav>
-		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar scrollable">
-			<div class="profile-sidebar">
-				<a href="#" class="profile-option"><i class="fa fa-cog"></i></a>
-				<div class="profile-userpic">
-					<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
-				</div>
-				<div class="profile-usertitle">
-					<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
-					<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
-				</div>
-				<div class="btn-hakakses"><em class="fa fa-user"></em> Pendidik</div>
-				<div class="clear"></div>
 			</div>
-			<div class="divider"></div>
+		</div>
+	</div><!-- /.container-fluid -->
+</nav>
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar scrollable">
+	<div class="profile-sidebar">
+		<a href="#" class="profile-option"><i class="fa fa-cog"></i></a>
+		<div class="profile-userpic">
+			<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
+		</div>
+		<div class="profile-usertitle">
+			<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
+			<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
+		</div>
+		<div class="btn-hakakses"><em class="fa fa-user"></em> Pendidik</div>
+		<div class="clear"></div>
+	</div>
+	<div class="divider"></div>
 			<!-- <form role="search">
 			<div class="form-group">
 			<input type="text" class="form-control" placeholder="Search">
@@ -161,6 +161,9 @@
 		</li>
 		<li class="" id="karir">
 			<a href="<?=base_url()?>karir-pendidik" ><em class="fa fa-briefcase">&nbsp;</em> Karir</a>
+		</li>
+		<li class="" id="testimonial">
+			<a href="<?=base_url()?>testimonial-pendidik"><em class="bgicon icon-comment-type">&nbsp;</em> Testimonial</a>
 		</li>
 		<li>
 			<a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a>
