@@ -68,10 +68,9 @@ $route['load-materi/(:num)/(:any)/(:any)']	= 'Home/loadRecordMateri/$1/$2/$3';
 $route['cari-pertanyaan']					= 'Home/searchPertanyaan';
 
 // pemanggilan function untuk olah kriteria pencarian pertanyaan. matematika/fisika,solved/unsolved, keywordnya, dan jangka waktu. komunikasi via jquery GET
-$route['proses-cari-pertanyaan']					= 'Home/prosesSearchPertanyaan';
+$route['proses-cari-pertanyaan']			= 'Home/prosesSearchPertanyaan';
 
-
-
+$route['testimonial']						= 'Home/testimonial';
 /*******************************************************home****************************************************************/
 
 

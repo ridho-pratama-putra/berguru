@@ -412,4 +412,19 @@ class Home extends CI_Controller {
 
 		echo json_encode($record);
 	}
+
+	/*
+	* load halaman testimonial
+	*/
+	function testimonial()
+	{
+		$menu['active'] 	=	"testimonial";
+		$menu['testimonial'] = $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
+		$this->load->view('home/header');
+		$this->load->view("home/menu_testimonial",$menu);
+		$this->load->view('home/testimonial');
+		$this->load->view('home/footer');
+		
+	}
+
 }

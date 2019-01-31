@@ -120,7 +120,7 @@
 							<h3 class="title">Cerita Mereka</h3>
 						</div>
 						<div class="col-md-6 title-right">
-							<a href="#" class="link">Lihat Cerita Lainnya</a>
+							<a href="<?=base_url()?>testimonial" class="link">Lihat Cerita Lainnya</a>
 						</div>
 					</div>
 					<div class="row">
