@@ -418,13 +418,47 @@ class Home extends CI_Controller {
 	*/
 	function testimonial()
 	{
-		$menu['active'] 	=	"testimonial";
-		$menu['testimonial'] = $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
+		$menu['active'] 		= "home";
+		$menu['testimonial'] 	= $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
 		$this->load->view('home/header');
 		$this->load->view("home/menu_testimonial",$menu);
 		$this->load->view('home/testimonial');
-		$this->load->view('home/footer');
-		
+		$this->load->view('home/footer');	
 	}
 
+	function karir(){
+		$menu['active'] 	= "karir";
+		$this->load->view('home/header');
+		$this->load->view("home/menu_karir",$menu);
+		$this->load->view('home/karir');
+		$this->load->view('home/footer');	
+	}
+
+	/*
+	* untuk ajax request karir di halaman karir. keyword dan jangka waktu doang
+	*/
+	function getKarir()
+	{
+		$string = "SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 1 ";
+
+		// keyword
+		if ($this->input->get('q') !== NULL) {
+			$string .= " AND lowongan.nama LIKE '%".$this->input->get('keyword')."%' ORDER BY tanggal DESC ";
+		}
+
+		// jangka waktu
+		if ($this->input->get('jangka_waktu') == 'hari') {
+			$string .= " AND DATE(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."' ";
+		}elseif ($this->input->get('jangka_waktu') == 'bulan') {
+			$string .= " AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."' ";
+		}elseif ($this->input->get('jangka_waktu') == 'tahun') {
+			$string .= " AND YEAR(tanggal) = '".date("Y")."' ";
+			
+		}
+
+		$string .= " ORDER BY tanggal DESC";
+
+		$record['data'] 	= $this->model->rawQuery($string)->result();
+		echo json_encode($record);
+	}
 }

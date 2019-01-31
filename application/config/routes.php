@@ -71,6 +71,8 @@ $route['cari-pertanyaan']					= 'Home/searchPertanyaan';
 $route['proses-cari-pertanyaan']			= 'Home/prosesSearchPertanyaan';
 
 $route['testimonial']						= 'Home/testimonial';
+$route['karir']								= 'Home/karir';
+$route['get-karir']								= 'Home/getKarir';
 /*******************************************************home****************************************************************/
 
 
