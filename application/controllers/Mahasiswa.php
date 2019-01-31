@@ -29,7 +29,7 @@ class Mahasiswa extends CI_Controller {
 		$this->menu['active'] = "dashboard";
 		
 		$record['kategori'] = $this->model->readS('kategori')->result();
-		$record['lowongan'] = $this->model->read('lowongan',array('valid'=>'1'))->result();
+		$record['lowongan'] = $this->model->rawQuery("SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 1 ORDER BY tanggal DESC")->result();
 		$record['materi'] = $this->model->rawQuery('
 			SELECT
 			materi.nama AS nama_materi,
@@ -903,7 +903,7 @@ class Mahasiswa extends CI_Controller {
 		$header['title'] = "Mahasiswa - Karir";
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
-		$record['lowongan'] = $this->model->rawQuery("SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id ORDER BY tanggal DESC")->result();
+		$record['lowongan'] = $this->model->rawQuery("SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 1 ORDER BY tanggal DESC")->result();
 
 		$this->load->view("statis/header",$header);
 		$this->load->view("mahasiswa/menu",$this->menu);
@@ -939,10 +939,10 @@ class Mahasiswa extends CI_Controller {
 			if ($this->form_validation->run()==TRUE) {
 				
 				$newdata = array(
-					'nama'  					=> $this->input->post('teks'),
+					'nama'  					=> ucwords($this->input->post('teks')),
 					'kontak'     				=> $this->input->post('kontak'),
-					'instansi'     				=> $this->input->post('instansi'),
-					'lokasi'     				=> $this->input->post('lokasi'),
+					'instansi'     				=> ucwords($this->input->post('instansi')),
+					'lokasi'     				=> ucwords($this->input->post('lokasi')),
 					'dari'     					=> $this->session->userdata('loginSession')['id'],
 					'valid'     				=> 0,
 					'tanggal'     				=> date('Y-m-d H:i:s')

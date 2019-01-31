@@ -20,19 +20,20 @@
 // 	}
 // 	$this->model->update('pengguna',array('id'=>$value->id),array('alias'=>$alias));
 // }
-	$record = $this->model->rawQuery("SELECT
-CONCAT(villages.name,', ',districts.name,', ',regencies.name,', ',provinces.name) AS record
-FROM
-provinces
-INNER JOIN regencies ON regencies.province_id = provinces.id
-INNER JOIN districts ON districts.regency_id = regencies.id
-INNER JOIN villages ON villages.district_id = districts.id
+$record = $this->model->rawQuery("SELECT
+	CONCAT(villages.name,', ',districts.name,', ',regencies.name,', ',provinces.name) AS record
+	FROM
+	provinces
+	INNER JOIN regencies ON regencies.province_id = provinces.id
+	INNER JOIN districts ON districts.regency_id = regencies.id
+	INNER JOIN villages ON villages.district_id = districts.id
 
-WHERE provinces.name = 'JAWA TIMUR' OR provinces.name = 'JAWA TENGAH' OR provinces.name = 'JAWA BARAT'
-")->result();
+	")->result();
 
 $string = "INSERT INTO lokasi VALUES ";
 for ($i=20001; $i < 21696; $i++) { 
+	// per 5 ribu aja bisanya
+	// 21696
 	$record[$i]->record = strtolower($record[$i]->record);
 	$string .= '(NULL,"'.ucwords($record[$i]->record).'"),';
 }
@@ -41,7 +42,7 @@ $string = rtrim($string, ", ");
 $this->db->close();
 $conn = new mysqli("localhost", "root", "", "berguru");
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+	die("Connection failed: " . $conn->connect_error);
 } 
 
 $conn->query($string);

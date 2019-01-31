@@ -54,15 +54,24 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 /*******************************************************Home****************************************************************/
-$route['home'] 						= 'Home/home';
-$route['kategori-status'] 			= 'Home/getPertanyaan';
-$route['kategori-mapel'] 			= 'Home/mapel';
-$route['get-rangking-mahasiswa']	= 'Home/getMahasiswaPoinTertinggi';
-$route['get-materi'] 				= 'Home/getMateri';
-$route['materi-detil']				= 'Home/materi';
-$route['add-subscriber']			= 'Home/addSubscriber';
+$route['home'] 								= 'Home/home';
+$route['kategori-status'] 					= 'Home/getPertanyaan';
+$route['kategori-mapel'] 					= 'Home/mapel';
+$route['get-rangking-mahasiswa']			= 'Home/getMahasiswaPoinTertinggi';
+$route['get-materi'] 						= 'Home/getMateri';
+$route['materi-detil']						= 'Home/materi';
+$route['add-subscriber']					= 'Home/addSubscriber';
 $route['download-materi/(:num)']			= 'Home/downloadMateri/$1';
-$route['load-materi/(:num)/(:any)/(:any)']		= 'Home/loadRecordMateri/$1/$2/$3';
+$route['load-materi/(:num)/(:any)/(:any)']	= 'Home/loadRecordMateri/$1/$2/$3';
+
+// load halaman pencarian pertanyaan berdasra keyword
+$route['cari-pertanyaan']					= 'Home/searchPertanyaan';
+
+// pemanggilan function untuk olah kriteria pencarian pertanyaan. matematika/fisika,solved/unsolved, keywordnya, dan jangka waktu. komunikasi via jquery GET
+$route['proses-cari-pertanyaan']					= 'Home/prosesSearchPertanyaan';
+
+
+
 /*******************************************************home****************************************************************/
 
 

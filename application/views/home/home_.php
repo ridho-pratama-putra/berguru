@@ -1,5 +1,3 @@
-<script type="text/javascript" src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.js"></script>
-
 <div class="content-front">
 
 	<!-- Kategori Konten -->
@@ -19,7 +17,7 @@
 				<div class="col-xs-12">
 					<div class="owl-carousel category-carousel learn-list">
 						<div class="item">
-							<a href="#">
+							<a href="kategori-mapel.html">
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<span class="bgicon icon-lists"></span>
@@ -28,18 +26,76 @@
 								</div>
 							</a>
 						</div>
-						<?php foreach ($kategori as $key => $value) { ?>
-							<div class="item">
-								<a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<span class="bgicon <?=$value->icon?>"></span>
-											<p><?=$value->nama?></p>
-										</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-puzzle"></span>
+										<p>Matematika</p>
 									</div>
-								</a>
-							</div>                                
-						<?php } ?>
+								</div>
+							</a>
+						</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-note"></span>
+										<p>B. Indonesia</p>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-chemical"></span>
+										<p>Kimia</p>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-stack"></span>
+										<p>Fisika</p>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-book"></span>
+										<p>Sejarah</p>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-people"></span>
+										<p>Ilmu Sosial</p>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="item">
+							<a href="kategori-mapel.html">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span class="bgicon icon-material-basketball"></span>
+										<p>Olahraga</p>
+									</div>
+								</div>
+							</a>
+						</div>                                
 					</div>
 				</div>
 			</div>
@@ -287,6 +343,7 @@
 	</div>
 </section>
 </div>
+
 <script type="text/javascript">
 
 	// untuk perhitungan waktu yang lalu
@@ -350,7 +407,7 @@
 		for (var i in elements) {
 			var $this = elements[i];
 			if (typeof $this === 'object') {
-				$this.innerHTML = "<span class='bgicon icon-clock'></span> " + timer($this.getAttribute('title') || $this.getAttribute('datetime'));
+				$this.innerHTML = "<span class='bgicon bgicon-clock'></span> " + timer($this.getAttribute('title') || $this.getAttribute('datetime'));
 			}
 		}
 		// update time every minute
@@ -373,7 +430,7 @@
 					"<div class='col-sm-6'>"+
 					"<div class='media'>"+
 					"<div class='media-left media-middle'>"+
-					"<a href='#'' class='ask-photo'>"+
+					"<a href='#' class='ask-photo'>"+
 					"<img class='media-object' src='<?=base_url()?>"+data.permasalahan[i].foto+"' width='275' height='261' alt='Photo'>"+
 					"</a>"+
 					"</div>"+
@@ -551,31 +608,4 @@
 			$('#materi-menarik').html(elementToRender);
 		});
 	}
-</script>
-<script type="text/javascript">
-	$('.category-carousel').owlCarousel({
-        // items: 3,
-        loop: true,
-        margin: 25,
-        nav: true,
-        dots: false,
-        navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
-        responsive:{
-        	0:{
-        		items:2
-        	},
-        	500:{
-        		items:3
-        	},
-        	630:{
-        		items:4
-        	},
-        	995:{
-        		items: 5
-        	},
-        	1200:{
-        		items:7
-        	}
-        }
-    });
 </script>

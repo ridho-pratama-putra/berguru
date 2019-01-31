@@ -23,6 +23,7 @@
     
     <!-- Customs -->
     <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/css/frontpage.css">
+    
     <script type="text/javascript" src="<?=base_url()?>assets/assets/libs/jquery.3.3.1/jquery-3.3.1.js"></script>
     
 </head>

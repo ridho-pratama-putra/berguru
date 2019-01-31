@@ -1,20 +1,24 @@
-<script type="text/javascript">
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/css/frontpage-custom.css">
 
+<script type="text/javascript">
     // SCRIPT UNTUK ADD ACTIVE
     $( document ).ready(function() {
-        $("#<?=$active?>").attr("class","active");
-        $("#filter").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $(".panel-ask").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
+        $("#<?=$active?>").attr("class","active")
+        $("#kategori-pertanyaan").val("<?=$kategori_selected?>")
     });
-
+    // END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU
 
 </script>
+<style type="text/css">
+<?php
+if ($selected_kategori[0]->background != '') { ?>
+    .pages{
+        background-image: url(<?=base_url($selected_kategori[0]->background)?>);
+    }
+<?php } ?>
+</style>
 <div class="sidemenu-overlay hide animated"></div>
-<header class="home">
+<header class="pages">
     <nav class="navbar navbar-default nav-front">
         <div class="container">
             <div class="row">
@@ -31,12 +35,11 @@
                             <img src="<?=base_url()?>assets/assets/images/logo.png" width="144" height="33" alt="" class="img-responsive">
                         </a>
                     </div>
-                    
+
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse animated">
                         <ul class="nav navbar-nav">
                             <li class="" id="home"><a href="<?=base_url()?>">Home</a></li>
-                            <!-- <li class="active"><a href="<?=base_url()?>">Home <span class="sr-only">(current)</span></a></li> -->
                             <li class="dropdown" id="kategori">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Kategori <span class="bgicon icon-arrow-down"></span>
@@ -54,44 +57,46 @@
                         <ul class="nav navbar-nav navbar-right">
                             <?php
                             if ($this->session->userdata('loginSession') == array()) { ?>
-                                <li class=""><a href="<?=base_url()?>login"><span class="bgicon icon-lock"></span> Masuk</a></li>
+                                <li class="nav-button"><a href="<?=base_url()?>login"><span class="bgicon icon-lock"></span> Masuk</a></li>
                                 <li class="nav-button"><a href="<?=base_url()?>register"><span class="bgicon icon-user-add"></span> Daftar</a></li>
-                            <?php }else{ ?>
+                            <?php }else{ if ($this->session->userdata('loginSession')['aktor'] !== 'admin'){
+                                ?>
                                 <li><a href="<?=base_url()?>dashboard-<?=$this->session->userdata('loginSession')['aktor']?>">Dashboard</a></li>
                                 <li><a href="<?=base_url()?>logout"><span class="bgicon icon-unlock"></span> Logout</a></li>
-                            <?php } ?>
+                            <?php }else{ ?>
+                                <li><a href="<?=base_url()?>logout"><span class="bgicon icon-unlock"></span> Logout</a></li>
+                            <?php } } ?>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </div>
             </div>
         </div><!-- /.container -->
     </nav>
-    
+
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <div class="header-content">
-                    <h1 class="title">Anda Guru? Temukan jawaban untuk pertanyaan anda</h1>
-                    <form class="form-inline header-search" action="<?=base_url()?>cari-pertanyaan" method="GET">
+                <div class="header-content header-pages pb-60">
+                    <h1 class="title">Hasil Pencarian</h1>
+                    <form class="form-inline header-search" method="GET" action="<?=base_url()?>cari-pertanyaan">
                         <div class="form-group">
                             <div class="input-group search-field">
                                 <span class="input-group-addon"><i class="bgicon icon-search"></i></span>
-                                <input type="text" class="form-control" id="filter" placeholder="Apa pertanyaan anda?" name="pertanyaan" required="">
-                                <span class="input-group-addon select-category">
-                                    <select name="kategori" required="">
-                                        <option value="" selected="" disabled="">Kategori</option>
+                                <input type="text" class="form-control" name="pertanyaan" placeholder="<?=$search_keyword?>" value="<?=$search_keyword?>" id="search_keyword">
+                                <span class="input-group-addon select-category no-border-radius">
+                                    <select name="kategori" id="kategori-pertanyaan">
+                                        <option value="" disabled="">Kategori</option>
                                         <option value="SOLVED">Solved</option>
-                                        <option value="UNSOLVED">Unsolved</option>
+                                        <option value="UNSOLVED" selected="">Unsolved</option>
                                     </select>
                                 </span>
                             </div>
                             <button type="submit" name="searchheader" class="btn btn-green">Cari Sekarang</button>
                         </div>
                     </form>
-                    <p class="caption">Anda Mahasiswa? Berikan solusi untuk Guru. <a href="<?=base_url()?>register">Daftar Sekarang!</a></p>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </header>

@@ -1,7 +1,13 @@
 <script type="text/javascript">
-    
+
     // untuk perhitungan waktu yang lalu
-    window.onload = pertanyaan('all');
+    window.onload = pertanyaan('all')
+    $("#search-bar-pertanyaan").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".panel-ask").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
     function timeAgo() {
         var templates = {
             prefix: "",
@@ -73,91 +79,91 @@
             if (data.permasalahan.length != 0) {
                 var elementToRender = '';
                 elementToRender += 
-                    "<div id='results'>";
+                "<div id='results'>";
                 for (var i in data.permasalahan) {
                     if (i % 2 == 0) {
                         elementToRender += "<div class='row'>";
                     }
                     elementToRender += 
                     "<div class='col-md-6'>" +
-                        "<div class='panel panel-default panel-ask'>"+
-                            "<div class='panel-body'>"+
-                                "<div class='row panel-ask-account'>"+
-                                    "<div class='col-sm-6'>"+
-                                        "<div class='media'>"+
-                                            "<div class='media-left media-middle'>"+
-                                                "<a href='#' class='ask-photo'>"+
-                                                    "<img class='media-object' src='<?=base_url()?>"+data.permasalahan[i].foto+"' width='275' height='261' alt='Photo'>"+
-                                                "</a>"+
-                                            "</div>"+
-                                            "<div class='media-body'>"+
-                                                "<h4 class='media-heading'>"+data.permasalahan[i].nama_pengguna+"</h4>"+
-                                                "<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'><span class='bgicon icon-clock'></span></p>"+
-                                            "</div>"+
-                                        "</div>"+
-                                    "</div>"+
-                                    "<div class='col-sm-6 ask-data-list'>"+
-                                        "<div class='ask-data'>"+
-                                            "<p class='data-value'>"+data.permasalahan[i].jumlah_dilihat+"</p>"+
-                                            "<p class='data-label'>Dilihat </p> "+
-                                        "</div>"+
-                                        "<div class='ask-data'>"+
-                                            "<p class='data-value'>"+data.permasalahan[i].jumlah_komen+"</p>"+
-                                            "<p class='data-label'> Jawaban</p>"+
-                                        "</div>"+
-                                    "</div>"+
-                                "</div>"+
-                                "<div class='row panel-ask-content'>"+
-                                    "<div class='col-md-12'>"+
-                                        "<p>"+
-                                            data.permasalahan[i].teks+
-                                        "</p>"+
-                                    "</div>"+
-                                "</div>"+
-                                "<div class='row panel-ask-answer'>"+
-                                    "<div class='col-md-6 ask-commentator'>"+
-                                        "<ul class='list-inline list-commentator'>";
-                                            if (data.permasalahan[i].komentator.length > 0 ) {
-                                            elementToRender +=  
-                                            "<li class='commentator-caption'>"+
-                                                "<p>Penjawab</p>"+
-                                            "</li>";
-                                            }
-                                            
-                                            for(var j in data.permasalahan[i].komentator){
-                                            elementToRender += 
-                                            "<li>"+
-                                                "<a href='#' class='img-circle'>"+
-                                                    "<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
-                                                "</a>"+
-                                            "</li>";
-                                                
-                                            }
-                                            if(data.permasalahan[i].remaining_penjawab !== 0){
-                                                elementToRender +=
-                                                "<li class='commentator-count'>"+
-                                                    "<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
-                                                "</li>";
-                                            }
-                                            elementToRender +=
-                                        "</ul>"+
-                                    "</div>"
-                                    if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null) && data.permasalahan[i].status == "UNSOLVED") {
-                                        elementToRender +=
-                                        "<div class='col-md-6 ask-action'>"+
-                                            "<p>Anda Mahasiswa? </p> "+
-                                            "<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
-                                        "</div>"
-                                    }else{
-                                        elementToRender +=
-                                        "<div class='col-md-6 ask-action'>"+
-                                            "<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
-                                        "</div>"
-                                    }
-                                elementToRender +=
-                                "</div>"+
-                            "</div>"+
-                        "</div>"+
+                    "<div class='panel panel-default panel-ask'>"+
+                    "<div class='panel-body'>"+
+                    "<div class='row panel-ask-account'>"+
+                    "<div class='col-sm-6'>"+
+                    "<div class='media'>"+
+                    "<div class='media-left media-middle'>"+
+                    "<a href='#'' class='ask-photo'>"+
+                    "<img class='media-object' src='<?=base_url()?>"+data.permasalahan[i].foto+"' width='275' height='261' alt='Photo'>"+
+                    "</a>"+
+                    "</div>"+
+                    "<div class='media-body'>"+
+                    "<h4 class='media-heading'>"+data.permasalahan[i].nama_pengguna+"</h4>"+
+                    "<p class='ask-time timeago' title='"+data.permasalahan[i].tanggal+"'></p>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "<div class='col-sm-6 ask-data-list'>"+
+                    "<div class='ask-data'>"+
+                    "<p class='data-value'>"+data.permasalahan[i].jumlah_dilihat+"</p>"+
+                    "<p class='data-label'>Dilihat</p>"+
+                    "</div>"+
+                    "<div class='ask-data'>"+
+                    "<p class='data-value'>"+data.permasalahan[i].jumlah_komen+"</p>"+
+                    "<p class='data-label'>Jawaban</p>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "<div class='row panel-ask-content'>"+
+                    "<div class='col-md-12'>"+
+                    "<p>"+
+                    data.permasalahan[i].teks+
+                    "</p>"+
+                    "</div>"+
+                    "</div>"+
+                    "<div class='row panel-ask-answer'>"+
+                    "<div class='col-md-6 ask-commentator'>"+
+                    "<ul class='list-inline list-commentator'>";
+                    if (data.permasalahan[i].komentator.length > 0 ) {
+                        elementToRender +=  
+                        "<li class='commentator-caption'>"+
+                        "<p>Penjawab</p>"+
+                        "</li>";
+                    }
+
+                    for(var j in data.permasalahan[i].komentator){
+                        elementToRender += 
+                        "<li>"+
+                        "<a href='#' class='img-circle'>"+
+                        "<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
+                        "</a>"+
+                        "</li>";
+
+                    }
+                    if(data.permasalahan[i].remaining_penjawab !== 0){
+                        elementToRender +=
+                        "<li class='commentator-count'>"+
+                        "<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
+                        "</li>";
+                    }
+                    elementToRender +=
+                    "</ul>"+
+                    "</div>"
+                    if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null) && data.permasalahan[i].status == "UNSOLVED") {
+                        elementToRender +=
+                        "<div class='col-md-6 ask-action'>"+
+                        "<p>Anda Mahasiswa? </p> "+
+                        "<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
+                        "</div>"
+                    }else{
+                        elementToRender +=
+                        "<div class='col-md-6 ask-action'>"+
+                        "<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
+                        "</div>"
+                    }
+                    elementToRender +=
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
                     "</div>";
                     if (i % 2 !== 0) {
                         elementToRender += "</div>";
@@ -170,7 +176,7 @@
                 $("#"+argument).html("<p><h4 class='text-center'>Data belum ada</h4></p>");
             }
         });
-    }
+}
 
 </script>        
 
