@@ -57,6 +57,8 @@ $route['translate_uri_dashes'] = FALSE;
 $route['home'] 								= 'Home/home';
 $route['kategori-status'] 					= 'Home/getPertanyaan';
 $route['kategori-mapel'] 					= 'Home/mapel';
+$route['tentang-kami'] 						= 'Home/tentangKami';
+$route['submit-saran-pertanyaan']			= 'Home/submitSaranPertanyaan';
 $route['get-rangking-mahasiswa']			= 'Home/getMahasiswaPoinTertinggi';
 $route['get-materi'] 						= 'Home/getMateri';
 $route['materi-detil']						= 'Home/materi';
@@ -72,7 +74,7 @@ $route['proses-cari-pertanyaan']			= 'Home/prosesSearchPertanyaan';
 
 $route['testimonial']						= 'Home/testimonial';
 $route['karir']								= 'Home/karir';
-$route['get-karir']								= 'Home/getKarir';
+$route['get-karir']							= 'Home/getKarir';
 /*******************************************************home****************************************************************/
 
 

@@ -62,7 +62,7 @@
                                     </li>
                                     <li id="materi" class=""><a href="<?=base_url()?>materi-detil">Materi</a></li>
                                     <li id="karir" class=""><a href="<?=base_url()?>karir">Karir</a></li>
-                                    <li id="tentangKami" class=""><a href="#">Tentang Kami</a></li>
+                                    <li id="tentangKami" class=""><a href="<?=base_url()?>tentang-kami">Tentang Kami</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
                                     <?php

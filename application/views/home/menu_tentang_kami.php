@@ -1,7 +1,14 @@
 <script type="text/javascript">
+
     // SCRIPT UNTUK ADD ACTIVE
     $( document ).ready(function() {
         $("#<?=$active?>").attr("class","active");
+        $("#filter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".panel-ask").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
     });
 
 
@@ -63,8 +70,9 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <div class="header-content header-pages pb-100">
-                    <h1 class="title-testi">Cerita Mereka yang telah <br> Menggunakan Berguru.com</h1>
+                <div class="header-content header-custom-page">
+                    <h1 class="title">Tentang Kami</h1>
+                    <p class="caption">Solusi tanpa batas dan mudah dalam diskusi yang menyenangkan</p>
                 </div>
             </div>
         </div>

@@ -1,3 +1,10 @@
+<link href="<?=base_url()?>assets/dashboard/assets/css/icon-picker.min.css" rel="stylesheet">
+<script src="<?=base_url()?>assets/dashboard/assets/js/iconPicker.min.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$(".icon-picker").iconPicker();
+	});
+</script>
 <script type="text/javascript">
 	// Script untuk panel search diluar tabel
 	$( document ).ready(function() {
@@ -33,7 +40,7 @@
 				}
 			}
 		}
-	  
+
 		return true;
 	}	
 </script>
@@ -89,20 +96,20 @@
 					<tbody>
 						<?php
 						foreach ($materi as $key => $value) { ?>
-						<tr>
+							<tr>
 								<td>
 									<div class="materi-ikon materi-blue"><i class="fa fa-diamond"></i></div>
 									<?=$value->nama_materi?>
 								</td>
 								<td><?=$value->nama_kategori?></td>
 								<td><?=date('m/d/y',strtotime($value->waktu_terakhir_edit))?>
-									<span class="td-meta">
-										<i class="fa fa-circle"></i> <?=$value->nama_editor?>
-									</span>
-								</td>
-								<td><?=$value->jumlah_diunduh?></td>
-								<td class="td-right">
-									<div class="dropdown td-menu">
+								<span class="td-meta">
+									<i class="fa fa-circle"></i> <?=$value->nama_editor?>
+								</span>
+							</td>
+							<td><?=$value->jumlah_diunduh?></td>
+							<td class="td-right">
+								<div class="dropdown td-menu">
 									<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										<i class="fa fa-ellipsis-v"></i>
 									</a>
@@ -114,20 +121,20 @@
 								</div>
 							</td>
 						</tr>					
-						<?php }
-						?>
-					</tbody>
-				</table>
-			</div>
+					<?php }
+					?>
+				</tbody>
+			</table>
 		</div>
 	</div>
+</div>
 </div>	<!--/.main-->
 
 <!-- Modal -->
 <div class="modal fade" id="modal-addmateri" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-		  <form class="input-55" action="<?=base_url()?>tambah-materi" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="form-tambah-baru" onsubmit="return publishMateri(this);">
+			<form class="input-55" action="<?=base_url()?>tambah-materi" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="form-tambah-baru" onsubmit="return publishMateri(this);">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Tambah Materi Baru</h4>
@@ -152,6 +159,10 @@
 							</div>
 						</div>
 						<div class="col-md-5">
+							<div class="form-group">
+								<label for="">Pilih Icon</label>
+								<input type="text" placeholder="Pilih Icon..." name="ikon" class="form-control icon-picker"/>                         
+							</div>
 							<div class="form-group">
 								<label for="">Pilih Kategori</label>
 								<select name="kategori" id="" class="form-control" required="">

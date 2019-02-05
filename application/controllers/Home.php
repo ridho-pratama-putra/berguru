@@ -426,12 +426,13 @@ class Home extends CI_Controller {
 		$this->load->view('home/footer');	
 	}
 
-	function karir(){
+	function karir()
+	{
 		$menu['active'] 	= "karir";
 		$this->load->view('home/header');
 		$this->load->view("home/menu_karir",$menu);
 		$this->load->view('home/karir');
-		$this->load->view('home/footer');	
+		$this->load->view('home/footer');
 	}
 
 	/*
@@ -460,5 +461,28 @@ class Home extends CI_Controller {
 
 		$record['data'] 	= $this->model->rawQuery($string)->result();
 		echo json_encode($record);
+	}
+
+	/*
+	* render halaman tentang kami
+	*/
+	function tentangKami()
+	{
+		$menu['active'] 	= "tentangKami";
+		$this->load->view('home/header');
+		$this->load->view("home/menu_tentang_kami",$menu);
+		$this->load->view('home/tentang_kami');
+		$this->load->view('home/footer');
+	}
+
+	/*
+	* untuk handle form pertanyaan dan saran
+	*/
+	function submitSaranPertanyaan()
+	{
+		$this->model->create("pertanyaan_saran",array("nama" => $this->input->post("nama"),"subjek" => $this->input->post("subjek"),"email" => $this->input->post("email"),"pesan" => $this->input->post("pesan")));
+
+		
+		redirect("tentang-kami");
 	}
 }
