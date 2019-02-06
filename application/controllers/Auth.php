@@ -24,7 +24,6 @@ class Auth extends CI_Controller {
 					$cekLogin = $this->model->read('pengguna',array('email'=>$this->input->post('email'),'password'=>md5($this->input->post('password'))));
 					if ($cekLogin->num_rows() == 1) {
 						$recordPengguna = $cekLogin->result();
-
 						if ($recordPengguna[0]->status == 'ACTIVE') {
 
 							if ($this->input->post('remember')) {
@@ -47,7 +46,7 @@ class Auth extends CI_Controller {
 							);
 
 							$this->session->set_userdata('loginSession',$newdata);
-
+							$this->model->create("log_pengunjung",array('pengunjung' => $recordPengguna[0]->id,'tanggal'=>date("Y-m-d H:i:s")));
 							if ($recordPengguna[0]->aktor == "admin") {
 								alert('alert','success','Hai Admin '.$recordPengguna[0]->nama.'!','Selamat datang di Berguru.com');
 								redirect('dashboard-admin');
@@ -227,7 +226,7 @@ class Auth extends CI_Controller {
 			}
 
 			// create alert untuk admin kalau ada pengguna yang harus diaktifkan
-			$this->model->create('notif',array('konteks'=>'penggunaBaru','dari'=>$queryPengguna->message,'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s'),'terlihat'=>0,'terbaca'=>0));
+			$this->model->create('notif',array('konteks'=>'penggunaBaru','dari'=>$queryPengguna->message,'untuk'=>'admin','datetime'=>date('Y-m-d H:i:s')));
 			redirect('login');
 		}else{
 			$error['heading'] = '404 Page Not Found';

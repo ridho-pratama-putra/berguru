@@ -22,7 +22,7 @@
 						<ul class="nav navbar-top-links navbar-right">
 							<li class="dropdown">
 								<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatDm()">
-									<em class="fa fa-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
+									<em class="bgicon icon-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
 								</a>
 								<ul class="dropdown-menu dropdown-alerts">
 									<?php  
@@ -49,7 +49,7 @@
 							</li>
 							<li class="dropdown">
 								<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatNonDm()">
-									<em class="fa fa-bell"></em><span class="label label-danger" id="jumlah_notif_non_dm"><?=(sizeof($belum_dilihat_non_dm) !== 0 ? sizeof($belum_dilihat_non_dm) : '')?></span>
+									<em class="bgicon icon-notification"></em><span class="label label-danger" id="jumlah_notif_non_dm"><?=(sizeof($belum_dilihat_non_dm) !== 0 ? sizeof($belum_dilihat_non_dm) : '')?></span>
 								</a>
 								<ul class="dropdown-menu dropdown-messages">
 									<?php foreach ($notif_non_dm as $key => $value) { ?>
@@ -100,47 +100,45 @@
 
 							<li class="dropdown user-menu">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?>
-
-								</div>
-								<div class="user-photo">
-									<img src="<?=$this->session->userdata('loginSession')['foto']?>"  class="img-circle" alt="Photo">
-								</div>
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="<?=base_url()?>profil-pendidik">
-										<div><em class="fa fa-user"></em> Profile</div>
-									</a>
-								</li>
-								<li class="divider"></li>
-								<li>
-									<a href="<?=base_url()?>logout">
-										<div><em class="fa fa-power-off"></em> Log Out</div>
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
+									<div class="user-name"><?=$this->session->userdata('loginSession')['nama']?></div>
+									<div class="user-photo">
+										<img src="<?=$this->session->userdata('loginSession')['foto']?>"  class="img-circle" alt="Photo">
+									</div>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="<?=base_url()?>profil-pendidik">
+											<div><em class="bgicon icon-user"></em> Profile</div>
+										</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="<?=base_url()?>logout">
+											<div><em class="bgicon icon-turn-off"></em> Log Out</div>
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar scrollable">
+		<div class="profile-sidebar">
+			<a href="#" class="profile-option"><i class="bgicon icon-settings"></i></a>
+			<div class="profile-userpic">
+				<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
+				<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
+			</div>
+			<div class="btn-hakakses"><em class="fa fa-user"></em> Pendidik</div>
+			<div class="clear"></div>
 		</div>
-	</div><!-- /.container-fluid -->
-</nav>
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar scrollable">
-	<div class="profile-sidebar">
-		<a href="#" class="profile-option"><i class="fa fa-cog"></i></a>
-		<div class="profile-userpic">
-			<img src="<?=$this->session->userdata('loginSession')['foto']?>" class="" alt="Photo">
-		</div>
-		<div class="profile-usertitle">
-			<div class="profile-usertitle-name"><?=$this->session->userdata('loginSession')['nama']?></div>
-			<div class="profile-usertitle-status"><?=$this->session->userdata('loginSession')['email']?></div>
-		</div>
-		<div class="btn-hakakses"><em class="fa fa-user"></em> Pendidik</div>
-		<div class="clear"></div>
-	</div>
-	<div class="divider"></div>
+		<div class="divider"></div>
 			<!-- <form role="search">
 			<div class="form-group">
 			<input type="text" class="form-control" placeholder="Search">
@@ -148,25 +146,28 @@
 	</form> -->
 	<ul class="nav menu">
 		<li class="" id="home">
-			<a href="<?=base_url()?>dashboard-pendidik"><em class="fa fa-home">&nbsp;</em> Home <span class="badge">42</span></a>
+			<a href="<?=base_url()?>dashboard-pendidik"><em class="bgicon icon-home">&nbsp;</em> Home <span class="badge">42</span></a>
 		</li>
 		<li class="" id="pertanyaanSaya">
-			<a href="<?=base_url()?>pertanyaan-pendidik"><em class="fa fa-book-open">&nbsp;</em> Pertanyaan Saya</a>
+			<a href="<?=base_url()?>pertanyaan-pendidik"><em class="bgicon icon-material-book">&nbsp;</em> Pertanyaan Saya</a>
 		</li>
 		<li class="" id="pesan">
-			<a href="<?=base_url()?>pesan-pendidik"><em class="fa fa-comments">&nbsp;</em> Pesan</a>
+			<a href="<?=base_url()?>pesan-pendidik"><em class="bgicon icon-message">&nbsp;</em> Pesan</a>
 		</li>
 		<li class="" id="materi">
-			<a href="<?=base_url()?>materi-pendidik"><em class="fa fa-layer-group">&nbsp;</em> Materi</a>
+			<a href="<?=base_url()?>materi-pendidik"><em class="bgicon icon-material-stack">&nbsp;</em> Materi</a>
 		</li>
 		<li class="" id="karir">
-			<a href="<?=base_url()?>karir-pendidik" ><em class="fa fa-briefcase">&nbsp;</em> Karir</a>
+			<a href="<?=base_url()?>karir-pendidik" ><em class="bgicon icon-briefcase">&nbsp;</em> Karir</a>
+		</li>
+		<li class="" id="bantuan">
+			<a href="<?=base_url()?>bantuan-pendidik" ><em class="bg-icon icon-question">&nbsp;</em> Bantuan</a>
 		</li>
 		<li class="" id="testimonial">
 			<a href="<?=base_url()?>testimonial-pendidik"><em class="bgicon icon-comment-type">&nbsp;</em> Testimonial</a>
 		</li>
 		<li>
-			<a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a>
+			<a href="<?=base_url()?>logout"><em class="bgicon icon-turn-off">&nbsp;</em> Log Out</a>
 		</li>
 	</ul>
 	<div class="side-credit">

@@ -2,7 +2,7 @@
 	$( document ).ready(function() {
 		var table = $('#tabel-lowongan').DataTable(); 
 		$('#cari-lowongan').on( 'keyup', function () {
-		    table.search( this.value ).draw();
+			table.search( this.value ).draw();
 		} );
 	});
 
@@ -28,7 +28,7 @@
 	</div><!--/.row-->
 
 	<div class="main-container mr-0" id="notif">
-		<?=$this->session->flashdata("kelolaLowongan");?>
+		<?=$this->session->flashdata("alert");?>
 	</div>
 
 	<div class="panel panel-plain main-container">
@@ -69,20 +69,20 @@
 					</thead>
 					<tbody>
 						<?php foreach ($lowongan as $key => $value) { ?>
-						<tr>
-							<td>
-								<?=$value->nama?>
-							</td>
-							<td><?=$value->instansi?></td>
-							<td><?=$value->lokasi?></td>
-							<td><?=$value->kontak?></td>
-							<td data-order="valid">
-								<div class="saklar">
-									<input type="checkbox" class="saklar-switch" id="valid<?=$value->id?>" <?=($value->valid == 0 ? '' : 'checked')?>  onclick="valid(<?=$value->id?>)">
-									<label for="valid<?=$value->id?>"></label>
-								</div>
-							</td>
-						</tr>
+							<tr>
+								<td>
+									<?=$value->nama?>
+								</td>
+								<td><?=$value->instansi?></td>
+								<td><?=$value->lokasi?></td>
+								<td><?=$value->kontak?></td>
+								<td data-order="valid">
+									<div class="saklar">
+										<input type="checkbox" class="saklar-switch" id="valid<?=$value->id?>" <?=($value->valid == 0 ? '' : 'checked')?>  onclick="valid(<?=$value->id?>)">
+										<label for="valid<?=$value->id?>"></label>
+									</div>
+								</td>
+							</tr>
 						<?php } ?>
 						
 					</tbody>
@@ -90,14 +90,7 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-
-
 </div>	<!--/.main-->
-
 <!-- Modal -->
 <div class="modal fade" id="modal-addlowongan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">

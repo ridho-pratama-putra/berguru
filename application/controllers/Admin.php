@@ -28,7 +28,11 @@ class Admin extends CI_Controller {
 		$this->menu['active'] 		= 'dashboard';
 		
 		$data['kategori'] 			= $this->model->readS('kategori')->result();
-		$data['pertanyaan']			= $this->model->rawQuery("SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.status, pengguna.foto FROM permasalahan LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id ")->result();
+		$data['pertanyaan']			= $this->model->rawQuery("SELECT permasalahan.id, permasalahan.teks, permasalahan.tanggal, pengguna.nama AS nama_pengguna, permasalahan.status, pengguna.foto FROM permasalahan LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id ORDER BY permasalahan.tanggal DESC")->result();
+
+		$data['testimonial']		= $this->model->rawQuery("SELECT testimonial.teks, testimonial.tanggal, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON testimonial.dari = pengguna.id ORDER BY testimonial.tanggal")->result();
+
+		$data['lowongan'] = $this->model->rawQuery("SELECT lowongan.id,lowongan.nama AS teks_lowongan, pengguna.nama AS nama_pengguna, pengguna.foto, lokasi.lokasi, lowongan.instansi, lowongan.valid FROM lowongan LEFT JOIN pengguna ON pengguna.id = lowongan.dari LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 0 ORDER BY lowongan.tanggal")->result();
 
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$this->menu);
@@ -217,7 +221,7 @@ class Admin extends CI_Controller {
 		$this->menu['breadcrumb'] = 'Kelola Pengguna';
 		$this->menu['active'] 	= 'pengguna';
 
-		$record['mahasiswa'] = $this->model->read('pengguna',array('aktor'=>'mahasiswa'))->result();
+		$record['mahasiswa']	= $this->model->rawQuery("SELECT * FROM pengguna WHERE aktor = 'mahasiswa' ORDER BY status DESC")->result();
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-pengguna',$record);
@@ -255,9 +259,9 @@ class Admin extends CI_Controller {
 	function kelolaTenagaPendidik()
 	{
 		$header['title'] 	= 'Kelola Tenaga Pendidik';
-		$this->menu['breadcrumb'] = 'Kelola Tenaga Pendidik';
-		$this->menu['active'] 	= 'tenagapendidik';
-		$record['tenagapendidik']=$this->model->read('pengguna',array('aktor'=>'pendidik'))->result();
+		$this->menu['breadcrumb'] 	= 'Kelola Tenaga Pendidik';
+		$this->menu['active'] 		= 'tenagapendidik';
+		$record['tenagapendidik']	= $this->model->rawQuery("SELECT * FROM pengguna WHERE aktor = 'pendidik' ORDER BY status DESC")->result();
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/kelola-tenaga-pendidik',$record);
@@ -349,16 +353,16 @@ class Admin extends CI_Controller {
 			$queryInsert = $this->model->create_id('lowongan',$newdata);
 			$queryInsert = json_decode($queryInsert);
 			if ($queryInsert->status) {
-				alert('kelolaLowongan','success','Berhasil!',"Lowongan berhasil dibuat");
+				alert('alert','success','Berhasil!',"Lowongan berhasil dibuat");
 				redirect('lowongan-kerja');
 			}else{
-				alert('kelolaLowongan','danger','Gagal!',"Lowongan yang telah anda buat gagal dipublish. Eror : ".$queryInsert->error_message->message);
+				alert('alert','danger','Gagal!',"Lowongan yang telah anda buat gagal dipublish. Eror : ".$queryInsert->error_message->message);
 				redirect('lowongan-kerja');
 			}
 		}else{
 			$kelolaLowongan = validation_errors("<div class='alert alert-warning alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
 				'</div>');
-			$this->session->set_flashdata('kelolaLowongan', $kelolaLowongan);
+			$this->session->set_flashdata('alert', $kelolaLowongan);
 			redirect('lowongan-kerja');
 		}
 	}
@@ -538,7 +542,6 @@ class Admin extends CI_Controller {
 			if ($this->input->post('status') == 'ACTIVE') {
 				if ($ubahStatus->status) {
 					alert('alert','success','Berhasil!','Status Pengguna telah diaktifkan');
-					$this->model->delete('notif',array('konteks'=>'penggunaBaru','dari'=>$this->input->post('id'),'untuk'=>'admin'));
 				}else{
 					alert('alert','danger','Gagal!','Status Pengguna tidak dapat diaktifkan');
 				}
@@ -810,6 +813,7 @@ class Admin extends CI_Controller {
 			notif.id,
 			notif.konteks,
 			notif.id_konteks,
+			notif.terbaca,
 			pengguna.nama AS dari, 
 			pengguna.aktor, 
 			pengguna.foto, 
@@ -818,11 +822,11 @@ class Admin extends CI_Controller {
 			FROM notif 
 			LEFT JOIN pengguna ON pengguna.id = notif.dari
 			WHERE 
-			(untuk='semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
+			(untuk = 'semua' AND dari != ".$this->session->userdata('loginSession')['id'].")
 			OR 
-			untuk='admin'
+			untuk = 'admin'
 			OR 
-			untuk='".$this->session->userdata('loginSession')['id']."'
+			untuk = '".$this->session->userdata('loginSession')['id']."'
 			ORDER BY datetime DESC
 			");
 
@@ -1165,6 +1169,66 @@ class Admin extends CI_Controller {
 			alert('alert','danger','Gagal!','Pesan info gagal dikirim');
 		}
 		redirect('kelola-pesan-info');
+	}
+
+
+	/*
+	* view halaman bantuan
+	*/
+	function bantuan()
+	{
+		$header['title'] 			= 'Bantuan';
+		$this->menu['breadcrumb'] 	= 'Bantuan';
+		$this->menu['active'] 		= 'bantuan';	
+		$this->load->view('statis/header',$header);
+		$this->load->view('super/menu',$this->menu);
+		$this->load->view('statis/bantuan');
+		$this->load->view('statis/footer');
+	}
+
+	/*
+	* melayani ajax request untuk menghitung prblem solved dalam kurun waktu
+	*/
+	function getJumlahProblemSolved()
+	{
+		if ($this->input->get('jangka_waktu') == "hari") {
+			$data = $this->model->rawQuery("SELECT DISTINCT permasalahan AS jumlah FROM direct_message WHERE terpecahkan='SOLVED' AND DAY(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->num_rows();
+		}elseif ($this->input->get('jangka_waktu') == "bulan") {
+			$data = $this->model->rawQuery("SELECT DISTINCT permasalahan AS jumlah FROM direct_message WHERE terpecahkan='SOLVED' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->num_rows();
+		}elseif ($this->input->get('jangka_waktu') == "tahun") {
+			$data = $this->model->rawQuery("SELECT DISTINCT permasalahan AS jumlah FROM direct_message WHERE terpecahkan='SOLVED' AND YEAR(tanggal) = '".date("Y")."'")->num_rows();
+		}
+		echo json_encode($data);
+	}
+
+	/*
+	* melayani ajax request untuk menghitung uservisits 
+	*/
+	function getJumlahPengunjung()
+	{
+		if ($this->input->get('jangka_waktu') == "hari") {
+			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE DAY(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->result();
+		}elseif ($this->input->get('jangka_waktu') == "bulan") {
+			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->result();
+		}elseif ($this->input->get('jangka_waktu') == "tahun") {
+			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE YEAR(tanggal) = '".date("Y")."'")->result();
+		}
+		echo json_encode($data);
+	}
+
+	/*
+	* 
+	*/
+	function getJumlahPenggunaBaru()
+	{
+		if ($this->input->get('jangka_waktu') == "hari") {
+			$data = $this->model->rawQuery("SELECT id AS jumlah FROM notif WHERE konteks = 'penggunaBaru' AND DAY(datetime) = '".date("d")."' AND MONTH(datetime) = '".date("m")."' AND YEAR(datetime) = '".date("Y")."'")->num_rows();
+		}elseif ($this->input->get('jangka_waktu') == "bulan") {
+			$data = $this->model->rawQuery("SELECT id AS jumlah FROM notif WHERE konteks = 'penggunaBaru' AND MONTH(datetime) = '".date("m")."' AND YEAR(datetime) = '".date("Y")."'")->num_rows();
+		}elseif ($this->input->get('jangka_waktu') == "tahun") {
+			$data = $this->model->rawQuery("SELECT id AS jumlah FROM notif WHERE konteks = 'penggunaBaru' AND YEAR(datetime) = '".date("Y")."'")->num_rows();
+		}
+		echo json_encode($data);
 	}
 
 }

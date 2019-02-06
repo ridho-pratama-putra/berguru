@@ -1413,6 +1413,20 @@ class Pendidik extends CI_Controller {
 		}
 	}
 
+		/*
+	* view halaman bantuan
+	*/
+	function bantuan()
+	{
+		$header['title'] 			= 'Bantuan';
+		$this->menu['breadcrumb'] 	= 'Bantuan';
+		$this->menu['active'] 		= 'bantuan';	
+		$this->load->view('statis/header',$header);
+		$this->load->view('tenagapendidik/menu',$this->menu);
+		$this->load->view('statis/bantuan');
+		$this->load->view('statis/footer');
+	}
+
 	function playground()
 	{
 		$this->load->view('tenagapendidik/playground');

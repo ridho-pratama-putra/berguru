@@ -1181,4 +1181,18 @@ class Mahasiswa extends CI_Controller {
 			redirect('testimonial-mahasiswa');
 		}
 	}
+
+	/*
+	* view halaman bantuan
+	*/
+	function bantuan()
+	{
+		$header['title'] 			= 'Bantuan';
+		$this->menu['breadcrumb'] 	= 'Bantuan';
+		$this->menu['active'] 		= 'bantuan';	
+		$this->load->view('statis/header',$header);
+		$this->load->view('mahasiswa/menu',$this->menu);
+		$this->load->view('statis/bantuan');
+		$this->load->view('statis/footer');
+	}
 }

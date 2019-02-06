@@ -1,28 +1,4 @@
-<script type="text/javascript">
-	<!-- SCRIPT UNTUK ADD ACTIVE PADA SUB MENU KELOLA DAN ACTIVE COLLAPSE MENU KELOLA JIKA MASUK LIST SUBMENU KELOLA-->
-	$( document ).ready(function() {
-		$("#<?=$active?>").attr("class","active");
-		if ("<?=$active?>" == "pengguna" || "<?=$active?>" == "tenagapendidik" || "<?=$active?>" == "kategorikonten" || "<?=$active?>" == "kontenpermasalahan" || "<?=$active?>" == "komentar" || "<?=$active?>" == "daftarmessage" || "<?=$active?>" == "materi" || "<?=$active?>" == "pesaninfo" ) {
-			$('#sub-item-kelola').addClass('in');
-			$('#kelola').addClass('active');
-			$('#chevron').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-		}else{
-			$('#sub-item-kelola').removeClass('in');
-			$('#chevron').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-		}
-		$(".link-disabled").click(function(e) {
-			e.preventDefault();
-		});
-	});
-	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
 
-	// function ajax untuk set alert badge
-	function setToTerlihat() {
-		$.post( "<?=base_url()?>Admin/setTerlihat",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
-			$('#jumlah_notif').html('');
-		});
-	}
-</script>	
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -45,7 +21,7 @@
 						</div>
 						<ul class="nav navbar-top-links navbar-right">
 							<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihat()">
-								<em class="fa fa-bell"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
+								<em class="bgicon icon-notification"></em><span class="label label-danger" id="jumlah_notif"><?=(sizeof($belum_dilihat) !== 0 ? sizeof($belum_dilihat) : '')?></span>
 							</a>
 							<ul class="dropdown-menu dropdown-messages">
 								<?php foreach ($notif as $key => $value) { ?>
@@ -54,13 +30,13 @@
 											<img alt="image" class="img-circle" src="<?=$value->foto?>">
 										</a>
 										<div class="message-body"><small class="pull-right"><?=time_elapsed_string($value->datetime)?></small>
-											<?php if ($value->untuk == 'admin' AND $value->konteks == 'penggunaBaru' AND $value->aktor == 'mahasiswa') { ?>
+											<?php if ($value->konteks == 'penggunaBaru' AND $value->aktor == 'mahasiswa') { ?>
 												<a href="<?=base_url()?>kelola-pengguna">Mahasiswa baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
-											<?php }elseif($value->untuk == 'admin' AND $value->konteks == 'penggunaBaru' AND $value->aktor == 'pendidik'){?>
+											<?php }elseif($value->konteks == 'penggunaBaru' AND $value->aktor == 'pendidik'){?>
 												<a href="<?=base_url()?>kelola-tenaga-pendidik">Pendidik baru An. <strong><?=$value->dari?></strong> meminta aktivasi akun.</a>
-											<?php }elseif($value->untuk == 'admin' AND $value->konteks == 'lowongan'){ ?>
+											<?php }elseif($value->konteks == 'lowongan'){ ?>
 												<a href="<?=base_url()?>lowongan-kerja"><strong><?=$value->dari?></strong> meminta verifikasi lowongan.</a>
-											<?php }elseif($value->untuk == 'semua' AND $value->konteks == 'materiBaru'){ ?>
+											<?php }elseif($value->konteks == 'materiBaru'){ ?>
 												<a href="<?=base_url()?>kelola-materi"><strong><?=$value->dari?></strong> menerbitkan materi baru.</a>
 											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
@@ -93,13 +69,13 @@
 							<ul class="dropdown-menu">
 								<li>
 									<a href="<?=base_url()?>profil-admin">
-										<div><em class="fa fa-user"></em> Profile</div>
+										<div><em class="bgicon icon-user"></em> Profile</div>
 									</a>
 								</li>
 								<li class="divider"></li>
 								<li>
 									<a href="<?=base_url()?>logout">
-										<div><em class="fa fa-power-off"></em> Log Out</div>
+										<div><em class="bgicon icon-turn-off"></em> Log Out</div>
 									</a>
 								</li>
 							</ul>
@@ -129,10 +105,10 @@
 		</div>
 	</form> -->
 	<ul class="nav menu">
-		<li class="" id="dashboard"><a href="<?=base_url()?>dashboard-admin"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+		<li class="" id="dashboard"><a href="<?=base_url()?>dashboard-admin"><em class="bgicon icon-dashboard">&nbsp;</em> Dashboard</a></li>
 		<li class="parent" id="kelola">
 			<a data-toggle="collapse" href="#sub-item-kelola" class="collapsed">
-				<span class="fa fa-th">&nbsp;</span> Kelola <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em id="chevron" class="fa fa-chevron-down"></em></span>
+				<span class="bgicon icon-calculator">&nbsp;</span> Kelola <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em id="chevron" class="fa fa-chevron-down"></em></span>
 			</a>
 			<ul class="children collapse" id="sub-item-kelola">
 				<li><a class="" href="<?=base_url()?>kelola-pengguna" id="pengguna">
@@ -161,11 +137,38 @@
 				</a></li>
 			</ul>
 		</li>
-		<li id="lowongan" class=""><a href="<?=base_url()?>lowongan-kerja"><em class="fa fa-briefcase">&nbsp;</em> Lowongan Kerja</a></li>
-		<li id="bantuan"><a href="<?=base_url()?>"><em class="fa fa-question-circle">&nbsp;</em> Bantuan</a></li>
-		<li><a href="<?=base_url()?>logout"><em class="fa fa-power-off">&nbsp;</em> Log Out</a></li>
+		<li id="lowongan" class=""><a href="<?=base_url()?>lowongan-kerja"><em class="bgicon icon-briefcase">&nbsp;</em> Lowongan Kerja</a></li>
+		<li class="" id="bantuan">
+			<a href="<?=base_url()?>bantuan-admin" ><em class="bg-icon icon-question">&nbsp;</em> Bantuan</a>
+		</li>
+		<li><a href="<?=base_url()?>logout"><em class="bg-icon icon-turn-off">&nbsp;</em> Log Out</a></li>
 	</ul>
 	<div class="side-credit">
 		<p>&copy; Berguru.com</p>
 	</div>
 </div><!--/.sidebar-->
+<script type="text/javascript">
+	<!-- SCRIPT UNTUK ADD ACTIVE PADA SUB MENU KELOLA DAN ACTIVE COLLAPSE MENU KELOLA JIKA MASUK LIST SUBMENU KELOLA-->
+	$( document ).ready(function() {
+		$("#<?=$active?>").attr("class","active");
+		if ("<?=$active?>" == "pengguna" || "<?=$active?>" == "tenagapendidik" || "<?=$active?>" == "kategorikonten" || "<?=$active?>" == "kontenpermasalahan" || "<?=$active?>" == "komentar" || "<?=$active?>" == "daftarmessage" || "<?=$active?>" == "materi" || "<?=$active?>" == "pesaninfo" ) {
+			$('#sub-item-kelola').addClass('in');
+			$('#kelola').addClass('active');
+			$('#chevron').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+		}else{
+			$('#sub-item-kelola').removeClass('in');
+			$('#chevron').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+		}
+		$(".link-disabled").click(function(e) {
+			e.preventDefault();
+		});
+	});
+	<!-- END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU -->
+
+	// function ajax untuk set alert badge
+	function setToTerlihat() {
+		$.post( "<?=base_url()?>Admin/setTerlihat",{ id:<?=$this->session->userdata('loginSession')['id']?>},function(data){
+			$('#jumlah_notif').html('');
+		});
+	}
+</script>
