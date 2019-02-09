@@ -532,11 +532,9 @@
 				for (var i = 0; i < res.data.length; i++) {
 					elementToRender += 
 					'<div class="material-item">'+
-					'<div class="media">'+
+					'<div class="media '+res.data[i].ikon_cat+'">'+
 					'<div class="media-left media-middle">'+
-					'<div class="media-object materi-icon icon-red">'+
-					'<span class="bgicon '+res.data[i].ikon_logo+'"></span>'+
-					'</div>'+
+					'<div class="media-object materi-ikon materi-'+res.data[i].ikon_warna+'"><span class="bgicon '+res.data[i].ikon_logo+'"></span></div>'+
 					'</div>'+
 					'<div class="media-body">'+
 					'<h4 class="media-heading"><a href="#">'+res.data[i].nama+'</a></h4>'+

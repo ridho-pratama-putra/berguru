@@ -98,7 +98,8 @@
 						foreach ($materi as $key => $value) { ?>
 							<tr>
 								<td>
-									<div class="materi-ikon materi-blue"><i class="fa fa-diamond"></i></div>
+									<!-- <div class="materi-ikon materi-blue"><i class="fa fa-diamond"></i></div> -->
+									<div class="materi-ikon materi-<?=$value->ikon_warna?>"><span class="bgicon <?=$value->ikon_logo?>"></span></div>
 									<?=$value->nama_materi?>
 								</td>
 								<td><?=$value->nama_kategori?></td>
@@ -116,7 +117,7 @@
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
 										<li><a href="#">Edit</a></li>
 										<li role="separator" class="divider"></li>
-										<li><a href="#">Hapus</a></li>
+										<li><a href="<?php echo base_url().'delete-materi/'.$value->id?>" >Hapus</a></li>
 									</ul>
 								</div>
 							</td>
@@ -156,12 +157,13 @@
 									<span class="placeholder">Pilih file...</span>
 									<span class="tombol"><i class="fa fa-cloud-upload"></i> Upload file</span>
 								</label>
+								<p class="help-block">file maks 2mb</p>
 							</div>
 						</div>
 						<div class="col-md-5">
 							<div class="form-group">
 								<label for="">Pilih Icon</label>
-								<input type="text" placeholder="Pilih Icon..." name="ikon" class="form-control icon-picker"/>                         
+								<input type="text" placeholder="Pilih Icon..." name="icon" class="form-control icon-picker"/>                         
 							</div>
 							<div class="form-group">
 								<label for="">Pilih Kategori</label>

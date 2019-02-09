@@ -1,4 +1,11 @@
+<link href="<?=base_url()?>assets/dashboard/assets/css/icon-picker.min.css" rel="stylesheet">
+<script src="<?=base_url()?>assets/dashboard/assets/js/iconPicker.min.js"></script>
 <script type="text/javascript">
+	$(function () {
+		$(".icon-picker").iconPicker();
+	});
+	
+
 	// script untuk prevent submit sebuah file yang tidak termasuk di list extension
 	var _validFileExtensions = [".pdf", ".docx", ".doc", ".xlsx", ".xls"];    
 	function publishMateri(oForm) {
@@ -24,7 +31,7 @@
 				}
 			}
 		}
-	  
+
 		return true;
 	}	
 </script>
@@ -67,17 +74,26 @@
 											<span class="placeholder">Pilih file...</span>
 											<span class="tombol"><i class="fa fa-cloud-upload-alt"></i> Upload file</span>
 										</label>
+										<p class="help-block">file maks 2mb</p>
 									</div>
 								</div>
 								<div class="col-md-5">
+									<div class="form-group">
+										<label for="">Pilih Icon</label>
+										<input type="text" placeholder="Pilih Icon..." name="icon" class="form-control icon-picker"/>                         
+									</div>
 									<div class="form-group">
 										<label for="">Pilih Kategori</label>
 										<select name="kategori" id="" class="form-control">
 											<option value="" selected="" disabled="">Pilih kategori</option>
 											<?php foreach ($kategori as $key => $value) { ?>
-											<option value="<?=$value->id?>"><?=$value->nama?></option>
+												<option value="<?=$value->id?>"><?=$value->nama?></option>
 											<?php } ?>
 										</select>
+									</div>
+									<div class="form-group">
+										<label for="">Pilih Icon</label>
+										<input type="text" placeholder="Pilih Icon..." name="ikon" class="form-control icon-picker"/>                         
 									</div>
 									<div class="form-group">
 										<label for="">Tags</label>

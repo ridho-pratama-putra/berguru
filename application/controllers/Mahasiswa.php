@@ -816,6 +816,25 @@ class Mahasiswa extends CI_Controller {
 	function insertMateri()
 	{
 		if ($this->input->post() !== null) {
+			$ikon_cat_dan_warna = array(
+				array(
+					"icon"	=>	"cat-diamond",
+					"warna"	=>	"blue"
+				),
+				array(
+					"icon"	=>	"cat-puzzle",
+					"warna"	=>	"red"
+				),
+				array(
+					"icon"	=>	"cat-chemistry",
+					"warna"	=>	"green"
+				),
+				array(
+					"icon"	=>	"cat-plane",
+					"warna"	=>	"blue"
+				)
+			);
+			$randomly_selected = rand(0,3);
 			$queryMateri['nama'] 				= ucwords($this->input->post('nama'));
 			$queryMateri['kategori'] 			= $this->input->post('kategori');
 			$tags 			 					= $this->input->post('tags');
@@ -825,8 +844,11 @@ class Mahasiswa extends CI_Controller {
 			$queryMateri['siapa_terakhir_edit'] = $this->session->userdata('loginSession')['id'];
 			$queryMateri['jumlah_diunduh'] 		= 0;
 			$queryMateri['jumlah_dilihat'] 		= 0;
-			$queryMateri['ikon_logo'] 			= "fa-flask";
-			$queryMateri['ikon_warna'] 			= "materi-blue";
+			$queryMateri['ikon_logo'] 			= explode(" ", $this->input->post('icon'));
+			$queryMateri['ikon_logo'] 			= $queryMateri['ikon_logo'][1];
+			
+			$queryMateri['ikon_cat'] 			= $ikon_cat_dan_warna[$randomly_selected]['icon'];
+			$queryMateri['ikon_warna'] 			= $ikon_cat_dan_warna[$randomly_selected]['warna'];
 			
 			$queryInsertMateri = $this->model->create_id('materi',$queryMateri);
 			$queryInsertMateri = json_decode($queryInsertMateri);
@@ -838,7 +860,7 @@ class Mahasiswa extends CI_Controller {
 				$direktori = $this->model->read('kategori',array('id'=>$queryMateri['kategori']))->result();
 				
 				$config['upload_path']          = FCPATH.$direktori[0]->nama_folder.'/';
-				$config['allowed_types']        = 'docx|doc|xls|pdf|xlsx';
+				$config['allowed_types']        = 'docx|doc|xls|pdf|xlsx|JPG|JPEG|jpg|jpeg';
 
 				$this->load->library('upload', $config);
 				$filesCount = count($_FILES['files']['name']);
@@ -854,9 +876,9 @@ class Mahasiswa extends CI_Controller {
 					$_FILES['file']['size']     = $_FILES['files']['size'][$i];
 					
 					if( ! $this->upload->do_upload('file')){
-						echo $this->upload->display_errors();
-						echo "string";
-						die();
+						$this->model->delete("materi",array("id"=>$insertMateri->message));
+						alert('alert','danger','Berhasil!','Materi gagal ditambahkan. Pastikan file kurang dari 2MB. Kesahalan: '.$this->upload->display_errors());
+						redirect('materi-mahasiswa');
 					}else{
 						$this->zip->read_file(FCPATH.$direktori[0]->nama_folder.'/'.$this->upload->data('file_name')); 
 						
