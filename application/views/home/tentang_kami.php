@@ -38,7 +38,7 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="thumbnail thumbnail-no-border">
-                                <img src="assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
+                                <img src="<?=base_url()?>assets/assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
                                 <div class="caption pd-0">
                                     <h3 class="caption__name">Taufik Ikhsan</h3>
                                     <p class="caption__job">Founder</p>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="thumbnail thumbnail-no-border">
-                                <img src="assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
+                                <img src="<?=base_url()?>assets/assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
                                 <div class="caption pd-0">
                                     <h3 class="caption__name">Nicholas Barnett</h3>
                                     <p class="caption__job">Co – Founder</p>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="thumbnail thumbnail-no-border">
-                                <img src="assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
+                                <img src="<?=base_url()?>assets/assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
                                 <div class="caption pd-0">
                                     <h3 class="caption__name">Walter Gibson</h3>
                                     <p class="caption__job">Co – Founder</p>
@@ -105,7 +105,7 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="image-thumbnail">
-                            <img src="assets/images/thumbnails/working.jpg" width="463" height="597" alt="Working" class="image-responsive">
+                            <img src="<?=base_url()?>assets/assets/images/thumbnails/working.jpg" width="463" height="597" alt="Working" class="image-responsive">
                         </div>
                     </div>
                     <div class="col-lg-6">

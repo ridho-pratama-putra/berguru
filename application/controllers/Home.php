@@ -420,6 +420,7 @@ class Home extends CI_Controller {
 	{
 		$menu['active'] 		= "home";
 		$menu['testimonial'] 	= $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
+		$menu['kategori'] = $this->model->readS('kategori')->result();
 		$this->load->view('home/header');
 		$this->load->view("home/menu_testimonial",$menu);
 		$this->load->view('home/testimonial');
@@ -429,6 +430,7 @@ class Home extends CI_Controller {
 	function karir()
 	{
 		$menu['active'] 	= "karir";
+		$menu['kategori'] = $this->model->readS('kategori')->result();
 		$this->load->view('home/header');
 		$this->load->view("home/menu_karir",$menu);
 		$this->load->view('home/karir');
@@ -469,6 +471,7 @@ class Home extends CI_Controller {
 	function tentangKami()
 	{
 		$menu['active'] 	= "tentangKami";
+		$menu['kategori'] = $this->model->readS('kategori')->result();
 		$this->load->view('home/header');
 		$this->load->view("home/menu_tentang_kami",$menu);
 		$this->load->view('home/tentang_kami');
