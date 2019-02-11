@@ -1,3 +1,6 @@
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/css/frontpage-custom.css">
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/css/frontpage.css">
+
 <div class="content-front content-pages content-materi">
 
     <section class="post-content">

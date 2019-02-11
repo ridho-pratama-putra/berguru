@@ -132,7 +132,7 @@
 </div>	<!--/.main-->
 
 <!-- Modal -->
-<div class="modal fade" id="modal-addmateri" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade materi" id="modal-addmateri" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<form class="input-55" action="<?=base_url()?>tambah-materi" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="form-tambah-baru" onsubmit="return publishMateri(this);">

@@ -41,7 +41,7 @@
 							<form action="#" class="input-55">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-map-marker-alt"></i></span>
-									<input type="text" class="form-control" placeholder="Pilih lokasi" id="search-bar-karir">
+									<input type="text" class="form-control" placeholder="Cari lokasi" id="search-bar-karir">
 								</div>
 							</form>
 						</div>
