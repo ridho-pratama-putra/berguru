@@ -151,7 +151,7 @@
 		<li class="" id="materi"><a href="<?=base_url()?>materi-mahasiswa"><em class="bgicon icon-material-stack">&nbsp;</em> Materi</a></li>
 		<li class="" id="karir"><a href="<?=base_url()?>karir-mahasiswa"><em class="bgicon icon-briefcase">&nbsp;</em> Karir</a></li>
 		<li class="" id="bantuan">
-			<a href="<?=base_url()?>bantuan-mahasiwa" ><em class="bg-icon icon-question">&nbsp;</em> Bantuan</a>
+			<a href="<?=base_url()?>bantuan-mahasiswa" ><em class="bg-icon icon-question">&nbsp;</em> Bantuan</a>
 		</li>
 		<li class="" id="testimonial">
 			<a href="<?=base_url()?>testimonial-mahasiswa"><em class="bgicon icon-comment-type">&nbsp;</em> Testimonial</a>
