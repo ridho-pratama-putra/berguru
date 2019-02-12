@@ -1,7 +1,7 @@
 <style type="text/css">
-	.none{
-		display: none !important
-	}
+.none{
+	display: none !important
+}
 </style>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
@@ -21,7 +21,7 @@
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown"><span id="selected-drowpdown-popular-all"> </span>  <i class="fa fa-chevron-down"></i></a>
+					<a href="#" data-toggle="dropdown"><span id="selected-dropdown-popular-all"> </span>  <i class="bgicon icon-arrow-down"></i></a>
 					<ul class="dropdown-menu" id="dropdown-popular-all">
 						<li><a href="#" class="per-populer" onclick="popularAll('populer')" id="dropdown-populer" data-property="populer">Populer</a></li>
 						<li><a href="#" class="per-populer" onclick="popularAll('all')" id="dropdown-semua-materi" data-property="all">Semua Materi</a></li>
@@ -174,8 +174,8 @@
 			$("#dropdown-populer").removeClass("none")
 		}
 		
-		$(".per-jangka").removeClass('none')
-		$(".per-jangka").removeClass('selected')
+		$(".per-populer").removeClass('none')
+		$(".per-populer").removeClass('selected')
 
 		if (argument == 'all') {
 			$("#selected-drowpdown-popular-all").html("Semua Materi");
@@ -271,7 +271,7 @@
 
 	function getDataMateri() {
 		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-		  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+		"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 		];
 
 		
@@ -283,46 +283,46 @@
 					const d = new Date(data.materi[i].waktu_terakhir_edit);
 					elementToRender += 
 					'<div class="panel panel-plain content-item">'+
-						'<div class="panel-body">'+
-							'<div class="row">'+
-								'<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">'+
-									'<div class="materi-ikon materi-'+data.materi[i].ikon_warna+'"><span class="bgicon '+data.materi[i].ikon_logo+'"></span></div>'+
-								'</div>'+
-								'<div class="col-xs-9 col-sm-10 col-md-7">'+
-									'<h3 class="ci-title nama">'+data.materi[i].nama+'</h3>'+
-									'<div class="td-meta">'+
-										'<i class="far fa-clock"></i> '+monthNames[d.getMonth()]+', '+d.getDate()+' '+d.getFullYear()+
-										'<i class="fa fa-circle"></i> '+
-										'<i class="fa fa-cloud-download-alt"></i> '+data.materi[i].jumlah_diunduh+
-									'</div>'+
-									'<div class="btn btn-custom btn-status-blue">'+data.materi[i].kategori+'</div>'+
-								'</div>'+
-								'<div class="col-xs-12 col-md-3 col-lg-4 ci-right"> '+
-									'<a href="<?=base_url('download-materi-mahasiswa/')."'+data.materi[i].id+'"?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>'+
-									'<div class="content-tag">'+
-										'<span class="text-muted">Tags</span>'
-										var tags = data.materi[i].tags.split(',')
-										for(var j in tags){
-											elementToRender += '<a href="#" class="link-disabled">#'+tags[j]+'</a>'
-										}
-									elementToRender +=
-									'</div>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
+					'<div class="panel-body">'+
+					'<div class="row">'+
+					'<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">'+
+					'<div class="materi-ikon materi-'+data.materi[i].ikon_warna+'"><span class="bgicon '+data.materi[i].ikon_logo+'"></span></div>'+
+					'</div>'+
+					'<div class="col-xs-9 col-sm-10 col-md-7">'+
+					'<h3 class="ci-title nama">'+data.materi[i].nama+'</h3>'+
+					'<div class="td-meta">'+
+					'<i class="far fa-clock"></i> '+monthNames[d.getMonth()]+', '+d.getDate()+' '+d.getFullYear()+
+					'<i class="fa fa-circle"></i> '+
+					'<i class="fa fa-cloud-download-alt"></i> '+data.materi[i].jumlah_diunduh+
+					'</div>'+
+					'<div class="btn btn-custom btn-status-blue">'+data.materi[i].kategori+'</div>'+
+					'</div>'+
+					'<div class="col-xs-12 col-md-3 col-lg-4 ci-right"> '+
+					'<a href="<?=base_url('download-materi-mahasiswa/')."'+data.materi[i].id+'"?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-cloud-download-alt"></i> Unduh</a>'+
+					'<div class="content-tag">'+
+					'<span class="text-muted">Tags</span>'
+					var tags = data.materi[i].tags.split(',')
+					for(var j in tags){
+						elementToRender += '<a href="#" class="link-disabled">#'+tags[j]+'</a>'
+					}
+					elementToRender +=
+					'</div>'+
+					'</div>'+
+					'</div>'+
+					'</div>'+
 					'</div>'
 				}
 			}else{
 				elementToRender += 
-					'<div class="panel panel-plain content-item">'+
-						'<div class="panel-body">'+
-							'<div class="row">'+
-								'<div class="col">'+
-									'<h3 class="ci-title text-center">Data materi masih kosong</h3>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
+				'<div class="panel panel-plain content-item">'+
+				'<div class="panel-body">'+
+				'<div class="row">'+
+				'<div class="col">'+
+				'<h3 class="ci-title text-center">Data materi masih kosong</h3>'+
+				'</div>'+
+				'</div>'+
+				'</div>'+
+				'</div>';
 			}
 			// console.log(JSON.stringify(data.materi))
 

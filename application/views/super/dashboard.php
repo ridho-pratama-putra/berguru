@@ -151,9 +151,8 @@
 								<?php
 								if (sizeof($testimonial) !== 0) {
 									foreach ($testimonial as $key => $value) { ?>
-										?>
 										<!-- START testi -->
-										<a href="kelola-testimonial.html">
+										<a href="<?=base_url()?>kelola-testimonial">
 											<div class="itemPesan">
 												<div class="row">
 													<div class="col-xs-12">
@@ -175,8 +174,8 @@
 												</div>
 												<div class="row">
 													<div class="td-pesan jarakLaporan">
-														<a href="#"><span class="text-red">Hapus</span></a>
-														<h5>14 Januari 2019</h5>
+														<a href="<?=base_url()?>delete-testimonial/<?=$value->id?>"><span class="text-red">Hapus</span></a>
+														<h5><?=tgl_indo($value->tanggal)?></h5>
 													</div>
 												</div>			
 												<div class="row">
@@ -260,7 +259,7 @@
 										<!-- END -->	
 									<?php }
 								}else{ ?>
-									<h6 class="text-center">Belum ada lowongan</h6>
+									<h6 class="text-center">Belum ada lowongan yang perlu divalidasi</h6>
 								<?php }
 								?>
 							</div>

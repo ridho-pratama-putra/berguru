@@ -1,7 +1,8 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
-		$("#search-bar-karir").on("keyup", function() {
-			var value = $(this).val().toLowerCase();
+		$("#search-bar-karir").on("change", function() {
+			var value = $(this).val().toLowerCase()
+			console.log(value)
 			$(".content-item").filter(function() {
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			});
@@ -41,7 +42,15 @@
 							<form action="#" class="input-55">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-map-marker-alt"></i></span>
-									<input type="text" class="form-control" placeholder="Cari lokasi" id="search-bar-karir">
+									<!-- <input type="text" class="form-control" placeholder="Cari lokasi" id="search-bar-karir"> -->
+									<select name="lokasi" class="form-control" id="search-bar-karir" >
+										<option value="" selected="">- Pilih Kota / Kabupaten -</option>
+										<?php 
+										foreach ($lokasi_lowongan as $key => $value) { ?>
+											<option value="<?=$value->lokasi?>"><?=$value->lokasi?></option>
+										<?php }
+										?>
+									</select>
 								</div>
 							</form>
 						</div>
@@ -107,19 +116,21 @@
 
 				</div>
 			</div>
-
 			<div class="col-sm-4 col-md-3">
 				<a href="#"><img src="<?=base_url()?>assets/dashboard/assets/images/iklan.png" alt="Image" class="img-fw"></a>
 			</div>
-
-
 		</div>
-
 	</div>
-
-
-
-
-
-
 </div>	<!--/.main-->
+
+<style type="text/css">
+.select2-container .select2-selection--single {
+	height: 55px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+	top: 25%;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+	padding-top: 13px;
+}
+</style>

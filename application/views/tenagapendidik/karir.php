@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
-		$("#search-bar-karir").on("keyup", function() {
+		$("#search-bar-karir").on("change", function() {
 			var value = $(this).val().toLowerCase();
 			$(".content-item").filter(function() {
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -42,7 +42,15 @@
 							<form class="input-55">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="bgicon icon-map-marker"></i></span>
-									<input type="text" class="form-control" placeholder="Pilih lokasi" id="search-bar-karir">
+									<!-- <input type="text" class="form-control" placeholder="Pilih lokasi" id="search-bar-karir"> -->
+									<select name="lokasi" class="form-control" id="search-bar-karir" >
+										<option value="" selected="">- Pilih Kota / Kabupaten -</option>
+										<?php 
+										foreach ($lokasi_lowongan as $key => $value) { ?>
+											<option value="<?=$value->lokasi?>"><?=$value->lokasi?></option>
+										<?php }
+										?>
+									</select>
 								</div>
 							</form>
 						</div>

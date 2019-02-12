@@ -33,6 +33,18 @@
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
+										<label for="">NIM</label>
+										<input type="nim" class="form-control" placeholder="NIM" value="<?=$pengguna[0]->nip_or_nim?>" name="nip_or_nim">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="">Universitas</label>
+										<input type="text" class="form-control" placeholder="Universitas" value="<?=$pengguna[0]->institusi_or_universitas?>" name="institusi_or_universitas">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
 										<label for="">Email</label>
 										<input type="email" name="email" class="form-control" placeholder="Email" value="<?=$pengguna[0]->email?>">
 									</div>

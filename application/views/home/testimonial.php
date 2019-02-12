@@ -12,7 +12,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div class="testi__item">
-                                            <img src="<?=base_url().$value->foto?>" alt="avatar" class="testi__avatar">                                      
+                                            <img src="<?=base_url().$value->foto?>" alt="avatar" class="testi__avatar">
                                             <p class="testi__title"><?=$value->nama?></p>
                                             <p class="testi__subtitle">Comedian - HBO</p>
                                             <div class="testi-desc">

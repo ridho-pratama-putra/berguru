@@ -1,3 +1,12 @@
+
+<link href="<?=base_url()?>assets/dashboard/assets/css/icon-picker.min.css" rel="stylesheet">
+<script src="<?=base_url()?>assets/dashboard/assets/js/iconPicker.min.js"></script>
+<script type="text/javascript">
+	
+	$(function () {
+		$(".icon-picker").iconPicker();
+	});
+</script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -97,15 +106,13 @@
 										</div>
 									</div>
 									<div class="input-group">
-										<input type="file" class="form-control" name="background"  accept="image/*" id="current-bg-kategori">
+										<input type="file" class="form-control" name="background"  accept="image/*" id="current-bg-kategori" title="File Gambar Background">
 										<span class="input-group-addon"><i class="fa fa-image"></i></span>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="input-group">
 										<input type="text" placeholder="Icon" name="icon" id="current-icon-kategori" class="form-control icon-picker" />
-										<!-- <input type="text" class="form-control" placeholder="Icon" name="icon" id="current-icon-kategori"> -->
-										<span class="input-group-addon"><i class="fa fa-image"></i></span>
 									</div>
 								</div>
 								<div class="form-group">

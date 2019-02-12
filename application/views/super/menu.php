@@ -38,6 +38,8 @@
 												<a href="<?=base_url()?>lowongan-kerja"><strong><?=$value->dari?></strong> meminta verifikasi lowongan.</a>
 											<?php }elseif($value->konteks == 'materiBaru'){ ?>
 												<a href="<?=base_url()?>kelola-materi"><strong><?=$value->dari?></strong> menerbitkan materi baru.</a>
+											<?php }elseif($value->konteks == 'testimonial'){ ?>
+												<a href="<?=base_url()?>kelola-testimonial"><strong><?=$value->dari?></strong> memberikan testimonial.</a>
 											<?php } ?>
 											<br /><small class="text-muted"><?=date('H:i - M, d Y',strtotime($value->datetime))?></small></div>
 										</div>
@@ -134,6 +136,9 @@
 				</a></li>
 				<li><a class="" href="<?=base_url()?>kelola-pesan-info" id="pesaninfo">
 					Pesan Info
+				</a></li>
+				<li><a class="" href="<?=base_url()?>kelola-testimonial" id="testimonial">
+					Testimonial
 				</a></li>
 			</ul>
 		</li>

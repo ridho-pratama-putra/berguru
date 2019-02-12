@@ -10,10 +10,10 @@
                     <ul class="list-inline">
                         <li>
                             <select class="form-control dropdown-item" id="select-karir" onchange="karir()">
-                                <option value="hari">Hari ini</option>
-                                <option value="bulan">Bulan ini</option>
-                                <option value="tahun">Tahun ini</option>
                                 <option value="semua">Semua lowongan</option>
+                                <option value="tahun">Tahun ini</option>
+                                <option value="bulan">Bulan ini</option>
+                                <option value="hari">Hari ini</option>
                             </select>
                         </li>
                     </ul>

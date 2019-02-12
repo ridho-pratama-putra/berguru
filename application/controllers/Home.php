@@ -50,6 +50,7 @@ class Home extends CI_Controller {
 
 		$record['pertanyaan_solved'] = $this->model->rawQuery("SELECT COUNT(id) AS id FROM permasalahan WHERE status = 'SOLVED'")->result();
 
+		$record['testimonial'] = $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto, pengguna.institusi_or_universitas FROM testimonial LEFT JOIN pengguna ON testimonial.dari = pengguna.id")->result();
 		
 		$menu['active'] =	"home";
 		$menu['kategori'] =	$record['kategori'];

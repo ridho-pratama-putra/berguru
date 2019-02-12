@@ -420,6 +420,8 @@ class Mahasiswa extends CI_Controller {
 				$queryUpdate['nama'] = ucwords($this->input->post('nama'));
 				$queryUpdate['email'] = $this->input->post('email');
 				$queryUpdate['no_hp'] = $this->input->post('no_hp');
+				$queryUpdate['nip_or_nim'] = $this->input->post('nip_or_nim');
+				$queryUpdate['institusi_or_universitas'] = $this->input->post('institusi_or_universitas');
 				$runUpdate = $this->model->update('pengguna',array('id'=>$this->input->post('id')),$queryUpdate);
 				$runUpdate = json_decode($runUpdate);
 
@@ -926,6 +928,7 @@ class Mahasiswa extends CI_Controller {
 		$this->menu['breadcrumb'] = "Karir";
 		$this->menu['active'] = "karir";
 		$record['lowongan'] = $this->model->rawQuery("SELECT lowongan.nama,lokasi.lokasi,lowongan.kontak,lowongan.instansi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 1 ORDER BY tanggal DESC")->result();
+		$record['lokasi_lowongan'] = $this->model->rawQuery("SELECT lokasi.lokasi FROM lowongan LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 1 ")->result();
 
 		$this->load->view("statis/header",$header);
 		$this->load->view("mahasiswa/menu",$this->menu);
@@ -1020,7 +1023,7 @@ class Mahasiswa extends CI_Controller {
 		if ($this->input->get() !== '') {
 			$string = "SELECT materi.id,materi.nama,materi.waktu_terakhir_edit,materi.jumlah_diunduh,materi.jumlah_dilihat,materi.ikon_logo,materi.ikon_warna,materi.deskripsi,kategori.nama AS kategori,(SELECT GROUP_CONCAT(tag) FROM tags WHERE tags.id_materi = materi.id) AS tags FROM materi LEFT JOIN kategori ON kategori.id = materi.kategori ";
 
-			if ($this->input->get('kategori_materi') !== 0 || $this->input->get('harian_bulanan') !== NULL || $this->input->get('popular_all') !== NULL) {
+			if ($this->input->get('kategori_materi') !== 0 OR $this->input->get('harian_bulanan') !== NULL) {
 				$string .= " WHERE ";
 			}
 			

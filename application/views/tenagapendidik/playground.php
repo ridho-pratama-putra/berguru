@@ -31,7 +31,8 @@ $record = $this->model->rawQuery("SELECT
 	")->result();
 
 $string = "INSERT INTO lokasi VALUES ";
-for ($i=20001; $i < 21696; $i++) { 
+
+for ($i=68001; $i <= 80434; $i++) { 
 	// per 5 ribu aja bisanya
 	// 21696
 	$record[$i]->record = strtolower($record[$i]->record);
@@ -40,13 +41,14 @@ for ($i=20001; $i < 21696; $i++) {
 $string = rtrim($string, ", ");
 
 $this->db->close();
+
 $conn = new mysqli("localhost", "root", "", "berguru");
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
 
 $conn->query($string);
-var_dump($conn->error);
+
 // echo "INSERT INTO lokasi VALUES $string";
 
 $conn->close();

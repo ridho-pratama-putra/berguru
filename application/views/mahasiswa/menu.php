@@ -21,7 +21,7 @@
 							<ul class="nav navbar-top-links navbar-right">
 								<li class="dropdown">
 									<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" onclick="setToTerlihatDm()">
-										<em class="bgicon icon-envelop"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
+										<em class="bgicon icon-envelope"></em><span class="label label-danger" id="jumlah_notif_dm"><?=(sizeof($belum_dilihat_dm) !== 0 ? sizeof($belum_dilihat_dm) : '')?></span>
 									</a>
 									<ul class="dropdown-menu dropdown-messages">
 										<?php  
@@ -109,13 +109,13 @@
 									<ul class="dropdown-menu">
 										<li>
 											<a href="<?=base_url()?>profil-mahasiswa">
-												<div><em class="fa fa-user"></em> Profile</div>
+												<div><em class="bgicon icon-user"></em> Profile</div>
 											</a>
 										</li>
 										<li class="divider"></li>
 										<li>
 											<a href="<?=base_url()?>logout">
-												<div><em class="fa fa-power-off"></em> Log Out</div>
+												<div><em class="bgicon icon-turn-off"></em> Log Out</div>
 											</a>
 										</li>
 									</ul>

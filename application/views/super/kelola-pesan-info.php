@@ -50,48 +50,48 @@
 					</thead>
 					<tbody>
 						<?php 
-								foreach ($pesan_info as $key => $value) { 
-									$subyek_teks = explode("|", $value->teks);
-						?>
+						foreach ($pesan_info as $key => $value) { 
+							$subyek_teks = explode("|", $value->teks);
+							?>
 
-						<tr>
-							<td>
-								<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-1">
-								<label for="check-1"></label>
-							</td>
-							<td>
-								<div class="media mid-v">
-									<div class="media-left media-middle">
-										<div class="user-photo">
-											<img src="<?=base_url().$value->foto?>" alt="Photo">
+							<tr>
+								<td>
+									<input type="checkbox" class="styled-checkbox" name="check" value="1" id="check-1">
+									<label for="check-1"></label>
+								</td>
+								<td>
+									<div class="media mid-v">
+										<div class="media-left media-middle">
+											<div class="user-photo">
+												<img src="<?=base_url().$value->foto?>" alt="Photo">
+											</div>
+										</div>
+										<div class="media-body">
+											<?=$value->nama?>
 										</div>
 									</div>
-									<div class="media-body">
-										<?=$value->nama?>
+								</td>
+								<td>
+									<div class="td-pesan">
+										<span class="btn btn-pesan-label btn-default"><?=$subyek_teks[0]?></span>
+										<?=$subyek_teks[1]?>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="td-pesan">
-									<span class="btn btn-pesan-label btn-default"><?=$subyek_teks[0]?></span>
-									<?=$subyek_teks[1]?>
-								</div>
-							</td>
-							<td class="td-right">
-								<div class="dropdown td-menu">
-								<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									<i class="fa fa-ellipsis-v"></i>
-								</a>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-									<li><a href="#">Detail</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Edit</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="#">Hapus</a></li>
-								</ul>
-								</div>
-							</td>
-						</tr>
+								</td>
+								<td class="td-right">
+									<div class="dropdown td-menu">
+										<a href="#" class="dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+											<i class="bgicon icon-menu"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
+											<li><a href="#">Detail</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#">Edit</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="<?=base_url()?>delete-pesan-info/<?=$value->id?>">Hapus</a></li>
+										</ul>
+									</div>
+								</td>
+							</tr>
 						<?php } ?>
 					</tbody>
 				</table>
@@ -109,14 +109,14 @@
 <!-- Modal -->
 <div class="modal fade" id="modal-addpesan" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
-    	<div class="modal-content">
-      		<form class="input-55" action="<?=base_url()?>submit-kirim-pesan-admin" method="post">
+		<div class="modal-content">
+			<form class="input-55" action="<?=base_url()?>submit-kirim-pesan-admin" method="post">
 				<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        		<h4 class="modal-title" id="myModalLabel">Buat Pesan Baru</h4>
-	        		<h5 class="modal-subtitle">Kirim sebuah pesan kepadanya</h5>
-	      		</div>
-	      		<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Buat Pesan Baru</h4>
+					<h5 class="modal-subtitle">Kirim sebuah pesan kepadanya</h5>
+				</div>
+				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -138,28 +138,28 @@
 							</div>
 						</div>
 					</div>
-	      		</div>
-	      		<div class="modal-footer">
-	        		<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
-	        		<div class="pull-right">
-	        			<button type="button" class="btn btn-ikon btn-plonk-green"><i class="fa fa-paperclip"></i></button>
-	        			<button type="submit" class="btn btn-normal btn-success">Kirim Pesan</button>
-	        		</div>
-	      		</div>
-      		</form>
-    	</div>
-  	</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
+					<div class="pull-right">
+						<button type="button" class="btn btn-ikon btn-plonk-green"><i class="fa fa-paperclip"></i></button>
+						<button type="submit" class="btn btn-normal btn-success">Kirim Pesan</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {	
-	$("#penerima").select2({
-		ajax: {
-			url: '<?=base_url()?>Admin/cariNama/',
-			dataType: 'json',
-			delay: 1000,
-			data: function (term, page) {
-				return {
+	$(document).ready(function() {	
+		$("#penerima").select2({
+			ajax: {
+				url: '<?=base_url()?>Admin/cariNama/',
+				dataType: 'json',
+				delay: 1000,
+				data: function (term, page) {
+					return {
 					term: term, // search term
 					page: 10
 				};

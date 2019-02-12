@@ -126,68 +126,31 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="owl-carousel testi-carousel">
-								<div class="item">
-									<div class="panel panel-default panel-testi">
-										<div class="panel-body">
-											<p class="testi-text">
-												Saya sangat terbantu disini, cukup dengan post pertanyan maka berbagai
-												solusi alternatif akan bermunculan.
-											</p>
-											<div class="media">
-												<div class="media-left media-middle">
-													<a href="#" class="testi-photo">
-														<img class="media-object" src="assets/images/thumbnails/Sylvian.png" width="100" height="100" alt="Photo">
-													</a>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">Ibu Ami,</h4>
-													<p class="testi-job">Guru SDN Bareng 1</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="item">
-									<div class="panel panel-default panel-testi">
-										<div class="panel-body">
-											<p class="testi-text">
-												Fitur-fitur yang disediakan disini sangat membantu dalam proses pembelajaran bagi murid maupun pendidik.
-											</p>
-											<div class="media">
-												<div class="media-left media-middle">
-													<a href="#" class="testi-photo">
-														<img class="media-object" src="assets/images/thumbnails/Sylvian.png" width="100" height="100" alt="Photo">
-													</a>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">Ibu Ana,</h4>
-													<p class="testi-job">Guru SDN Bunulrejo 2</p>
+								<?php
+								foreach ($testimonial as $key => $value) { ?>
+									<div class="item">
+										<div class="panel panel-default panel-testi">
+											<div class="panel-body">
+												<p class="testi-text">
+													<?=$value->teks?>
+												</p>
+												<div class="media">
+													<div class="media-left media-middle">
+														<a href="#" class="testi-photo">
+															<img class="media-object" src="<?=base_url().$value->foto?>" width="100" height="100" alt="Photo">
+														</a>
+													</div>
+													<div class="media-body">
+														<h4 class="media-heading"><?=$value->nama?>,</h4>
+														<p class="testi-job"><?=$value->institusi_or_universitas?></p>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="item">
-									<div class="panel panel-default panel-testi">
-										<div class="panel-body">
-											<p class="testi-text">
-												Banyak mahasiswa yang kreatif disini. Sangat membantu bagi kami yang ingin mencari solusi
-												terkait materi pembelajaran.
-											</p>
-											<div class="media">
-												<div class="media-left media-middle">
-													<a href="#" class="testi-photo">
-														<img class="media-object" src="assets/images/thumbnails/Sylvian.png" width="100" height="100" alt="Photo">
-													</a>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">Ibu Ami,</h4>
-													<p class="testi-job">Guru SDN Bareng 1</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+									
+								<?php }
+								?>
 							</div>
 						</div>
 					</div>
@@ -551,29 +514,45 @@
 	}
 </script>
 <script type="text/javascript">
+	$('.testi-carousel').owlCarousel({
+            // items: 3,
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: false,
+            navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
+            responsive:{
+            	0:{
+            		items:1
+            	},
+            	640:{
+            		items:2
+            	}
+            }
+        });
 	$('.category-carousel').owlCarousel({
-        // items: 3,
-        loop: true,
-        margin: 25,
-        nav: true,
-        dots: false,
-        navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
-        responsive:{
-        	0:{
-        		items:2
-        	},
-        	500:{
-        		items:3
-        	},
-        	630:{
-        		items:4
-        	},
-        	995:{
-        		items: 5
-        	},
-        	1200:{
-        		items:7
-        	}
-        }
-    });
+    // items: 3,
+    loop: true,
+    margin: 25,
+    nav: true,
+    dots: false,
+    navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
+    responsive:{
+    	0:{
+    		items:2
+    	},
+    	500:{
+    		items:3
+    	},
+    	630:{
+    		items:4
+    	},
+    	995:{
+    		items: 5
+    	},
+    	1200:{
+    		items:7
+    	}
+    }
+});
 </script>
