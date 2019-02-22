@@ -83,9 +83,7 @@
 											<i class="bgicon icon-menu"></i>
 										</a>
 										<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-											<li><a href="#">Detail</a></li>
-											<li role="separator" class="divider"></li>
-											<li><a href="#">Edit</a></li>
+											<li><a href="#" data-toggle="modal" data-target="#js-edit-pesan">Edit</a></li>
 											<li role="separator" class="divider"></li>
 											<li><a href="<?=base_url()?>delete-pesan-info/<?=$value->id?>">Hapus</a></li>
 										</ul>
@@ -93,6 +91,7 @@
 								</td>
 							</tr>
 						<?php } ?>
+						
 					</tbody>
 				</table>
 			</div>
@@ -106,7 +105,7 @@
 
 </div>	<!--/.main-->
 
-<!-- Modal -->
+<!-- Modal Tambah -->
 <div class="modal fade" id="modal-addpesan" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -151,9 +150,80 @@
 	</div>
 </div>
 
+<!-- Modal Edit -->
+<div class="modal fade" id="js-edit-pesan" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<form class="input-55" action="" method="post">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Edit Pesan</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="">Nama / Email Penerima</label>
+								<select class="js-example-basic-single form-control" id="penerimaedit" name="penerima[]" style="width: 100%;" multiple="multiple"></select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="">Subyek Pesan</label>
+								<input type="text" class="form-control" placeholder="Subyek" name="subyek">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="">Isi Pesan</label>
+								<textarea class="form-control" placeholder="Tulis Pesan Anda" name="isi_pesan"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
+					<div class="pull-right">
+						<button type="button" class="btn btn-ikon btn-plonk-green"><i class="fa fa-paperclip"></i></button>
+						<button type="submit" class="btn btn-normal btn-success">Kirim Pesan</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function() {	
 		$("#penerima").select2({
+			ajax: {
+				url: '<?=base_url()?>Admin/cariNama/',
+				dataType: 'json',
+				delay: 1000,
+				data: function (term, page) {
+					return {
+					term: term, // search term
+					page: 10
+				};
+			},
+			processResults: function (data, page) {
+				// console.log(data);
+				return {
+					results: data
+				};
+			},
+			cache: true
+		},
+		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		minimumInputLength: 1
+	});
+    // $('.js-example-basic-single').select2();
+});
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {	
+		$("#penerimaedit").select2({
 			ajax: {
 				url: '<?=base_url()?>Admin/cariNama/',
 				dataType: 'json',

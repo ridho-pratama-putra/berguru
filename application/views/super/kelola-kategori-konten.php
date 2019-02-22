@@ -99,6 +99,7 @@
 									</div>
 								</div>
 								<input type="hidden" name="id_kategori" id="current-id-kategori">
+								<!--
 								<div class="form-group">
 									<div class="input-group">
 										<div class="user-photo wh-100" id="preview-current-bg-kategori">
@@ -110,6 +111,7 @@
 										<span class="input-group-addon"><i class="fa fa-image"></i></span>
 									</div>
 								</div>
+								-->
 								<div class="form-group">
 									<div class="input-group">
 										<input type="text" placeholder="Icon" name="icon" id="current-icon-kategori" class="form-control icon-picker" />
