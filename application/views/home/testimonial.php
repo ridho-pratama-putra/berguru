@@ -14,7 +14,7 @@
                                         <div class="testi__item">
                                             <img src="<?=base_url().$value->foto?>" alt="avatar" class="testi__avatar">
                                             <p class="testi__title"><?=$value->nama?></p>
-                                            <p class="testi__subtitle">Comedian - HBO</p>
+                                            <p class="testi__subtitle"><?=$value->institusi_or_universitas?></p>
                                             <div class="testi-desc">
                                                 <p class="testi-desc__text"><?=$value->teks?></p>
                                                 <div class="icon-style">

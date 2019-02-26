@@ -115,8 +115,8 @@
 										<i class="fa fa-ellipsis-v"></i>
 									</a>
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-										<li><a href="#">Edit</a></li>
-										<li role="separator" class="divider"></li>
+										<!-- <li><a href="#">Edit</a></li> -->
+										<!-- <li role="separator" class="divider"></li> -->
 										<li><a href="<?php echo base_url().'delete-materi/'.$value->id?>" >Hapus</a></li>
 									</ul>
 								</div>

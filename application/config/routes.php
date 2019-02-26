@@ -75,6 +75,8 @@ $route['proses-cari-pertanyaan']			= 'Home/prosesSearchPertanyaan';
 $route['testimonial']						= 'Home/testimonial';
 $route['karir']								= 'Home/karir';
 $route['get-karir']							= 'Home/getKarir';
+$route['syarat-dan-ketentuan']				= 'Home/syaratDanKetentuan';
+$route['iklan']								= 'Home/iklan';
 /*******************************************************home****************************************************************/
 
 
@@ -131,10 +133,14 @@ $route['delete-pengguna']					= 'Admin/deletePengguna';
 $route['ubah-status-pengguna']				= 'Admin/ubahStatusPengguna';
 
 $route['kelola-pesan-info']					= 'Admin/kelolaPesanInfo';
+$route['delete-pesan-info/(:num)']			= 'Admin/deletePesanInfo/$1';
 
 $route['kelola-tenaga-pendidik']			= 'Admin/kelolaTenagaPendidik';
 $route['delete-tenaga-pendidik']			= 'Admin/deleteTenagaPendidik';
 $route['ubah-status-tenaga-pendidik']		= 'Admin/ubahStatusTenagaPendidik';
+
+$route['kelola-testimonial']				= 'Admin/kelolaTestimonial';
+$route['delete-testimonial/(:num)']			= 'Admin/deleteTestimonial/$1';
 
 $route['lowongan-kerja']					= 'Admin/kelolaLowonganKerja';
 $route['submit-validasi-lowongan']			= 'Admin/submitValidasiLowongan';
@@ -221,7 +227,7 @@ $route['submit-rating-pendidik']				= 'Pendidik/submitRating';
 
 $route['materi-pendidik']						= 'Pendidik/materi';
 $route['materi-tambah-pendidik']				= 'Pendidik/tambahMateri';
-$route['submit-tambah-materi-pendidik']			= 'Pendidik/insertMateri';
+$route['submit-tambah-materi-pendidik']			= 'Pendidik/submitTambahMateri';
 
 $route['karir-pendidik']						= 'Pendidik/karir';
 $route['karir-tambah-pendidik']					= 'Pendidik/tambahKarir';

@@ -271,80 +271,26 @@
 		</div>
 	</div>
 </div>	<!--/.main-->
-<script type="text/javascript">	
-	$( document ).ready(function() {
-		problemSolved('tahun')
-		pengunjung('tahun')
-		penggunaBaru('tahun')
-	});
-	function problemSolved(argument) {
-		var before = $("#selected-dropdown-problem-solved").html()
-		if (before == 'Hari ini') {
-			$("#dropdown-problem-solved-hari-ini").removeClass("none")
-		}else if (before == 'Bulan ini') {
-			$("#dropdown-problem-solved-bulan-ini").removeClass("none")
-		}else if (before == 'Tahun ini') {
-			$("#dropdown-problem-solved-tahun-ini").removeClass("none")
-		}
+<script type="text/javascript">
 
-		$(".solved-per-jangka").removeClass('none')
-		$(".solved-per-jangka").removeClass('selected')
 
-		if (argument == 'hari') {
-			$("#selected-dropdown-problem-solved").html("Hari ini");
-			$("#dropdown-problem-solved-hari-ini").addClass("none")
-			$("#dropdown-problem-solved-hari-ini").addClass("selected")
-		}else if (argument == 'bulan') {
-			$("#selected-dropdown-problem-solved").html("Bulan ini");
-			$("#dropdown-problem-solved-bulan-ini").addClass("none")
-			$("#dropdown-problem-solved-bulan-ini").addClass("selected")
-		}else if (argument == 'tahun') {
-			$("#selected-dropdown-problem-solved").html("Tahun ini");
-			$("#dropdown-problem-solved-tahun-ini").addClass("none")
-			$("#dropdown-problem-solved-tahun-ini").addClass("selected")
-		}
-		$.get("<?=base_url()?>Admin/getJumlahProblemSolved",{jangka_waktu : argument},function (res) {
-			res = JSON.parse(res);
-			$("#jumlah-problem-solved-per-jangka").html(res)
+
+
+	/*
+	* function untuk validasi lowongan
+	* param1 id
+	*/
+	function valid(argument) {
+		$.post("<?=base_url()?>submit-validasi-lowongan",{id : argument},function (html) {			
+			$("#notif").html(html);
 		});
-		if (before !== " ") {
-			// getDataMateri()
-		}
 	}
-	function pengunjung(argument) {
-		var before = $("#selected-dropdown-pengunjung").html()
-		if (before == 'Hari ini') {
-			$("#dropdown-pengunjung-hari-ini").removeClass("none")
-		}else if (before == 'Bulan ini') {
-			$("#dropdown-pengunjung-bulan-ini").removeClass("none")
-		}else if (before == 'Tahun ini') {
-			$("#dropdown-pengunjung-tahun-ini").removeClass("none")
-		}
-
-		$(".pengunjung-per-jangka").removeClass('none')
-		$(".pengunjung-per-jangka").removeClass('selected')
-
-		if (argument == 'hari') {
-			$("#selected-dropdown-pengunjung").html("Hari ini");
-			$("#dropdown-pengunjung-hari-ini").addClass("none")
-			$("#dropdown-pengunjung-hari-ini").addClass("selected")
-		}else if (argument == 'bulan') {
-			$("#selected-dropdown-pengunjung").html("Bulan ini");
-			$("#dropdown-pengunjung-bulan-ini").addClass("none")
-			$("#dropdown-pengunjung-bulan-ini").addClass("selected")
-		}else if (argument == 'tahun') {
-			$("#selected-dropdown-pengunjung").html("Tahun ini");
-			$("#dropdown-pengunjung-tahun-ini").addClass("none")
-			$("#dropdown-pengunjung-tahun-ini").addClass("selected")
-		}
-		$.get("<?=base_url()?>Admin/getJumlahPengunjung",{jangka_waktu : argument},function (res) {
-			res = JSON.parse(res);
-			$("#jumlah-pengunjung-per-jangka").html(res[0].jumlah)
-		});
-		if (before !== " ") {
-			// getDataMateri()
-		}
-	}
+</script>
+<script type="text/javascript">
+	// $( document ).ready(function() {
+		setTimeout(penggunaBaru('tahun'), 1000)
+		// alert("pengguna baru")
+	// });
 	function penggunaBaru(argument) {
 		var before = $("#selected-dropdown-pengguna-baru").html()
 		if (before == 'Hari ini') {
@@ -373,20 +319,98 @@
 		}
 		$.get("<?=base_url()?>Admin/getJumlahPenggunaBaru",{jangka_waktu : argument},function (res) {
 			res = JSON.parse(res);
+			$("#jumlah-pengguna-baru-per-jangka").html("")
 			$("#jumlah-pengguna-baru-per-jangka").html(res)
 		});
 		if (before !== " ") {
 			// getDataMateri()
 		}
 	}
+</script>
+<script type="text/javascript">
+	// $( document ).ready(function() {
+		setTimeout(problemSolved('tahun'), 3000)
+		
+		// alert("problem solved")
+	// });
 
-	/*
-	* function untuk validasi lowongan
-	* param1 id
-	*/
-	function valid(argument) {
-		$.post("<?=base_url()?>submit-validasi-lowongan",{id : argument},function (html) {			
-			$("#notif").html(html);
+
+	function problemSolved(argument) {
+		var before = $("#selected-dropdown-problem-solved").html()
+		if (before == 'Hari ini') {
+			$("#dropdown-problem-solved-hari-ini").removeClass("none")
+		}else if (before == 'Bulan ini') {
+			$("#dropdown-problem-solved-bulan-ini").removeClass("none")
+		}else if (before == 'Tahun ini') {
+			$("#dropdown-problem-solved-tahun-ini").removeClass("none")
+		}
+
+		$(".solved-per-jangka").removeClass('none')
+		$(".solved-per-jangka").removeClass('selected')
+
+		if (argument == 'hari') {
+			$("#selected-dropdown-problem-solved").html("Hari ini");
+			$("#dropdown-problem-solved-hari-ini").addClass("none")
+			$("#dropdown-problem-solved-hari-ini").addClass("selected")
+		}else if (argument == 'bulan') {
+			$("#selected-dropdown-problem-solved").html("Bulan ini");
+			$("#dropdown-problem-solved-bulan-ini").addClass("none")
+			$("#dropdown-problem-solved-bulan-ini").addClass("selected")
+		}else if (argument == 'tahun') {
+			$("#selected-dropdown-problem-solved").html("Tahun ini");
+			$("#dropdown-problem-solved-tahun-ini").addClass("none")
+			$("#dropdown-problem-solved-tahun-ini").addClass("selected")
+		}
+		$.get("<?=base_url()?>Admin/getJumlahProblemSolved",{jangka_waktu : argument},function (res) {
+			res = JSON.parse(res);
+			$("#jumlah-problem-solved-per-jangka").html("")
+			$("#jumlah-problem-solved-per-jangka").html(res)
 		});
+		if (before !== " ") {
+			// getDataMateri()
+		}
 	}
+
+</script>
+<script type="text/javascript">
+	// $( document ).ready(function() {
+		setTimeout(pengunjung('tahun'), 2000)
+		// alert("pengunjung")
+	// });
+	function pengunjung(argument) {
+		var before = $("#selected-dropdown-pengunjung").html()
+		if (before == 'Hari ini') {
+			$("#dropdown-pengunjung-hari-ini").removeClass("none")
+		}else if (before == 'Bulan ini') {
+			$("#dropdown-pengunjung-bulan-ini").removeClass("none")
+		}else if (before == 'Tahun ini') {
+			$("#dropdown-pengunjung-tahun-ini").removeClass("none")
+		}
+
+		$(".pengunjung-per-jangka").removeClass('none')
+		$(".pengunjung-per-jangka").removeClass('selected')
+
+		if (argument == 'hari') {
+			$("#selected-dropdown-pengunjung").html("Hari ini");
+			$("#dropdown-pengunjung-hari-ini").addClass("none")
+			$("#dropdown-pengunjung-hari-ini").addClass("selected")
+		}else if (argument == 'bulan') {
+			$("#selected-dropdown-pengunjung").html("Bulan ini");
+			$("#dropdown-pengunjung-bulan-ini").addClass("none")
+			$("#dropdown-pengunjung-bulan-ini").addClass("selected")
+		}else if (argument == 'tahun') {
+			$("#selected-dropdown-pengunjung").html("Tahun ini");
+			$("#dropdown-pengunjung-tahun-ini").addClass("none")
+			$("#dropdown-pengunjung-tahun-ini").addClass("selected")
+		}
+		$.get("<?=base_url()?>Admin/getJumlahPengunjung",{jangka_waktu : argument},function (res) {
+			res = JSON.parse(res);
+			$("#jumlah-pengunjung-per-jangka").html("")
+			$("#jumlah-pengunjung-per-jangka").html(res[0].jumlah)
+		});
+		if (before !== " ") {
+			// getDataMateri()
+		}
+	}
+
 </script>

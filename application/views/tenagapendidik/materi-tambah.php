@@ -79,10 +79,6 @@
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
-										<label for="">Pilih Icon</label>
-										<input type="text" placeholder="Pilih Icon..." name="icon" class="form-control icon-picker"/>                         
-									</div>
-									<div class="form-group">
 										<label for="">Pilih Kategori</label>
 										<select name="kategori" id="" class="form-control">
 											<option value="" selected="" disabled="">Pilih kategori</option>
@@ -93,7 +89,7 @@
 									</div>
 									<div class="form-group">
 										<label for="">Pilih Icon</label>
-										<input type="text" placeholder="Pilih Icon..." name="ikon" class="form-control icon-picker"/>                         
+										<input type="text" placeholder="Pilih Icon..." name="icon" class="form-control icon-picker"/>                         
 									</div>
 									<div class="form-group">
 										<label for="">Tags</label>

@@ -304,7 +304,13 @@ class Home extends CI_Controller {
 	*/
 	function addSubscriber()
 	{
-		$this->model->create("subscriber",array("email"=>$this->input->post("email")));
+		$exec = $this->model->create("subscriber",array("email"=>$this->input->post("email")));
+		$exec = json_decode($exec);
+		if($exec->status){
+			alert('alert','success','Terimakasih.','Anda telah terdaftar sebagai subscriber. Tunggu kabar terbaru dari dari kami.');
+		}else{
+			alert('alert','success','Terimakasih!','Anda telah terdaftar sebagai subscriber. Tunggu kabar terbaru dari dari kami.');
+		}
 		redirect();
 	}
 
@@ -420,7 +426,7 @@ class Home extends CI_Controller {
 	function testimonial()
 	{
 		$menu['active'] 		= "home";
-		$menu['testimonial'] 	= $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
+		$menu['testimonial'] 	= $this->model->rawQuery("SELECT pengguna.institusi_or_universitas,testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
 		$menu['kategori'] = $this->model->readS('kategori')->result();
 		$this->load->view('home/header');
 		$this->load->view("home/menu_testimonial",$menu);
@@ -488,5 +494,25 @@ class Home extends CI_Controller {
 
 		
 		redirect("tentang-kami");
+	}
+
+	function syaratDanKetentuan()
+	{
+		$menu['active'] 	= "syaratDanKetentuan";
+		$menu['kategori'] 	= $this->model->readS('kategori')->result();
+		$this->load->view('home/header');
+		$this->load->view("home/menu_syarat_dan_ketentuan",$menu);
+		$this->load->view('home/syarat_dan_ketentuan');
+		$this->load->view('home/footer');
+	}
+
+	function iklan()
+	{
+		$menu['active'] 	= "iklan";
+		$menu['kategori'] 	= $this->model->readS('kategori')->result();
+		$this->load->view('home/header');
+		$this->load->view("home/menu_iklan",$menu);
+		$this->load->view('home/iklan');
+		$this->load->view('home/footer');
 	}
 }

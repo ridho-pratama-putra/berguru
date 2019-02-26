@@ -28,9 +28,9 @@
             <div class="col-sm-4 col-md-2">
                 <h4 class="footer-title">Bantuan</h4>
                 <ul class="footer-list-menu">
-                    <li><a href="#">Syarat &amp; Ketentuan</a></li>
+                    <li><a href="<?=base_url()?>syarat-dan-ketentuan">Syarat &amp; Ketentuan</a></li>
                     <li><a href="#">Cara memperoleh poin</a></li>
-                    <li><a href="#">Iklan</a></li>
+                    <li><a href="<?=base_url()?>iklan">Iklan</a></li>
                 </ul>
             </div>
             <div class="col-sm-12 col-md-4 newsletter-content">
