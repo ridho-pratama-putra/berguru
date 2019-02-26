@@ -21,7 +21,7 @@
 		<div class="content-filter-top">
 			<div class="big-filter">
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown"><span id="selected-dropdown-popular-all"> </span>  <i class="bgicon icon-arrow-down"></i></a>
+					<a href="#" data-toggle="dropdown"><span id="selected-dropdown-popular-all"></span><span class="dropdown-text"></span>  <i class="bgicon icon-arrow-down"></i></a>
 					<ul class="dropdown-menu" id="dropdown-popular-all">
 						<li><a href="#" class="per-populer" onclick="popularAll('populer')" id="dropdown-populer" data-property="populer">Populer</a></li>
 						<li><a href="#" class="per-populer" onclick="popularAll('all')" id="dropdown-semua-materi" data-property="all">Semua Materi</a></li>
@@ -178,10 +178,12 @@
 		$(".per-populer").removeClass('selected')
 
 		if (argument == 'all') {
+			$(".dropdown-text").text("Semua Materi");
 			$("#selected-drowpdown-popular-all").html("Semua Materi");
 			$("#dropdown-semua-materi").addClass("none")
 			$("#dropdown-semua-materi").addClass("selected")
 		}else if (argument == 'populer') {
+			$(".dropdown-text").text("Populer");
 			$("#selected-drowpdown-popular-all").html("Populer");
 			$("#dropdown-populer").addClass("none")
 			$("#dropdown-populer").addClass("selected")

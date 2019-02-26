@@ -531,21 +531,21 @@
 </script>
 <script type="text/javascript">
 	$('.testi-carousel').owlCarousel({
-            // items: 3,
-            loop: true,
-            margin: 10,
-            nav: true,
-            dots: false,
-            navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
-            responsive:{
-            	0:{
-            		items:1
-            	},
-            	640:{
-            		items:2
-            	}
-            }
-        });
+      // items: 3,
+      loop: true,
+      margin: 10,
+      nav: true,
+      dots: false,
+      navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
+      responsive:{
+        0:{
+          items:1
+        },
+        640:{
+          items:2
+        }
+      }
+  });
 	$('.category-carousel').owlCarousel({
     // items: 3,
     loop: true,

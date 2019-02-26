@@ -93,7 +93,7 @@
 										<i class="fa fa-ellipsis-v"></i>
 									</a>
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-										<li><a href="#">Detail Diskusi</a></li>
+										<li><a href="#js-detail-komentar" data-toggle="modal" data-target="#js-detail-komentar">Detail Diskusi</a></li>
 										<li role="separator" class="divider"></li>
 										<li>
 											<?php
@@ -116,9 +116,87 @@
 		</div>
 	</div>
 
-
-
-
-
-
 </div>	<!--/.main-->
+
+
+<!-- Modal Detail -->
+<div class="modal fade modal-grey" id="js-detail-komentar" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Pesan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="content-modal-komentar scrollBox" id="ex">
+          <div class="panel panel-plain">
+            <div class="panel-body">
+              <div class="detper-pertanyaan">
+                  Adakah metode yang bisa digunakan untuk membuat presentasi yang baik di mata pelajaran bahasa inggris?</div>
+              <div class="detper-meta">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="td-meta">
+                      <i class="far fa-clock"></i> Dec, 19 2018
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-comment"></i> 1
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-eye"></i> 1
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-right">
+                    <span class="btn btn-custom btn-status-red"><i class="fa fa-times-circle"></i> unsolved</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-plain">
+            <div class="panel-body">
+              <div class="detper-jawaban-heading">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <i class="fa fa-unlock"></i> 1 Jawaban
+                  </div>
+                  <div class="col-sm-6">
+                    <span class="text-muted">Penjawab</span>
+                    <div class="user-photo">
+                      <img src="http://localhost/berguru/userprofiles/Maha_Siswa_-_profil2.jpg" class="img-circle" alt="Photo" title="Mahasiswa">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="detper-jawaban-list">
+                <div class="detper-jawaban-item">
+                  <div class="detper-jawaban">
+                    Ada Pak, bisa pakai powerpoint atau adobe flash
+                  </div>
+                  <div class="detper-jawaban-footer">
+                    <div class="row">
+                      <div class="col-sm-6 col-md-8 col-lg-4">
+                        <div class="user-photo">
+                          <img src="http://localhost/berguru/userprofiles/Maha_Siswa_-_profil2.jpg" class="img-circle" alt="Photo">
+                        </div>
+                        <div class="user-nama">
+                          Mahasiswa
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-md-4 col-lg-8 text-right">
+                        <span class="text-muted">Review Jawaban</span>
+                        <div class="rate-input" id="45" data-score="4"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pull-left btn btn-normal btn-plonk-red" data-dismiss="modal">Close</button>
+      </div>
+		</div>
+	</div>
+</div>
