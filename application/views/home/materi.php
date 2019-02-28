@@ -32,14 +32,6 @@
 						<div class="col-md-12">
 							<!-- Item Materi -->
 							<div id="item-materi"></div>
-							<div class="load-more">
-								<div class="load-line"></div>
-								<div class="load-btn">
-									<div id="button-muat-banyak">
-										<a href="#" id="muat-banyak" class="btn btn-transparent-blue" data-ci-pagination-page="">Muat Lebih Banyak</a>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -125,7 +117,7 @@
 													"<p class='tag-list'>Tags "
 													var tags = response.result[i].tags.split(',')
 													for(var j in tags){
-														elementToRender += '<a href="#" class="link-disabled">#'+tags[j]+'</a>'
+														elementToRender += '<span class="tag-item">#'+tags[j]+'</span> '
 													}
 													elementToRender +=
 													"</p>"+

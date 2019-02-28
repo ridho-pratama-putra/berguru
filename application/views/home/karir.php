@@ -73,13 +73,6 @@
                         '</div>    '+
                         '</div>'
                     }
-                    elementToRender +=
-                    '<div class="load-more">'+
-                    '<div class="load-line"></div>'+
-                    '<div class="load-btn">'+
-                    '<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'+
-                    '</div>'+
-                    '</div>'
                 }
                 $('#item-karir').html(elementToRender);
             });

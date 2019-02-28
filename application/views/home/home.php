@@ -222,7 +222,7 @@
 										<p class="vacancy-desc"><?=$value->instansi?> <span class="bgicon icon-map-marker"> </span> <i> <?=$value->lokasi?></i></p>
 										<a href="#" class="vacancy-close"><span class="bgicon bgicon-close"></span></a>
 									</div>
-									<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
+									<a href="<?=base_url()?>karir" class="btn btn-transparent-blue">Muat Lebih Banyak</a>
 								<?php } ?>
 							</div>
 						<?php }else{ ?>
@@ -249,7 +249,6 @@
 			</div>
 
 		</div>
-	</div>
 </section>
 </div>
 <script type="text/javascript">
@@ -379,16 +378,16 @@
 					for(var j in data.permasalahan[i].komentator){
 						elementToRender += 
 						"<li>"+
-						"<a href='#' class='img-circle'>"+
+						"<span class='img-circle'>"+
 						"<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
-						"</a>"+
+						"</span>"+
 						"</li>";
 
 					}
 					if(data.permasalahan[i].remaining_penjawab !== 0){
 						elementToRender +=
 						"<li class='commentator-count'>"+
-						"<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
+						"<span class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</span>"+
 						"</li>";
 					}
 					elementToRender +=
@@ -437,7 +436,7 @@
 				$("#"+argument).html(elementToRender);
 				timeAgo();
 			}else{
-				$("#"+argument).html("<p><h4 class='text-center'>Data belum ada</h4></p>");
+				$("#"+argument).html("<div class='panel panel-default panel-ask'><h4 class='text-center'><i class='bgicon icon-close'></i> Data belum ada</h4></div>");
 			}
 		});
 	}
@@ -462,7 +461,7 @@
 						'<div class="media-body">'+
 						'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
 						'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
-						'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
+						'<div class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</div>'+
 						'<a href="#" class="tag tag-blue student-msg">Kirim Pesan</a>'+
 						'</div>'+
 						'</div>'+
@@ -481,7 +480,7 @@
 						'<div class="media-body">'+
 						'<h4 class="media-heading">'+res.data[i].nama+'</h4>'+
 						'<p class="student-solution">'+res.data[i].jumlah_komentar+' Solusi</p>'+
-						'<a href="#" class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</a>'+
+						'<div class="tag tag-orange student-point"><span class="bgicon icon-point"></span>'+res.data[i].poin+'</div>'+
 						'</div>'+
 						'</div>'+
 						'</div>'

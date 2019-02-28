@@ -160,9 +160,11 @@
 		<li class="" id="karir">
 			<a href="<?=base_url()?>karir-pendidik" ><em class="bgicon icon-briefcase">&nbsp;</em> Karir</a>
 		</li>
+		<!--
 		<li class="" id="bantuan">
 			<a href="<?=base_url()?>bantuan-pendidik" ><em class="bg-icon icon-question">&nbsp;</em> Bantuan</a>
 		</li>
+		-->
 		<li class="" id="testimonial">
 			<a href="<?=base_url()?>testimonial-pendidik"><em class="bgicon icon-comment-type">&nbsp;</em> Testimonial</a>
 		</li>

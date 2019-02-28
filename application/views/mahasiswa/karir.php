@@ -24,13 +24,11 @@
 		<?=$this->session->flashdata("karir")?>
 		<div class="content-filter-top">
 			<div class="big-filter">
+        
 				<div class="dropdown">
-					<a href="#" data-toggle="dropdown">Semua Lowongan <i class="bgicon icon-arrow-down"></i></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Lowongan yang A</a></li>
-						<li><a href="#">Lowongan yang B</a></li>
-					</ul>
+					<a href="#">Daftar Lowongan Kerja</a>
 				</div>
+				
 			</div>
 			<p class="text-muted">Solusi tanpa batas dan mudah dalam diskusi yang menyenangkan</p>
 		</div>
@@ -73,6 +71,7 @@
 									<li><a href="#">Bulanan</a></li>
 								</ul>
 							</div>
+							<!--
 							<div class="dropdown">
 								<a href="#" data-toggle="dropdown">Kategori <i class="fa fa-chevron-down"></i></a>
 								<ul class="dropdown-menu dropdown-menu-right">
@@ -80,6 +79,7 @@
 									<li><a href="#">Kategori B</a></li>
 								</ul>
 							</div>
+							-->
 						</div>
 					</div>
 				</div>
@@ -98,7 +98,7 @@
 											<div class="ci-lokasi">
 												<i class="fa fa-map-marker-alt"></i> <?=$value->lokasi?>
 											</div>
-											<a href="tel:<?=$value->kontak?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-flip-horizontal fa-phone"></i> Hubungi</a>
+											<a href="tel:<?=$value->kontak?>" class="btn btn-normal btn-plonk-red"><i class="fa fa-flip-horizontal fa-phone"></i> <?=$value->kontak?></a>
 										</div>
 									</div>
 								</div>

@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-md-4">
                             <div class="thumbnail thumbnail-no-border">
                                 <img src="<?=base_url()?>assets/assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
                                 <div class="caption pd-0">
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-md-4">
                             <div class="thumbnail thumbnail-no-border">
                                 <img src="<?=base_url()?>assets/assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
                                 <div class="caption pd-0">
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-md-4">
                             <div class="thumbnail thumbnail-no-border">
                                 <img src="<?=base_url()?>assets/assets/images/thumbnails/taufik.jpg" alt="Berguru Member" class="thumbnail__img">
                                 <div class="caption pd-0">
@@ -106,12 +106,12 @@
             <div class="about-form">
 
                 <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-md-6 col-lg-5">
                         <div class="image-thumbnail">
-                            <img src="<?=base_url()?>assets/assets/images/thumbnails/working.jpg" width="463" height="597" alt="Working" class="image-responsive">
+                            <img src="<?=base_url()?>assets/assets/images/thumbnails/working.jpg" width="463" height="597" alt="Working" class="image-responsive about-form__img">
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-md-6 col-lg-7">
                         <div class="about-form-box">
 
                             <h3 class="about-form-box__title">Ada pertanyaan atau saran <br> untuk <span class="about-form-box__title--color"> Berguru.com?</span></h3>

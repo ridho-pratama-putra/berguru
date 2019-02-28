@@ -12,11 +12,14 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div class="testi__item">
-                                            <img src="<?=base_url().$value->foto?>" alt="avatar" class="testi__avatar">
+                                            <div class="testi__avatar">
+                                                <img src="<?=base_url().$value->foto?>" alt="avatar" class="img-responsive">
+                                            </div>
                                             <p class="testi__title"><?=$value->nama?></p>
                                             <p class="testi__subtitle"><?=$value->institusi_or_universitas?></p>
                                             <div class="testi-desc">
                                                 <p class="testi-desc__text"><?=$value->teks?></p>
+                                                <!--
                                                 <div class="icon-style">
                                                     <span class="icon-star icon--yellow"></span>
                                                     <span class="icon-star icon--yellow"></span>
@@ -24,6 +27,7 @@
                                                     <span class="icon-star icon--yellow"></span>
                                                     <span class="icon-star-empty icon--yellow"></span>
                                                 </div>
+                                                -->
                                             </div>
                                         </div>
                                     </div>

@@ -133,16 +133,16 @@
                     for(var j in data.permasalahan[i].komentator){
                         elementToRender += 
                         "<li>"+
-                        "<a href='#' class='img-circle'>"+
+                        "<span class='img-circle'>"+
                         "<img src='<?=base_url()?>"+data.permasalahan[i].komentator[j].foto+"' width='275' height='261' alt='Photo' title='"+data.permasalahan[i].komentator[j].nama+"'>"+
-                        "</a>"+
+                        "</span>"+
                         "</li>";
 
                     }
                     if(data.permasalahan[i].remaining_penjawab !== 0){
                         elementToRender +=
                         "<li class='commentator-count'>"+
-                        "<a href='#' class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</a>"+
+                        "<span class='img-circle'>"+data.permasalahan[i].remaining_penjawab+"+</span>"+
                         "</li>";
                     }
                     elementToRender +=
@@ -173,7 +173,7 @@
                 $("#"+argument).html(elementToRender);
                 timeAgo();
             }else{
-                $("#"+argument).html("<p><h4 class='text-center'>Data belum ada</h4></p>");
+                $("#"+argument).html("<div class='panel panel-default panel-ask'><h4 class='text-center'><i class='bgicon icon-close'></i> Data belum ada</h4></div>");
             }
         });
 }

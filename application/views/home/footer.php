@@ -19,10 +19,10 @@
             <div class="col-sm-4 col-md-2">
                 <h4 class="footer-title">Tentang Kami</h4>
                 <ul class="footer-list-menu">
-                    <li><a href="#">Tentang Kami</a></li>
-                    <li><a href="#">Karier</a></li>
+                    <li><a href="<?=base_url()?>tentang-kami">Tentang Kami</a></li>
+                    <li><a href="<?=base_url()?>karir">Karier</a></li>
                     <li><a href="#">Kontak</a></li>
-                    <li><a href="#">Materi dari Berguru.com</a></li>
+                    <li><a href="<?=base_url()?>materi-detil">Materi dari Berguru.com</a></li>
                 </ul>
             </div>
             <div class="col-sm-4 col-md-2">
@@ -51,17 +51,17 @@
         <div class="row footer-copyright">
             <div class="col-sm-12 col-md-4">
                 <ul class="list-inline list-social">
-                    <li><a href="#"><span class="bgicon icon-twitter"></span></a></li>
-                    <li><a href="#"><span class="bgicon icon-facebook"></span></a></li>
-                    <li><a href="#"><span class="bgicon icon-google-plus"></span></a></li>
-                    <li><a href="#"><span class="bgicon icon-instagram"></span></a></li>
-                    <li><a href="#"><span class="bgicon icon-rss"></span></a></li>
+                    <li><a href="#"><span class="bgicon icon-social-twitter"></span></a></li>
+                    <li><a href="#"><span class="bgicon icon-social-facebook"></span></a></li>
+                    <li><a href="#"><span class="bgicon icon-social-google-plus"></span></a></li>
+                    <li><a href="#"><span class="bgicon icon-social-instagram"></span></a></li>
+                    <li><a href="#"><span class="bgicon icon-social-rss"></span></a></li>
                 </ul>
             </div>
             <div class="col-sm-6 col-md-4">
                 <p>&copy; 2018 Hak Cipta Dilindungi Undang-Undang</p>
             </div>
-            <div class="col-sm-6 col-md-4 support-by>
+            <div class="col-sm-6 col-md-4 support-by">
                 <p>Didukung oleh</p>
                 <img src="<?=base_url()?>assets/assets/images/logo-um.png" width="36" height="36" alt="Logo UM" class="footer-support">
                 <img src="<?=base_url()?>assets/assets/images/logo-um-flat.png" width="42" height="33" alt="Logo UM" class="footer-support">

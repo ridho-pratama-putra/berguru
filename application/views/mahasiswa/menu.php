@@ -150,9 +150,11 @@
 		<li class="" id="pesan"><a href="<?=base_url()?>pesan-mahasiswa"><em class="bgicon icon-message">&nbsp;</em> Pesan</a></li>
 		<li class="" id="materi"><a href="<?=base_url()?>materi-mahasiswa"><em class="bgicon icon-material-stack">&nbsp;</em> Materi</a></li>
 		<li class="" id="karir"><a href="<?=base_url()?>karir-mahasiswa"><em class="bgicon icon-briefcase">&nbsp;</em> Karir</a></li>
+		<!--
 		<li class="" id="bantuan">
 			<a href="<?=base_url()?>bantuan-mahasiswa" ><em class="bg-icon icon-question">&nbsp;</em> Bantuan</a>
 		</li>
+		-->
 		<li class="" id="testimonial">
 			<a href="<?=base_url()?>testimonial-mahasiswa"><em class="bgicon icon-comment-type">&nbsp;</em> Testimonial</a>
 		</li>

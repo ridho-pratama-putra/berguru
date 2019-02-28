@@ -35,7 +35,7 @@
 				<div class="content-filter-search">
 					<div class="row">
 						<div class="col-sm-12 col-lg-8">
-							<form>
+							<form class="input-55">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-search"></i></span>
 									<input type="text" class="form-control" placeholder="Ketik lalu tekan enter untuk mencari materi" id="search-bar-materi">
