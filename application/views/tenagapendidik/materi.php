@@ -39,7 +39,7 @@
 							<form>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-search"></i></span>
-									<input type="text" class="form-control search" placeholder="Ketik lalu tekan enter untuk mencari materi" id="search-bar-materi">
+									<input type="text" class="form-control search" placeholder="Ketik tanpa tekan enter untuk mencari materi" id="search-bar-materi">
 								</div>
 							</form>
 						</div>

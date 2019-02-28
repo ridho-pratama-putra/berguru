@@ -761,7 +761,7 @@ class Pendidik extends CI_Controller {
 	/*
 	* function untuk menangani add materi pada halaman kelola materi
 	*/
-	function insertMateri()
+	function submitTambahMateri()
 	{
 		if ($this->input->post() !== null) {
 			$ikon_cat_dan_warna = array(

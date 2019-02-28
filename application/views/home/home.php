@@ -1,10 +1,12 @@
 <script type="text/javascript" src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.js"></script>
-
 <div class="content-front">
 
 	<!-- Kategori Konten -->
 	<section class="category-list">
 		<div class="container">
+			<div class="row mt-3 mb-3">
+				<?=$this->session->flashdata("alert");?>
+			</div>
 			<div class="row category-title">
 				<div class="col-sm-6">
 					<p>Telusuri sesuai kategori</p>
@@ -392,17 +394,31 @@
 					elementToRender +=
 					"</ul>"+
 					"</div>"
-					if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null) && data.permasalahan[i].status == "UNSOLVED") {
-						elementToRender +=
-						"<div class='col-md-6 ask-action'>"+
-						"<p>Anda Mahasiswa? </p> "+
-						"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
-						"</div>"
+					if ((data.data_login.aktor == "mahasiswa" || data.data_login.aktor == null)) {
+						if (data.permasalahan[i].status == "UNSOLVED") {
+							elementToRender +=
+							"<div class='col-md-6 ask-action'>"+
+							"<p>Anda Mahasiswa? </p> "+
+							"<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
+							"</div>"
+						}else{
+							elementToRender +=
+							"<div class='col-md-6 ask-action'>"+
+							"<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
+							"</div>"							
+						}
 					}else{
-						elementToRender +=
-						"<div class='col-md-6 ask-action'>"+
-						"<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
-						"</div>"
+						if (data.permasalahan[i].status == "UNSOLVED") {
+							elementToRender +=
+							"<div class='col-md-6 ask-action'>"+
+							"<a href='#' class='btn btn-green link-disabled'>Belum Terselesaikan</a>"+
+							"</div>"
+						}else{
+							elementToRender +=
+							"<div class='col-md-6 ask-action'>"+
+							"<a class='btn btn-green link-disabled' disabled=''>Terselesaikan</a>"+
+							"</div>"
+						}
 					}
 					elementToRender +=
 					"</div>"+

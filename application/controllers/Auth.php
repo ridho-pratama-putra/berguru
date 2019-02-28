@@ -15,7 +15,7 @@ class Auth extends CI_Controller {
 	function login()
 	{
 		if ($this->session->userdata('registrasiSession') != array()) {
-			alert('login','warning','Perhatian!','Mohon Lanjutkan Pendaftaran');
+			alert('login','warning','Perhatian!','Mohon Lanjutkan Pendaftaran. Atau batalkan pendaftaran <a href="'.base_url().'batalkan-registrasi">disini</a>.');
 			redirect('register-pilih');
 		}else{
 			$cookie = get_cookie('berguru');
@@ -106,9 +106,10 @@ class Auth extends CI_Controller {
 					}
 				}
 			}
-			$header['title'] = "Login";
-			$this->load->view("statis_/header",$header);
-			$this->load->view("auth/login");
+			$data['title'] = "Login";
+			$data['testimonial'] = $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto, pengguna.institusi_or_universitas FROM testimonial LEFT JOIN pengguna ON testimonial.dari = pengguna.id")->result();
+			$this->load->view("statis_/header",$data);
+			$this->load->view("auth/login",$data);
 			$this->load->view("statis_/footer");
 		}
 	}
@@ -121,7 +122,7 @@ class Auth extends CI_Controller {
 	{
 		$this->session->unset_userdata('loginSession');
 		if ($this->session->userdata('registrasiSession') != array()) {
-			alert('alert','warning','Perhatian!','Mohon Lanjutkan Pendaftaran');
+			alert('alert','warning','Perhatian!','Mohon Lanjutkan Pendaftaran. Atau batalkan pendaftaran <a href="'.base_url().'batalkan-registrasi">disini</a>.');
 			redirect('register-pilih');
 		}else{
 			if ($this->input->post() != array()) {
@@ -246,7 +247,8 @@ class Auth extends CI_Controller {
 	/*
 	* FUNCTION UNTUK FORM VALIDATION NAMA
 	*/
-	public function fullname_check($str) {
+	function fullname_check($str) 
+	{
 		if (! preg_match("/^([a-z ])+$/i", $str)) {
 			$this->form_validation->set_message('fullname_check', 'The %s field can only be alphabetic');
 			return FALSE;
