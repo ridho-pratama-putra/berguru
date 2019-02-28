@@ -1,6 +1,3 @@
-
-
-
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row visible-xs">
 		<ol class="breadcrumb">
@@ -83,7 +80,7 @@
 											<i class="bgicon icon-menu"></i>
 										</a>
 										<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
-											<li><a href="#" data-toggle="modal" data-target="#js-edit-pesan">Edit</a></li>
+											<li><a href="#" data-toggle="modal" data-target="#js-edit-pesan" data-id="<?=$value->id?>">Edit</a></li>
 											<li role="separator" class="divider"></li>
 											<li><a href="<?=base_url()?>delete-pesan-info/<?=$value->id?>">Hapus</a></li>
 										</ul>
@@ -154,29 +151,31 @@
 <div class="modal fade" id="js-edit-pesan" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<form class="input-55" action="" method="post">
+			<form class="input-55" action="<?=base_url()?>submit-update-pesan-info" method="post">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Edit Pesan</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<div class="form-group">
-								<label for="">Nama / Email Penerima</label>
-								<select class="js-example-basic-single form-control" id="penerimaedit" name="penerima[]" style="width: 100%;" multiple="multiple"></select>
+								<label for="">Nama / Email penerima</label>
+								<input type="hidden" id="id-pesan-info" name="id_pesan_info" readonly="">
+								<input type="hidden" id="id-pengguna" name="id_pengguna" readonly="">
+								<input type="text" class="form-control" id="nama-penerima-pesan-info" readonly="">
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<div class="form-group">
 								<label for="">Subyek Pesan</label>
-								<input type="text" class="form-control" placeholder="Subyek" name="subyek">
+								<input type="text" class="form-control" placeholder="Subyek" name="subyek" id="subyek-pesan-info">
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="">Isi Pesan</label>
-								<textarea class="form-control" placeholder="Tulis Pesan Anda" name="isi_pesan"></textarea>
+								<textarea class="form-control" placeholder="Tulis Pesan Anda" name="isi_pesan" id="isi-pesan-info"></textarea>
 							</div>
 						</div>
 					</div>
@@ -194,6 +193,7 @@
 </div>
 
 <script type="text/javascript">
+	// initialization untuk select2
 	$(document).ready(function() {	
 		$("#penerima").select2({
 			ajax: {
@@ -217,34 +217,30 @@
 		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
 		minimumInputLength: 1
 	});
-    // $('.js-example-basic-single').select2();
+
+    $('#js-edit-pesan').on('show.bs.modal', function (event) {
+    	var button = $(event.relatedTarget);
+    	var id_pesan_info = button.data('id');
+    	$.get(
+    		"<?=base_url()?>get-pesan-info/"+id_pesan_info,
+    		function (res) {
+    			res = JSON.parse(res);
+    			$("#id-pesan-info").val(res[0].id_direct_message)
+    			$("#id-pengguna").val(res[0].id_pengguna)
+    			$("#nama-penerima-pesan-info").val(res[0].nama_pengguna)
+    			$("#subyek-pesan-info").val(res[0].subyek)
+    			$("#isi-pesan-info").val(res[0].isi_pesan)
+    		}
+    		)
+    })
 });
 </script>
 
 <script type="text/javascript">
-	$(document).ready(function() {	
-		$("#penerimaedit").select2({
-			ajax: {
-				url: '<?=base_url()?>Admin/cariNama/',
-				dataType: 'json',
-				delay: 1000,
-				data: function (term, page) {
-					return {
-					term: term, // search term
-					page: 10
-				};
-			},
-			processResults: function (data, page) {
-				// console.log(data);
-				return {
-					results: data
-				};
-			},
-			cache: true
-		},
-		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-		minimumInputLength: 1
-	});
-    // $('.js-example-basic-single').select2();
-});
+	
 </script>
+<style type="text/css">
+.select2-selection.select2-selection--multiple{
+	min-height: 55px;
+}
+</style>

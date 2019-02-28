@@ -1,3 +1,18 @@
+<script type="text/javascript">
+
+    // SCRIPT UNTUK ADD ACTIVE
+    $( document ).ready(function() {
+        $("#<?=$active?>").attr("class","active");
+        $("#filter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".panel-ask").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+
+</script>    
 <div class="sidemenu-overlay hide animated"></div>
 <header class="home">
     <nav class="navbar navbar-default nav-front">
@@ -51,15 +66,17 @@
                 </div>
             </div>
         </div><!-- /.container -->
-    </nav>            
+    </nav>
+    
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <div class="header-content header-custom-page">
-                    <h1 class="title">Beriklan dengan berguru.com</h1>
+                    <h1 class="title">Cara Mendapatkan Poin</h1>
                     <p class="caption">Dapatkan poin sebanyaknya dan dapatkan badge untuk akunmu!</p>
                 </div>
             </div>
         </div>
     </div>
+    
 </header>

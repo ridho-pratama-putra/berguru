@@ -77,6 +77,7 @@ $route['karir']								= 'Home/karir';
 $route['get-karir']							= 'Home/getKarir';
 $route['syarat-dan-ketentuan']				= 'Home/syaratDanKetentuan';
 $route['iklan']								= 'Home/iklan';
+$route['cara-memperoleh-poin']				= 'Home/pointMahasiswa';
 /*******************************************************home****************************************************************/
 
 
@@ -118,6 +119,7 @@ $route['submit-edit-kategori'] 				= 'Admin/submiteditKategoriKonten';
 $route['delete-kategori'] 					= 'Admin/deleteKategoriKonten';
 
 $route['kelola-komentar']					= 'Admin/kelolaKomentar';
+$route['detail-diskusi/(:num)']				= 'Admin/getDetailDiskusi/$1';
 
 $route['kelola-konten-permasalahan']		= 'Admin/kelolaKontenPermasalahan';
 $route['edit-konten-permasalahan/(:num)']	= 'Admin/editKontenPermasalahan/$1';
@@ -133,7 +135,9 @@ $route['delete-pengguna']					= 'Admin/deletePengguna';
 $route['ubah-status-pengguna']				= 'Admin/ubahStatusPengguna';
 
 $route['kelola-pesan-info']					= 'Admin/kelolaPesanInfo';
+$route['get-pesan-info/(:num)']				= 'Admin/getPesanInfo/$1';
 $route['delete-pesan-info/(:num)']			= 'Admin/deletePesanInfo/$1';
+$route['submit-update-pesan-info']			= 'Admin/submitUpdatePesanInfo';
 
 $route['kelola-tenaga-pendidik']			= 'Admin/kelolaTenagaPendidik';
 $route['delete-tenaga-pendidik']			= 'Admin/deleteTenagaPendidik';
@@ -219,7 +223,7 @@ $route['delete-initialized-dm']					= 'Pendidik/deleteInitializedDm';
 $route['edit-pertanyaan-pendidik/(:num)']		= 'Pendidik/editPertanyaan/$1';
 $route['get-materi-by-kategori-pendidik']		= 'Pendidik/getMateriByKategori';
 
-	// ajax untuk lihat permasalahan by kategori
+// ajax untuk lihat permasalahan by kategori
 $route['get-permasalahan-by-kategori-pendidik']	= 'Pendidik/getPermasalahanByKategoriAndStatus';
 
 $route['submit-reply-pendidik']					= 'Pendidik/submitReply';

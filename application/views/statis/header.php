@@ -40,7 +40,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/assets/icon-doc/css/fontello.css">
 	
 	<script src="<?=base_url()?>assets/assets/libs/jquery.3.3.1/jquery-3.3.1.js"></script>
-	<script src="<?=base_url()?>assets/dashboard/assets/js/jquery-1.11.1.min.js"></script>
+	<!-- <script src="<?=base_url()?>assets/dashboard/assets/js/jquery-1.11.1.min.js"></script> -->
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/datatables/datatables.min.js" charset="utf-8"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/malihu-scroll/jquery.mCustomScrollbar.js"></script>
 	<script src="<?=base_url()?>assets/dashboard/assets/libs/raty/jquery.raty.js" charset="utf-8"></script>

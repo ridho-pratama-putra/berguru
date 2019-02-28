@@ -29,7 +29,7 @@
                 <h4 class="footer-title">Bantuan</h4>
                 <ul class="footer-list-menu">
                     <li><a href="<?=base_url()?>syarat-dan-ketentuan">Syarat &amp; Ketentuan</a></li>
-                    <li><a href="#">Cara memperoleh poin</a></li>
+                    <li><a href="<?=base_url()?>cara-memperoleh-poin">Cara memperoleh poin</a></li>
                     <li><a href="<?=base_url()?>iklan">Iklan</a></li>
                 </ul>
             </div>

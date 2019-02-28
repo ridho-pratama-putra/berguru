@@ -21,7 +21,7 @@
 				<div class="col-xs-12">
 					<div class="owl-carousel category-carousel learn-list">
 						<div class="item">
-							<a href="#">
+							<a href="<?=base_url()?>kategori-mapel/?q=semua%20mata%20pelajaran">
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<span class="bgicon icon-lists"></span>
@@ -249,7 +249,7 @@
 			</div>
 
 		</div>
-</section>
+	</section>
 </div>
 <script type="text/javascript">
 
@@ -323,7 +323,7 @@
 
 	// untuk get pertanyaan berdsasrkan kategoir
 	function pertanyaan(argument) {
-		$.get("<?=base_url()?>kategori-status",{tipe : argument},function( data ) {
+		$.get("<?=base_url()?>kategori-status",{tipe : argument, kategori: "semua_mata_pelajaran"},function( data ) {
 			data = JSON.parse(data);
 			// console.log(data);
 			$("#pertanyaanDitemukan").html(data.jumlah+" pertanyaan ditemukan");
@@ -439,7 +439,7 @@
 				$("#"+argument).html("<div class='panel panel-default panel-ask'><h4 class='text-center'><i class='bgicon icon-close'></i> Data belum ada</h4></div>");
 			}
 		});
-	}
+}
 
 	// function untuk get rangking mahasiswa besertai poin dan permasalhan
 	function rangking_mahasiswa() {
@@ -537,12 +537,12 @@
       dots: false,
       navText: ['<span class="bgicon icon-arrow-left"></span>','<span class="bgicon icon-arrow-right"></span>'],
       responsive:{
-        0:{
-          items:1
-        },
-        640:{
-          items:2
-        }
+      	0:{
+      		items:1
+      	},
+      	640:{
+      		items:2
+      	}
       }
   });
 	$('.category-carousel').owlCarousel({

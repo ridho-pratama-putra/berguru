@@ -30,11 +30,12 @@
 </script>
 <style type="text/css">
 <?php
-if ($selected_kategori[0]->background != '') { ?>
-    .pages{
-        background-image: url(<?=base_url($selected_kategori[0]->background)?>);
-    }
-<?php } ?>
+if (is_array($selected_kategori)) {
+    if ($selected_kategori[0]->background != '') { ?>
+        .pages{
+            background-image: url(<?=base_url($selected_kategori[0]->background)?>);
+        }
+<?php } } ?>
 </style>
 <div class="sidemenu-overlay hide animated"></div>
 <header class="pages">
@@ -65,6 +66,7 @@ if ($selected_kategori[0]->background != '') { ?>
                                     Kategori <span class="bgicon icon-arrow-down"></span>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="<?=base_url()?>kategori-mapel/?q=semua%20mata%20pelajaran">Semua Mata Pelajaran</a></li>
                                     <?php foreach ($kategori as $key => $value) { ?>
                                         <li><a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>"><?=$value->nama?></a></li>
                                     <?php } ?>
@@ -92,19 +94,18 @@ if ($selected_kategori[0]->background != '') { ?>
             </div>
         </div><!-- /.container -->
     </nav>
-
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <div class="header-content header-pages">
-                    <h1 class="title"><?=$selected_kategori[0]->nama?></h1>
-                    <p class="caption">Daftar Konten Permasalahan Mata Pelajaran <?=$selected_kategori[0]->nama?></p>
+                    <h1 class="title"><?=(is_array($selected_kategori) ? $selected_kategori[0]->nama : 'Semua Mata Pelajaran')?></h1>
+                    <p class="caption">Daftar Konten Permasalahan <?=(is_array($selected_kategori) ? "Mata Pelajaran ".$selected_kategori[0]->nama : 'Semua Mata Pelajaran')?></p>
                     <form class="form-inline header-search" method="GET" action="<?=base_url()?>cari-pertanyaan">
                         <div class="form-group">
                             <div class="input-group search-field">
                                 <span class="input-group-addon"><i class="bgicon icon-search"></i></span>
                                 <input type="text" id="search-bar-pertanyaan" class="form-control" placeholder="Apa pertanyaan anda?" name="pertanyaan">
-                                <input type="hidden" name="kategori_mapel" value="<?=$selected_kategori[0]->id?>">
+                                <input type="hidden" name="kategori_mapel" value="<?=(is_array($selected_kategori) ? $selected_kategori[0]->id : 'Semua Mata Pelajaran')?>">
                             </div>
                             <button type="submit" name="searchheader" class="btn btn-green" value="submit">Cari Sekarang</button>
                         </div>
@@ -113,5 +114,4 @@ if ($selected_kategori[0]->background != '') { ?>
             </div>
         </div>
     </div>
-
 </header>

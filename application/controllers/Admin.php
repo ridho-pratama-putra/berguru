@@ -33,7 +33,11 @@ class Admin extends CI_Controller {
 		$data['testimonial']		= $this->model->rawQuery("SELECT testimonial.id, testimonial.teks, testimonial.tanggal, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON testimonial.dari = pengguna.id ORDER BY testimonial.tanggal")->result();
 
 		$data['lowongan'] = $this->model->rawQuery("SELECT lowongan.id,lowongan.nama AS teks_lowongan, pengguna.nama AS nama_pengguna, pengguna.foto, lokasi.lokasi, lowongan.instansi, lowongan.valid FROM lowongan LEFT JOIN pengguna ON pengguna.id = lowongan.dari LEFT JOIN lokasi ON lowongan.lokasi = lokasi.id WHERE valid = 0 ORDER BY lowongan.tanggal")->result();
-
+		
+		$data['problem_solved_tahun_ini'] = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM permasalahan WHERE status='SOLVED' AND YEAR(tanggal) = '".date("Y")."'")->result();
+		$data['pengunjung_tahun_ini'] = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE YEAR(tanggal) = '".date("Y")."'")->result();
+		$data['pengguna_baru_tahun_ini'] = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM notif WHERE konteks = 'penggunaBaru' AND YEAR(datetime) = '".date("Y")."'")->result();
+		
 		$this->load->view('statis/header',$header);
 		$this->load->view('super/menu',$this->menu);
 		$this->load->view('super/dashboard',$data);
@@ -294,7 +298,7 @@ class Admin extends CI_Controller {
 	}
 
 	/*
-	* delete sebuah testimonial
+	* delete sebuah pesan info
 	*/
 	function deletePesanInfo($id)
 	{
@@ -314,6 +318,37 @@ class Admin extends CI_Controller {
 			$error['message'] = '<p>Data tidak ditemukan</p>';
 			$this->load->view('errors/html/error_404',$error);
 		}
+	}
+
+	/*
+	* retrieve suatu pesan info untuk diedit. dipanggil di halaman kelola pesan info untuk kperluan editing
+	*/
+	function getPesanInfo($id)
+	{
+		$record = $this->model->rawQuery("SELECT direct_message.teks,direct_message.tanggal,pengguna.nama AS nama_pengguna,pengguna.id AS id_pengguna, direct_message.id AS id_direct_message FROM direct_message INNER JOIN pengguna ON pengguna.id = direct_message.untuk WHERE direct_message.jenis_pesan = 'pesaninfo' AND direct_message.id = $id")->result();
+	
+		// pisahkan antara subjek dan isi pesan
+		$exploded = explode("|",$record[0]->teks);
+		
+		$record[0]->subyek = $exploded[0];
+		$record[0]->isi_pesan = $exploded[1];
+		echo json_encode($record);
+	}
+
+	/*
+	* handling updating pesan info di halaman kelola pesan info
+	*/
+	function submitUpdatePesanInfo()
+	{
+		$teks = $this->input->post("subyek")."|".$this->input->post("isi_pesan");
+		$result = $this->model->update("direct_message",array("id"=>$this->input->post("id_pesan_info")),array("teks"=>$teks));
+		$result = json_decode($result);
+		if ($result->status) {
+			alert('alert','success','Berhasil!','Pesan info telah diedit');
+		}else{
+			alert('alert','warning','Gagal!','Pesan info gagal diedit : '. $runUpdate->error_message->message);
+		}
+		redirect("kelola-pesan-info");
 	}
 
 	/*
@@ -682,10 +717,10 @@ class Admin extends CI_Controller {
 	{
 		if ($this->input->post() !== NULL) {
 
-// delete di tabel notifikasi
+			// delete di tabel notifikasi
 			$this->model->rawQuery("DELETE FROM notif WHERE (konteks ='pertanyaan' OR konteks ='ratingKomentar' OR konteks ='komentar') AND id_konteks = ".$this->input->post('id'));
 
-// delete di tabel
+		// delete di tabel
 			$this->model->delete('riwayat_permasalahan',array('permasalahan'=>$this->input->post('id')));
 
 			$this->model->delete('komentar',array('permasalahan'=>$this->input->post('id')));
@@ -777,9 +812,9 @@ class Admin extends CI_Controller {
 			$insertMateri = json_decode($insertMateri);
 
 
-// if (TRUE) {
+		// if (TRUE) {
 			if ($insertMateri->status) {
-// baca destinasi penyimpanan yang sudah terdefinisi di tabel kategori
+				// baca destinasi penyimpanan yang sudah terdefinisi di tabel kategori
 				$direktori = $this->model->read('kategori',array('id'=>$queryMateri['kategori']))->result();
 
 				$config['upload_path']          = FCPATH.$direktori[0]->nama_folder.'/';
@@ -790,7 +825,7 @@ class Admin extends CI_Controller {
 
 
 
-// upload dan masnipulais string
+				// upload dan masnipulais string
 				for ($i= 0; $i < $filesCount; $i++) { 
 					$_FILES['file']['name']     = $_FILES['files']['name'][$i];
 					$_FILES['file']['type']     = $_FILES['files']['type'][$i];
@@ -809,7 +844,7 @@ class Admin extends CI_Controller {
 					}
 				}
 
-// manipulasi string insert batch ke tabel tags, untuk menyimpan tag yang tertau pada setiap materi
+				// manipulasi string insert batch ke tabel tags, untuk menyimpan tag yang tertau pada setiap materi
 				$queryTags = 'INSERT INTO tags VALUES ';
 				foreach ($tags as $key => $value) {
 					$queryTags .= "(NULL,'".$insertMateri->message."','".$value."'),";
@@ -818,18 +853,18 @@ class Admin extends CI_Controller {
 				$queryTags =  rtrim($queryTags,", ");
 
 
-// insert batch
+				// insert batch
 				$this->model->rawQuery($queryTags);
 
-// proses zipping
+				// proses zipping
 				$this->zip->archive(FCPATH.$direktori[0]->nama_folder.'/'.date('Ymd_His').'.zip');
 			}
 
-// insert alamat direktori dari file attachment ke db
+			// insert alamat direktori dari file attachment ke db
 			$queryAttachment = "INSERT INTO attachment VALUES (NULL,'".$insertMateri->message."','".$direktori[0]->nama_folder."/".date('Ymd_His').".zip')";
 			$this->model->rawQuery($queryAttachment);
 
-// create notif to all user include admin
+		// create notif to all user include admin
 			$this->model->create('notif',array('konteks'=>'materiBaru','id_konteks'=>$insertMateri->message,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>'semua','datetime'=>date("Y-m-d H:i:s")));
 
 			alert('kelolaMateri','success','Berhasil!','Materi telah ditambahkan');
@@ -872,13 +907,13 @@ class Admin extends CI_Controller {
 	{
 		/*// cek max notif id, jika max_notif_id_per_user kurang dari max id tabel notif di db (ada notif baru), maka cek lanjutan (apakah itu untuk saya)
 		$maxIdDb_ = $this->model->read("max_notif_id_per_user",array('id_pengguna'=>$this->session->userdata('loginSession')['id']))->result();
-	// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
+			// cek lagi adakah di tabel notif where id > $maxiddb_ and untuk saya, jika ada maka eksekusi hitung notif
 		$notifBaruDanUntukSaya = $this->model->rawQuery("SELECT * FROM notif WHERE id > ".$maxIdDb_[0]->max_notif_id." AND (untuk='".$this->session->userdata('loginSession')['id']."' OR untuk='mahasiswa')");
 		if ($notifBaruDanUntukSaya->num_rows() > 0) {
 
 		}*/
 
-	// baca notif untuk para admin dan dia seorang
+			// baca notif untuk para admin dan dia seorang
 		$notif_admin = $this->model->rawQuery("
 			SELECT  
 			notif.id,
@@ -905,13 +940,13 @@ class Admin extends CI_Controller {
 		if ($notif_admin->num_rows() != 0) {
 			$notif_admin = $notif_admin->result();
 
-	// baca notif yang untuk para admin yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para admin
+			// baca notif yang untuk para admin yang sudah terlihat untuk dikoreksi dengan notifikasi untuk para admin
 			$notif_admin_terlihat = $this->model->rawQuery("SELECT id_notif FROM notif_flag WHERE terlihat = '1' AND id_pengguna='".$this->session->userdata('loginSession')['id']."' ")->result_array();
 
-	// array matang untuk dikirim ke menu
+			// array matang untuk dikirim ke menu
 			$notif_ = array();
 
-	// berlaku untuk notif admin atau notif untuk saya
+			// berlaku untuk notif admin atau notif untuk saya
 			foreach ($notif_admin as $key => $value) {
 				$notif_[$key] = $value;
 				if ($this->in_array_r($value->id,$notif_admin_terlihat)) {
@@ -922,14 +957,14 @@ class Admin extends CI_Controller {
 				}
 			}
 
-	// insert max notif id per user
+		// insert max notif id per user
 			$runQuery = $this->model->rawQuery("UPDATE max_notif_id_per_user SET max_notif_id =".$notif_admin[0]->id." WHERE id_pengguna='".$this->session->userdata('loginSession')['id']."'");
-	// var_dump($runQuery);die();
+		// var_dump($runQuery);die();
 
 			unset($notif_admin);unset($notif_admin_terlihat);unset($notif_admin_terbaca);
 
-	// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
-	// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
+		// array noti_ siap dikirim ke menu. dilimit 7 via array slice. masih dipertanyakan kenapa kok nggk lewat limit DB
+		// dilimit 7 via array slice karena output slice hanya untuk  ditampilkan sedangkan untuk menghitung angka badge harus dihitung keseluruhan, jadi baca db keseluruhan
 			$this->menu['notif'] = array_slice($notif_, 0, 7);
 		}
 	}
@@ -975,7 +1010,7 @@ class Admin extends CI_Controller {
 	{
 		if ($this->input->post() !== array()) {
 
-// cek apakah ada pergantian password
+			// cek apakah ada pergantian password
 			$recordPengguna = $this->model->read('pengguna',array('id'=>$this->input->post('id')))->result();
 			if ($this->input->post('password') !== '') {
 				if (md5($this->input->post('password')) !== $recordPengguna[0]->password) {
@@ -983,19 +1018,19 @@ class Admin extends CI_Controller {
 					redirect('profil-admin');
 					return true;
 				}else{
-// cek apakah password_ ada isinya
+					// cek apakah password_ ada isinya
 					if ($this->input->post('password_') == '') {
 						alert('alert','danger','Gagal!','Password baru tidak dimasukkan. Isilah kolom password hanya jika ingin mengganti password');
 						redirect('profil-admin');
 						return true;
-// }else{
-// masukkan password baru ke array untuk bahan eksekusi
+					// }else{
+					// masukkan password baru ke array untuk bahan eksekusi
 						$queryUpdate['password'] = md5($this->input->post('password_'));
 					}
 				}
 			}
 
-// cek apakah ada perintah update foto
+		// cek apakah ada perintah update foto
 			if ($_FILES['foto']['name'] !== '') {
 				$config['upload_path']	= FCPATH.'userprofiles/';
 				$config['allowed_types']= 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';
@@ -1081,7 +1116,7 @@ class Admin extends CI_Controller {
 			}
 			echo json_encode($data);
 		}else{
-// redirect('logout');
+		// redirect('logout');
 		}
 	}
 
@@ -1174,7 +1209,7 @@ class Admin extends CI_Controller {
 	*/
 	function submitEditKontenPermasalahan()
 	{
-// update jumlah kategori jika ternyata yang diedit adalah kategorinya hanya dihandle oleh code dibawah ini. untuk add dan delete dihandle oleh trigger
+		// update jumlah kategori jika ternyata yang diedit adalah kategorinya hanya dihandle oleh code dibawah ini. untuk add dan delete dihandle oleh trigger
 		$permasalahan = $this->model->read('permasalahan',array('id'=>$this->input->post('id')))->result();
 		if ($permasalahan[0]->kategori !== $this->input->post('kategori')) {
 			$jumlah_jawaban = $this->model->rawQuery("SELECT COUNT(id) AS jumlah_jawaban FROM komentar WHERE permasalahan = ".$permasalahan[0]->id)->result();
@@ -1216,7 +1251,7 @@ class Admin extends CI_Controller {
 		$subyek = strtoupper($this->input->post('subyek'));
 		$teks = $this->input->post('isi_pesan');
 
-// $stringinsertNotif = "INSERT INTO notif ('id','konteks','dari,'untuk','datetime') VALUES ";
+		// $stringinsertNotif = "INSERT INTO notif ('id','konteks','dari,'untuk','datetime') VALUES ";
 		foreach ($penerimaS as $key => $value) {
 
 			$queryInsertDm = $this->model->create_id('direct_message',array('teks'=>$subyek."|".$teks,'dari'=>$this->session->userdata('loginSession')['id'],'untuk'=>$value,'tanggal'=>date("Y-m-d"),'jenis_pesan'=>'pesaninfo'));
@@ -1262,12 +1297,12 @@ class Admin extends CI_Controller {
 	*/
 	function getJumlahProblemSolved()
 	{
-		if ($this->input->get('jangka_waktu') == "hari") {
-			$data = $this->model->rawQuery("SELECT DISTINCT permasalahan AS jumlah FROM direct_message WHERE terpecahkan='SOLVED' AND DAY(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->num_rows();
-		}elseif ($this->input->get('jangka_waktu') == "bulan") {
-			$data = $this->model->rawQuery("SELECT DISTINCT permasalahan AS jumlah FROM direct_message WHERE terpecahkan='SOLVED' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->num_rows();
-		}elseif ($this->input->get('jangka_waktu') == "tahun") {
-			$data = $this->model->rawQuery("SELECT DISTINCT permasalahan AS jumlah FROM direct_message WHERE terpecahkan='SOLVED' AND YEAR(tanggal) = '".date("Y")."'")->num_rows();
+		if ($this->input->post('jangka_waktu') == "hari") {
+			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM permasalahan WHERE status='SOLVED' AND DAY(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->result();
+		}elseif ($this->input->post('jangka_waktu') == "bulan") {
+			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM permasalahan WHERE status='SOLVED' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->result();
+		}elseif ($this->input->post('jangka_waktu') == "tahun") {
+			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM permasalahan WHERE status='SOLVED' AND YEAR(tanggal) = '".date("Y")."'")->result();
 		}
 		echo json_encode($data);
 	}
@@ -1277,11 +1312,11 @@ class Admin extends CI_Controller {
 	*/
 	function getJumlahPengunjung()
 	{
-		if ($this->input->get('jangka_waktu') == "hari") {
+		if ($this->input->post('jangka_waktu') == "hari") {
 			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE DAY(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->result();
-		}elseif ($this->input->get('jangka_waktu') == "bulan") {
+		}elseif ($this->input->post('jangka_waktu') == "bulan") {
 			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."'")->result();
-		}elseif ($this->input->get('jangka_waktu') == "tahun") {
+		}elseif ($this->input->post('jangka_waktu') == "tahun") {
 			$data = $this->model->rawQuery("SELECT COUNT(id) AS jumlah FROM log_pengunjung WHERE YEAR(tanggal) = '".date("Y")."'")->result();
 		}
 		echo json_encode($data);
@@ -1292,35 +1327,101 @@ class Admin extends CI_Controller {
 	*/
 	function getJumlahPenggunaBaru()
 	{
-		// echo $this->input->get('jangka_waktu');		
-		if ($this->input->get('jangka_waktu') == "hari") {
+		// echo $this->input->post('jangka_waktu');		
+		if ($this->input->post('jangka_waktu') == "hari") {
 			$data = $this->model->rawQuery("
 				SELECT 
-				id AS jumlah 
+				COUNT(id) AS jumlah 
 				FROM 
 				notif 
 				WHERE konteks = 'penggunaBaru' 
 				AND DAY(datetime) = '".date("d")."' AND MONTH(datetime) = '".date("m")."' 
 				AND YEAR(datetime) = '".date("Y")."'"
-			)->num_rows();
-		}elseif ($this->input->get('jangka_waktu') == "bulan") {
+			)->result();
+		}elseif ($this->input->post('jangka_waktu') == "bulan") {
 			$data = $this->model->rawQuery("
 				SELECT 
-				id AS jumlah 
+				COUNT(id) AS jumlah 
 				FROM notif 
 				WHERE konteks = 'penggunaBaru' 
 				AND MONTH(datetime) = '".date("m")."' 
 				AND YEAR(datetime) = '".date("Y")."'"
-			)->num_rows();
-		}elseif ($this->input->get('jangka_waktu') == "tahun") {
+			)->result();
+		}elseif ($this->input->post('jangka_waktu') == "tahun") {
 			$data = $this->model->rawQuery("
 				SELECT 
-				id AS jumlah 
+				COUNT(id) AS jumlah 
 				FROM notif 
 				WHERE konteks = 'penggunaBaru' 
 				AND YEAR(datetime) = '".date("Y")."'"
-			)->num_rows();
+			)->result();
 		}
 		echo json_encode($data);
+	}
+
+	/*
+	* melayani ajaq request untuk detail diskusi pada kelola komentar
+	*/
+	function getDetailDiskusi($id)
+	{
+		
+		$record['pertanyaan'] 	= $this->model->read("permasalahan",array('id'=>$id))->result();
+		$record['pertanyaan'][0]->tanggal = date('M, d Y',strtotime($record['pertanyaan'][0]->tanggal)) ;
+		$record['jawaban']		= $this->model->rawQuery("
+			SELECT
+			komentar.teks,
+			komentar.rating,
+			komentar.tanggal,
+			pengguna.nama AS siapa,
+			pengguna.foto
+			FROM komentar
+			LEFT JOIN pengguna ON komentar.siapa = pengguna.id
+			WHERE komentar.permasalahan ='".$id."'
+			")->result();
+
+		$record['penjawab'] = $this->getPenjawab($id)['foto_nama'];
+		$record['remaining_penjawab'] = $this->getPenjawab($id)['remaining_penjawab'];
+
+		echo json_encode($record,JSON_PRETTY_PRINT);
+	}
+
+		/*
+	* funtion untuk ambil data siapa saja beserta foto penjawah sebuah pertanyaan di db.
+	* $pertanyaan itu id nya
+	* $limit berupa angka atau all untuk nampilkan fotofoto komentator
+	*/
+	function getPenjawab($pertanyaan,$limit = 4)
+	{
+		if ($limit == "all") {
+			// $record['penjawab'] = '';
+		}else{
+			$foto_nama = $this->model->rawQuery("
+				SELECT 
+				DISTINCT
+				pengguna.nama,
+				pengguna.foto
+				FROM komentar
+				LEFT JOIN pengguna ON komentar.siapa = pengguna.id
+				WHERE permasalahan = '".$pertanyaan."'
+				ORDER BY komentar.tanggal DESC
+				LIMIT ".$limit
+			)->result();
+
+			$remaining_penjawab = $this->model->rawQuery("
+				SELECT 
+				COUNT(DISTINCT siapa) AS semua
+				FROM komentar 
+				WHERE permasalahan=".$pertanyaan
+			)->result();
+
+			$remaining_penjawab = $remaining_penjawab[0]->semua;
+			$remaining_penjawab -= 4;
+			if ($remaining_penjawab < 0 ) {
+				$remaining_penjawab = 0;
+			}
+		}
+		$record['foto_nama'] = $foto_nama;
+		$record['remaining_penjawab'] = $remaining_penjawab;
+		return $record;
 	}
 }

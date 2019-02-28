@@ -81,7 +81,8 @@ class Auth extends CI_Controller {
 				}
 			}elseif ($this->session->userdata('loginSession') == array() AND $cookie != '') {
 				$recordCookieAktif = $this->model->read('pengguna',array('cookie'=>$cookie))->result();
-				if ($recordCookieAktif[0]->cookie == $cookie) {
+				if (isset($recordCookieAktif[0]->cookie)){
+					
 					$newdata = array(
 						'id'     					=> $recordCookieAktif[0]->id,
 						'nama'  					=> $recordCookieAktif[0]->nama,
@@ -104,10 +105,13 @@ class Auth extends CI_Controller {
 						alert('alert','success','Hai Admin '.$recordCookieAktif[0]->nama.'!','Selamat datang kembali di Berguru.com');
 						redirect('kelola-daftar-message');
 					}
+				}else{
+
 				}
 			}
 			$data['title'] = "Login";
 			$data['testimonial'] = $this->model->rawQuery("SELECT testimonial.teks, pengguna.nama, pengguna.foto, pengguna.institusi_or_universitas FROM testimonial LEFT JOIN pengguna ON testimonial.dari = pengguna.id")->result();
+			
 			$this->load->view("statis_/header",$data);
 			$this->load->view("auth/login",$data);
 			$this->load->view("statis_/footer");

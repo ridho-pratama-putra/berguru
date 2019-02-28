@@ -132,7 +132,8 @@ class Home extends CI_Controller {
 		FROM permasalahan
 		LEFT JOIN pengguna ON permasalahan.siapa = pengguna.id
 		LEFT JOIN kategori ON permasalahan.kategori = kategori.id";
-		if ($this->input->get('kategori') == '') {
+
+		if ($this->input->get('kategori') == 'semua_mata_pelajaran') {
 			if ($this->input->get('tipe') == 'all') {
 				$query .= " ORDER BY permasalahan.tanggal DESC LIMIT 4";
 			}elseif($this->input->get('tipe') == 'populer'){
@@ -203,27 +204,36 @@ class Home extends CI_Controller {
 	}
 
 	/*
-	* function untuk melihat detail kategori mapel di halaman home. untuk mencari pertanyaan setiap kategori seperti matematika, kimia,dll
+	* function untuk melihat pertanyaan setiap kategori matapelajaran seperti matematika, kimia,dll
 	*/
 	function mapel()
 	{
 		$namaKategori = $this->input->get('q');
-		$kategori = $this->model->read("kategori",array('nama'=>$namaKategori));
-
-		if ($kategori->num_rows() == 1) {
+		if ($namaKategori == "semua mata pelajaran") {
 			$menu['active'] 			= "kategori";
-			$menu['selected_kategori'] 	= $kategori->result();
+			$menu['selected_kategori'] 	= "Semua Mata Pelajaran";
 			$menu['kategori'] 			= $this->model->readS("kategori")->result();
 			$record['kategori'] 		= $menu['selected_kategori'];
-
 			$this->load->view("home/header");
 			$this->load->view("home/menu_per_kategori",$menu);
 			$this->load->view("home/kategori",$record);
 			$this->load->view("home/footer");	
 		}else{
-			$error['heading'] = '404 Page Not Found';
-			$error['message'] = "<p>Data tidak ditemukan. Klik <a href='".base_url()."'>disini</a></p>";
-			$this->load->view('errors/html/error_404',$error);
+			$kategori = $this->model->read("kategori",array('nama'=>$namaKategori));
+			if ($kategori->num_rows() == 1) {
+				$menu['active'] 			= "kategori";
+				$menu['selected_kategori'] 	= $kategori->result();
+				$menu['kategori'] 			= $this->model->readS("kategori")->result();
+				$record['kategori'] 		= $menu['selected_kategori'];
+				$this->load->view("home/header");
+				$this->load->view("home/menu_per_kategori",$menu);
+				$this->load->view("home/kategori",$record);
+				$this->load->view("home/footer");	
+			}else{
+				$error['heading'] = '404 Page Not Found';
+				$error['message'] = "<p>Data tidak ditemukan. Klik <a href='".base_url()."'>disini</a></p>";
+				$this->load->view('errors/html/error_404',$error);
+			}
 		}
 	}
 
@@ -513,6 +523,16 @@ class Home extends CI_Controller {
 		$this->load->view('home/header');
 		$this->load->view("home/menu_iklan",$menu);
 		$this->load->view('home/iklan');
+		$this->load->view('home/footer');
+	}
+
+	function pointMahasiswa()
+	{
+		$menu['active'] 	= "home";
+		$menu['kategori'] 	= $this->model->readS('kategori')->result();
+		$this->load->view('home/header');
+		$this->load->view("home/menu_point",$menu);
+		$this->load->view('home/point_mahasiswa');
 		$this->load->view('home/footer');
 	}
 }

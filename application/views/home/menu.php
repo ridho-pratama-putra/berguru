@@ -42,6 +42,7 @@
                                     Kategori <span class="bgicon icon-arrow-down"></span>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="<?=base_url()?>kategori-mapel/?q=semua%20mata%20pelajaran">Semua Mata Pelajaran</a></li>
                                     <?php foreach ($kategori as $key => $value) { ?>
                                         <li><a href="<?=base_url()?>kategori-mapel/?q=<?=$value->nama?>"><?=$value->nama?></a></li>
                                     <?php } ?>

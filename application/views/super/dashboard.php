@@ -32,13 +32,13 @@
 										</div>
 										<div class="keterangan">
 											<p>Problem Solved</p>
-											<p class="keterangan-nilai" id="jumlah-problem-solved-per-jangka"></p>
+											<p class="keterangan-nilai" id="jumlah-problem-solved-per-jangka"><?=$problem_solved_tahun_ini[0]->jumlah?></p>
 											<div class="dropdown keterangan-dropdown">
 												<a href="#" data-toggle="dropdown"><label id="selected-dropdown-problem-solved"> </label> <i class="bgicon icon-arrow-down"></i></a>
 												<ul class="dropdown-menu dropdown-menu-right">
-													<li><a href="#" class="solved-per-jangka" id="dropdown-problem-solved-hari-ini" onclick="problemSolved('hari')" data-property='hari'>Hari ini</a></li>
-													<li><a href="#" class="solved-per-jangka" id="dropdown-problem-solved-bulan-ini" onclick="problemSolved('bulan')" data-property='bulan'>Bulan ini</a></li>
-													<li><a href="#" class="solved-per-jangka" id="dropdown-problem-solved-tahun-ini" onclick="problemSolved('tahun')" data-property='tahun'>Tahun ini</a></li>
+													<li><a href="#" class="solved-per-jangka" id="dropdown-problem-solved-hari-ini" onclick="problemSolved('hari',false)" data-property='hari'>Hari ini</a></li>
+													<li><a href="#" class="solved-per-jangka" id="dropdown-problem-solved-bulan-ini" onclick="problemSolved('bulan',false)" data-property='bulan'>Bulan ini</a></li>
+													<li><a href="#" class="solved-per-jangka" id="dropdown-problem-solved-tahun-ini" onclick="problemSolved('tahun',false)" data-property='tahun'>Tahun ini</a></li>
 												</ul>
 											</div>
 										</div>
@@ -57,13 +57,13 @@
 										</div>
 										<div class="keterangan">
 											<p>User Visits</p>
-											<p class="keterangan-nilai" id="jumlah-pengunjung-per-jangka"></p>
+											<p class="keterangan-nilai" id="jumlah-pengunjung-per-jangka"><?=$pengunjung_tahun_ini[0]->jumlah?></p>
 											<div class="dropdown keterangan-dropdown">
 												<a href="#" data-toggle="dropdown"><label id="selected-dropdown-pengunjung"> </label> <i class="bgicon icon-arrow-down"></i></a>
 												<ul class="dropdown-menu dropdown-menu-right">
-													<li><a href="#" class="pengunjung-per-jangka" id="dropdown-pengunjung-hari-ini" onclick="pengunjung('hari')" data-property='hari'>Hari ini</a></li>
-													<li><a href="#" class="pengunjung-per-jangka" id="dropdown-pengunjung-bulan-ini" onclick="pengunjung('bulan')" data-property='bulan'>Bulan ini</a></li>
-													<li><a href="#" class="pengunjung-per-jangka" id="dropdown-pengunjung-tahun-ini" onclick="pengunjung('tahun')" data-property='tahun'>Tahun ini</a></li>
+													<li><a href="#" class="pengunjung-per-jangka" id="dropdown-pengunjung-hari-ini" onclick="pengunjung('hari',false)" data-property='hari'>Hari ini</a></li>
+													<li><a href="#" class="pengunjung-per-jangka" id="dropdown-pengunjung-bulan-ini" onclick="pengunjung('bulan',false)" data-property='bulan'>Bulan ini</a></li>
+													<li><a href="#" class="pengunjung-per-jangka" id="dropdown-pengunjung-tahun-ini" onclick="pengunjung('tahun',false)" data-property='tahun'>Tahun ini</a></li>
 												</ul>
 											</div>
 										</div>
@@ -80,13 +80,13 @@
 									<div class="col-md-8">
 										<div class="keterangan">
 											<p>Pengguna Baru</p>
-											<p class="keterangan-nilai" id="jumlah-pengguna-baru-per-jangka"></p>
+											<p class="keterangan-nilai" id="jumlah-pengguna-baru-per-jangka"><?=$pengguna_baru_tahun_ini[0]->jumlah?></p>
 											<div class="dropdown keterangan-dropdown">
 												<a href="#" data-toggle="dropdown"><label id="selected-dropdown-pengguna-baru"> </label> <i class="bgicon icon-arrow-down"></i></a>
 												<ul class="dropdown-menu dropdown-menu-right">
-													<li><a href="#" class="pengguna-baru-per-jangka" id="dropdown-pengguna-baru-hari-ini" onclick="penggunaBaru('hari')" data-property='hari'>Hari ini</a></li>
-													<li><a href="#" class="pengguna-baru-per-jangka" id="dropdown-pengguna-baru-bulan-ini" onclick="penggunaBaru('bulan')" data-property='bulan'>Bulan ini</a></li>
-													<li><a href="#" class="pengguna-baru-per-jangka" id="dropdown-pengguna-baru-tahun-ini" onclick="penggunaBaru('tahun')" data-property='tahun'>Tahun ini</a></li>
+													<li><a href="#" class="pengguna-baru-per-jangka" id="dropdown-pengguna-baru-hari-ini" onclick="penggunaBaru('hari',false)" data-property='hari'>Hari ini</a></li>
+													<li><a href="#" class="pengguna-baru-per-jangka" id="dropdown-pengguna-baru-bulan-ini" onclick="penggunaBaru('bulan',false)" data-property='bulan'>Bulan ini</a></li>
+													<li><a href="#" class="pengguna-baru-per-jangka" id="dropdown-pengguna-baru-tahun-ini" onclick="penggunaBaru('tahun',false)" data-property='tahun'>Tahun ini</a></li>
 												</ul>
 											</div>
 										</div>
@@ -287,11 +287,12 @@
 	}
 </script>
 <script type="text/javascript">
-	// $( document ).ready(function() {
-		setTimeout(penggunaBaru('tahun'), 1000)
-		// alert("pengguna baru")
-	// });
-	function penggunaBaru(argument) {
+	
+	penggunaBaru('tahun')
+	problemSolved('tahun')
+	pengunjung('tahun')
+
+	function penggunaBaru(argument, initial = true) {
 		var before = $("#selected-dropdown-pengguna-baru").html()
 		if (before == 'Hari ini') {
 			$("#dropdown-pengguna-baru-hari-ini").removeClass("none")
@@ -317,25 +318,20 @@
 			$("#dropdown-pengguna-baru-tahun-ini").addClass("none")
 			$("#dropdown-pengguna-baru-tahun-ini").addClass("selected")
 		}
-		$.get("<?=base_url()?>Admin/getJumlahPenggunaBaru",{jangka_waktu : argument},function (res) {
-			res = JSON.parse(res);
-			$("#jumlah-pengguna-baru-per-jangka").html("")
-			$("#jumlah-pengguna-baru-per-jangka").html(res)
-		});
-		if (before !== " ") {
+		/*if (before !== " ") {
 			// getDataMateri()
+		}*/
+		if (!initial) {
+			$.post("<?=base_url()?>Admin/getJumlahPenggunaBaru",{jangka_waktu : argument},function (res) {
+				res = JSON.parse(res);
+				// alert('penggunaBaru')
+				$("#jumlah-pengguna-baru-per-jangka").html("")
+				$("#jumlah-pengguna-baru-per-jangka").html(res[0].jumlah)
+			});
 		}
+		return true;
 	}
-</script>
-<script type="text/javascript">
-	// $( document ).ready(function() {
-		setTimeout(problemSolved('tahun'), 3000)
-		
-		// alert("problem solved")
-	// });
-
-
-	function problemSolved(argument) {
+	function problemSolved(argument, initial = true) {
 		var before = $("#selected-dropdown-problem-solved").html()
 		if (before == 'Hari ini') {
 			$("#dropdown-problem-solved-hari-ini").removeClass("none")
@@ -361,23 +357,21 @@
 			$("#dropdown-problem-solved-tahun-ini").addClass("none")
 			$("#dropdown-problem-solved-tahun-ini").addClass("selected")
 		}
-		$.get("<?=base_url()?>Admin/getJumlahProblemSolved",{jangka_waktu : argument},function (res) {
-			res = JSON.parse(res);
-			$("#jumlah-problem-solved-per-jangka").html("")
-			$("#jumlah-problem-solved-per-jangka").html(res)
-		});
-		if (before !== " ") {
-			// getDataMateri()
-		}
-	}
 
-</script>
-<script type="text/javascript">
-	// $( document ).ready(function() {
-		setTimeout(pengunjung('tahun'), 2000)
-		// alert("pengunjung")
-	// });
-	function pengunjung(argument) {
+		/*if (before !== " ") {
+			// getDataMateri()
+		}*/
+		if (!initial) {
+			$.post("<?=base_url()?>Admin/getJumlahProblemSolved",{jangka_waktu : argument},function (res) {
+				res = JSON.parse(res);
+				// alert("problemSolved")
+				$("#jumlah-problem-solved-per-jangka").html("")
+				$("#jumlah-problem-solved-per-jangka").html(res[0].jumlah)
+			});
+		}
+		return true;
+	}
+	function pengunjung(argument, initial = true) {
 		var before = $("#selected-dropdown-pengunjung").html()
 		if (before == 'Hari ini') {
 			$("#dropdown-pengunjung-hari-ini").removeClass("none")
@@ -403,14 +397,18 @@
 			$("#dropdown-pengunjung-tahun-ini").addClass("none")
 			$("#dropdown-pengunjung-tahun-ini").addClass("selected")
 		}
-		$.get("<?=base_url()?>Admin/getJumlahPengunjung",{jangka_waktu : argument},function (res) {
-			res = JSON.parse(res);
-			$("#jumlah-pengunjung-per-jangka").html("")
-			$("#jumlah-pengunjung-per-jangka").html(res[0].jumlah)
-		});
-		if (before !== " ") {
+		/*if (before !== " ") {
 			// getDataMateri()
+		}*/
+		if (!initial) {
+			$.post("<?=base_url()?>Admin/getJumlahPengunjung",{jangka_waktu : argument},function (res) {
+				// alert("pengunjung")
+				res = JSON.parse(res);
+				$("#jumlah-pengunjung-per-jangka").html("")
+				$("#jumlah-pengunjung-per-jangka").html(res[0].jumlah)
+			});
 		}
+		return true;
 	}
 
 </script>

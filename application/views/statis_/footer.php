@@ -1,4 +1,3 @@
-	
 	<script src="<?=base_url()?>assets/assets/libs/bootstrap.3.3.7/js/bootstrap.js"></script>
 	<script src="<?=base_url()?>assets/assets/libs/owl-carousel.2.3.4/owl.carousel.js"></script>
 	<script>

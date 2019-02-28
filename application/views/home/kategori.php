@@ -72,9 +72,9 @@
     
     // untuk get pertanyaan berdsasrkan kategoir
     function pertanyaan(argument) {
-        $.get("<?=base_url()?>kategori-status",{tipe : argument, kategori : <?=$kategori[0]->id?>},function( data ) {
+        $.get("<?=base_url()?>kategori-status",{tipe : argument, kategori : <?=(is_array($kategori) ? $kategori[0]->id : '"semua_mata_pelajaran"')?>},function( data ) {
             data = JSON.parse(data);
-            console.log(data.data_login.aktor);
+            // console.log(data.data_login.aktor);
             $("#pertanyaanDitemukan").html(data.jumlah+" pertanyaan ditemukan");
             if (data.permasalahan.length != 0) {
                 var elementToRender = '';
