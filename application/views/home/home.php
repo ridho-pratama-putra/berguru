@@ -486,7 +486,7 @@
 						'</div>'
 					}
 				}
-				elementToRender += '<a href="#" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
+				elementToRender += '<a href="<?=base_url()?>poin-tertinggi-mahasiswa" class="btn btn-transparent-blue">Muat Lebih Banyak</a>'
 			}else{
 				elementToRender += 
 				'<h6 class="title text-center"> Data mahasiswa poin tertinggi untuk kategori yang anda pilih belum tersedia</h6>'+

@@ -526,13 +526,32 @@ class Home extends CI_Controller {
 		$this->load->view('home/footer');
 	}
 
-	function pointMahasiswa()
+	function caraMemperolehPoin()
 	{
 		$menu['active'] 	= "home";
 		$menu['kategori'] 	= $this->model->readS('kategori')->result();
 		$this->load->view('home/header');
-		$this->load->view("home/menu_point",$menu);
-		$this->load->view('home/point_mahasiswa');
+		$this->load->view("home/menu_cara_memperoleh_poin",$menu);
+		$this->load->view('home/cara_memperoleh_poin');
+		$this->load->view('home/footer');
+	}
+
+	function poinTertinggiMahasiswa()
+	{
+		$date = new DateTime(date("Y-m-d"));
+
+		$data['active'] 			= "home";
+		$data['kategori'] 			= $this->model->readS('kategori')->result();
+		
+		$data['ranking_harian']		= $this->model->rawQuery("SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE DATE(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ORDER by poin DESC")->result();
+		
+		$data['ranking_bulanan']		= $this->model->rawQuery("SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ORDER by poin DESC")->result();
+
+		$data['ranking_mingguan']	= $this->model->rawQuery("SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE WEEK(tanggal) = '".$date->format("W")."' AND YEAR(tanggal) = '".$date->format("Y")."' ORDER by poin DESC")->result();
+
+		$this->load->view('home/header');
+		$this->load->view("home/menu_poin_tertinggi_mahasiswa",$data);
+		$this->load->view('home/poin_tertinggi_mahasiswa',$data);
 		$this->load->view('home/footer');
 	}
 }

@@ -77,7 +77,8 @@ $route['karir']								= 'Home/karir';
 $route['get-karir']							= 'Home/getKarir';
 $route['syarat-dan-ketentuan']				= 'Home/syaratDanKetentuan';
 $route['iklan']								= 'Home/iklan';
-$route['cara-memperoleh-poin']				= 'Home/pointMahasiswa';
+$route['cara-memperoleh-poin']				= 'Home/caraMemperolehPoin';
+$route['poin-tertinggi-mahasiswa']			= 'Home/poinTertinggiMahasiswa';
 /*******************************************************home****************************************************************/
 
 
