@@ -518,10 +518,11 @@ class Home extends CI_Controller {
 
 	function iklan()
 	{
-		$menu['active'] 	= "iklan";
-		$menu['kategori'] 	= $this->model->readS('kategori')->result();
+		$data['active'] 	= "home";
+		$data['kategori'] 	= $this->model->readS('kategori')->result();
+		$data['testimonial'] 	= $this->model->rawQuery("SELECT pengguna.institusi_or_universitas,testimonial.teks, pengguna.nama, pengguna.foto FROM testimonial LEFT JOIN pengguna ON pengguna.id = testimonial.dari")->result();
 		$this->load->view('home/header');
-		$this->load->view("home/menu_iklan",$menu);
+		$this->load->view("home/menu_iklan",$data);
 		$this->load->view('home/iklan');
 		$this->load->view('home/footer');
 	}

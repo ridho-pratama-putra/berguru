@@ -91,62 +91,31 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
-                    <div class="iklan-testimoni__card">
-                        <div class="panel-default iklan-testimoni__card-panel ">
-                            <div class="panel-body">
-                                <p class="iklan-testimoni__desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                                <div class="media">
-                                    <div class="media-left media-middle">
-                                        <img src="<?=base_url()?>assets/assets/images/user/26.jpg" class="media-object iklan-testimoni__img" >
-                                    </div>
-                                    <div class="media-body media-middle">
-                                        <h4 class="media-heading iklan-testimoni__title">Ibu Ami,</h4>
-                                        <p class="iklan-testimoni__job">Guru SDN Bareng 1</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="iklan-testimoni__card">
-                        <div class="panel-default iklan-testimoni__card-panel ">
-                            <div class="panel-body">
-                                <p class="iklan-testimoni__desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                                <div class="media">
-                                    <div class="media-left media-middle">
-                                        <img src="<?=base_url()?>assets/assets/images/user/67.jpg" class="media-object iklan-testimoni__img">
-                                    </div>
-                                    <div class="media-body media-middle">
-                                        <h4 class="media-heading iklan-testimoni__title">Ibu Luqya,</h4>
-                                        <p class="iklan-testimoni__job">Guru SDN Bareng 1</p>
+                <?php
+                foreach ($testimonial as $key => $value) { 
+                    ?>
+                    <div class="col-md-4">
+                        <div class="iklan-testimoni__card">
+                            <div class="panel-default iklan-testimoni__card-panel ">
+                                <div class="panel-body">
+                                    <p class="iklan-testimoni__desc"><?=$value->teks?></p>
+                                    <div class="media">
+                                        <div class="media-left media-middle">
+                                            <img src="<?=base_url().$value->foto?>" class="media-object iklan-testimoni__img" >
+                                        </div>
+                                        <div class="media-body media-middle">
+                                            <h4 class="media-heading iklan-testimoni__title"><?=$value->nama?></h4>
+                                            <p class="iklan-testimoni__job"><?=$value->institusi_or_universitas?></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="iklan-testimoni__card">
-                        <div class="panel-default iklan-testimoni__card-panel ">
-                            <div class="panel-body">
-                                <p class="iklan-testimoni__desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                                <div class="media">
-                                    <div class="media-left media-middle">
-                                        <img src="<?=base_url()?>assets/assets/images/user/90.jpg" class="media-object iklan-testimoni__img">
-                                    </div>
-                                    <div class="media-body media-middle">
-                                        <h4 class="media-heading iklan-testimoni__title">Ibu Samantha,</h4>
-                                        <p class="iklan-testimoni__job">Guru SDN Bareng 1</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                    <?php
+                }
+                ?>
             </div>
         </div>
 

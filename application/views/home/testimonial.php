@@ -27,35 +27,35 @@
                                                     <span class="icon-star icon--yellow"></span>
                                                     <span class="icon-star-empty icon--yellow"></span>
                                                 </div>
-                                                -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <?php 
-                    }
-                }else{ 
-                    ?>
-                    <div class="col-sm-12">
-                        <div class="testi">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="testi__item">
-                                        <div class="testi-desc">
-                                            <p class="testi-desc__text">Belum ada cerita dari pengguna</p>
+                                            -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <?php
+                    <?php 
                 }
-
+            }else{ 
                 ?>
-            </div>
+                <div class="col-sm-12">
+                    <div class="testi">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="testi__item">
+                                    <div class="testi-desc">
+                                        <p class="testi-desc__text">Belum ada cerita dari pengguna</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+
+            ?>
         </div>
-    </section>
+    </div>
+</section>
 </div>

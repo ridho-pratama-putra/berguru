@@ -1,3 +1,18 @@
+<script type="text/javascript">
+
+    // SCRIPT UNTUK ADD ACTIVE
+    $( document ).ready(function() {
+        $("#<?=$active?>").attr("class","active");
+        $("#filter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".panel-ask").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+
+</script>
 <div class="sidemenu-overlay hide animated"></div>
 <header class="home">
     <nav class="navbar navbar-default nav-front">
