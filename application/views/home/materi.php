@@ -94,36 +94,36 @@
 									const d = new Date(response.result[i].waktu_terakhir_edit)
 									elementToRender += 
 									"<div class='panel panel-default panel-ask panel-materi'>"+
-										"<div class='panel-body'>"+
-											"<div class='row panel-ask-account'>"+
-												"<div class='col-sm-6'>"+
-													"<div class='media'>"+
-														"<div class='media-left'>"+
-															"<div class='materi-icon icon-"+response.result[i].ikon_warna+"'><span class='bgicon "+response.result[i].ikon_logo+"'></span></div>"+
-														"</div>"+
-														"<div class='media-body materi-content'>"+
-															"<h4 class='media-heading'>"+response.result[i].nama_materi+"</h4>"+
-															"<p class='ask-time'>"+
-																"<span><i class='bgicon icon-clock'></i> "+monthNames[d.getMonth()]+", "+d.getDate()+" "+d.getFullYear()+" <i class='fa fa-circle hidden-xs'></i></span>"+
-																"<span><i class='bgicon icon-download'></i> "+response.result[i].jumlah_diunduh+" <i class='fa fa-circle hidden-xs'></i></span>"+
-																"<span><i class='bgicon icon-user'></i> "+response.result[i].nama_pengguna+"</span>"+
-															"</p>"+
-															"<p class='materi-tag materi-"+response.result[i].ikon_warna+"'>"+response.result[i].nama_kategori+"</p>"+
-														"</div>"+
-													"</div>"+
-												"</div>"+
-												"<div class='col-sm-6 ask-data-list'>"+
-													"<a href='<?=base_url()?>download-materi/"+response.result[i].id+"' class='btn btn-transparent-green btn-download'><i class='bgicon icon-download'></i>Unduh</a>"+
-													"<p class='tag-list'>Tags "
-													var tags = response.result[i].tags.split(',')
-													for(var j in tags){
-														elementToRender += '<span class="tag-item">#'+tags[j]+'</span> '
-													}
-													elementToRender +=
-													"</p>"+
-												"</div>"+
-											"</div>"+
-										"</div>"+
+									"<div class='panel-body'>"+
+									"<div class='row panel-ask-account'>"+
+									"<div class='col-sm-6'>"+
+									"<div class='media'>"+
+									"<div class='media-left'>"+
+									"<div class='materi-icon icon-"+response.result[i].ikon_warna+"'><span class='bgicon "+response.result[i].ikon_logo+"'></span></div>"+
+									"</div>"+
+									"<div class='media-body materi-content'>"+
+									"<h4 class='media-heading'>"+response.result[i].nama_materi+"</h4>"+
+									"<p class='ask-time'>"+
+									"<span><i class='bgicon icon-clock'></i> "+monthNames[d.getMonth()]+", "+d.getDate()+" "+d.getFullYear()+" <i class='fa fa-circle hidden-xs'></i></span>"+
+									"<span><i class='bgicon icon-download'></i> "+response.result[i].jumlah_diunduh+" <i class='fa fa-circle hidden-xs'></i></span>"+
+									"<span><i class='bgicon icon-user'></i> "+response.result[i].nama_pengguna+"</span>"+
+									"</p>"+
+									"<p class='materi-tag materi-"+response.result[i].ikon_warna+"'>"+response.result[i].nama_kategori+"</p>"+
+									"</div>"+
+									"</div>"+
+									"</div>"+
+									"<div class='col-sm-6 ask-data-list'>"+
+									"<a href='<?=base_url()?>download-materi/"+response.result[i].id+"' class='btn btn-transparent-green btn-download'><i class='bgicon icon-download'></i>Unduh</a>"+
+									"<p class='tag-list'>Tags "
+									var tags = response.result[i].tags.split(',')
+									for(var j in tags){
+										elementToRender += '<span class="tag-item">#'+tags[j]+'</span> '
+									}
+									elementToRender +=
+									"</p>"+
+									"</div>"+
+									"</div>"+
+									"</div>"+
 									"</div>"
 								}
 

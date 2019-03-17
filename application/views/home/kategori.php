@@ -155,10 +155,12 @@
                         "<a href='<?=base_url()?>pertanyaan-detail-mahasiswa/"+data.permasalahan[i].id+"' class='btn btn-green'>Bantu Jawab</a>"+
                         "</div>"
                     }else{
-                        elementToRender +=
-                        "<div class='col-md-6 ask-action'>"+
-                        "<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
-                        "</div>"
+                        if (data.data_login.aktor !== 'pendidik' && data.data_login.aktor !== 'admin') {
+                            elementToRender +=
+                            "<div class='col-md-6 ask-action'>"+
+                            "<a  class='btn btn-green' disabled=''>Terselesaikan</a>"+
+                            "</div>"
+                        }
                     }
                     elementToRender +=
                     "</div>"+

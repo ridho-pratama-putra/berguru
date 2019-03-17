@@ -92,7 +92,7 @@
 										<?php } ?>
 										
 										<?php if ($remaining_penjawab !== 0) { ?>
-											<div class="user-more"> <?=$remaining_penjawab?></div>
+											<div class="user-more"> <?=$remaining_penjawab?>+</div>
 										<?php } ?>
 									</div>
 								</div>

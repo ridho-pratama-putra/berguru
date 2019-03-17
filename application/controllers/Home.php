@@ -64,22 +64,21 @@ class Home extends CI_Controller {
 	* funtion untuk menamplkan rangking mahasiswa berdsaarkan poin yang didapat. untuk melayani request dari ajax
 	*/
 	function getMahasiswaPoinTertinggi(){
-		$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id ";
 		$date = new DateTime(date("Y-m-d"));
 		if ($this->input->get('jangka_waktu') == 'harian') {
-			$string .= "WHERE DATE(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
+			$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id AND DAY(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."') AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id AND DAY(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."') AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE DAY(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
 		}elseif ($this->input->get('jangka_waktu') == 'bulan') {
-			$string .= "WHERE MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
+			$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."') AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."') AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
 		}elseif ($this->input->get('jangka_waktu') == 'bulan_lalu') {
 			if (($date->format("m") - 1) == 0) {
-				$string .= "WHERE MONTH(tanggal) = '12' AND YEAR(tanggal) = '".($date->format("Y")-1)."' ";
+				$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id AND MONTH(tanggal) = '12' AND YEAR(tanggal) = '".($date->format("Y")-1)."') AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id AND MONTH(tanggal) = '12' AND YEAR(tanggal) = '".($date->format("Y")-1)."') AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE MONTH(tanggal) = '12' AND YEAR(tanggal) = '".($date->format("Y")-1)."' ";
 			}else{
-				$string .= "WHERE MONTH(tanggal) = '".($date->format("m") - 1)."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
+				$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id AND MONTH(tanggal) = '".($date->format("m") - 1)."' AND YEAR(tanggal) = '".$date->format("Y")."') AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id AND MONTH(tanggal) = '".($date->format("m") - 1)."' AND YEAR(tanggal) = '".$date->format("Y")."') AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE MONTH(tanggal) = '".($date->format("m") - 1)."' AND YEAR(tanggal) = '".$date->format("Y")."' ";
 			}
 		}elseif ($this->input->get('jangka_waktu') == 'semua') {
-			$string .= '';
+			$string = "SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id ";
 		}
-		$string.= "ORDER by poin DESC LIMIT ".$this->input->get('limit');
+		$string .= "ORDER by poin DESC LIMIT ".$this->input->get('limit');
 		$record['data'] = $this->model->rawQuery($string)->result();
 		$record['dm_available'] = $this->session->userdata('loginSession');
 		echo json_encode($record);
@@ -408,7 +407,7 @@ class Home extends CI_Controller {
 		}
 
 		if ($this->input->get("jangka_waktu") == "hari") {
-			$string .= "AND DATE(permasalahan.tanggal) = '".date('d')."' AND MONTH(permasalahan.tanggal) = '".date('m')."' AND YEAR(permasalahan.tanggal) = '".date('Y')."' ";
+			$string .= "AND DAY(permasalahan.tanggal) = '".date('d')."' AND MONTH(permasalahan.tanggal) = '".date('m')."' AND YEAR(permasalahan.tanggal) = '".date('Y')."' ";
 		}elseif ($this->input->get("jangka_waktu") == "bulan") {
 			$string .= "AND MONTH(permasalahan.tanggal) = '".date('m')."' AND YEAR(permasalahan.tanggal) = '".date('Y')."' ";
 		}elseif ($this->input->get("jangka_waktu") == "tahun") {
@@ -468,7 +467,7 @@ class Home extends CI_Controller {
 
 		// jangka waktu
 		if ($this->input->get('jangka_waktu') == 'hari') {
-			$string .= " AND DATE(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."' ";
+			$string .= " AND DAY(tanggal) = '".date("d")."' AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."' ";
 		}elseif ($this->input->get('jangka_waktu') == 'bulan') {
 			$string .= " AND MONTH(tanggal) = '".date("m")."' AND YEAR(tanggal) = '".date("Y")."' ";
 		}elseif ($this->input->get('jangka_waktu') == 'tahun') {
@@ -544,7 +543,7 @@ class Home extends CI_Controller {
 		$data['active'] 			= "home";
 		$data['kategori'] 			= $this->model->readS('kategori')->result();
 		
-		$data['ranking_harian']		= $this->model->rawQuery("SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE DATE(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ORDER by poin DESC")->result();
+		$data['ranking_harian']		= $this->model->rawQuery("SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE DAY(tanggal) = '".$date->format("d")."' AND MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ORDER by poin DESC")->result();
 		
 		$data['ranking_bulanan']		= $this->model->rawQuery("SELECT DISTINCT komentar.siapa, pengguna.nama, pengguna.foto, (SELECT SUM(komentar.rating) FROM komentar WHERE siapa = pengguna.id) AS poin, (SELECT COUNT(komentar.id) FROM komentar WHERE siapa = pengguna.id) AS jumlah_komentar FROM komentar LEFT JOIN pengguna ON komentar.siapa = pengguna.id WHERE MONTH(tanggal) = '".$date->format("m")."' AND YEAR(tanggal) = '".$date->format("Y")."' ORDER by poin DESC")->result();
 
