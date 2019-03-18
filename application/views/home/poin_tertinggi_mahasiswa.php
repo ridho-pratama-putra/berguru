@@ -48,7 +48,7 @@
                                     <td class="star-inner">3</td>
                                     <td class="trophy-inner" class="trophy-inner">40</td>
                                     <td class="diamond-inner">12</td>
-                                    <td>5,314</td>
+                                    <td><?=$value->poin?></td>
                                 </tr>
                                 
                                 <?php 
@@ -89,7 +89,7 @@
                                     <td class="star-inner">3</td>
                                     <td class="trophy-inner" class="trophy-inner">40</td>
                                     <td class="diamond-inner">12</td>
-                                    <td>5,314</td>
+                                    <td><?=$value->poin?></td>
                                 </tr>
 
                                 <?php 
@@ -130,7 +130,7 @@
                                     <td class="star-inner">3</td>
                                     <td class="trophy-inner" class="trophy-inner">40</td>
                                     <td class="diamond-inner">12</td>
-                                    <td>5,314</td>
+                                    <td><?=$value->poin?></td>
                                 </tr>
                                 
                                 <?php 

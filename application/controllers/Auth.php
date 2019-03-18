@@ -15,7 +15,7 @@ class Auth extends CI_Controller {
 	function login()
 	{
 		if ($this->session->userdata('registrasiSession') != array()) {
-			alert('login','warning','Perhatian!','Mohon Lanjutkan Pendaftaran. Atau batalkan pendaftaran <a href="'.base_url().'batalkan-registrasi">disini</a>.');
+			alert('alert','warning','Perhatian!','Mohon Lanjutkan Pendaftaran. Atau batalkan pendaftaran <a href="'.base_url().'batalkan-registrasi">disini</a>.');
 			redirect('register-pilih');
 		}else{
 			$cookie = get_cookie('berguru');
@@ -259,6 +259,12 @@ class Auth extends CI_Controller {
 		} else {
 			return TRUE;
 		}
+	}
+
+	function batalkanRegister(){
+		delete_cookie('berguru');
+		$this->session->unset_userdata('registrasiSession');
+		redirect("register");
 	}
 }
 // UNSET THINGS

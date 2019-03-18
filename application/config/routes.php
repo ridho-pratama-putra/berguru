@@ -89,6 +89,7 @@ $route['poin-tertinggi-mahasiswa']			= 'Home/poinTertinggiMahasiswa';
 $route['login']						= 'Auth/login/';
 $route['logout']					= 'Auth/logout/';
 $route['register']					= 'Auth/register/';
+$route['batalkan-registrasi']		= 'Auth/batalkanRegister/';
 $route['register-proses']			= 'Auth/registerProses/';
 $route['register-pilih']			= 'Auth/registerPilih/';
 $route['register-pilih-proses']		= 'Auth/registerPilihProses/';
