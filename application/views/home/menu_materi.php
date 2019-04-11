@@ -2,28 +2,27 @@
             // SCRIPT UNTUK ADD ACTIVE
             $( document ).ready(function() {
                 $("#<?=$active?>").attr("class","active");
-                $("#filter").keyup(function() {
-                    // Retrieve the input field text and reset the count to zero
-                    var filter = $(this).val(),
-                    count = 0;
-
-                    // Loop through the comment list
-                    $('#results div').each(function() {
-
-                        // If the list item does not contain the text phrase fade it out
-                        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                            $(this).hide();
-
-                        // Show the list item if the phrase matches and increase the count by 1
-                    } else {
-                        $(this).show();
-                        count++;
-                    }
-
-                });
-
+                $("#filter").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $(".panel-ask").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
                 });
             });
+            // $("#filter").keyup(function() {
+            //     var filter = $(this).val(),
+            //     count = 0;
+            //     $('#results div').each(function() {
+            //         if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+            //             $(this).hide();
+            //         } else {
+            //             $(this).show();
+            //             count++;
+            //         }
+
+            //     });
+
+            // });
             // END SCRIPT UNTUKADD ACTIVE CLASS PADA MENU
         </script>
         <div class="sidemenu-overlay hide animated"></div>
@@ -91,9 +90,9 @@
                                 <div class="form-group">
                                     <div class="input-group search-field">
                                         <span class="input-group-addon"><i class="bgicon icon-search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Ketik untuk mencari materi">
+                                        <input type="text" class="form-control" placeholder="Ketik untuk mencari materi" id="filter">
                                     </div>
-                                    <input type="submit" name="searchheader" class="btn btn-green" value="Cari Materi">
+                                    <input type="submit" name="searchheader" class="btn btn-green link-disabled" value="Cari Materi">
                                 </div>
                             </form>
                         </div>

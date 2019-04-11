@@ -90,7 +90,7 @@ if ($selected_kategori[0]->background != '') { ?>
                                     </select>
                                 </span>
                             </div>
-                            <button type="submit" name="searchheader" class="btn btn-green">Cari Sekarang</button>
+                            <button type="submit" name="searchheader" class="btn btn-green link-disabled">Cari Sekarang</button>
                         </div>
                     </form>
                 </div>

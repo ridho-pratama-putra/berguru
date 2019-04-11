@@ -104,7 +104,7 @@ if (is_array($selected_kategori)) {
                                 <input type="text" id="search-bar-pertanyaan" class="form-control" placeholder="Apa pertanyaan anda?" name="pertanyaan">
                                 <input type="hidden" name="kategori_mapel" value="<?=(is_array($selected_kategori) ? $selected_kategori[0]->id : 'Semua Mata Pelajaran')?>">
                             </div>
-                            <button type="submit" name="searchheader" class="btn btn-green" value="submit">Cari Sekarang</button>
+                            <button type="submit" name="searchheader" class="btn btn-green link-disabled" value="submit">Cari Sekarang</button>
                         </div>
                     </form>
                 </div>

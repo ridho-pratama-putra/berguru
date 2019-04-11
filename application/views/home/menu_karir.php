@@ -78,9 +78,9 @@
                         <div class="form-group">
                             <div class="input-group search-field">
                                 <span class="input-group-addon"><i class="bgicon icon-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari lowongan kerja">
+                                <input type="text" class="form-control" placeholder="Cari lowongan kerja" id="filter">
                             </div>
-                            <input type="submit" name="searchheader" class="btn btn-green" value="Cari Karir">
+                            <input type="submit" name="searchheader" class="btn btn-green link-disabled" value="Cari Karir">
                         </div>
                     </form>
                 </div>
